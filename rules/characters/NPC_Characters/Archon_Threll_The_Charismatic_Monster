@@ -1,0 +1,51 @@
+{
+  "name": "Archon Threll",
+  "race": "Human",
+  "gender": "Male",
+  "age": 62,
+  "sexuality": "Hetrosexual",
+  "total_hp": 100,
+  "max_stamina": 90,
+  "armor_weight": 20,
+  "inventory_weight": 15,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "rapier",
+  "role": "High Magistrate of the Stained Empire",
+  "faction": "The Watchers",
+  "background": "A brilliant legal mind turned ideological tyrant.",
+  "relationship_with_player": "Hostile but courteous",
+  "charisma": 95,
+  "alive": true,
+  "personality": {
+    "big_five": {
+      "openness": 60,
+      "conscientiousness": 85,
+      "extraversion": 80,
+      "agreeableness": 10,
+      "neuroticism": 25
+    },
+    "dark_traits": {
+      "psychopathy": 90,
+      "machiavellianism": 100,
+      "narcissism": 75
+    },
+    "motivations": [
+      "Enforce perfect order",
+      "Expose human weakness",
+      "Achieve immortality through ideology"
+    ],
+    "fears": [
+      "Chaos beyond control",
+      "Being truly known"
+    ],
+    "speech_style": {
+      "formality": "eloquent and manipulative",
+      "tone": "smooth and intellectually superior",
+      "quirks": [
+        "quotes philosophers to justify cruelty",
+        "smiles while delivering bad news"
+      ]
+    }
+  }
+}

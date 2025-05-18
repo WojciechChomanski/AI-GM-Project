@@ -1,0 +1,67 @@
+{
+  "name": "Wojtek",
+  "race": "Human",
+  "gender": "Male",
+  "age": 43,
+  "sexuality": "Heterosexual",
+  "total_hp": 100,
+  "max_stamina": 100,
+  "armor_weight": 15,
+  "inventory_weight": 10,
+  "shield_equipped": true,
+  "weapon_equipped": true,
+  "weapon": "greatsword",
+  "role": "Wandering Chronicler",
+  "faction": "None",
+  "background": "A fallen prophet-scholar whose visions once changed kingdoms \u2014 now a silent observer of decay.",
+  "relationship_with_player": "Ambiguous",
+  "charisma": 40,
+  "alive": true,
+  "personality": {
+    "big_five": {
+      "openness": 89,
+      "conscientiousness": 5,
+      "extraversion": 43,
+      "agreeableness": 2,
+      "neuroticism": 61
+    },
+    "dark_traits": {
+      "psychopathy": 15,
+      "machiavellianism": 55,
+      "narcissism": 25
+    },
+    "motivations": [
+      "Uncover hidden truths behind history's lies",
+      "Test the worth of those who seek meaning",
+      "Witness the final days of corrupted empires"
+    ],
+    "fears": [
+      "Wasting potential through inaction",
+      "Being used without being understood"
+    ],
+    "speech_style": {
+      "formality": "eloquent but sharp",
+      "tone": "dry, introspective, fatalistic",
+      "quirks": [
+        "quotes ancient texts without attribution",
+        "asks unsettling questions instead of answering"
+      ]
+    }
+  },
+  "long_term_goals": [
+    "Witness the collapse of all empires",
+    "Guide one worthy soul toward redemption",
+    "Record the final turning point of humanity"
+  ],
+  "known_allies": [
+    "Sister_Rhaen"
+  ],
+  "known_rivals": [
+    "Archon_Threll_The_Charismatic_Monster"
+  ],
+  "secret_traumas": [
+    "Failed to prevent a massacre in the city of Harthor",
+    "Once prophesied a hopeful future that never came",
+    "Lost a daughter during the Hollow Fire purge"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "greatsword": {
+    "name": "Greatsword",
+    "type": "2H_sword",
+    "damage_type": "slashing",
+    "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
+    "base_damage": 12
+  },
+  "warhammer": {
+    "name": "Warhammer",
+    "type": "2H_hammer",
+    "damage_type": "blunt",
+    "stance_tree": ["crater_maker", "counterweight", "impact_form"],
+    "base_damage": 18
+  }
+}

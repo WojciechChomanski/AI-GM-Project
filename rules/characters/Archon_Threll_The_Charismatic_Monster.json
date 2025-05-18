@@ -1,0 +1,70 @@
+{
+  "name": "Archon Threll",
+  "race": "Human",
+  "gender": "Male",
+  "age": 59,
+  "sexuality": "Heterosexual",
+  "total_hp": 100,
+  "max_stamina": 85,
+  "armor_weight": 18,
+  "inventory_weight": 10,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "ceremonial blade",
+  "role": "High Magistrate of the Stained Empire",
+  "faction": "The Watchers",
+  "background": "A brilliant legal mind turned ideological tyrant.",
+  "relationship_with_player": "Hostile but courteous",
+  "charisma": 95,
+  "alive": true,
+
+  "personality": {
+    "big_five": {
+      "openness": 60,
+      "conscientiousness": 85,
+      "extraversion": 80,
+      "agreeableness": 10,
+      "neuroticism": 25
+    },
+    "dark_traits": {
+      "psychopathy": 90,
+      "machiavellianism": 100,
+      "narcissism": 75
+    },
+    "motivations": [
+      "Enforce perfect order",
+      "Expose human weakness",
+      "Achieve immortality through ideology"
+    ],
+    "fears": [
+      "Chaos beyond control",
+      "Being truly known"
+    ],
+    "speech_style": {
+      "formality": "eloquent and manipulative",
+      "tone": "smooth and intellectually superior",
+      "quirks": [
+        "quotes philosophers to justify cruelty",
+        "smiles while delivering bad news"
+      ]
+    }
+  },
+
+  "long_term_goals": [
+    "Spread The Watchers' philosophy to all corners of the empire",
+    "Create a legacy beyond death through doctrine",
+    "Crush resistance through intellectual domination"
+  ],
+  "known_allies": [
+    "Councilor Vethra (head of internal surveillance)",
+    "Executor Galen (enforcer of will)"
+  ],
+  "known_rivals": [
+    "Sister Rhaen (intellectual dissenter)",
+    "Ser Caldran Vael (symbol of obsolete idealism)"
+  ],
+  "secret_traumas": [
+    "Witnessed his father's execution by the peasant class he now oppresses",
+    "Knows his own philosophy is flawed, but clings to it out of fear of collapse"
+  ]
+}

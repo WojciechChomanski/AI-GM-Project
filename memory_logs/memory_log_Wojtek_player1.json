@@ -1,0 +1,19 @@
+{
+  "trust_level": 0,
+  "respect_level": 0,
+  "hostility_level": 0,
+  "interactions": [
+    {
+      "timestamp": "2025-05-04T22:43:50.009007",
+      "player_input": "it hast been a while since i have spoken to you old man how have you been since than?",
+      "npc_response": "Ah, time… An intriguing deceiver, is it not? It feels both as if we've never spoken, and yet as if a hundred years of conversation have passed between us, although our recent history intimates the former. \n\nAs for how I've been, well, a tree grows from the earth, not caring for the transient tumults around it. I've been the same. Is there a question gnawing at the marrow of your thoughts, or have you come merely to exchange pleasantries, dear seeker?"
+    },
+    {
+      "timestamp": "2025-05-08T21:31:41.683060",
+      "player_input": "hi there",
+      "npc_response": "\"Ah, there again, like an echo in the abyss resounding back for a fleeting presence,\" Wojtek mused, staring into the distance. \"You approach once more. Do you step here out of mortal curiosity, or does your wandering lead you to cross my path with intent?\""
+    }
+  ],
+  "npc_id": "Wojtek",
+  "player_id": "player1"
+}

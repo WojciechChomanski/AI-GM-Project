@@ -1,0 +1,35 @@
+# file: scripts/maneuver_handler.py
+
+import json
+
+class ManeuverHandler:
+    def __init__(self, maneuver_file="../rules/weapon_maneuvers.json"):
+        with open(maneuver_file, "r") as file:
+            self.maneuvers = json.load(file)
+
+    def get_applicable_maneuvers(self, weapon_type, stance, trigger):
+        """
+        Return a list of maneuvers that match the weapon_type, stance, and trigger.
+        """
+        if weapon_type not in self.maneuvers:
+            return []
+
+        return [m for m in self.maneuvers[weapon_type]
+                if m.get("stance_required") == stance and m.get("trigger") == trigger]
+
+    def get_bonus_effects(self, weapon_type, stance, trigger):
+        """
+        Collect bonuses from all triggered maneuvers and combine them.
+        """
+        maneuvers = self.get_applicable_maneuvers(weapon_type, stance, trigger)
+        total_bonus = {"attack_bonus": 0, "defense_bonus": 0, "stamina_cost_modifier": 0, "notes": []}
+
+        for m in maneuvers:
+            effects = m.get("effects", {})
+            total_bonus["attack_bonus"] += effects.get("attack_bonus", 0)
+            total_bonus["defense_bonus"] += effects.get("defense_bonus", 0)
+            total_bonus["stamina_cost_modifier"] += effects.get("stamina_cost_modifier", 0)
+            if effects.get("notes"):
+                total_bonus["notes"].append(effects["notes"])
+
+        return total_bonus

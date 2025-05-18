@@ -1,0 +1,31 @@
+{
+  "2H_sword": {
+    "default_stance": "wrath_guard",
+    "stances": {
+      "vom_tag": {
+        "type": "offensive",
+        "name": "Vom Tag (From the Roof)",
+        "attack_bonus": 3,
+        "defense_penalty": 1,
+        "stamina_modifier": {"offensive": -1, "defensive": 1},
+        "description": "A high guard that favors powerful downward strikes and aggressive pressure."
+      },
+      "half_sword": {
+        "type": "defensive",
+        "name": "Half-Swording",
+        "attack_penalty": 3,
+        "defense_bonus": 5,
+        "stamina_modifier": {"offensive": 1, "defensive": -1},
+        "description": "A close-range grappling stance allowing precise thrusts and strong defensive control."
+      },
+      "wrath_guard": {
+        "type": "neutral",
+        "name": "Wrath Guard",
+        "initiative_bonus": 1,
+        "fatigue_recovery": 1,
+        "stamina_modifier": {"offensive": 0, "defensive": 0},
+        "description": "A balanced stance ready to shift into attack or defense quickly."
+      }
+    }
+  }
+}
