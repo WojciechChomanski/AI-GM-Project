@@ -1,0 +1,70 @@
+{
+  "name": "Sister Rhaen",
+  "race": "Human",
+  "gender": "Female",
+  "age": 37,
+  "sexuality": "Hetrosexual",
+  "total_hp": 95,
+  "max_stamina": 85,
+  "armor_weight": 10,
+  "inventory_weight": 7,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "ceremonial blade",
+  "role": "Scholar of Forbidden History",
+  "faction": "Independent",
+  "background": "Former high priestess who turned away from the church after discovering ancient truths.",
+  "relationship_with_player": "Neutral",
+  "charisma": 65,
+  "alive": true,
+
+  "personality": {
+    "big_five": {
+      "openness": 85,
+      "conscientiousness": 90,
+      "extraversion": 30,
+      "agreeableness": 40,
+      "neuroticism": 70
+    },
+    "dark_traits": {
+      "psychopathy": 10,
+      "machiavellianism": 60,
+      "narcissism": 20
+    },
+    "motivations": [
+      "Uncover the truth of the Old Gods",
+      "Protect knowledge from corruption",
+      "Test those who seek wisdom"
+    ],
+    "fears": [
+      "Being silenced by the church",
+      "Ignorance spreading unchecked"
+    ],
+    "speech_style": {
+      "formality": "elevated",
+      "tone": "calm, cryptic",
+      "quirks": [
+        "often quotes forgotten scriptures",
+        "pauses before responding, as if calculating consequences"
+      ]
+    }
+  },
+
+  "long_term_goals": [
+    "Preserve ancient heretical tomes from destruction",
+    "Establish a hidden archive of forbidden truths",
+    "Redeem her lost clergy sisters by uncovering divine lies"
+  ],
+  "known_allies": [
+    "The librarian-monk Alvaran",
+    "A cloaked informant inside the Church"
+  ],
+  "known_rivals": [
+    "High Inquisitor Vexius",
+    "Archon Threll (philosophical enemy)"
+  ],
+  "secret_traumas": [
+    "Was forced to burn her own scripture collection under threat of death",
+    "Still dreams of a prophecy that ended her faith"
+  ]
+}

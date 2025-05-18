@@ -1,0 +1,44 @@
+{
+  "wojtek": {
+    "active_traumas": [
+      {
+        "type": "fire_phobia",
+        "trigger_keywords": [
+          "fire",
+          "burn",
+          "flame",
+          "blaze"
+        ],
+        "severity": 3,
+        "last_triggered": null,
+        "chance_to_interfere": 0.3,
+        "interference_type": "paranoia_phrase",
+        "example_outbursts": [
+          "You want to see me burn again, don't you?",
+          "Another fire? This time you finish the job?"
+        ]
+      }
+    ]
+  },
+  "vyrda_the_hollow": {
+    "active_traumas": [
+      {
+        "type": "betrayal_flashbacks",
+        "trigger_keywords": [
+          "lie",
+          "betray",
+          "trust",
+          "traitor"
+        ],
+        "severity": 2,
+        "last_triggered": null,
+        "chance_to_interfere": 0.2,
+        "interference_type": "emotional_outburst",
+        "example_outbursts": [
+          "Don't lie to me. I\u2019ve seen what betrayal costs.",
+          "Trust? You speak that word like it still means something."
+        ]
+      }
+    ]
+  }
+}
