@@ -1,3 +1,5 @@
+# chat_with_wojtek.py
+
 import os
 import sys
 import json
@@ -13,8 +15,8 @@ MEMORY_DIR = os.path.join(BASE_DIR, "memory_logs")
 sys.path.append(SCRIPTS_DIR)
 
 # === Import project functions ===
-from generate_npc_system_prompt import generate_npc_system_prompt
-from npc_memory_handler import build_interaction_context, add_interaction
+from scripts.generate_npc_system_prompt import generate_npc_system_prompt
+from scripts.npc_memory_handler import build_interaction_context, add_interaction
 
 # === OpenAI Client ===
 client = OpenAI(api_key="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")  # <-- Set your real key

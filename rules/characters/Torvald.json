@@ -1,0 +1,16 @@
+
+{
+  "name": "Torvald",
+  "race": "Human",
+  "gender": "Male",
+  "total_hp": 130,
+  "max_stamina": 110,
+  "armor_weight": 20,
+  "inventory_weight": 10,
+  "shield_equipped": true,
+  "weapon_equipped": true,
+  "weapon": "greatsword",
+  "strength_modifier": 1,
+  "armor": ["chainmail"],
+  "role": "Mercenary"
+}

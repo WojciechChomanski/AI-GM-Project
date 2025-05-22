@@ -1,5 +1,3 @@
-# file: scripts/battle_simulation.py
-
 from combat_engine import CombatEngine
 from combat_health import CombatHealthManager
 from character_loader import load_character_from_json
@@ -9,6 +7,13 @@ from healing_system import HealingSystem
 # Load characters from JSON
 wojtek = load_character_from_json("../rules/characters/wojtek.json")
 gorthak = load_character_from_json("../rules/characters/gorthak.json")
+
+# Equip Wojtek with armor and a Claymore
+wojtek.equip_armor(ArmorPiece("Chainmail Chest", ["chest"], {"blunt": 10, "slash": 8}, 2, 50, 15))
+wojtek.weapon = {"type": "claymore", "base_damage": 10, "damage_type": "slashing"}
+
+# Equip Gorthak with a warhammer
+gorthak.weapon = {"type": "warhammer", "base_damage": 12, "damage_type": "blunt"}
 
 # Health Managers
 wojtek_health = CombatHealthManager(wojtek)
@@ -26,7 +31,7 @@ def simulate_battle():
         wojtek.in_combat = True
         gorthak.in_combat = True
 
-        # Wojtek attacks
+        # Wojtek attacks with Claymore
         combat.attack_roll(
             attacker=wojtek,
             defender=gorthak,
@@ -37,6 +42,7 @@ def simulate_battle():
         )
 
         if gorthak.alive:
+            # Gorthak attacks with warhammer
             combat.attack_roll(
                 attacker=gorthak,
                 defender=wojtek,

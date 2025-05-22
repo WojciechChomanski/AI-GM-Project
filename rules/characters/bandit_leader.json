@@ -1,0 +1,12 @@
+{
+  "name": "Bandit Leader",
+  "race": "Human",
+  "total_hp": 100,
+  "max_stamina": 90,
+  "armor_weight": 15,
+  "inventory_weight": 10,
+  "shield_equipped": true,
+  "weapon_equipped": true,
+  "weapon": "greatsword",
+  "armor": ["chainmail"]
+}
