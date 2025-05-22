@@ -1,0 +1,25 @@
+{
+  "blood_lash": {
+    "name": "Blood Lash",
+    "type": "necromantic",
+    "damage": 10,
+    "damage_type": "slashing",
+    "health_cost": 5,
+    "stamina_cost": 8,
+    "difficulty": 35,
+    "corruption_chance": 0.1,
+    "description": "A whip of blood tears into the foe, fueled by the caster's life."
+  },
+  "fate_whisper": {
+    "name": "Fate Whisper",
+    "type": "prophetic",
+    "effect": {
+      "defense_bonus": 5
+    },
+    "health_cost": 3,
+    "stamina_cost": 6,
+    "difficulty": 30,
+    "corruption_chance": 0.05,
+    "description": "A vision grants an ally fleeting protection."
+  }
+}
