@@ -1,0 +1,13 @@
+{
+  "characters": [
+    {"name": "Torvald", "file": "Torvald.json"},
+    {"name": "Lyssa", "file": "Lyssa.json"},
+    {"name": "Wojtek", "file": "wojtek.json"},
+    {"name": "Ser Caldran Vael", "file": "Ser_Caldran_Vael.json"},
+    {"name": "Sister Rhaen", "file": "Sister_Rhaen.json"},
+    {"name": "Vyrda the Hollow", "file": "Vyrda_the_Hollow.json"},
+    {"name": "Bandit", "file": "bandit.json"},
+    {"name": "Bandit Leader", "file": "bandit_leader.json"},
+    {"name": "Gorthak", "file": "gorthak.json"}
+  ]
+}

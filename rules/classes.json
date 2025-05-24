@@ -1,0 +1,42 @@
+{
+  "Warrior": {
+    "description": "A master of melee combat, built for war.",
+    "stats": {
+      "strength_modifier": 2,
+      "attack_cost_reduction": 1
+    }
+  },
+  "Mage": {
+    "description": "A wielder of Veil or Breath magic, bending reality.",
+    "stats": {
+      "intelligence_modifier": 2
+    },
+    "restrictions": {
+      "gender": "Female",
+      "race": "Human"
+    }
+  },
+  "Rogue": {
+    "description": "A shadow in the empire, striking unseen.",
+    "stats": {
+      "agility_modifier": 2,
+      "dodge_bonus": 5
+    }
+  },
+  "Cleric": {
+    "description": "A conduit of the Breath, healing and smiting.",
+    "stats": {
+      "willpower_modifier": 2,
+      "healing_bonus": 10
+    }
+  },
+  "Paladin": {
+    "description": "A holy warrior, champion of the Breath.",
+    "stats": {
+      "strength_modifier": 2,
+      "willpower_modifier": 1,
+      "healing_bonus": 5
+    },
+    "restrictions": {}
+  }
+}

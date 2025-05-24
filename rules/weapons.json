@@ -12,5 +12,26 @@
     "damage_type": "blunt",
     "stance_tree": ["crater_maker", "counterweight", "impact_form"],
     "base_damage": 18
+  },
+  "longsword": {
+    "name": "Longsword",
+    "type": "sword",
+    "damage_type": "slashing",
+    "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
+    "base_damage": 10
+  },
+  "shortsword": {
+    "name": "Shortsword",
+    "type": "sword",
+    "damage_type": "slashing",
+    "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
+    "base_damage": 8
+  },
+  "dagger": {
+    "name": "Dagger",
+    "type": "dagger",
+    "damage_type": "piercing",
+    "stance_tree": [],
+    "base_damage": 6
   }
-}
+  }

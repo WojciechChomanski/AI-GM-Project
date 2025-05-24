@@ -1,0 +1,12 @@
+{
+  "name": "Bandit",
+  "race": "Human",
+  "total_hp": 80,
+  "max_stamina": 70,
+  "armor_weight": 10,
+  "inventory_weight": 5,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "dagger",
+  "armor": ["leather"]
+}

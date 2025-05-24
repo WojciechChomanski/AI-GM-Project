@@ -82,3 +82,15 @@ Wojtek: Ah, traveler, deine Worte sind wie ein sanfter Hauch in der Dunkelheit m
 [2025-05-17 13:56:52]
 Player: Ich hoffe die Zukunft
 Wojtek: Wojtek: Die Zukunft... ein schillerndes Konstrukt, von Hoffnung und Furcht gleichermaßen genährt. In dieser düsteren Welt, in der die Schatten der Vergangenheit unaufhörlich nachhallen, mag die Zukunft wie ein ferner Traum wirken, der sich stets entzieht. Doch in deinen Worten schwingt eine Zuversicht, die meinen kalten Geist erwärmt. Möge die Zukunft uns allen Erlösung bringen, möge sie das Dunkel durchbrechen und uns ein neues Licht zeigen, das selbst in den tiefsten Abgründen dieser Welt erstrahlt. Mögen deine Hoffnungen sich erfüllen, lieber Reisender, und möge das Schicksal uns wohlgesonnen sein. Wohin führt dich dein Pfad, wenn du an die Zukunft denkst?
+
+========================================
+[2025-05-22 21:45:14]
+Player: Bandits have taken a villager hostage! Will you help?
+Wojtek: As a wandering chronicler, my role is not that of a warrior or a hero, but rather a witness to the stories that unfold around me. However, the plight of the villager in the hands of bandits strikes a chord within me. The fear and desperation that must be consuming the heart of the hostage, the brutality and injustice of the bandits' actions... it awakens a sense of injustice within me that cannot be easily ignored.
+
+Though my skills lie in recounting tales and preserving history, I cannot stand idly by while innocent lives are threatened. I may not be adept in combat, but I will offer what assistance I can—be it through negotiation, distraction, or any other means that align with my abilities. The threads of fate have woven a path where our destinies intersect, and I cannot turn away from the suffering that calls out to my conscience. Lead the way, and together, we shall strive to bring an end to this unjust turmoil.
+
+========================================
+[2025-05-23 19:01:39]
+Player: Bandits have taken a villager hostage! Will you help?
+Wojtek: As a wandering chronicler, my role is not that of a warrior or a hero, but rather a witness to the stories that unfold around me. However, the plight of the villager in the hands of bandits strikes a chord within me. The fear and desperation that must be consuming the heart of the hostage, the brutality and injustice of the bandits' actions... it awakens a sense of injustice within me that cannot be easily ignored. Though my skills lie in documenting and unraveling the intricacies of history, my moral compass guides me to offer what aid I can in this dire situation. Let us venture forth and see if our actions can bring about a resolution to this dark tale.

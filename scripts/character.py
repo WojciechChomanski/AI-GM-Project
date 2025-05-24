@@ -15,31 +15,21 @@ class Character:
         self.pain_penalty = 0
         self.mobility_penalty = 0
         self.in_combat = False
-
-        # Loadouts
         self.armor = []
         self.armor_weight = 0
         self.inventory_weight = 0
         self.shield_equipped = False
         self.weapon_equipped = True
-
-        # Dual-layer inventory system
         self.equipment_slots = {
-            "head": None,
-            "chest": None,
-            "legs": None,
-            "arms": None,
-            "main_hand": None,
-            "off_hand": None,
-            "feet": None,
-            "trinket": None
+            "head": None, "chest": None, "legs": None, "arms": None,
+            "main_hand": None, "off_hand": None, "feet": None, "trinket": None
         }
-        self.backpack_inventory = []  # list of (item_name, weight)
-        self.backpack_capacity = 40  # max weight or space count
-
-        # Weapon
+        self.backpack_inventory = []
+        self.backpack_capacity = 40
         self.weapon = None
         self.stance = "neutral"
+        self.exhausted = False
+        self.last_action = False
 
     def initialize_body_parts(self):
         return {
@@ -57,8 +47,25 @@ class Character:
 
     def consume_stamina(self, amount):
         self.stamina -= amount
-        print(f"⚡ {self.name} loses {amount} stamina! Current stamina: {self.stamina}/{self.max_stamina}")
+        if self.stamina < 0:
+            print(f"⚠️ {self.name} is pushing beyond limits! Stamina: {self.stamina}/{self.max_stamina}")
         self.check_stamina_state()
+
+    def recover_stamina(self, amount):
+        self.stamina = min(self.max_stamina, self.stamina + amount)
+        print(f"⚡ {self.name} recovers {amount} stamina! Current stamina: {self.stamina}/{self.max_stamina}")
+        self.exhausted = False
+        self.last_action = False
+
+    def short_rest(self):
+        recovery = int(self.max_stamina * 0.2)
+        self.recover_stamina(recovery)
+
+    def long_rest(self):
+        self.stamina = self.max_stamina
+        print(f"⚡ {self.name} fully recovers stamina after a long rest! Stamina: {self.stamina}/{self.max_stamina}")
+        self.exhausted = False
+        self.last_action = False
 
     def stamina_penalty(self):
         percent = (self.stamina / self.max_stamina) * 100
@@ -68,32 +75,36 @@ class Character:
             return 3
         elif percent > 0:
             return 6
-        elif percent >= -30:
-            return 10
         else:
-            return 20
+            return 10
 
     def check_stamina_state(self):
-        if self.stamina <= -0.3 * self.max_stamina:
+        if self.stamina <= -0.3 * self.max_stamina and not self.exhausted:
+            print(f"⚠️ {self.name} is critically exhausted! One final action before collapse!")
+            self.exhausted = True
+            self.last_action = True
+        elif self.exhausted and self.last_action:
             self.collapse()
 
     def collapse(self):
         print(f"💀 {self.name} collapses from exhaustion and can no longer act!")
-        self.alive = False
+        self.alive = True
+        self.exhausted = True
+        self.in_combat = False
 
     def equip_armor(self, armor_piece):
         self.armor.append(armor_piece)
         self.armor_weight += armor_piece.weight
 
     def get_total_armor(self, damage_type, hit_zone):
-        return sum(piece.effective_armor(damage_type) for piece in self.armor if hit_zone in piece.coverage)
+        return sum(piece.armor_rating.get(damage_type, 0) for piece in self.armor if hit_zone in piece.coverage)
 
     def apply_armor_damage(self, hit_zone, damage_type, incoming_damage):
         protection = self.get_total_armor(damage_type, hit_zone)
         reduced_damage = max(incoming_damage - protection, 0)
         for piece in self.armor:
             if hit_zone in piece.coverage:
-                piece.take_damage(damage_type, incoming_damage)
+                piece.absorb_damage(incoming_damage, damage_type)
         return reduced_damage
 
     def get_armor_stamina_penalty(self):
@@ -101,30 +112,30 @@ class Character:
 
     def receive_damage(self, damage_amount):
         if not self.alive:
-            print(f"{self.name} is already dead.")
+            print(f"{self.name} is already incapacitated.")
             return
-
         while damage_amount > 0:
             valid_parts = {k: v for k, v in self.body_parts.items() if v > 0}
             if not valid_parts:
                 self.die()
                 break
             target_part = max(valid_parts, key=valid_parts.get)
-            self.body_parts[target_part] -= 1
-            damage_amount -= 1
-            if self.body_parts[target_part] == 0:
+            damage_to_part = min(damage_amount, valid_parts[target_part])
+            self.body_parts[target_part] -= damage_to_part
+            damage_amount -= damage_to_part
+            if self.body_parts[target_part] <= 0:
                 self.on_part_crippled(target_part)
 
     def on_part_crippled(self, part):
         print(f"⚠️ {self.name}'s {part.replace('_', ' ')} is crippled!")
-        bleed_amount = 5 if part in ["chest", "stomach"] else 2
+        bleed_amount = 3 if part in ["chest", "stomach"] else 1
         self.bleeding += bleed_amount
-        self.pain_penalty += 5
+        self.pain_penalty += 3
         if "leg" in part:
-            self.mobility_penalty += 50
+            self.mobility_penalty += 25
             print(f"⛔ {self.name}'s mobility reduced by {self.mobility_penalty}% due to crippled legs!")
         print(f"🩸 {self.name} starts bleeding! Bleed per round: {self.bleeding}")
-        print(f"😖 {self.name} suffers pain penalties! Total penalty: {self.pain_penalty}%")
+        print(f"😖 {self.name} suffers pain penalties! Total penalty: {min(self.pain_penalty, 20)}%")
 
     def bleed_out(self):
         if self.alive and self.bleeding > 0:
@@ -140,7 +151,7 @@ class Character:
         for part, hp in self.body_parts.items():
             print(f"  {part.replace('_', ' ').capitalize()}: {hp} HP")
         print(f"  Bleeding per round: {self.bleeding}")
-        print(f"  Pain penalty: {self.pain_penalty}%")
+        print(f"  Pain penalty: {min(self.pain_penalty, 20)}%")
         print(f"  Stamina: {self.stamina}/{self.max_stamina}")
 
     def has_shield(self):
@@ -157,8 +168,8 @@ class Character:
         if total_weight <= 20:
             return 0
         elif total_weight <= 40:
-            return -10
+            return -5
         elif total_weight <= 60:
-            return -20
+            return -10
         else:
-            return -40
+            return -15
