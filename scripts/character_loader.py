@@ -40,12 +40,7 @@ def load_armor_piece(name, race):
     path = os.path.join(os.path.dirname(__file__), "../rules/armors.json")
     armor_data = load_json_file(path)
     
-    legacy_mapping = {
-        "chainmail": "Light_Heavy",
-        "leather": "Light_Light"
-    }
-    
-    tier = legacy_mapping.get(name, name)
+    tier = name
     variant = race.lower() if race in ["Elven", "Dwarven"] else "standard"
     
     armor_stats = armor_data.get(tier, {}).get(variant, armor_data.get(tier, {}).get("standard"))
@@ -55,7 +50,9 @@ def load_armor_piece(name, race):
             "coverage": ["chest"],
             "armor_rating": {"slashing": 1, "piercing": 1, "blunt": 1},
             "max_durability": 40,
-            "weight": 5
+            "weight": 5,
+            "stamina_penalty": 1,
+            "mobility_bonus": 5
         }
     
     return Armor(
