@@ -81,3 +81,13 @@ Ser Caldran Vael: As a wandering knight, I hold honor and justice in high regard
 The thought of innocent lives being taken unjustly would evoke a deep sense of fear within me. It is a reminder of the darkness that lurks in the world, and the burden that weighs heavy on those who seek to bring light to it. 
 
 I would feel compelled to investigate further, to uncover the truth and bring those responsible to justice. The betrayal of trust and abuse of power is something that strikes at the core of my principles as a knight.
+
+========================================
+[2025-05-24 23:53:41]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: Ah, noble adventurer, your fervor for justice is truly commendable. As a wandering knight, it is my duty to uphold the values of chivalry and protect those who cannot protect themselves. Know that in the face of darkness, I will stand with you, blade in hand, ready to face whatever challenges lie ahead. Let us venture forth together, for the innocent and the righteous!
+
+========================================
+[2025-05-25 10:46:53]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As a wandering knight, my loyalty lies not with one ruler but with the people in need. If you fight to protect the innocent, know that I will stand beside you, ready to face whatever challenges may come our way. Trust is not easily earned, but in this cause, it is freely given.

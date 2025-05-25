@@ -19,7 +19,8 @@ class CombatHealthManager:
             wound["duration"] -= 1
             if wound["duration"] <= 0:
                 self.bleeding_wounds.remove(wound)
-        self.character.bleeding = total_bleeding
+        total_bleeding = min(total_bleeding, 8.0)  # Cap at 8/round (16 for criticals)
+        self.character.bleeding = round(total_bleeding, 1)  # Round to 1 decimal
         if total_bleeding > 0:
             self.inflict_bleed_damage()
 
@@ -30,16 +31,17 @@ class CombatHealthManager:
 
     def add_bleeding_wound(self, severity, is_critical=False):
         if severity == "light":
-            amount, duration = 0.5, 2
+            amount, duration = 0.03, 2
         elif severity == "medium":
-            amount, duration = 1.5, 4
-        else:
-            amount, duration = 3.0, 7
+            amount, duration = 0.3, 4
+        else:  # heavy
+            amount, duration = 0.6, 6
         if is_critical:
-            amount *= 2
-            duration += 2
+            amount *= 1.5
+            duration += 1
         self.bleeding_wounds.append({"amount": amount, "duration": duration})
-        self.character.bleeding = sum(w["amount"] for w in self.bleeding_wounds)
+        total_bleeding = sum(w["amount"] for w in self.bleeding_wounds)
+        self.character.bleeding = round(min(total_bleeding, 8.0 if not is_critical else 16.0), 1)
 
     def apply_pain(self):
         if self.character.pain_penalty >= 30:
@@ -53,6 +55,8 @@ class CombatHealthManager:
             print(f"💀 {self.character.name} collapses from massive blood loss and falls unconscious!")
             self.character.alive = True
             self.character.in_combat = False
+            self.character.exhausted = True
+            self.character.last_action = True
 
     def check_auto_collapse(self):
         crippled = [part for part, hp in self.character.body_parts.items() if hp <= 0]
@@ -60,6 +64,8 @@ class CombatHealthManager:
             print(f"💀 {self.character.name} collapses from severe injuries!")
             self.character.alive = True
             self.character.in_combat = False
+            self.character.exhausted = True
+            self.character.last_action = True
             return True
         collapse_chance = self.character.pain_penalty - 30
         if collapse_chance > 0:
@@ -69,6 +75,8 @@ class CombatHealthManager:
                 print(f"💀 {self.character.name} collapses from overwhelming pain!")
                 self.character.alive = True
                 self.character.in_combat = False
+                self.character.exhausted = True
+                self.character.last_action = True
                 return True
         return False
 
@@ -94,7 +102,7 @@ class CombatHealthManager:
         if not self.character.alive:
             return
         if zone in self.character.body_parts:
-            self.character.body_parts[zone] -= damage_amount
+            self.body_parts[zone] -= damage_amount
             if self.character.body_parts[zone] <= 0:
                 self.character.body_parts[zone] = 0
                 self.character.on_part_crippled(zone)

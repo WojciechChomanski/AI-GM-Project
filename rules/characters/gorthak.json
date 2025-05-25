@@ -7,5 +7,6 @@
   "inventory_weight": 20,
   "shield_equipped": false,
   "weapon_equipped": true,
-  "weapon": "warhammer"
+  "weapon": "improvised_club",
+  "armor": ["Light_Light"]
 }

@@ -10,6 +10,6 @@
   "weapon_equipped": true,
   "weapon": "dagger",
   "agility_modifier": 2,
-  "armor": ["leather"],
+  "armor": ["Light_Light"],
   "role": "Rogue"
 }

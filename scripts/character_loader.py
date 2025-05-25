@@ -20,10 +20,31 @@ def load_race(name):
 def load_armor_piece(name, race):
     path = os.path.join("../rules/armors.json")
     armor_data = load_json_file(path)
-    tier, variant = name.split("_") if "_" in name else (name, "standard")
-    armor_stats = armor_data.get(tier, {}).get(race.lower() if race in ["Elven", "Dwarven"] else "standard")
+    
+    # Legacy armor name mapping
+    legacy_mapping = {
+        "chainmail": "Light_Heavy",
+        "leather": "Light_Light"
+    }
+    
+    # Convert legacy name to tier if needed
+    tier = legacy_mapping.get(name, name)
+    variant = race.lower() if race in ["Elven", "Dwarven"] else "standard"
+    
+    armor_stats = armor_data.get(tier, {}).get(variant)
     if not armor_stats:
         armor_stats = armor_data.get(tier, {}).get("standard")
+    if not armor_stats:
+        # Fallback to default armor if tier not found
+        armor_stats = {
+            "name": "Default Cloth",
+            "coverage": ["chest"],
+            "armor_rating": {"slashing": 1, "piercing": 1, "blunt": 1},
+            "stamina_penalty": 1,
+            "max_durability": 30,
+            "weight": 5
+        }
+    
     return ArmorPiece(
         name=armor_stats["name"],
         coverage=armor_stats["coverage"],
@@ -83,7 +104,6 @@ def load_character_from_json(file_path):
             "base_damage": 15,
             "stance_tree": ["neutral"]
         }
-        # Improvised straps
         character.armor = [
             load_armor_piece("Light_Light", "standard")
         ]

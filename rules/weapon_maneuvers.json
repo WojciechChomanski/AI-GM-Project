@@ -59,6 +59,82 @@
         "stamina_cost_modifier": 2,
         "notes": "Deals blunt damage with a slashing weapon."
       }
+    },
+    {
+      "name": "Aimed Leg Strike",
+      "stance_required": "wrath_guard",
+      "trigger": "always",
+      "aimed_zone": ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg"],
+      "description": "Target the opponent’s legs to cripple mobility.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": -5,
+        "stamina_cost_modifier": 2,
+        "notes": "Deals full damage to unarmored legs, -30 penalty."
+      }
     }
-  ]
-}
+],
+"1H_sword": [
+    {
+      "name": "Thrust",
+      "stance_required": "vom_tag",
+      "trigger": "always",
+      "description": "A quick thrust aimed at the opponent's torso or face.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "notes": "Effective against lightly armored opponents."
+      }
+    },
+    {
+      "name": "Parry and Riposte",
+      "stance_required": "wrath_guard",
+      "trigger": "after_parry",
+      "description": "Deflect an attack and immediately counter with a slash.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 2,
+        "notes": "Increases chance of critical hit."
+      }
+    },
+    {
+      "name": "Pommel Strike",
+      "stance_required": "half_sword",
+      "trigger": "after_block",
+      "description": "Use the pommel to strike the opponent, stunning them briefly.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": -1,
+        "stamina_cost_modifier": 1,
+        "notes": "Can disrupt opponent's next action."
+      }
+    },
+    {
+      "name": "Disarm Attempt",
+      "stance_required": ["vom_tag", "wrath_guard"],
+      "trigger": ["after_block", "after_parry"],
+      "description": "Attempt to knock the opponent's weapon from their hand.",
+      "effects": {
+        "attack_bonus": -2,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 3,
+        "notes": "+10% chance to disarm if successful."
+      }
+    },
+    {
+      "name": "Aimed Head Strike",
+      "stance_required": ["vom_tag", "half_sword"],
+      "trigger": ["always", "in_critical_hit"],
+      "aimed_zone": ["head"],
+      "description": "Target the head for a potentially devastating blow.",
+      "effects": {
+        "attack_bonus": 8,
+        "defense_bonus": -5,
+        "stamina_cost_modifier": 2,
+                "notes": "+20% chance of critical hit, but -30 penalty against helmets."
+              }
+            }
+          ]
+        }

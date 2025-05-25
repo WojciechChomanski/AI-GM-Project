@@ -34,8 +34,21 @@ class Adventure:
         self.npc_dialogue("wojtek", "Bandits have taken a villager hostage! Will you help?")
 
         print("\n⚔️ You confront two bandits at the village outskirts!")
-        self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health])
-        if not player.alive:
+        print("Options: [1] Fight, [2] Persuade, [3] Sneak")
+        choice = input("Choose action (1-3): ").strip()
+        ambush_bonus = 0
+        if choice == "2" and player_name.lower() == "lyssa":
+            success = self.attempt_persuasion(player, bandit1)
+            if success:
+                print("🗣️ Lyssa persuades the bandits to release the hostage!")
+                return
+        elif choice == "3" and player_name.lower() == "lyssa":
+            success = self.attempt_sneak(player, bandit1)
+            if success:
+                print("🕵️ Lyssa sneaks past the bandits and prepares an ambush!")
+                ambush_bonus = 10  # Bonus damage on first strike
+        self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health], ambush_bonus)
+        if not player.alive or player.exhausted:
             print("💀 You have fallen. The adventure ends.")
             return
 
@@ -49,8 +62,8 @@ class Adventure:
         self.npc_dialogue("Ser_Caldran_Vael", "My liege, I shall fight by your side to save the innocent!")
 
         print("\n⚔️ You storm the bandit camp to face their leader!")
-        self.combat_encounter(player, [bandit_leader], player_health, [bandit_leader_health])
-        if not player.alive:
+        self.combat_encounter(player, [bandit_leader], player_health, [bandit_leader_health], 0)
+        if not player.alive or player.exhausted:
             print("💀 You have fallen. The adventure ends.")
             return
 
@@ -60,24 +73,41 @@ class Adventure:
             self.healing.attempt_bandage(healer=player, target=player)
             player.long_rest()
 
-    def combat_encounter(self, player, opponents, player_health, opponent_healths):
+    def combat_encounter(self, player, opponents, player_health, opponent_healths, ambush_bonus=0):
         round_number = 1
-        while player.alive and any(opp.alive for opp in opponents):
+        first_strike = True
+        while player.alive and not player.exhausted and any(opp.alive and not opp.exhausted for opp in opponents):
             print(f"\n🎛️⚔️ Round {round_number} ⚔️🎛️")
             player.in_combat = True
             for opp in opponents:
                 opp.in_combat = True
 
             if player.alive and not player.exhausted:
-                target = random.choice([opp for opp in opponents if opp.alive])
+                target = random.choice([opp for opp in opponents if opp.alive and not opp.exhausted])
+                print(f"\nOpponent Status ({target.name}): Pain Penalty: {target.pain_penalty}%, Mobility Penalty: {target.mobility_penalty}%")
+                print(f"Options for {player.name}: [1] Attack, [2] Aimed Strike")
+                action = input("Choose action (1-2): ").strip()
+                aimed_zone = None
+                if action == "2":
+                    print("Available zones: left_lower_leg, right_lower_leg, left_upper_leg, right_upper_leg, stomach, chest, left_lower_arm, right_lower_arm, left_upper_arm, right_upper_arm, head, throat, groin")
+                    aimed_zone = input("Choose target zone: ").strip().lower()
+                    if aimed_zone not in player.body_parts:
+                        print(f"⚠️ Invalid zone: {aimed_zone}. Using normal attack.")
+                        aimed_zone = None
+                damage = player.weapon["base_damage"]
+                if first_strike and ambush_bonus > 0:
+                    damage += ambush_bonus
+                    print(f"🗡️ {player.name} ambushes with +{ambush_bonus} damage!")
                 self.combat.attack_roll(
                     attacker=player,
                     defender=target,
-                    weapon_damage=player.weapon["base_damage"],
+                    weapon_damage=damage,
                     damage_type=player.weapon["damage_type"],
                     attacker_health=player_health,
-                    defender_health=[oh for oh, opp in zip(opponent_healths, opponents) if opp == target][0]
+                    defender_health=[oh for oh, opp in zip(opponent_healths, opponents) if opp == target][0],
+                    aimed_zone=aimed_zone
                 )
+                first_strike = False
 
             for opp, opp_health in zip(opponents, opponent_healths):
                 if opp.alive and not opp.exhausted:
@@ -87,7 +117,8 @@ class Adventure:
                         weapon_damage=opp.weapon["base_damage"],
                         damage_type=opp.weapon["damage_type"],
                         attacker_health=opp_health,
-                        defender_health=player_health
+                        defender_health=player_health,
+                        aimed_zone=None
                     )
 
             player_health.bleed_out()
@@ -109,7 +140,18 @@ class Adventure:
             print(f"⚠️ Error in dialogue: {e}")
             print(f"🗣️ {npc_name}: The world is too dark for words...")
 
-if __name__ == "__main__":
-    player_name = input("Choose your character (torvald or lyssa): ").lower()
-    adventure = Adventure()
-    adventure.run_adventure(player_name)
+    def attempt_persuasion(self, player, target):
+        roll = random.randint(1, 100)
+        charisma_bonus = getattr(player, "charisma_modifier", 0) * 5
+        difficulty = 25  # Easier for Lyssa
+        total_roll = roll + charisma_bonus
+        print(f"🗣️ {player.name} attempts persuasion (needs {difficulty}+): rolled {total_roll}")
+        return total_roll >= difficulty
+
+    def attempt_sneak(self, player, target):
+        roll = random.randint(1, 100)
+        agility_bonus = getattr(player, "agility_modifier", 0) * 5
+        difficulty = 20  # Easier for rogues
+        total_roll = roll + agility_bonus
+        print(f"🕵️ {player.name} attempts to sneak (needs {difficulty}+): rolled {total_roll}")
+        return total_roll >= difficulty

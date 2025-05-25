@@ -6,14 +6,14 @@
   "sexuality": "Heterosexual",
   "total_hp": 100,
   "max_stamina": 100,
-  "armor_weight": 15,
+  "armor_weight": 7,
   "inventory_weight": 10,
   "shield_equipped": true,
   "weapon_equipped": true,
   "weapon": "greatsword",
   "role": "Wandering Chronicler",
   "faction": "None",
-  "background": "A fallen prophet-scholar whose visions once changed kingdoms \u2014 now a silent observer of decay.",
+  "background": "A fallen prophet-scholar whose visions once changed kingdoms — now a silent observer of decay.",
   "relationship_with_player": "Ambiguous",
   "charisma": 40,
   "alive": true,
@@ -63,5 +63,6 @@
     "Failed to prevent a massacre in the city of Harthor",
     "Once prophesied a hopeful future that never came",
     "Lost a daughter during the Hollow Fire purge"
-  ]
+  ],
+  "armor": ["Medium_Heavy"]
 }

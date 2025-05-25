@@ -3,21 +3,21 @@
   "race": "Human",
   "gender": "Male",
   "age": 46,
-  "sexuality": "Hetrosexual",
-  "total_hp": 110,
-  "max_stamina": 90,
-  "armor_weight": 20,
-  "inventory_weight": 12,
+  "sexuality": "Heterosexual",
+  "total_hp": 120,
+  "max_stamina": 110,
+  "armor_weight": 40,
+  "inventory_weight": 10,
   "shield_equipped": true,
   "weapon_equipped": true,
   "weapon": "longsword",
+  "armor": ["Heavy_Heavy"],
   "role": "Wandering Knight",
   "faction": "The Free Blades",
   "background": "Once served a fallen king. Now protects the innocent out of penance.",
   "relationship_with_player": "Respectful",
   "charisma": 70,
   "alive": true,
-
   "personality": {
     "big_five": {
       "openness": 45,
@@ -49,7 +49,6 @@
       ]
     }
   },
-
   "long_term_goals": [
     "Guard the innocent from exploitation",
     "Rebuild the code of chivalry with modern honor",
