@@ -1,8 +1,11 @@
 {
   "name": "Bandit",
   "race": "Human",
-  "total_hp": 40,
-  "max_stamina": 30,
+  "gender": "Male",
+  "class": "Rogue",
+  "background": "Outlaw",
+  "total_hp": 15,
+  "max_stamina": 10,
   "armor_weight": 3,
   "inventory_weight": 5,
   "shield_equipped": false,

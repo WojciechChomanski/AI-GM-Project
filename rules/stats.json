@@ -1,0 +1,74 @@
+{
+  "Human_Male": {
+    "starting_stats": {
+      "strength": 35,
+      "toughness": 35,
+      "agility": 30,
+      "mobility": 40,
+      "dexterity": 30,
+      "endurance": 30,
+      "intelligence": 30,
+      "willpower": 25,
+      "perception": 25,
+      "charisma": 25,
+      "corruption_level": 0,
+      "stress_level": 0,
+      "weapon_skill": 30,
+      "faith": 20,
+      "reputation": 0
+    },
+    "max_stats": {
+      "strength": 50,
+      "toughness": 50,
+      "agility": 55,
+      "mobility": 60,
+      "dexterity": 50,
+      "endurance": 50,
+      "intelligence": 55,
+      "willpower": 55,
+      "perception": 55,
+      "charisma": 55,
+      "corruption_level": 100,
+      "stress_level": 100,
+      "weapon_skill": 55,
+      "faith": 60,
+      "reputation": 100
+    }
+  },
+  "Human_Female": {
+    "starting_stats": {
+      "strength": 25,
+      "toughness": 25,
+      "agility": 35,
+      "mobility": 45,
+      "dexterity": 30,
+      "endurance": 25,
+      "intelligence": 30,
+      "willpower": 30,
+      "perception": 35,
+      "charisma": 30,
+      "corruption_level": 0,
+      "stress_level": 0,
+      "weapon_skill": 25,
+      "faith": 20,
+      "reputation": 0
+    },
+    "max_stats": {
+      "strength": 45,
+      "toughness": 45,
+      "agility": 60,
+      "mobility": 60,
+      "dexterity": 45,
+      "endurance": 50,
+      "intelligence": 55,
+      "willpower": 55,
+      "perception": 60,
+      "charisma": 60,
+      "corruption_level": 100,
+      "stress_level": 100,
+      "weapon_skill": 50,
+      "faith": 60,
+      "reputation": 100
+    }
+  }
+}

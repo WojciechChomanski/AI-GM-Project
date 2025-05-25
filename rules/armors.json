@@ -157,8 +157,8 @@
   "Medium_Heavy": {
     "standard": {
       "name": "Half Plate",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 7, "piercing": 6, "blunt": 5},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
       "stamina_penalty": 6,
       "max_durability": 90,
       "weight": 18,

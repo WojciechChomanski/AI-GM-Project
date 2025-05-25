@@ -8,55 +8,35 @@ class CombatEngine:
     def __init__(self):
         self.maneuvers = ManeuverHandler()
         self.armor_penetration = {
-            "warhammer": 0.3,
-            "flanged_mace": 0.25,
-            "battle_axe": 0.15,
-            "sword": 0.05,
-            "claymore": 0.05,
-            "dagger": 0.1,
-            "three_edged_dagger": 0.4,
-            "halberd": 0.2,
-            "saber": 0.05,
-            "rapier": 0.15,
-            "spear": 0.2,
-            "bow": 0.1,
-            "crossbow": 0.25,
-            "flintlock": 0.35,
-            "improvised": 0.2
+            "warhammer": 0.3, "flanged_mace": 0.25, "battle_axe": 0.15, "sword": 0.05, "claymore": 0.05,
+            "dagger": 0.1, "three_edged_dagger": 0.4, "halberd": 0.2, "saber": 0.05, "rapier": 0.15,
+            "spear": 0.2, "bow": 0.1, "crossbow": 0.25, "flintlock": 0.35, "improvised": 0.2
         }
         self.durability_damage_multiplier = {
-            "blunt": 1.5,
-            "slashing": 1.0,
-            "piercing": 0.8
+            "blunt": 1.5, "slashing": 1.0, "piercing": 0.8
         }
         self.weapon_penalties = {
-            "warhammer": {"offense": -5, "defense": -5},
-            "flanged_mace": {"offense": -3, "defense": -3},
-            "battle_axe": {"offense": -2, "defense": -2},
-            "sword": {"offense": 0, "defense": 0},
-            "claymore": {"offense": 0, "defense": 0},
-            "dagger": {"offense": 0, "defense": -3},
-            "three_edged_dagger": {"offense": 0, "defense": -3},
-            "halberd": {"offense": -2, "defense": -1},
-            "saber": {"offense": 0, "defense": 0},
-            "rapier": {"offense": 0, "defense": 0},
-            "spear": {"offense": -1, "defense": 0},
-            "bow": {"offense": 0, "defense": -5},
-            "crossbow": {"offense": 0, "defense": -5},
-            "flintlock": {"offense": 0, "defense": -5},
+            "warhammer": {"offense": -5, "defense": -5}, "flanged_mace": {"offense": -3, "defense": -3},
+            "battle_axe": {"offense": -2, "defense": -2}, "sword": {"offense": 0, "defense": 0},
+            "claymore": {"offense": 0, "defense": 0}, "dagger": {"offense": 0, "defense": -3},
+            "three_edged_dagger": {"offense": -3, "defense": -3}, "halberd": {"offense": -2, "defense": -1},
+            "saber": {"offense": 0, "defense": 0}, "rapier": {"offense": 0, "defense": 0},
+            "spear": {"offense": -1, "defense": 0}, "bow": {"offense": 0, "defense": -5},
+            "crossbow": {"offense": 0, "defense": -5}, "flintlock": {"offense": 0, "defense": -5},
             "improvised": {"offense": -2, "defense": -2}
         }
         self.last_outcome = {}
 
-    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None):
+    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None):
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
             return {"result": "incapacitated"}
 
-        attack_roll = random.randint(1, 100)
-        defense_roll = random.randint(1, 100)
+        attacker.stance = chosen_stance if chosen_stance else "neutral"
+        attack_roll = random.randint(1, 100) + attacker.weapon_skill
+        defense_roll = random.randint(1, 100) + defender.agility // 2
 
-        attacker_stance = getattr(attacker, "stance", "neutral")
+        attacker_stance = attacker.stance
         defender_stance = getattr(defender, "stance", "neutral")
         weapon_type = attacker.weapon.get("type") if attacker.weapon and not spell_name else "none"
 
@@ -65,24 +45,32 @@ class CombatEngine:
         attack_roll += apply_stance_modifiers(attacker, defender, attacker_stance, "attack")
         attack_roll += maneuver_bonus.get("attack_bonus", 0)
         attack_roll += self.weapon_penalties.get(weapon_type, {"offense": 0})["offense"]
+        attack_roll += attacker.dexterity // 10
+        if attacker_stance == "offensive":
+            attack_roll += attacker.strength // 10  # Strength boosts offensive stance
+        elif attacker_stance == "defensive":
+            attack_roll -= 10  # Defensive stance reduces attack
 
         defense_roll += apply_stance_modifiers(defender, attacker, defender_stance, "defense")
         defense_roll += maneuver_bonus.get("defense_bonus", 0)
         defense_roll += self.weapon_penalties.get(weapon_type, {"defense": 0})["defense"]
+        if defender_stance == "defensive":
+            defense_roll += defender.agility // 10  # Agility boosts defensive stance
 
         if aimed_zone:
-            print(f"🎯 {attacker.name} attempts an aimed strike at {aimed_zone}!")
-            attack_roll -= 30
+            print(f"🎯 {attacker.name} attempts an aimed strike at {aimed_zone}! (-30 penalty)")
+            attack_roll -= 30 - (attacker.dexterity // 10)
 
-        attack_roll = max(1, attack_roll - attacker.stamina_penalty() - min(attacker.pain_penalty, 20))
-        defense_roll = max(1, defense_roll - defender.stamina_penalty() - min(defender.pain_penalty, 20))
+        stress_penalty = max(0, attacker.stress_level - 80) // 10
+        attack_roll = max(1, attack_roll - attacker.stamina_penalty() - min(attacker.pain_penalty, 20) - stress_penalty)
+        defense_roll = max(1, defense_roll - defender.stamina_penalty() - min(defender.pain_penalty, 20) - stress_penalty)
 
         defense_type = self.select_defense_type(defender)
 
         print(f"\n⚔️ {attacker.name} is in {attacker_stance.upper()} stance")
         print(f"🛡️ {defender.name} is in {defender_stance.upper()} stance")
-        print(f"⚔️ {attacker.name} rolls {attack_roll} to attack!")
-        print(f"🛡️ {defender.name} rolls {defense_roll} to defend! ({defense_type})")
+        print(f"⚔️ {attacker.name} rolls {attack_roll - attacker.weapon_skill - (attacker.dexterity // 10) + stress_penalty} + {attacker.weapon_skill} (Weapon Skill) + {attacker.dexterity // 10} (Dexterity) - {stress_penalty} (Stress) = {attack_roll} to attack!")
+        print(f"🛡️ {defender.name} rolls {defense_roll - (defender.agility // 2) + stress_penalty} + {defender.agility // 2} (Agility) - {stress_penalty} (Stress) = {defense_roll} to defend! ({defense_type})")
 
         outcome = {
             "attacker": attacker.name,
@@ -107,6 +95,8 @@ class CombatEngine:
                     outcome["result"] = "hit"
                     outcome["damage"] = damage
                     print(f"✨ {attacker.name} casts {spell_name} successfully!")
+                    attacker.corruption_level = min(100, attacker.corruption_level + 5)
+                    print(f"😈 {attacker.name}'s corruption rises to {attacker.corruption_level}%!")
                     self.apply_damage(attacker, defender, damage, spell["damage_type"], defender_health, aimed_zone, critical=False)
                 else:
                     outcome["result"] = "effect"
@@ -115,7 +105,7 @@ class CombatEngine:
                 outcome["result"] = "spell_failed"
                 print(f"❌ {attacker.name} fails to cast {spell_name}!")
         else:
-            if attack_roll >= 95:
+            if attack_roll >= 95 + attacker.weapon_skill:
                 print("🔥 Critical Hit!")
                 outcome["result"] = "critical_hit"
                 outcome["critical"] = True
@@ -139,6 +129,10 @@ class CombatEngine:
 
         atk_cost = 3 + get_stamina_cost_modifier(attacker_stance, "offensive") + maneuver_bonus.get("stamina_cost_modifier", 0)
         def_cost = 2 + get_stamina_cost_modifier(defender_stance, "defensive")
+        if attacker_stance == "offensive":
+            atk_cost += 2  # Offensive stance costs more stamina
+        elif attacker_stance == "defensive":
+            atk_cost -= 1  # Defensive stance costs less
         attacker.consume_stamina(atk_cost)
         defender.consume_stamina(def_cost)
 
@@ -149,6 +143,11 @@ class CombatEngine:
 
         attacker.check_stamina_state()
         defender.check_stamina_state()
+        attacker.combat_count += 1
+        if attacker.combat_count % 5 == 0:
+            attacker.progress_stat("weapon_skill", 1)
+        if attacker.combat_count % 10 == 0:
+            attacker.progress_stat("weapon_skill", 2)
 
         return outcome
 
@@ -156,6 +155,10 @@ class CombatEngine:
         weapon_type = attacker.weapon.get("type") if attacker.weapon else "none"
         penetration_factor = self.armor_penetration.get(weapon_type, 0.0)
         durability_multiplier = self.durability_damage_multiplier.get(damage_type, 1.0)
+
+        base_damage += attacker.strength // 10
+        if attacker.name == "Bandit":
+            base_damage = int(base_damage * 0.2)  # 80% reduction
 
         if aimed_zone:
             print(f"💥 {attacker.name} deals {base_damage} ({damage_type}) damage to {defender.name}'s {aimed_zone}!")
@@ -203,7 +206,7 @@ class CombatEngine:
     def apply_critical_miss(self, attacker, defender):
         print(f"🌀 {attacker.name} is exposed for a counterattack!")
         riposte_roll = random.randint(1, 100)
-        if riposte_roll > 30:
+        if riposte_roll > 30 - (defender.perception // 10):
             print(f"⚡️ {defender.name} counterattacks immediately!")
             self.apply_damage(defender, attacker, base_damage=5, damage_type="blunt", defender_health=CombatHealthManager(attacker), aimed_zone=None)
         else:

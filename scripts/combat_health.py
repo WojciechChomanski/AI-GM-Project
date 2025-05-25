@@ -19,8 +19,8 @@ class CombatHealthManager:
             wound["duration"] -= 1
             if wound["duration"] <= 0:
                 self.bleeding_wounds.remove(wound)
-        total_bleeding = min(total_bleeding, 8.0)  # Cap at 8/round (16 for criticals)
-        self.character.bleeding = round(total_bleeding, 1)  # Round to 1 decimal
+        total_bleeding = min(total_bleeding, 8.0)
+        self.character.bleeding = round(total_bleeding, 1)
         if total_bleeding > 0:
             self.inflict_bleed_damage()
 
@@ -34,7 +34,7 @@ class CombatHealthManager:
             amount, duration = 0.03, 2
         elif severity == "medium":
             amount, duration = 0.3, 4
-        else:  # heavy
+        else:
             amount, duration = 0.6, 6
         if is_critical:
             amount *= 1.5
@@ -102,7 +102,7 @@ class CombatHealthManager:
         if not self.character.alive:
             return
         if zone in self.character.body_parts:
-            self.body_parts[zone] -= damage_amount
+            self.character.body_parts[zone] -= damage_amount
             if self.character.body_parts[zone] <= 0:
                 self.character.body_parts[zone] = 0
                 self.character.on_part_crippled(zone)
