@@ -111,3 +111,8 @@ Ser Caldran Vael: I appreciate your loyalty, but I am not sworn to any liege at 
 [2025-05-25 18:41:34]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: As much as I appreciate your valiant spirit, I am but a humble knight wandering these lands in search of purpose. I have no liege to serve, only my own code of honor to uphold. However, I hold great respect for your courage and dedication to protecting the innocent. If our paths were to cross in a time of need, I would stand beside you in battle without hesitation.
+
+========================================
+[2025-05-25 21:38:15]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: I appreciate your zeal, but I am not sworn to any specific liege at the moment. I am a wandering knight, seeking to right wrongs and bring justice where I can. If our paths align in such a noble endeavor, I would gladly fight alongside you to protect the innocent.
