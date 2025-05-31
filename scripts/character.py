@@ -23,7 +23,7 @@ class Character:
         self.in_combat = False
         self.exhausted = False
         self.last_action = False
-        self.combat_count = 0  # Tracks combats for progression
+        self.combat_count = 0
         self.armor_weight = 0
         self.inventory_weight = 0
         self.shield_equipped = False
@@ -59,7 +59,7 @@ class Character:
     def receive_damage(self, damage):
         if not self.alive:
             return
-        total_damage = max(0, damage - (self.toughness // 5))  # Increased Toughness effect
+        total_damage = max(0, damage - (self.toughness // 5))
         if total_damage >= sum(hp for hp in self.body_parts.values() if hp > 0):
             self.die()
         else:
@@ -144,6 +144,7 @@ class Character:
         elif self.stamina <= -0.3 * self.max_stamina and self.exhausted and not self.last_action:
             print(f"💀 {self.name} collapses from exhaustion and can no longer act!")
             self.last_action = True
+            self.in_combat = False  # Prevent further actions
 
     def has_shield(self):
         return self.shield_equipped and self.shield is not None
