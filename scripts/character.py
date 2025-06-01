@@ -144,7 +144,7 @@ class Character:
         elif self.stamina <= -0.3 * self.max_stamina and self.exhausted and not self.last_action:
             print(f"💀 {self.name} collapses from exhaustion and can no longer act!")
             self.last_action = True
-            self.in_combat = False  # Prevent further actions
+            self.in_combat = False
 
     def has_shield(self):
         return self.shield_equipped and self.shield is not None
@@ -178,17 +178,29 @@ class Character:
         return 0
 
     def apply_armor_penalties(self):
+        total_weight = sum(getattr(armor, 'weight', 0) for armor in self.armor)
+        self.mobility_penalty = 0
+        self.stamina_cost_modifier = 0
+
         for armor in self.armor:
-            if armor.name.startswith("Heavy"):
-                self.mobility_penalty += 20
-                self.stamina_cost_modifier = 2
-                print(f"⚠️ {self.name}'s heavy armor reduces mobility by 20% and increases stamina costs by 2!")
-            elif armor.name.startswith("Medium"):
-                self.mobility_penalty += 10
-                self.stamina_cost_modifier = 1
-                print(f"⚠️ {self.name}'s medium armor reduces mobility by 10% and increases stamina costs by 1!")
-            else:
-                self.stamina_cost_modifier = 0
+            weight = getattr(armor, 'weight', 0)
+            if weight >= 25:  # Heavy armor
+                self.mobility_penalty += int(weight / 5)
+                self.stamina_cost_modifier += int(weight / 10)
+                print(f"⚠️ {self.name}'s {armor.name} (weight {weight}) reduces mobility by {int(weight / 5)}% and increases stamina costs by {int(weight / 10)}!")
+            elif weight >= 15:  # Medium armor
+                self.mobility_penalty += int(weight / 7)
+                self.stamina_cost_modifier += int(weight / 15)
+                print(f"⚠️ {self.name}'s {armor.name} (weight {weight}) reduces mobility by {int(weight / 7)}% and increases stamina costs by {int(weight / 15)}!")
+            else:  # Light armor
+                self.stamina_cost_modifier += 0
+                print(f"🛡️ {self.name}'s {armor.name} (weight {weight}) has minimal impact on mobility and stamina.")
+
+    def athletics_check(self, difficulty):
+        roll = random.randint(1, 100)
+        total_roll = roll + (self.agility // 5) - self.mobility_penalty
+        print(f"🏃 {self.name} attempts athletics check (needs {difficulty}+): rolled {roll} + {self.agility // 5} (Agility) - {self.mobility_penalty} (Mobility Penalty) = {total_roll}")
+        return total_roll >= difficulty
 
     def progress_stat(self, stat, amount):
         current = getattr(self, stat, 0)

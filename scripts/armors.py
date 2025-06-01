@@ -8,12 +8,17 @@ class Armor:
         self.armor_rating = armor_rating
         self.max_durability = max_durability
         self.current_durability = max_durability
+        self.weight = 0  # Will be set by load_armors
 
     def absorb_damage(self, damage, damage_type):
+        if self.current_durability <= 0:
+            print(f"⚠️ {self.name} is broken and offers no protection!")
+            return damage
         protection = self.armor_rating.get(damage_type, 0)
         absorbed = min(damage, protection)
-        remaining = damage - absorbed
-        self.current_durability -= max(1, int(damage * 0.1))  # 10% durability loss
+        remaining = max(0, damage - absorbed)
+        durability_loss = max(1, int(damage * 0.1))  # Ensure at least 1 durability loss
+        self.current_durability -= durability_loss
         if self.current_durability < 0:
             self.current_durability = 0
         print(f"🛡️ {self.name} absorbed {absorbed} {damage_type} damage. Durability: {self.current_durability}/{self.max_durability}")
@@ -31,5 +36,7 @@ class Armor:
                 coverage = variant_data["coverage"]
                 armor_rating = variant_data["armor_rating"]
                 max_durability = variant_data["max_durability"]
-                armors.append(Armor(name, coverage, armor_rating, max_durability))
+                armor = Armor(name, coverage, armor_rating, max_durability)
+                armor.weight = variant_data.get("weight", 0)
+                armors.append(armor)
         return armors

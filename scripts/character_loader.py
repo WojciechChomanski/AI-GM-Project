@@ -55,12 +55,16 @@ def load_armor_piece(name, race):
             "mobility_bonus": 5
         }
     
-    return Armor(
+    armor = Armor(
         name=armor_stats["name"],
         coverage=armor_stats["coverage"],
         armor_rating=armor_stats["armor_rating"],
         max_durability=armor_stats["max_durability"]
     )
+    armor.weight = armor_stats.get("weight", 0)
+    armor.stamina_penalty = armor_stats.get("stamina_penalty", 0)
+    armor.mobility_bonus = armor_stats.get("mobility_bonus", 0)
+    return armor
 
 def load_character_from_json(file_path):
     try:
@@ -93,12 +97,10 @@ def load_character_from_json(file_path):
     else:
         character.body_parts = data['body_parts']
 
-    # Load base stats
     stats = load_stats(character.race, character.gender)
     for stat in ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'faith', 'reputation']:
         setattr(character, stat, stats["starting_stats"].get(stat, 20))
 
-    # Apply class modifiers
     class_data = load_class(character.class_name)
     if class_data:
         class_stats = class_data.get("stats", {})
@@ -107,7 +109,6 @@ def load_character_from_json(file_path):
                 current = getattr(character, stat, 20)
                 setattr(character, stat, current + value)
 
-    # Apply background modifiers
     background_data = load_background(character.background)
     if background_data:
         bg_stats = background_data.get("stats", {})
@@ -116,7 +117,6 @@ def load_character_from_json(file_path):
                 current = getattr(character, stat, 20)
                 setattr(character, stat, current + value)
 
-    # Load modifiers from JSON
     for attr in ['strength_modifier', 'agility_modifier', 'charisma_modifier']:
         if attr in data:
             setattr(character, attr, data[attr])
@@ -152,6 +152,7 @@ def load_character_from_json(file_path):
         for armor_name in data.get("armor", []):
             armor_piece = load_armor_piece(armor_name, character.armor_preference)
             character.armor.append(armor_piece)
+            character.armor_weight += armor_piece.weight
 
     character.apply_armor_penalties()
     return character

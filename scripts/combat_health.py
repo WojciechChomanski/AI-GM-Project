@@ -1,6 +1,7 @@
 # ✅ Updated: combat_health.py to support damage_type
 
 import random
+from damage_consequences import DamageConsequences
 
 class CombatHealthManager:
     def __init__(self, character):
@@ -8,6 +9,7 @@ class CombatHealthManager:
         self.starting_hp = sum(character.body_parts.values())
         self.round_counter = 0
         self.bleeding_wounds = []
+        self.consequences = DamageConsequences()
 
     def apply_bleeding(self):
         if not self.bleeding_wounds:
@@ -94,18 +96,19 @@ class CombatHealthManager:
             self.character.body_parts[part] -= damage_per_part
             if self.character.body_parts[part] <= 0:
                 self.character.body_parts[part] = 0
-                self.character.on_part_crippled(part)
-            severity = "light" if base_damage <= 5 else "medium" if base_damage <= 10 else "heavy"
+                self.consequences.apply_consequence(self.character, part, damage_type, max(0, damage_per_part))
+            severity = "light" if damage_per_part <= 5 else "medium" if damage_per_part <= 10 else "heavy"
             self.add_bleeding_wound(severity, is_critical=critical and part in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
 
     def take_damage_to_zone(self, zone, damage_amount, damage_type, critical=False):
         if not self.character.alive:
             return
         if zone in self.character.body_parts:
+            excess_damage = max(0, damage_amount - self.character.body_parts[zone])
             self.character.body_parts[zone] -= damage_amount
             if self.character.body_parts[zone] <= 0:
                 self.character.body_parts[zone] = 0
-                self.character.on_part_crippled(zone)
+                self.consequences.apply_consequence(self.character, zone, damage_type, excess_damage)
             severity = "light" if damage_amount <= 5 else "medium" if damage_amount <= 10 else "heavy"
             self.add_bleeding_wound(severity, is_critical=critical and zone in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
         else:

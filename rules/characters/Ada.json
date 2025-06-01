@@ -1,0 +1,17 @@
+{
+  "name": "Ada",
+  "race": "Elf",
+  "gender": "Female",
+  "class": "Mercenary",
+  "background": "Street_Whore",
+  "total_hp": 90,
+  "max_stamina": 90,
+  "armor_weight": 10,
+  "inventory_weight": 5,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "dagger",
+  "armor": ["Light_Medium"],
+  "role": "Mercenary",
+  "charisma_modifier": 3
+}

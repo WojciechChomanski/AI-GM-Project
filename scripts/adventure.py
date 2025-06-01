@@ -33,6 +33,13 @@ class Adventure:
             print(f"❌ Error loading characters: {e}")
             return
 
+        if player.background in ["Street_Whore", "High_End_Escort"] and (player.gender != "Female" or player.race != "Human"):
+            print(f"❌ {player.name}'s background {player.background} requires Female Human!")
+            return
+        if player.class_name == "Mage" and (player.gender != "Female" or player.race != "Human"):
+            print(f"❌ {player.name}'s class {player.class_name} requires Female Human!")
+            return
+
         player_health = CombatHealthManager(player)
         wojtek_health = CombatHealthManager(wojtek)
         caldran_health = CombatHealthManager(caldran)
@@ -50,20 +57,20 @@ class Adventure:
         print("📜 Wojtek, the chronicler, speaks of a village under siege...")
         self.npc_dialogue("wojtek", "Bandits have taken a villager hostage! Will you help?")
 
-        print("\nOptions: [1] Fight bandits, [2] Persuade bandits (Lyssa), [3] Sneak (Lyssa), [4] Test combat vs. Caldran")
+        print("\nOptions: [1] Fight bandits, [2] Persuade bandits (Lyssa, Ada), [3] Sneak (Lyssa, Ada), [4] Test combat vs. Caldran")
         choice = input("Choose action (1-4): ").strip()
         ambush_bonus = 0
-        if choice == "2" and player_name.lower() == "lyssa":
+        if choice == "2" and player_name.lower() in ["lyssa", "ada"]:
             success = self.attempt_persuasion(player, bandit1)
             if success:
-                print("🗣️ Lyssa persuades the bandits to release the hostage!")
+                print(f"🗣️ {player.name} persuades the bandits to release the hostage!")
                 player.reputation = min(100, player.reputation + 10)
                 player.progress_stat("charisma", 2)
                 return
-        elif choice == "3" and player_name.lower() == "lyssa":
+        elif choice == "3" and player_name.lower() in ["lyssa", "ada"]:
             success = self.attempt_sneak(player, bandit1)
             if success:
-                print("🕵️ Lyssa sneaks past the bandits and prepares an ambush!")
+                print(f"🕵️ {player.name} sneaks past the bandits and prepares an ambush!")
                 ambush_bonus = 10
                 player.reputation = min(100, player.reputation + 5)
                 player.progress_stat("agility", 1)
@@ -73,6 +80,7 @@ class Adventure:
             return
 
         print("\n⚔️ You confront two bandits at the village outskirts!")
+        print(player.athletics_check(30))  # Test athletics
         self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health], ambush_bonus)
         if not player.alive or player.exhausted:
             print("💀 You have fallen. The adventure ends.")
@@ -115,10 +123,12 @@ class Adventure:
             if player.alive and not player.exhausted:
                 target = random.choice([opp for opp in opponents if opp.alive and not opp.exhausted])
                 print(f"\nOpponent Status ({target.name}): Pain Penalty: {target.pain_penalty}%, Mobility Penalty: {target.mobility_penalty}%")
-                print(f"Choose stance for {player.name}: [1] Offensive, [2] Defensive, [3] Neutral")
-                stance_choice = input("Choose stance (1-3): ").strip()
-                stance_map = {"1": "offensive", "2": "defensive", "3": "neutral"}
-                chosen_stance = stance_map.get(stance_choice, "neutral")
+                chosen_stance = None
+                if player.name not in self.combat.stance_locks:
+                    print(f"Choose stance for {player.name}: [1] Offensive, [2] Defensive, [3] Neutral")
+                    stance_choice = input("Choose stance (1-3): ").strip()
+                    stance_map = {"1": "offensive", "2": "defensive", "3": "neutral"}
+                    chosen_stance = stance_map.get(stance_choice, "neutral")
                 print(f"Options for {player.name}: [1] Attack, [2] Aimed Strike")
                 action = input("Choose action (1-2): ").strip()
                 aimed_zone = None
@@ -152,7 +162,9 @@ class Adventure:
             for opp, opp_health in zip(opponents, opponent_healths):
                 if opp.alive and not opp.exhausted:
                     try:
-                        opp_stance = random.choice(["offensive", "defensive", "neutral"])  # NPCs choose randomly
+                        opp_stance = None
+                        if opp.name not in self.combat.stance_locks:
+                            opp_stance = random.choice(["offensive", "defensive", "neutral"])
                         self.combat.attack_roll(
                             attacker=opp,
                             defender=player,
@@ -191,7 +203,7 @@ class Adventure:
     def attempt_persuasion(self, player, target):
         roll = random.randint(1, 100)
         charisma_bonus = player.charisma // 5
-        difficulty = 30  # Increased difficulty
+        difficulty = 30
         total_roll = roll + charisma_bonus
         print(f"🗣️ {player.name} attempts persuasion (needs {difficulty}+): rolled {roll} + {charisma_bonus} (Charisma) = {total_roll}")
         return total_roll >= difficulty
@@ -199,13 +211,17 @@ class Adventure:
     def attempt_sneak(self, player, target):
         roll = random.randint(1, 100)
         agility_bonus = player.agility // 5
-        difficulty = 25  # Increased difficulty
+        difficulty = 25
         total_roll = roll + agility_bonus
         print(f"🕵️ {player.name} attempts to sneak (needs {difficulty}+): rolled {roll} + {agility_bonus} (Agility) = {total_roll}")
         return total_roll >= difficulty
 
 if __name__ == "__main__":
-    player_name = input("Choose your character (torvald or lyssa): ").lower()
+    valid_chars = ["torvald", "lyssa", "ada", "brock", "rock"]
+    player_name = input("Choose your character (torvald, lyssa, ada, brock, rock): ").lower()
+    if player_name not in valid_chars:
+        print("❌ Invalid character!")
+        exit()
     adventure = Adventure()
     try:
         adventure.run_adventure(player_name)

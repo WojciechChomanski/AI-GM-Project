@@ -33,7 +33,7 @@
   "Light_Medium": {
     "standard": {
       "name": "Reinforced Cloth",
-      "coverage": ["chest", "arms"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm"],
       "armor_rating": {"slashing": 3, "piercing": 2, "blunt": 2},
       "stamina_penalty": 2,
       "max_durability": 50,
@@ -42,7 +42,7 @@
     },
     "elven": {
       "name": "Veilwood Lamellar",
-      "coverage": ["chest", "arms"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm"],
       "armor_rating": {"slashing": 3, "piercing": 2, "blunt": 2},
       "stamina_penalty": 1,
       "max_durability": 40,
@@ -52,7 +52,7 @@
     },
     "dwarven": {
       "name": "Iron-Bound Leather",
-      "coverage": ["chest", "arms"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm"],
       "armor_rating": {"slashing": 4, "piercing": 3, "blunt": 3},
       "stamina_penalty": 3,
       "max_durability": 60,
@@ -64,8 +64,8 @@
   "Light_Heavy": {
     "standard": {
       "name": "Light Chainmail",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 4, "piercing": 3, "blunt": 2},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 5, "piercing": 4, "blunt": 3},
       "stamina_penalty": 3,
       "max_durability": 60,
       "weight": 10,
@@ -73,8 +73,8 @@
     },
     "elven": {
       "name": "Veilfiber Chain",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 4, "piercing": 3, "blunt": 2},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 5, "piercing": 4, "blunt": 3},
       "stamina_penalty": 2,
       "max_durability": 50,
       "weight": 8,
@@ -83,8 +83,8 @@
     },
     "dwarven": {
       "name": "Heavy Chainmail",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 5, "piercing": 4, "blunt": 3},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
       "stamina_penalty": 4,
       "max_durability": 70,
       "weight": 12,
@@ -95,8 +95,8 @@
   "Medium_Light": {
     "standard": {
       "name": "Brigandine",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 5, "piercing": 4, "blunt": 3},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
       "stamina_penalty": 4,
       "max_durability": 70,
       "weight": 12,
@@ -104,8 +104,8 @@
     },
     "elven": {
       "name": "Veilscale Brigandine",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 5, "piercing": 4, "blunt": 3},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
       "stamina_penalty": 3,
       "max_durability": 60,
       "weight": 10,
@@ -114,8 +114,8 @@
     },
     "dwarven": {
       "name": "Steel Brigandine",
-      "coverage": ["chest", "arms"],
-      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
+      "armor_rating": {"slashing": 7, "piercing": 6, "blunt": 5},
       "stamina_penalty": 5,
       "max_durability": 80,
       "weight": 14,
@@ -126,8 +126,8 @@
   "Medium_Medium": {
     "standard": {
       "name": "Scale Mail",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "armor_rating": {"slashing": 7, "piercing": 6, "blunt": 5},
       "stamina_penalty": 5,
       "max_durability": 80,
       "weight": 15,
@@ -135,8 +135,8 @@
     },
     "elven": {
       "name": "Veilscale Mail",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "armor_rating": {"slashing": 7, "piercing": 6, "blunt": 5},
       "stamina_penalty": 4,
       "max_durability": 70,
       "weight": 12,
@@ -145,8 +145,8 @@
     },
     "dwarven": {
       "name": "Forged Scale Mail",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 7, "piercing": 6, "blunt": 5},
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "armor_rating": {"slashing": 8, "piercing": 7, "blunt": 6},
       "stamina_penalty": 6,
       "max_durability": 90,
       "weight": 18,
@@ -157,84 +157,84 @@
   "Medium_Heavy": {
     "standard": {
       "name": "Half Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
-      "armor_rating": {"slashing": 6, "piercing": 5, "blunt": 4},
-      "stamina_penalty": 6,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 8, "piercing": 7, "blunt": 6},
+      "stamina_penalty": 8,
       "max_durability": 90,
-      "weight": 18,
-      "mobility_bonus": 0
+      "weight": 20,
+      "mobility_bonus": -2
     },
     "dwarven": {
       "name": "Forged Half Plate",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 8, "piercing": 7, "blunt": 6},
-      "stamina_penalty": 7,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
+      "stamina_penalty": 9,
       "max_durability": 100,
-      "weight": 22,
-      "mobility_bonus": -2,
+      "weight": 24,
+      "mobility_bonus": -4,
       "lore": "Thick steel plates, forged for dwarven resilience."
     }
   },
   "Heavy_Light": {
     "standard": {
       "name": "Breastplate",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 8, "piercing": 7, "blunt": 6},
-      "stamina_penalty": 7,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
+      "stamina_penalty": 9,
       "max_durability": 100,
-      "weight": 20,
-      "mobility_bonus": -2
+      "weight": 22,
+      "mobility_bonus": -4
     },
     "dwarven": {
       "name": "Forged Breastplate",
-      "coverage": ["chest", "arms", "legs"],
-      "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
-      "stamina_penalty": 8,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
+      "stamina_penalty": 10,
       "max_durability": 110,
-      "weight": 25,
-      "mobility_bonus": -4,
+      "weight": 26,
+      "mobility_bonus": -6,
       "lore": "Massive steel breastplate, built to withstand sieges."
     }
   },
   "Heavy_Medium": {
     "standard": {
       "name": "Full Plate",
-      "coverage": ["chest", "arms", "legs", "head"],
-      "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
-      "stamina_penalty": 8,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
+      "stamina_penalty": 10,
       "max_durability": 110,
-      "weight": 25,
-      "mobility_bonus": -4
+      "weight": 28,
+      "mobility_bonus": -6
     },
     "dwarven": {
       "name": "Forged Full Plate",
-      "coverage": ["chest", "arms", "legs", "head"],
-      "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
-      "stamina_penalty": 9,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 11, "piercing": 10, "blunt": 9},
+      "stamina_penalty": 11,
       "max_durability": 120,
-      "weight": 30,
-      "mobility_bonus": -6,
+      "weight": 32,
+      "mobility_bonus": -8,
       "lore": "A fortress of steel, forged in high-gravity forges."
     }
   },
   "Heavy_Heavy": {
     "standard": {
       "name": "Siege Plate",
-      "coverage": ["chest", "arms", "legs", "head"],
-      "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
-      "stamina_penalty": 10,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 11, "piercing": 10, "blunt": 9},
+      "stamina_penalty": 12,
       "max_durability": 120,
-      "weight": 30,
-      "mobility_bonus": -6
+      "weight": 35,
+      "mobility_bonus": -10
     },
     "dwarven": {
       "name": "Rune-Forged Siege Plate",
-      "coverage": ["chest", "arms", "legs", "head"],
-      "armor_rating": {"slashing": 11, "piercing": 10, "blunt": 9},
-      "stamina_penalty": 11,
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "armor_rating": {"slashing": 12, "piercing": 11, "blunt": 10},
+      "stamina_penalty": 13,
       "max_durability": 130,
-      "weight": 35,
-      "mobility_bonus": -8,
+      "weight": 40,
+      "mobility_bonus": -12,
       "lore": "Imbued with female-carved runes, a dwarven masterpiece."
     }
   }
