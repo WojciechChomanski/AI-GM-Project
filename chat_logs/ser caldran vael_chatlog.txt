@@ -126,3 +126,8 @@ Ser Caldran Vael: As a wandering knight, my loyalty lies not with a single liege
 [2025-06-01 20:02:45]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: I appreciate your loyalty and your dedication to protecting the innocent. However, I must clarify that I am not bound to any liege at the moment. As a wandering knight, I serve the code of honor and justice, no lord or lady commands me. But I welcome your willingness to fight alongside me in our shared cause. Together, we can make a difference in this dark and troubled world.
+
+========================================
+[2025-06-01 21:18:45]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: My noble friend, your passion for justice echoes within my soul. Together, we shall stand against the darkness that threatens the innocent. Our swords shall be raised as one in this noble crusade. Let us march forth with valor and honor, knowing that the righteous cause shall guide our blades.

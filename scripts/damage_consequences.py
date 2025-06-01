@@ -106,4 +106,8 @@ class DamageConsequences:
                     character.last_action = True
                     character.in_combat = False
                     print(f"💀 {character.name} collapses from injury!")
+                if body_part in ["head", "throat"] and effect["effect"] in ["Limb Severed", "Artery Slashed", "Critical Organ Hit", "Shattered Bone"]:
+                    character.alive = False
+                    character.in_combat = False
+                    print(f"💀 {character.name} is killed instantly by a catastrophic {body_part} injury!")
                 break
