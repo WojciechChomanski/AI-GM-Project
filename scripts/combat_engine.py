@@ -3,10 +3,12 @@ from combat_health import CombatHealthManager
 from character import Character
 from stance_logic import apply_stance_modifiers, get_stamina_cost_modifier
 from maneuver_handler import ManeuverHandler
+from fear_system import FearSystem
 
 class CombatEngine:
     def __init__(self):
         self.maneuvers = ManeuverHandler()
+        self.fear_system = FearSystem()
         self.armor_penetration = {
             "warhammer": 0.3, "flanged_mace": 0.25, "battle_axe": 0.15, "sword": 0.05, "claymore": 0.05,
             "dagger": 0.1, "three_edged_dagger": 0.4, "halberd": 0.2, "saber": 0.05, "rapier": 0.15,
@@ -26,14 +28,13 @@ class CombatEngine:
             "improvised": {"offense": -2, "defense": -2}
         }
         self.last_outcome = {}
-        self.stance_locks = {}  # Tracks stance per character
+        self.stance_locks = {}
 
     def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None):
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
             return {"result": "incapacitated"}
 
-        # Lock stance until next attack
         if attacker.name not in self.stance_locks or chosen_stance:
             attacker.stance = chosen_stance if chosen_stance else "neutral"
             self.stance_locks[attacker.name] = attacker.stance
@@ -44,6 +45,15 @@ class CombatEngine:
         raw_roll = random.randint(1, 100)
         attack_roll = raw_roll + attacker.weapon_skill
         defense_roll = random.randint(1, 100) + defender.agility // 2
+
+        fear_response = self.fear_system.check_fear(defender, attacker.weapon)
+        if fear_response["triggered"]:
+            print(f"😱 {defender.name} freezes: {fear_response['outburst']}")
+            defender.stress_level += fear_response["stress_increase"]
+            attack_roll -= fear_response["roll_penalty"]
+            if fear_response["force_stance"]:
+                defender.stance = "defensive"
+                print(f"🛡️ {defender.name} shifts to DEFENSIVE stance out of fear!")
 
         attacker_stance = attacker.stance
         defender_stance = getattr(defender, "stance", "neutral")
@@ -130,15 +140,18 @@ class CombatEngine:
                 outcome["result"] = "hit"
                 outcome["damage"] = weapon_damage
                 self.apply_damage(attacker, defender, weapon_damage, damage_type, defender_health, aimed_zone, critical=False)
-                attacker.wear_weapon()  # Durability loss on successful attack
+                attacker.wear_weapon()
+                print(f"⚔️ {attacker.name}'s {attacker.weapon['name']} durability: {attacker.weapon.get('durability', 50)}")
             else:
                 print(f"❌ {attacker.name} misses or {defender.name} successfully defends!")
                 outcome["result"] = "miss"
                 self.apply_defense_wear(defender, defense_type)
                 if defense_type in ["Parry", "Block"]:
-                    defender.wear_weapon()  # Durability loss on parry
+                    defender.wear_weapon()
+                    print(f"⚔️ {defender.name}'s {defender.weapon['name']} durability: {defender.weapon.get('durability', 50)}")
                     if defense_type == "Block" and defender.has_shield():
-                        defender.wear_shield()  # Shield durability loss
+                        defender.wear_shield()
+                        print(f"🛡️ {defender.name}'s shield durability: {defender.shield.get('durability', 50)}")
 
         self.last_outcome = outcome
 
@@ -164,7 +177,6 @@ class CombatEngine:
         if attacker.combat_count % 10 == 0:
             attacker.progress_stat("weapon_skill", 2)
 
-        # Unlock stance after attack
         if outcome["result"] in ["hit", "critical_hit"]:
             self.stance_locks.pop(attacker.name, None)
 

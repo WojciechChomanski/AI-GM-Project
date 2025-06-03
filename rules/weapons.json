@@ -4,34 +4,59 @@
     "type": "2H_sword",
     "damage_type": "slashing",
     "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
-    "base_damage": 12
+    "base_damage": 12,
+    "durability": 70,
+    "fear_trigger": true,
+    "fear_intensity": 8
   },
   "warhammer": {
     "name": "Warhammer",
     "type": "2H_hammer",
     "damage_type": "blunt",
     "stance_tree": ["crater_maker", "counterweight", "impact_form"],
-    "base_damage": 18
+    "base_damage": 18,
+    "durability": 60,
+    "fear_trigger": true,
+    "fear_intensity": 6
   },
   "longsword": {
     "name": "Longsword",
     "type": "sword",
     "damage_type": "slashing",
     "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
-    "base_damage": 10
+    "base_damage": 10,
+    "durability": 65,
+    "fear_trigger": false,
+    "fear_intensity": 0
   },
   "shortsword": {
     "name": "Shortsword",
     "type": "sword",
     "damage_type": "slashing",
     "stance_tree": ["vom_tag", "half_sword", "wrath_guard"],
-    "base_damage": 8
+    "base_damage": 8,
+    "durability": 55,
+    "fear_trigger": false,
+    "fear_intensity": 0
   },
   "dagger": {
     "name": "Dagger",
     "type": "dagger",
     "damage_type": "piercing",
     "stance_tree": [],
-    "base_damage": 6
+    "base_damage": 6,
+    "durability": 50,
+    "fear_trigger": false,
+    "fear_intensity": 0
+  },
+  "improvised_club": {
+    "name": "Improvised Club",
+    "type": "improvised",
+    "damage_type": "blunt",
+    "stance_tree": ["neutral"],
+    "base_damage": 15,
+    "durability": 60,
+    "fear_trigger": true,
+    "fear_intensity": 5
   }
-  }
+}

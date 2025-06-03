@@ -18,7 +18,8 @@
           "Another fire? This time you finish the job?"
         ]
       }
-    ]
+    ],
+    "feared_weapons": ["torch", "greatsword"]
   },
   "vyrda_the_hollow": {
     "active_traumas": [
@@ -35,10 +36,11 @@
         "chance_to_interfere": 0.2,
         "interference_type": "emotional_outburst",
         "example_outbursts": [
-          "Don't lie to me. I\u2019ve seen what betrayal costs.",
+          "Don't lie to me. I’ve seen what betrayal costs.",
           "Trust? You speak that word like it still means something."
         ]
       }
-    ]
+    ],
+    "feared_weapons": ["dagger"]
   }
 }
