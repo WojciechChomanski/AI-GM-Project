@@ -32,9 +32,9 @@ class Character:
         self.armor = []
         self.shield = None
         self.body_parts = {
-            "left_lower_leg": 10, "right_lower_leg": 10, "left_upper_leg": 15, "right_upper_leg": 15,
-            "stomach": 20, "chest": 25, "left_lower_arm": 5, "right_lower_arm": 5,
-            "left_upper_arm": 10, "right_upper_arm": 10, "head": 10, "throat": 5, "groin": 5
+            "left_lower_leg": 2, "right_lower_leg": 2, "left_upper_leg": 4, "right_upper_leg": 4,
+            "stomach": 3, "chest": 6, "left_lower_arm": 1, "right_lower_arm": 1,
+            "left_upper_arm": 2, "right_upper_arm": 2, "head": 2, "throat": 1, "groin": 1
         }
         self.pain_penalty = 0
         self.mobility_penalty = 0
@@ -184,15 +184,15 @@ class Character:
 
         for armor in self.armor:
             weight = getattr(armor, 'weight', 0)
-            if weight >= 25:  # Heavy armor
+            if weight >= 25:
                 self.mobility_penalty += int(weight / 5)
                 self.stamina_cost_modifier += int(weight / 10)
                 print(f"⚠️ {self.name}'s {armor.name} (weight {weight}) reduces mobility by {int(weight / 5)}% and increases stamina costs by {int(weight / 10)}!")
-            elif weight >= 15:  # Medium armor
+            elif weight >= 15:
                 self.mobility_penalty += int(weight / 7)
                 self.stamina_cost_modifier += int(weight / 15)
                 print(f"⚠️ {self.name}'s {armor.name} (weight {weight}) reduces mobility by {int(weight / 7)}% and increases stamina costs by {int(weight / 15)}!")
-            else:  # Light armor
+            else:
                 self.stamina_cost_modifier += 0
                 print(f"🛡️ {self.name}'s {armor.name} (weight {weight}) has minimal impact on mobility and stamina.")
 

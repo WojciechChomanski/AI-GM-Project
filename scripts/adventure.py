@@ -16,6 +16,12 @@ class Adventure:
         self.combat = CombatEngine()
         self.healing = HealingSystem()
         self.api_url = "http://127.0.0.1:8000/chat"
+        self.opponent_names = {}
+
+    def assign_opponent_name(self, opponent, index):
+        if opponent.name not in self.opponent_names:
+            self.opponent_names[opponent.name] = f"{opponent.name} {index + 1}"
+        return self.opponent_names[opponent.name]
 
     def run_adventure(self, player_name):
         logger.info("Starting Grimdark Village Rescue")
@@ -80,7 +86,7 @@ class Adventure:
             return
 
         print("\n⚔️ You confront two bandits at the village outskirts!")
-        print(player.athletics_check(30))  # Test athletics
+        print(player.athletics_check(30))
         self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health], ambush_bonus)
         if not player.alive or player.exhausted:
             print("💀 You have fallen. The adventure ends.")
@@ -114,15 +120,21 @@ class Adventure:
     def combat_encounter(self, player, opponents, player_health, opponent_healths, ambush_bonus=0):
         round_number = 1
         first_strike = True
-        while player.alive and not player.exhausted and any(opp.alive and not opp.exhausted for opp in opponents):
+        self.opponent_names = {}
+        while player.alive and not player.exhausted and any(opp.alive and not opp.exhausted and not opp.last_action for opp in opponents):
             print(f"\n🎛️⚔️ Round {round_number} ⚔️🎛️")
             player.in_combat = True
             for opp in opponents:
-                opp.in_combat = True
+                if opp.alive and not opp.exhausted:
+                    opp.in_combat = True
 
             if player.alive and not player.exhausted:
-                target = random.choice([opp for opp in opponents if opp.alive and not opp.exhausted])
-                print(f"\nOpponent Status ({target.name}): Pain Penalty: {target.pain_penalty}%, Mobility Penalty: {target.mobility_penalty}%")
+                valid_targets = [opp for opp in opponents if opp.alive and not opp.exhausted and not opp.last_action]
+                if not valid_targets:
+                    break
+                target = random.choice(valid_targets)
+                target_name = self.assign_opponent_name(target, opponents.index(target))
+                print(f"\nOpponent Status ({target_name}): Pain Penalty: {target.pain_penalty}%, Mobility Penalty: {target.mobility_penalty}%")
                 chosen_stance = None
                 if player.name not in self.combat.stance_locks:
                     print(f"Choose stance for {player.name}: [1] Offensive, [2] Defensive, [3] Neutral")
@@ -159,8 +171,9 @@ class Adventure:
                     return
                 first_strike = False
 
-            for opp, opp_health in zip(opponents, opponent_healths):
-                if opp.alive and not opp.exhausted:
+            for idx, (opp, opp_health) in enumerate(zip(opponents, opponent_healths)):
+                if opp.alive and not opp.exhausted and not opp.last_action:
+                    opp_name = self.assign_opponent_name(opp, idx)
                     try:
                         opp_stance = None
                         if opp.name not in self.combat.stance_locks:

@@ -131,3 +131,8 @@ Ser Caldran Vael: I appreciate your loyalty and your dedication to protecting th
 [2025-06-01 21:18:45]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: My noble friend, your passion for justice echoes within my soul. Together, we shall stand against the darkness that threatens the innocent. Our swords shall be raised as one in this noble crusade. Let us march forth with valor and honor, knowing that the righteous cause shall guide our blades.
+
+========================================
+[2025-06-05 17:34:14]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As you pledge your support, my heart swells with gratitude. It is an honor to have a warrior like yourself standing with me in this dark hour. The innocence we strive to protect is a beacon of hope amidst the chaos, and I find solace in the knowledge that we are not alone in our mission. Together, let us face the looming threat with courage and determination. May our blades be true, and may the light of justice guide our path.
