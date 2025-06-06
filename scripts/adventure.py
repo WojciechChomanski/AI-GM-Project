@@ -168,7 +168,7 @@ class Adventure:
                 except Exception as e:
                     logger.error(f"Combat error: {e}")
                     print(f"❌ Combat error: {e}")
-                    return
+                    continue
                 first_strike = False
 
             for idx, (opp, opp_health) in enumerate(zip(opponents, opponent_healths)):
@@ -191,7 +191,7 @@ class Adventure:
                     except Exception as e:
                         logger.error(f"Combat error: {e}")
                         print(f"❌ Combat error: {e}")
-                        return
+                        continue
 
             player_health.bleed_out()
             for opp_health in opponent_healths:

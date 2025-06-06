@@ -45,7 +45,8 @@ class CombatEngine:
 
         raw_roll = random.randint(1, 100)
         attack_roll = raw_roll + attacker.weapon_skill
-        defense_roll = random.randint(1, 100) + defender.agility // 2
+        defense_base_roll = random.randint(1, 100)
+        defense_roll = defense_base_roll + defender.agility // 2
 
         if attacker.weapon and attacker.weapon.get("fear_trigger", False):
             fear_response = self.fear_system.check_fear(defender, attacker.weapon)
@@ -94,7 +95,7 @@ class CombatEngine:
         print(f"\n⚔️ {attacker.name} is in {attacker_stance.upper()} stance")
         print(f"🛡️ {defender.name} is in {defender_stance.upper()} stance")
         print(f"⚔️ {attacker.name} rolls {raw_roll} + {attacker.weapon_skill} (Weapon Skill) + {attacker.dexterity // 10} (Dexterity) - {stress_penalty} (Stress) - {pain_penalty} (Pain) = {attack_roll} to attack!")
-        print(f"🛡️ {defender.name} rolls {defense_roll - (defender.agility // 2) + defense_pain_penalty + defense_stress_penalty} + {defender.agility // 2} (Agility) - {defense_stress_penalty} (Stress) - {defense_pain_penalty} (Pain) = {defense_roll} to defend! ({defense_type})")
+        print(f"🛡️ {defender.name} rolls {defense_base_roll} + {defender.agility // 2} (Agility) - {defense_stress_penalty} (Stress) - {defense_pain_penalty} (Pain) = {defense_roll} to defend! ({defense_type})")
 
         outcome = {
             "attacker": attacker.name,
@@ -191,7 +192,7 @@ class CombatEngine:
         penetration_factor = self.armor_penetration.get(weapon_type, 0.0)
         durability_multiplier = self.durability_damage_multiplier.get(damage_type, 1.0)
 
-        base_damage += attacker.strength // 10
+        base_damage = int(base_damage) + (attacker.strength // 10)
         if attacker.name == "Bandit":
             base_damage = int(base_damage * 0.2)
 
@@ -200,15 +201,18 @@ class CombatEngine:
             remaining_damage = base_damage
             armor_hit = False
             for armor in defender.armor:
-                if aimed_zone in armor.coverage:
+                if aimed_zone in armor.coverage and armor.current_durability > 0:
                     armor_hit = True
                     protection = armor.armor_rating.get(damage_type, 0)
-                    absorbed = min(base_damage, protection * (1 - penetration_factor))
+                    absorbed = min(base_damage, protection)
                     adjusted_damage = max(0, base_damage - absorbed)
-                    armor.current_durability -= max(1, int(adjusted_damage * 0.1 * durability_multiplier))
-                    if armor.current_durability < 0:
+                    adjusted_damage = int(adjusted_damage * (1 + penetration_factor))
+                    armor.current_durability -= max(1, int(adjusted_damage * 0.05 * durability_multiplier))
+                    if armor.current_durability <= 0:
                         armor.current_durability = 0
-                    remaining_damage = armor.absorb_damage(adjusted_damage, damage_type)
+                        print(f"⚠️ {armor.name} is broken and offers no protection!")
+                    remaining_damage = adjusted_damage
+                    print(f"🛡️ {armor.name} absorbed {absorbed} {damage_type} damage. Durability: {armor.current_durability}/{armor.max_durability}")
             if not armor_hit:
                 print(f"⚠️ {aimed_zone} is unprotected, full damage applied!")
             defender_health.take_damage_to_zone(aimed_zone, remaining_damage, damage_type, critical=critical)
@@ -233,21 +237,24 @@ class CombatEngine:
                     remaining_damage = part_damage
                     armor_hit = False
                     for armor in defender.armor:
-                        if part in armor.coverage:
+                        if part in armor.coverage and armor.current_durability > 0:
                             armor_hit = True
                             protection = armor.armor_rating.get(damage_type, 0)
-                            absorbed = min(part_damage, protection * (1 - penetration_factor))
+                            absorbed = min(part_damage, protection)
                             adjusted_damage = max(0, part_damage - absorbed)
-                            armor.current_durability -= max(1, int(adjusted_damage * 0.1 * durability_multiplier))
-                            if armor.current_durability < 0:
+                            adjusted_damage = int(adjusted_damage * (1 + penetration_factor))
+                            armor.current_durability -= max(1, int(adjusted_damage * 0.05 * durability_multiplier))
+                            if armor.current_durability <= 0:
                                 armor.current_durability = 0
-                            remaining_damage = armor.absorb_damage(adjusted_damage, damage_type)
+                                print(f"⚠️ {armor.name} is broken and offers no protection!")
+                            remaining_damage = adjusted_damage
+                            print(f"🛡️ {armor.name} absorbed {absorbed} {damage_type} damage. Durability: {armor.current_durability}/{armor.max_durability}")
                     if not armor_hit:
                         print(f"⚠️ {part} is unprotected, {part_damage} damage applied!")
                     defender_health.take_damage_to_zone(part, remaining_damage, damage_type, critical=critical)
 
     def apply_critical_hit(self, attacker, defender, base_damage, damage_type, attacker_health, defender_health, aimed_zone):
-        critical_damage = base_damage * 1.5
+        critical_damage = int(base_damage * 1.5)
         self.apply_damage(attacker, defender, critical_damage, damage_type, defender_health, aimed_zone, critical=True)
 
     def apply_critical_miss(self, attacker, defender):

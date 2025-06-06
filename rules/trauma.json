@@ -27,7 +27,7 @@
     ],
     "feared_weapons": ["dagger"]
   },
-  "bandit_leader": {
+  "Bandit Leader": {
     "active_traumas": [
       {
         "type": "blade_phobia",
