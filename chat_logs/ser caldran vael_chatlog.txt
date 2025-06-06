@@ -146,3 +146,8 @@ Ser Caldran Vael: As a wandering knight, I do not pledge allegiance to any speci
 [2025-06-06 17:34:13]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: I am Ser Caldran Vael, a wandering knight, not bound by allegiance to any liege. I serve the cause of justice and the protection of the innocent wherever I may roam. If you stand against evil, I shall stand by your side in battle. Trust and respect shall guide our actions, for the path of a wandering knight is a solitary one, but not without companions in the fight for righteousness.
+
+========================================
+[2025-06-06 22:09:17]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: I appreciate your loyalty and bravado, but I must clarify that I am not sworn to any liege at this moment. I am Ser Caldran Vael, a wandering knight who seeks justice and redemption in this dark world. If you wish to fight alongside me for the innocent, I welcome your company. Just be aware that the path I walk is not for the faint-hearted, and danger lurks at every turn. Are you prepared to face the grim realities of our world with me?
