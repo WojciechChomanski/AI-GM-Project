@@ -34,9 +34,10 @@
         "trigger_keywords": ["sword", "blade", "slash"],
         "severity": 2,
         "last_triggered": null,
-        "chance_to_interfere": 0.3,
+        "chance_to_interfere": 0.5,
         "interference_type": "fearful_retreat",
-        "example_outbursts": ["Not that blade again!", "I’ve seen what it does!"]
+        "example_outbursts": ["Not that blade again!", "I’ve seen what it does!"],
+        "stress_modifier": 10
       }
     ],
     "feared_weapons": ["greatsword"]

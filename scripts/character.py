@@ -198,8 +198,9 @@ class Character:
 
     def athletics_check(self, difficulty):
         roll = random.randint(1, 100)
-        total_roll = roll + (self.agility // 5) - self.mobility_penalty
-        print(f"🏃 {self.name} attempts athletics check (needs {difficulty}+): rolled {roll} + {self.agility // 5} (Agility) - {self.mobility_penalty} (Mobility Penalty) = {total_roll}")
+        pain_penalty = min(self.pain_penalty, 20)
+        total_roll = roll + (self.agility // 5) - self.mobility_penalty - pain_penalty
+        print(f"🏃 {self.name} attempts athletics check (needs {difficulty}+): rolled {roll} + {self.agility // 5} (Agility) - {self.mobility_penalty} (Mobility Penalty) - {pain_penalty} (Pain) = {total_roll}")
         return total_roll >= difficulty
 
     def progress_stat(self, stat, amount):

@@ -86,8 +86,11 @@ class Adventure:
             return
 
         print("\n⚔️ You confront two bandits at the village outskirts!")
-        print(player.athletics_check(30))
-        self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health], ambush_bonus)
+        athletics_success = player.athletics_check(30)
+        bandit_ambush_bonus = 0 if athletics_success else 10
+        if not athletics_success:
+            print(f"⚠️ {player.name} fails to spot the bandits! They gain an ambush advantage (+10 attack in Round 1).")
+        self.combat_encounter(player, [bandit1, bandit2], player_health, [bandit1_health, bandit2_health], bandit_ambush_bonus)
         if not player.alive or player.exhausted:
             print("💀 You have fallen. The adventure ends.")
             player.reputation = max(-100, player.reputation - 5)
@@ -98,6 +101,7 @@ class Adventure:
             self.healing.attempt_bandage(healer=player, target=player)
             player.short_rest()
             print("\n⏳ Taking a brief rest to regain strength...")
+            self.log_armor_status(player)
 
         print("\n📜 Ser Caldran Vael approaches, offering aid...")
         self.npc_dialogue("Ser_Caldran_Vael", "My liege, I shall fight by your side to save the innocent!")
@@ -116,6 +120,20 @@ class Adventure:
             print("\n🩹 Final bandaging and rest...")
             self.healing.attempt_bandage(healer=player, target=player)
             player.long_rest()
+            self.log_armor_status(player)
+
+    def log_armor_status(self, character):
+        for armor in character.armor:
+            print(f"\n🛡️ {armor.name} Status:")
+            for part in armor.coverage:
+                current = armor.current_durability[part]
+                max_repairable = armor.max_repairable_durability[part]
+                if current < max_repairable:
+                    print(f"  - {part.replace('_', ' ')}: {current}/{max_repairable} durability (needs repair)")
+                elif current == 0:
+                    print(f"  - {part.replace('_', ' ')}: Broken (needs repair)")
+                else:
+                    print(f"  - {part.replace('_', ' ')}: {current}/{max_repairable} durability (intact)")
 
     def combat_encounter(self, player, opponents, player_health, opponent_healths, ambush_bonus=0):
         round_number = 1
@@ -151,9 +169,6 @@ class Adventure:
                         print(f"⚠️ Invalid zone: {aimed_zone}. Using normal attack.")
                         aimed_zone = None
                 damage = player.weapon["base_damage"]
-                if first_strike and ambush_bonus > 0:
-                    damage += ambush_bonus
-                    print(f"🗡️ {player.name} ambushes with +{ambush_bonus} damage!")
                 try:
                     self.combat.attack_roll(
                         attacker=player,
@@ -163,7 +178,8 @@ class Adventure:
                         attacker_health=player_health,
                         defender_health=[oh for oh, opp in zip(opponent_healths, opponents) if opp == target][0],
                         aimed_zone=aimed_zone,
-                        chosen_stance=chosen_stance
+                        chosen_stance=chosen_stance,
+                        ambush_bonus=ambush_bonus if first_strike else 0
                     )
                 except Exception as e:
                     logger.error(f"Combat error: {e}")
@@ -178,6 +194,7 @@ class Adventure:
                         opp_stance = None
                         if opp.name not in self.combat.stance_locks:
                             opp_stance = random.choice(["offensive", "defensive", "neutral"])
+                        opp_ambush_bonus = ambush_bonus if round_number == 1 and first_strike else 0
                         self.combat.attack_roll(
                             attacker=opp,
                             defender=player,
@@ -186,7 +203,8 @@ class Adventure:
                             attacker_health=opp_health,
                             defender_health=player_health,
                             aimed_zone=None,
-                            chosen_stance=opp_stance
+                            chosen_stance=opp_stance,
+                            ambush_bonus=opp_ambush_bonus
                         )
                     except Exception as e:
                         logger.error(f"Combat error: {e}")
@@ -216,17 +234,19 @@ class Adventure:
     def attempt_persuasion(self, player, target):
         roll = random.randint(1, 100)
         charisma_bonus = player.charisma // 5
+        pain_penalty = min(player.pain_penalty, 20)
         difficulty = 30
-        total_roll = roll + charisma_bonus
-        print(f"🗣️ {player.name} attempts persuasion (needs {difficulty}+): rolled {roll} + {charisma_bonus} (Charisma) = {total_roll}")
+        total_roll = roll + charisma_bonus - pain_penalty
+        print(f"🗣️ {player.name} attempts persuasion (needs {difficulty}+): rolled {roll} + {charisma_bonus} (Charisma) - {pain_penalty} (Pain) = {total_roll}")
         return total_roll >= difficulty
 
     def attempt_sneak(self, player, target):
         roll = random.randint(1, 100)
         agility_bonus = player.agility // 5
+        pain_penalty = min(player.pain_penalty, 20)
         difficulty = 25
-        total_roll = roll + agility_bonus
-        print(f"🕵️ {player.name} attempts to sneak (needs {difficulty}+): rolled {roll} + {agility_bonus} (Agility) = {total_roll}")
+        total_roll = roll + agility_bonus - pain_penalty
+        print(f"🕵️ {player.name} attempts to sneak (needs {difficulty}+): rolled {roll} + {agility_bonus} (Agility) - {pain_penalty} (Pain) = {total_roll}")
         return total_roll >= difficulty
 
 if __name__ == "__main__":
