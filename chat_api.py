@@ -228,6 +228,6 @@ if __name__ == "__main__":
 from scripts.recovery import apply_recovery
 
 @app.get("/recover/{player_name}")
-def recover_player(player_name: str, hours: int = 24):
-    result = apply_recovery(player_name, hours)
-    return result
+def recover_player(player_name: str, action: str = "rest"):
+    """Apply a recovery action for the given player."""
+    return apply_recovery(action=action, player=player_name)
