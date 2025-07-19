@@ -1,0 +1,7 @@
+
+[gd_project]
+config_version=4
+
+[application]
+config/name="AI_GM_Project"
+run/main_scene="res://scenes/main_menu.tscn"

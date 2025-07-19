@@ -31,7 +31,7 @@ class CombatEngine:
         self.stance_locks = {}
         self.upper_leg_priority = ["left_upper_leg", "right_upper_leg"]
 
-    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0):
+    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0):
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
             return {"result": "incapacitated"}
@@ -43,10 +43,21 @@ class CombatEngine:
             attacker.stance = self.stance_locks[attacker.name]
             print(f"🔒 {attacker.name} remains in {attacker.stance.upper()} stance")
 
+        # Prompt for ability if available
+        if hasattr(attacker, 'abilities') and 'active' in attacker.abilities:
+            print("Available active abilities: " + ", ".join(a['name'] for a in attacker.abilities['active']))
+            ability_choice = input("Use ability? (name or none): ").lower()
+            if ability_choice != "none":
+                for a in attacker.abilities['active']:
+                    if a['name'].lower() == ability_choice:
+                        weapon_damage += a.get('damage_bonus', 0)
+                        atk_cost = a.get('stamina_cost', 0)  # Define atk_cost here if not earlier
+                        print(f"Used {a['name']}: {a['description']}")
+                        break
+
         raw_roll = random.randint(1, 100)
         attack_roll = raw_roll + attacker.weapon_skill
         defense_base_roll = random.randint(1, 100)
-        defense_roll = defense_base_roll + defender.agility // 2
 
         if attacker.weapon and attacker.weapon.get("fear_trigger", False):
             fear_response = self.fear_system.check_fear(defender, attacker.weapon)
@@ -60,6 +71,9 @@ class CombatEngine:
 
         attacker_stance = attacker.stance
         defender_stance = getattr(defender, "stance", "neutral")
+        current_health = sum(defender.body_parts.values())
+        if current_health < 0.5 * defender.total_hp:  # Stance variation
+            defender_stance = "defensive"
         weapon_type = attacker.weapon.get("type") if attacker.weapon and not spell_name else "none"
 
         maneuver_bonus = self.maneuvers.get_bonus_effects(weapon_type, attacker_stance, "always", aimed_zone)
@@ -73,16 +87,23 @@ class CombatEngine:
         elif attacker_stance == "defensive":
             attack_roll -= 10
         attack_roll += ambush_bonus
+        attack_roll -= roll_penalty if aimed_zone else 0
+
+        defense_type = self.select_defense_type(defender)
+        if defense_type == "Dodge":
+            defense_roll = defense_base_roll + defender.agility // 2
+        elif defense_type == "Parry":
+            defense_roll = defense_base_roll + defender.weapon_skill // 2
+        elif defense_type == "Block":
+            defense_roll = defense_base_roll + (defender.strength // 2 if defender.has_shield() else defender.weapon_skill // 2)
+            if defender.has_shield():
+                defense_roll += 5  # Flat shield bonus; can adjust or tie to shield stats later
 
         defense_roll += apply_stance_modifiers(defender, attacker, defender_stance, "defense")
         defense_roll += maneuver_bonus.get("defense_bonus", 0)
         defense_roll += self.weapon_penalties.get(weapon_type, {"defense": 0})["defense"]
         if defender_stance == "defensive":
-            defense_roll += defender.agility // 10
-
-        if aimed_zone:
-            print(f"🎯 {attacker.name} attempts an aimed strike at {aimed_zone}! (-30 penalty)")
-            attack_roll -= 30 - (attacker.dexterity // 10)
+            defense_roll += defender.agility // 10  # Keep small agility boost for defensive stance
 
         stress_penalty = max(0, attacker.stress_level - 80) // 10
         pain_penalty = min(attacker.pain_penalty, 20)
@@ -91,12 +112,10 @@ class CombatEngine:
         defense_pain_penalty = min(defender.pain_penalty, 20)
         defense_roll = max(1, defense_roll - defender.stamina_penalty() - defense_pain_penalty - defense_stress_penalty)
 
-        defense_type = self.select_defense_type(defender)
-
         print(f"\n⚔️ {attacker.name} is in {attacker_stance.upper()} stance")
         print(f"🛡️ {defender.name} is in {defender_stance.upper()} stance")
         print(f"⚔️ {attacker.name} rolls {raw_roll} + {attacker.weapon_skill} (Weapon Skill) + {attacker.dexterity // 10} (Dexterity) - {stress_penalty} (Stress) - {pain_penalty} (Pain) + {ambush_bonus} (Ambush) = {attack_roll} to attack!")
-        print(f"🛡️ {defender.name} rolls {defense_base_roll} + {defender.agility // 2} (Agility) - {defense_stress_penalty} (Stress) - {defense_pain_penalty} (Pain) = {defense_roll} to defend! ({defense_type})")
+        print(f"🛡️ {defender.name} rolls {defense_base_roll} + {defender.agility // 2 if defense_type == 'Dodge' else defender.weapon_skill // 2 if defense_type == 'Parry' else (defender.strength // 2 if defender.has_shield() else defender.weapon_skill // 2)} (Stat) - {defense_stress_penalty} (Stress) - {defense_pain_penalty} (Pain) = {defense_roll} to defend! ({defense_type})")
 
         outcome = {
             "attacker": attacker.name,
@@ -131,21 +150,23 @@ class CombatEngine:
                 outcome["result"] = "spell_failed"
                 print(f"❌ {attacker.name} fails to cast {spell_name}!")
         else:
-            if raw_roll >= 95:
-                print("🔥 Critical Hit!")
-                outcome["result"] = "critical_hit"
-                outcome["critical"] = True
-                outcome["damage"] = weapon_damage * 1.5
-                self.apply_critical_hit(attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone)
-            elif raw_roll <= 5:
+            is_critical = raw_roll >= 95
+            is_miss = raw_roll <= 5
+            if is_miss:
                 print("💀 Critical Miss!")
                 outcome["result"] = "critical_miss"
                 self.apply_critical_miss(attacker, defender)
             elif attack_roll > defense_roll:
-                print(f"✅ {attacker.name} hits {defender.name}!")
-                outcome["result"] = "hit"
-                outcome["damage"] = weapon_damage
-                self.apply_damage(attacker, defender, weapon_damage, damage_type, defender_health, aimed_zone, critical=False)
+                if is_critical:
+                    print("🔥 Critical Hit!")
+                    outcome["critical"] = True
+                    outcome["damage"] = weapon_damage * 1.2  # Capped
+                    self.apply_damage(attacker, defender, outcome["damage"], damage_type, defender_health, aimed_zone, True)
+                else:
+                    print(f"✅ {attacker.name} hits {defender.name}!")
+                    outcome["damage"] = weapon_damage
+                    self.apply_damage(attacker, defender, weapon_damage, damage_type, defender_health, aimed_zone, False)
+                outcome["result"] = "hit" if not is_critical else "critical_hit"
                 attacker.wear_weapon()
                 print(f"⚔️ {attacker.name}'s {attacker.weapon['name']} durability: {attacker.weapon.get('durability', 50)}")
             else:
@@ -186,7 +207,32 @@ class CombatEngine:
         if outcome["result"] in ["hit", "critical_hit"]:
             self.stance_locks.pop(attacker.name, None)
 
+        # Moral/Willpower check after severe damage
+        current_health = sum(defender.body_parts.values())
+        if current_health < 0.3 * defender.total_hp or self.has_severe_wound(defender):  # Nearly lethal or limb loss
+            if not self.morale_check(defender):
+                if "elite" not in defender.tags:  # Assume non-elite NPCs surrender/collapse
+                    print(f"💔 {defender.name} breaks! They surrender or collapse from the trauma.")
+                    defender.alive = False if random.random() < 0.5 else defender.alive  # 50% chance of death vs collapse
+                    defender.in_combat = False
+
         return outcome
+
+    def has_severe_wound(self, character):
+        severe_parts = ["head", "chest", "stomach", "groin"]
+        for part in severe_parts:
+            if character.body_parts.get(part, 1) <= 0:
+                return True
+        # Check for limb loss (assuming body_parts <=0 means severed)
+        limb_parts = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg", "left_lower_arm", "right_lower_arm", "left_upper_arm", "right_upper_arm"]
+        lost_limbs = sum(1 for part in limb_parts if character.body_parts.get(part, 1) <= 0)
+        return lost_limbs >= 2  # e.g., 2+ limbs lost = severe
+
+    def morale_check(self, character):
+        roll = random.randint(1, 100)
+        threshold = (character.willpower // 5) + 30 - character.pain_penalty // 2 - character.stress_level // 10
+        print(f"Morale check for {character.name}: Roll {roll} vs threshold {threshold}")
+        return roll <= threshold
 
     def apply_damage(self, attacker, defender, base_damage, damage_type, defender_health, aimed_zone, critical=False):
         weapon_type = attacker.weapon.get("type") if attacker.weapon else "none"
@@ -207,7 +253,8 @@ class CombatEngine:
                     remaining_damage = armor.absorb_damage(base_damage, damage_type, aimed_zone)
             if not armor_hit:
                 print(f"⚠️ {aimed_zone} is unprotected, full damage applied!")
-            defender_health.take_damage_to_zone(aimed_zone, remaining_damage, damage_type, damage=remaining_damage)
+            defender_health.take_damage_to_zone(aimed_zone, remaining_damage, damage_type, critical=critical)
+
         else:
             print(f"💥 {attacker.name} deals {base_damage} ({damage_type}) damage across {defender.name}'s body!")
             valid_parts = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg",
@@ -234,16 +281,18 @@ class CombatEngine:
                             remaining_damage = armor.absorb_damage(part_damage, damage_type, part)
                     if not armor_hit:
                         print(f"⚠️ {part} is unprotected, {part_damage} damage applied!")
-                    defender_health.take_damage_to_zone(part, remaining_damage, damage_type, damage=remaining_damage)
+                    defender_health.take_damage_to_zone(part, remaining_damage, damage_type, critical=critical)
 
     def apply_critical_hit(self, attacker, defender, base_damage, damage_type, attacker_health, defender_health, aimed_zone):
-        critical_damage = int(base_damage * 1.5)
-        self.apply_damage(attacker, defender, critical_damage, damage_type, defender_health, aimed_zone, critical=True)
+        critical_damage = int(base_damage * 1.2)  # Capped
+        self.apply_damage(attacker, defender, critical_damage, damage_type, defender_health, aimed_zone, True)
 
     def apply_critical_miss(self, attacker, defender):
         print(f"🌀 {attacker.name} is exposed for a counterattack!")
         riposte_roll = random.randint(1, 100)
-        if riposte_roll > 30 - (defender.perception // 10):
+        threshold = 30 - (defender.perception // 10)
+        print(f"Riposte roll: {riposte_roll} vs threshold {threshold}")
+        if riposte_roll > threshold:
             print(f"⚡️ {defender.name} counterattacks immediately!")
             self.apply_damage(defender, attacker, base_damage=5, damage_type="blunt", defender_health=CombatHealthManager(attacker), aimed_zone=None)
         else:

@@ -1,0 +1,22 @@
+{
+  "name": "Bandit",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Raider",
+  "background": "Outlaw",
+  "total_hp": 50,
+  "max_stamina": 50,
+  "strength": 30,
+  "toughness": 25,
+  "agility": 30,
+  "mobility": 30,
+  "dexterity": 25,
+  "endurance": 25,
+  "intelligence": 20,
+  "willpower": 20,
+  "perception": 20,
+  "charisma": 15,
+  "corruption_level": 25,
+  "stress_level": 0,
+  "reputation": -20
+}
