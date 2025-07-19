@@ -26,6 +26,7 @@ class Character:
         self.combat_count = 0
         self.armor_weight = 0
         self.inventory_weight = 0
+        self.mass = 80  # Default human male; loaded from stats.json
         self.shield_equipped = False
         self.weapon_equipped = False
         self.weapon = {}
@@ -209,6 +210,25 @@ class Character:
         new_value = min(current + amount, max_stat)
         setattr(self, stat, new_value)
         print(f"📈 {self.name}'s {stat} increases by {amount} to {new_value}!")
+
+    def can_wield_weapon(self, weapon):
+        min_str = weapon.get("min_STR", 10)
+        size_class = weapon.get("size_class", "medium")
+        grip_size = weapon.get("grip_size", "standard")
+
+        if self.strength < min_str:
+            print(f"⚠️ {self.name} lacks strength to wield {weapon['name']} (needs {min_str} STR)!")
+            return False
+
+        # Mass/Grip Check
+        if self.mass > 150 and size_class == "small":  # Ogres can't use small weapons
+            print(f"⚠️ {self.name}'s grip too large for {weapon['name']}!")
+            return False
+        elif self.mass < 50 and size_class == "large":  # Small races can't use large
+            print(f"⚠️ {weapon['name']} too heavy for {self.name}'s size!")
+            return False
+
+        return True
 
 def load_stats(race, gender):
     path = os.path.join(os.path.dirname(__file__), "../rules/stats.json")

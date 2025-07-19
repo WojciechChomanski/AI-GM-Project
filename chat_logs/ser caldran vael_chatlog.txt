@@ -226,3 +226,18 @@ Ser Caldran Vael: My dear friend, your loyalty and courage are truly commendable
 [2025-07-19 17:20:46]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: Ser, I appreciate your noble intentions. However, I must clarify that I am not sworn to any liege currently. I am a wandering knight, seeking to uphold justice and protect those in need regardless of allegiance. If you require aid in defending the innocent, know that you have my sword at your side. But let us be cautious, for the path ahead may be fraught with danger.
+
+========================================
+[2025-07-19 22:02:27]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As a wandering knight, I hold no liege to pledge my sword to. But your words of valor strike a chord within me. Protecting the innocent is a noble cause that I have always upheld in my travels. If our paths align in this pursuit, I would stand by your side without hesitation. Trust and respect between comrades on the battlefield are crucial, and I sense such qualities in your demeanor. Let us face the looming darkness together, for the sake of those who cannot defend themselves.
+
+========================================
+[2025-07-19 22:23:57]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: Aye, I appreciate your loyalty and valor. In these dark times, such steadfast companions are rare blessings. Together, we shall strive to bring light to the shadows that haunt the land. Trust not in glory, but in the righteousness of our cause. Let us steel our hearts and march forth, for the innocent shall find shelter in our courage and blades.
+
+========================================
+[2025-07-19 22:38:23]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: It warms my heart to hear such noble words, but alas, I am not bound to any liege. I wander these lands alone, seeking to right wrongs and protect those who cannot defend themselves. Your offer is truly commendable, but I must walk this path alone. Still, to know that there are those like you willing to stand for justice gives me hope in this dark world.

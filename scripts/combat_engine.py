@@ -1,3 +1,5 @@
+# ✅ Updated: combat_engine.py to fix string index error
+
 import random
 from combat_health import CombatHealthManager
 from character import Character
@@ -42,18 +44,6 @@ class CombatEngine:
         elif attacker.alive:
             attacker.stance = self.stance_locks[attacker.name]
             print(f"🔒 {attacker.name} remains in {attacker.stance.upper()} stance")
-
-        # Prompt for ability if available
-        if hasattr(attacker, 'abilities') and 'active' in attacker.abilities:
-            print("Available active abilities: " + ", ".join(a['name'] for a in attacker.abilities['active']))
-            ability_choice = input("Use ability? (name or none): ").lower()
-            if ability_choice != "none":
-                for a in attacker.abilities['active']:
-                    if a['name'].lower() == ability_choice:
-                        weapon_damage += a.get('damage_bonus', 0)
-                        atk_cost = a.get('stamina_cost', 0)  # Define atk_cost here if not earlier
-                        print(f"Used {a['name']}: {a['description']}")
-                        break
 
         raw_roll = random.randint(1, 100)
         attack_roll = raw_roll + attacker.weapon_skill
@@ -235,7 +225,7 @@ class CombatEngine:
         return roll <= threshold
 
     def apply_damage(self, attacker, defender, base_damage, damage_type, defender_health, aimed_zone, critical=False):
-        weapon_type = attacker.weapon.get("type") if attacker.weapon else "none"
+        weapon_type = attacker.weapon.get("type") if isinstance(attacker.weapon, dict) else "none"  # Fix for string weapon
         penetration_factor = self.armor_penetration.get(weapon_type, 0.0)
         durability_multiplier = self.durability_damage_multiplier.get(damage_type, 1.0)
 

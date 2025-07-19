@@ -2,7 +2,7 @@
   "name": "Torvald",
   "race": "Human",
   "gender": "Male",
-  "class": "Warrior",
+  "class": "Outlaw_Mercenary_Warrior",
   "background": "Outlaw",
   "role": "Mercenary",
   "description": "Torvald is a seasoned warrior with a strong sense of justice, often found defending the weak and fighting against tyranny.",
@@ -64,3 +64,4 @@
   "corruption_level": 0,
   "stress_level": 0
 }
+

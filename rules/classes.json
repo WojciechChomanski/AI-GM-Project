@@ -38,5 +38,65 @@
       "healing_bonus": 5
     },
     "restrictions": {}
+  },
+  "Outlaw_Mercenary_Warrior": {
+    "description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
+    "stats": {
+      "strength_modifier": 2,
+      "toughness_modifier": 1,
+      "endurance_modifier": 1,
+      "charisma_modifier": -1
+    },
+    "restrictions": {
+      "gender": "Male",
+      "race": "Human",
+      "background": "Outlaw"
+    },
+    "starting_equipment": {
+      "weapon": "greatsword",
+      "shield": true,
+      "armor": "Medium_Heavy"
+    },
+    "stances": {
+      "default": "wrath_guard",
+      "vom_tag": {"type": "offensive", "attack_bonus": 3, "defense_penalty": 1},
+      "half_sword": {"type": "defensive", "attack_penalty": 3, "defense_bonus": 5},
+      "wrath_guard": {"type": "neutral", "initiative_bonus": 1}
+    },
+    "maneuvers": {
+      "2H_sword": [
+        {"name": "Zwerchhau", "stance": "vom_tag", "effects": {"attack_bonus": 5}},
+        {"name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": {"attack_bonus": 8}},
+        {"name": "Durchwechseln", "stance": "wrath_guard", "effects": {"attack_bonus": 3, "defense_bonus": 3}},
+        {"name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": {"attack_bonus": 10, "armor_bypass": 0.5}},
+        {"name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": {"attack_bonus": 7, "damage_type": "blunt"}},
+        {"name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": {"mobility_penalty": 30}}
+      ]
+    },
+    "abilities": {
+      "active": {
+        "brutal_strike": {"damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike."},
+        "intimidating_shout": {"fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies."}
+      },
+      "passive": {
+        "iron_wall": {"block_bonus": 0.2, "desc": "20% increased block with shield."},
+        "resilient_outlaw": {"pain_resist": 10, "desc": "Reduce pain penalties by 10%."}
+      }
+    },
+    "skills": {
+      "swordsmanship": 3,
+      "shield_defense": 2,
+      "intimidation": 1,
+      "stealth": 1
+    },
+    "traits": [
+      "Brave (+5 willpower vs fear/morale)",
+      "Loyal (+10% ally buffs)",
+      "Resilient (-10% bleeding duration)"
+    ],
+    "progression": {
+      "level_up_stats": {"strength": 2, "endurance": 1},
+      "unlocks": {"lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)"}
+    }
   }
 }
