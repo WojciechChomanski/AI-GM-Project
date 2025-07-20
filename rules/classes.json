@@ -98,5 +98,54 @@
       "level_up_stats": {"strength": 2, "endurance": 1},
       "unlocks": {"lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)"}
     }
+  },
+  "Ogre_Brute": {
+    "description": "Massive powerhouse wielding improvised weapons like grizzly swipes—devastating hits, but slow and exhausting.",
+    "stats": {
+      "strength_modifier": 5,
+      "toughness_modifier": 3,
+      "agility_modifier": -2,
+      "endurance_modifier": 2,
+      "mass_base": 600
+    },
+    "restrictions": {
+      "gender": "Male",
+      "race": "Ogre",
+      "background": "Bounty Hunter"
+    },
+    "starting_equipment": {
+      "weapon": "improvised_club",
+      "shield": false,
+      "armor": "Light_Heavy"
+    },
+    "stances": {
+      "default": "neutral",
+      "offensive": {"attack_bonus": 5, "defense_penalty": 5}
+    },
+    "maneuvers": {
+      "improvised": [
+        {"name": "Brute Swipe", "stance": "offensive", "effects": {"damage_bonus": 10, "stun_chance_head": 0.5}}
+      ]
+    },
+    "abilities": {
+      "active": {
+        "maul": {"damage_bonus": 15, "stamina_cost": 12, "desc": "Grizzly-like swipe, high stun on head."}
+      },
+      "passive": {
+        "bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for 2H use."}
+      }
+    },
+    "skills": {
+      "club_smash": 4,
+      "intimidation": 3
+    },
+    "traits": [
+      "Grizzly Force (+mass//20 damage bonus).",
+      "Thick Hide (-10% piercing damage)."
+    ],
+    "progression": {
+      "level_up_stats": {"strength": 3, "toughness": 2},
+      "unlocks": {"lv3": "Maul ability"}
+    }
   }
 }

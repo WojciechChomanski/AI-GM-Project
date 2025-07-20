@@ -2,16 +2,55 @@
   "name": "Rock",
   "race": "Ogre",
   "gender": "Male",
-  "class": "Mercenary",
-  "background": "Outlaw",
+  "class": "Ogre_Brute",
+  "background": "Bounty Hunter",
   "total_hp": 200,
-  "max_stamina": 120,
-  "armor_weight": 15,
-  "inventory_weight": 15,
-  "shield_equipped": false,
+  "max_stamina": 150,
+  "armor_weight": 10,
+  "inventory_weight": 20,
+  "strength_modifier": 5,
+
   "weapon_equipped": true,
   "weapon": "improvised_club",
+  "shield_equipped": false,
   "armor": ["Light_Heavy"],
-  "role": "Mercenary",
-  "strength_modifier": 3
-}
+
+  "abilities": {
+    "maul": {
+      "type": "active",
+      "damage_bonus": 15,
+      "stamina_cost": 12,
+      "description": "Grizzly-like swipe that crushes foes."
+    }
+  },
+
+  "skills": {
+    "club_smash": 4,
+    "intimidation": 3
+  },
+
+  "traits": [
+    "Grizzly Force",
+    "Thick Hide"
+  ],
+
+  "dialogue": {
+    "greeting": "What... you want?",
+    "combat": "Rock smash!",
+    "victory": "Rock strong!",
+    "defeat": "No... hurt..."
+  },
+
+  "quest": {
+    "current": "Hunt bandits for bounty",
+    "completed": false,
+    "rewards": {
+      "xp": 300,
+      "items": ["Bandit Treasure"]
+    }
+  },
+
+  "reputation": -10,
+  "corruption_level": 0,
+  "stress_level": 0
+} 

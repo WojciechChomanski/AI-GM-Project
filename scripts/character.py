@@ -37,6 +37,7 @@ class Character:
             "stomach": 3, "chest": 6, "left_lower_arm": 1, "right_lower_arm": 1,
             "left_upper_arm": 2, "right_upper_arm": 2, "head": 2, "throat": 1, "groin": 1
         }
+        self.compromised_limbs = []  # New: Track severed/crippled limbs
         self.pain_penalty = 0
         self.mobility_penalty = 0
         self.stance = "neutral"
@@ -56,6 +57,7 @@ class Character:
         self.weapon_skill = 0
         self.faith = 0
         self.reputation = 0
+        self.stunned = False  # New: For head/throat stun
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -89,10 +91,18 @@ class Character:
             print(f"⚠️ Invalid zone: {zone}")
 
     def on_part_crippled(self, part):
+        self.compromised_limbs.append(part)  # Track crippled
         if part in ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg"]:
             self.mobility_penalty += 25
             print(f"⚠️ {self.name}'s {part.replace('_', ' ')} is crippled!")
             print(f"⛔ {self.name}'s mobility reduced by {self.mobility_penalty}% due to crippled legs!")
+        if 'arm' in part:
+            self.weapon_skill -= 50  # -50% skill if arm crippled (can't grip properly)
+            print(f"⚠️ {self.name}'s {part.replace('_', ' ')} crippled—weapon skill reduced by 50%!")
+        if part in ["head", "throat"]:
+            self.stunned = True  # Stun: Skip next turn
+            print(f"⚠️ {self.name}'s {part.replace('_', ' ')} hit—stunned, choking!")
+            self.mobility_penalty += 20  # Extra for breathing/movement
         self.pain_penalty += 3
         self.stress_level = min(100, self.stress_level + 5)
         print(f"😖 {self.name} suffers pain penalties! Total penalty: {self.pain_penalty}%")

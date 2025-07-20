@@ -1,5 +1,7 @@
 # ✅ Updated: combat_engine.py to fix string index error
 
+# ✅ Updated: combat_engine.py to fix string index error
+
 import random
 from combat_health import CombatHealthManager
 from character import Character
@@ -49,7 +51,7 @@ class CombatEngine:
         attack_roll = raw_roll + attacker.weapon_skill
         defense_base_roll = random.randint(1, 100)
 
-        if attacker.weapon and attacker.weapon.get("fear_trigger", False):
+        if attacker.weapon and isinstance(attacker.weapon, dict) and attacker.weapon.get("fear_trigger", False):
             fear_response = self.fear_system.check_fear(defender, attacker.weapon)
             if fear_response["triggered"]:
                 print(f"😱 {defender.name} freezes: {fear_response['outburst']}")
@@ -64,7 +66,7 @@ class CombatEngine:
         current_health = sum(defender.body_parts.values())
         if current_health < 0.5 * defender.total_hp:  # Stance variation
             defender_stance = "defensive"
-        weapon_type = attacker.weapon.get("type") if attacker.weapon and not spell_name else "none"
+        weapon_type = attacker.weapon.get("type") if isinstance(attacker.weapon, dict) else "none"
 
         maneuver_bonus = self.maneuvers.get_bonus_effects(weapon_type, attacker_stance, "always", aimed_zone)
 
@@ -158,14 +160,14 @@ class CombatEngine:
                     self.apply_damage(attacker, defender, weapon_damage, damage_type, defender_health, aimed_zone, False)
                 outcome["result"] = "hit" if not is_critical else "critical_hit"
                 attacker.wear_weapon()
-                print(f"⚔️ {attacker.name}'s {attacker.weapon['name']} durability: {attacker.weapon.get('durability', 50)}")
+                print(f"⚔️ {attacker.name}'s {attacker.weapon.get('name', 'weapon')} durability: {attacker.weapon.get('durability', 50)}")
             else:
                 print(f"❌ {attacker.name} misses or {defender.name} successfully defends!")
                 outcome["result"] = "miss"
                 self.apply_defense_wear(defender, defense_type)
                 if defense_type in ["Parry", "Block"]:
                     defender.wear_weapon()
-                    print(f"⚔️ {defender.name}'s {defender.weapon['name']} durability: {defender.weapon.get('durability', 50)}")
+                    print(f"⚔️ {defender.name}'s {defender.weapon.get('name', 'weapon')} durability: {defender.weapon.get('durability', 50)}")
                     if defense_type == "Block" and defender.has_shield():
                         defender.wear_shield()
                         print(f"🛡️ {defender.name}'s shield durability: {defender.shield.get('durability', 50)}")

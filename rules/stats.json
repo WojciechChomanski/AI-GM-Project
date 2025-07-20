@@ -70,5 +70,13 @@
       "faith": 60,
       "reputation": 100
     }
+  },
+  "Ogre_Male": {
+    "starting_stats": {
+      "strength": 50
+    },
+    "max_stats": {
+      "strength": 70
+    }
   }
 }
