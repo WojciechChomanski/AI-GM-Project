@@ -129,10 +129,12 @@
     },
     "abilities": {
       "active": {
-        "maul": {"damage_bonus": 15, "stamina_cost": 12, "desc": "Grizzly-like swipe, high stun on head."}
+        "grab_rip": {"stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)."},
+        "heavy_throw": {"stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)."}
       },
       "passive": {
-        "bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for 2H use."}
+        "bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use."},
+        "thick_skull": {"head_stun_resist": 20, "desc": "-20% stun from head hits."}
       }
     },
     "skills": {
@@ -140,12 +142,12 @@
       "intimidation": 3
     },
     "traits": [
-      "Grizzly Force (+mass//20 damage bonus).",
+      "Grizzly Force (+mass//10 damage bonus).",
       "Thick Hide (-10% piercing damage)."
     ],
     "progression": {
       "level_up_stats": {"strength": 3, "toughness": 2},
-      "unlocks": {"lv3": "Maul ability"}
+      "unlocks": {"lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)"}
     }
   }
 }

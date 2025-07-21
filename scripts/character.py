@@ -57,7 +57,8 @@ class Character:
         self.weapon_skill = 0
         self.faith = 0
         self.reputation = 0
-        self.stunned = False  # New: For head/throat stun
+        self.grapple_committed = False  # New: Can't attack normally if grappling
+        self.grappled_by = None  # New: If grappled, limits actions
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -99,10 +100,6 @@ class Character:
         if 'arm' in part:
             self.weapon_skill -= 50  # -50% skill if arm crippled (can't grip properly)
             print(f"⚠️ {self.name}'s {part.replace('_', ' ')} crippled—weapon skill reduced by 50%!")
-        if part in ["head", "throat"]:
-            self.stunned = True  # Stun: Skip next turn
-            print(f"⚠️ {self.name}'s {part.replace('_', ' ')} hit—stunned, choking!")
-            self.mobility_penalty += 20  # Extra for breathing/movement
         self.pain_penalty += 3
         self.stress_level = min(100, self.stress_level + 5)
         print(f"😖 {self.name} suffers pain penalties! Total penalty: {self.pain_penalty}%")

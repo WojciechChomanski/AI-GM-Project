@@ -1,6 +1,4 @@
-# ✅ Updated: combat_engine.py to fix string index error
-
-# ✅ Updated: combat_engine.py to fix string index error
+# ✅ Updated: combat_engine.py for ogre mechanics
 
 import random
 from combat_health import CombatHealthManager
@@ -34,8 +32,9 @@ class CombatEngine:
         self.last_outcome = {}
         self.stance_locks = {}
         self.upper_leg_priority = ["left_upper_leg", "right_upper_leg"]
+        self.grapple_flags = {}  # New: Track grappled targets
 
-    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0):
+    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[]):
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
             return {"result": "incapacitated"}
@@ -46,6 +45,67 @@ class CombatEngine:
         elif attacker.alive:
             attacker.stance = self.stance_locks[attacker.name]
             print(f"🔒 {attacker.name} remains in {attacker.stance.upper()} stance")
+
+        # New: If grapple_committed, can't normal attack
+        if attacker.grapple_committed:
+            print(f"⚠️ {attacker.name} is committed to grapple—choose action!")
+            grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower()
+            if grapple_choice == "rip apart":
+                rip_roll = random.randint(1, 100) + attacker.strength // 5
+                resist_roll = random.randint(1, 100) + defender.toughness // 5
+                if rip_roll > resist_roll:
+                    print(f"💥 {attacker.name} rips {defender.name}'s limb—horrific tear!")
+                    defender_health.take_damage_to_zone(aimed_zone, 30, "slashing", critical=True)
+                else:
+                    print(f"❌ {defender.name} resists the rip—slips free!")
+                attacker.grapple_committed = False
+                self.grapple_flags.pop(defender.name, None)
+                attacker.consume_stamina(15)
+                return {"result": "rip_attempt"}
+            elif grapple_choice == "smash ground":
+                smash_damage = weapon_damage + 10  # Blunt + stun
+                defender_health.distribute_damage(smash_damage, "blunt")
+                if random.random() < 0.5:
+                    defender.stunned = True
+                    print(f"😵 {defender.name} dazed from smash!")
+                attacker.grapple_committed = False
+                self.grapple_flags.pop(defender.name, None)
+                attacker.consume_stamina(15)
+                return {"result": "smash_ground"}
+            elif grapple_choice == "use as club":
+                if len(opponents) > 1:  # Assume multi-foe
+                    other_target = random.choice([opp for opp in opponents if opp != defender])
+                    print(f"🌀 {attacker.name} swings {defender.name} as a club at {other_target.name}!")
+                    other_target_health = CombatHealthManager(other_target)
+                    other_target_health.distribute_damage(weapon_damage, "blunt")
+                    defender_health.distribute_damage(10, "blunt")  # Damage to grappled too
+                else:
+                    print(f"❌ No other foes—smash ground instead!")
+                    smash_damage = weapon_damage + 10
+                    defender_health.distribute_damage(smash_damage, "blunt")
+                attacker.grapple_committed = False
+                self.grapple_flags.pop(defender.name, None)
+                attacker.consume_stamina(15)
+                return {"result": "use_as_club"}
+            else:
+                print(f"🛑 {attacker.name} releases the grapple!")
+                attacker.grapple_committed = False
+                self.grapple_flags.pop(defender.name, None)
+                return {"result": "release_grapple"}
+
+        # New: Grappled Defender Limits
+        if defender.grappled_by:
+            print(f"🔗 {defender.name} grappled—limited actions!")
+            # Restrict to small weapons (dagger) or struggle
+            if defender.weapon.get("size_class") != "small":
+                print(f"⚠️ {defender.name} can't swing large weapon while grappled—use dagger or struggle!")
+                # Struggle option: Strength vs grappler strength to escape
+                struggle_roll = random.randint(1, 100) + defender.strength // 10
+                grappler_roll = random.randint(1, 100) + defender.grappled_by.strength // 10
+                if struggle_roll > grappler_roll:
+                    print(f"🆓 {defender.name} breaks free!")
+                    defender.grappled_by = None
+                return {"result": "grapple_struggle"}
 
         raw_roll = random.randint(1, 100)
         attack_roll = raw_roll + attacker.weapon_skill
@@ -81,13 +141,31 @@ class CombatEngine:
         attack_roll += ambush_bonus
         attack_roll -= roll_penalty if aimed_zone else 0
 
-        defense_type = self.select_defense_type(defender)
+        defense_type = self.select_defense_type(defender)  # Moved here
+
+        defense_roll = defense_base_roll  # Initialize defense_roll
+
+        # New: Ogre Mass Penalty for Block/Parry with Strength Test
+        if (defense_type in ["Block", "Parry"]) and (attacker.mass > defender.mass * 1.5):
+            mass_penalty = (attacker.strength - defender.strength) // 5
+            strength_roll = random.randint(1, 100) + defender.strength // 5
+            strength_threshold = attacker.strength // 5 + 50  # Adjust threshold based on attacker strength
+            print(f"💪 {defender.name} attempts strength test (needs {strength_threshold}+): rolled {strength_roll}")
+            if strength_roll < strength_threshold:
+                print(f"🌀 {defender.name} fails to resist ogre's mass! Thrown back, stunned for 1 turn.")
+                defender.stunned = True
+                defender.mobility_penalty = min(100, defender.mobility_penalty + 20)  # Temporary mobility penalty
+                defense_roll -= mass_penalty  # Still apply penalty on fail
+            else:
+                print(f"💪 {defender.name} braces against ogre's mass!")
+                defense_roll -= mass_penalty  # Apply penalty even on success, but no stun
+
         if defense_type == "Dodge":
-            defense_roll = defense_base_roll + defender.agility // 2
+            defense_roll += defender.agility // 2
         elif defense_type == "Parry":
-            defense_roll = defense_base_roll + defender.weapon_skill // 2
+            defense_roll += defender.weapon_skill // 2
         elif defense_type == "Block":
-            defense_roll = defense_base_roll + (defender.strength // 2 if defender.has_shield() else defender.weapon_skill // 2)
+            defense_roll += (defender.strength // 2 if defender.has_shield() else defender.weapon_skill // 2)
             if defender.has_shield():
                 defense_roll += 5  # Flat shield bonus; can adjust or tie to shield stats later
 

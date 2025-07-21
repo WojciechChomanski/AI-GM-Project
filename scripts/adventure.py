@@ -1,5 +1,5 @@
+import json
 import random
-import requests
 import logging
 import os
 from character_loader import CharacterLoader
@@ -8,6 +8,7 @@ from combat_health import CombatHealthManager
 from healing_system import HealingSystem
 from armors import Armor
 import stance_logic
+import requests
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ class Adventure:
         self.healing = HealingSystem()
         self.api_url = "http://127.0.0.1:8000/chat"
         self.opponent_names = {}
+        self.grapple_flags = {}  # Add this
 
     def assign_opponent_name(self, opponent, index):
         if opponent.name not in self.opponent_names:
@@ -49,6 +51,10 @@ class Adventure:
             logger.error(f"Failed to load characters: {e}")
             print(f"❌ Error loading characters: {e}")
             return
+
+        # Load abilities for player if applicable
+        class_data = self.load_classes(player.class_name)
+        player.abilities = class_data.get("abilities", {})
 
         player_health = CombatHealthManager(player)
         wojtek_health = CombatHealthManager(wojtek)
@@ -137,6 +143,12 @@ class Adventure:
             player.long_rest()
             self.log_armor_status(player)
 
+    def load_classes(self, class_name):
+        path = os.path.join(os.path.dirname(__file__), "../rules/classes.json")
+        with open(path, 'r', encoding='utf-8') as f:
+            classes_data = json.load(f)
+        return classes_data.get(class_name, {"abilities": {}})
+
     def log_armor_status(self, character):
         for armor in character.armor:
             print(f"\n🛡️ {armor.name} Status:")
@@ -195,6 +207,30 @@ class Adventure:
                         print(f"⚠️ Invalid zone {aimed_zone}, defaulting to normal attack.")
                         aimed_zone = None
 
+                # New: Prompt for abilities
+                print("Available active abilities: grab_rip, heavy_throw")
+                ability = input("Use ability? (name or none): ").lower()
+                roll_penalty = 0  # Reset roll_penalty
+                if ability == "grab_rip":
+                    grab_roll = random.randint(1, 100) + player.dexterity // 10 + player.strength // 20
+                    dodge_roll = random.randint(1, 100) + target.agility // 5
+                    if grab_roll > dodge_roll:
+                        print(f"🔗 {player.name} grabs {target.name} in a vise grip!")
+                        player.grapple_committed = True
+                        self.grapple_flags[target.name] = player.name  # Use Adventure's grapple_flags
+                        player.consume_stamina(15)
+                    else:
+                        print(f"❌ {target.name} slips free from {player.name}'s grasp!")
+                        player.consume_stamina(15 // 2)
+                    continue  # Skip normal attack
+                elif ability == "heavy_throw":
+                    weapon_damage += player.mass // 10 + player.strength // 5
+                    roll_penalty += 20  # Accuracy penalty for throw
+                    player.consume_stamina(20)
+                    if aimed_zone == "head" and random.random() < 0.5:
+                        print(f"😵 {target.name} is stunned!")
+                        target.stunned = True
+
                 action_choice = "1"  # Default attack
                 damage = player.weapon.get("base_damage", 10) + (player.strength // 10)
                 absorbed = 0
@@ -213,7 +249,8 @@ class Adventure:
                         defender_health=target_health,
                         aimed_zone=aimed_zone,
                         chosen_stance=chosen_stance,
-                        ambush_bonus=ambush_bonus if first_strike else 0
+                        ambush_bonus=ambush_bonus if first_strike else 0,
+                        roll_penalty=roll_penalty
                     )
                 except Exception as e:
                     logger.error(f"Combat error: {e}")
