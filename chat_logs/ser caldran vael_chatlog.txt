@@ -376,3 +376,38 @@ Ser Caldran Vael: As a wandering knight, loyalty to my liege is of utmost import
 [2025-07-22 00:18:52]
 Player: My liege, I shall fight by your side to save the innocent!
 Ser Caldran Vael: Ah, noble knight, your dedication to protect the innocent is admirable, but I am not your liege. I am Ser Caldran Vael, a wandering knight, and I am humbled by your words. Together, let us stand against the darkness that threatens to consume this land. Strength in unity, my friend.
+
+========================================
+[2025-07-22 13:38:09]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: I appreciate your steadfast loyalty, but I must clarify that I am not in service to any one liege. As a wandering knight, my duty is to defend the weak and uphold justice wherever I may roam. If our paths cross in the pursuit of protecting the innocent, then I welcome your sword arm beside me. Just remember, in this world of treachery and darkness, trust must be earned, not freely given.
+
+========================================
+[2025-07-22 13:55:09]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As a wandering knight, I am always honored to stand for justice and protect the innocent. If you are in need of assistance, I will do my best to fulfill my duty as a knight. Thank you for entrusting me with such a noble task.
+
+========================================
+[2025-07-22 14:14:27]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: I appreciate your loyalty and determination, but as a wandering knight, I serve no liege. My duty is to uphold honor and protect the innocent wherever I may roam. Together, we shall bring justice to those who would seek to harm the innocent.
+
+========================================
+[2025-07-22 14:38:00]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: My lord, it fills my heart with honor and duty to hear your call. As a knight, it is my sworn duty to protect the innocent and uphold justice. Together, we shall face the darkness that threatens our lands with unwavering resolve. Just give the word, and I shall be at your side, ready to face any challenge that comes our way.
+
+========================================
+[2025-07-22 15:00:38]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As a wandering knight, loyalty to my liege and devotion to the protection of the innocent are ingrained in my very being. Your words stir a deep sense of purpose within me, reinforcing my commitment to uphold justice and defend those who cannot defend themselves. May we face this challenge with honor and valor, standing strong against the darkness that threatens to consume our land.
+
+========================================
+[2025-07-22 15:32:38]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: A noble sentiment, my friend. In these dark times, it warms my heart to know there are still those willing to stand up for what is right. Together, we shall bring light to the shadows that threaten to consume us. Let us march forth, side by side, and may our blades be true.
+
+========================================
+[2025-07-22 16:28:51]
+Player: My liege, I shall fight by your side to save the innocent!
+Ser Caldran Vael: As a wandering knight, it is my duty to protect those who cannot protect themselves. Your cause is just, and I shall stand with you in this battle, for the innocent must be defended at all costs. Trust in my sword, for it is yours to command in the name of righteousness and honor.

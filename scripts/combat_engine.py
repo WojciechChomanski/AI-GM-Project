@@ -35,6 +35,10 @@ class CombatEngine:
         self.grapple_flags = {}  # New: Track grappled targets
 
     def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[]):
+        if defender.grappled_by and defender.weapon.get("size_class") != "small":
+            print(f"⚠️ {defender.name} can't attack with large weapon while grappled!")
+            return {"result": "grapple_restricted"}
+
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
             return {"result": "incapacitated"}
@@ -53,9 +57,13 @@ class CombatEngine:
             if grapple_choice == "rip apart":
                 rip_roll = random.randint(1, 100) + attacker.strength // 5
                 resist_roll = random.randint(1, 100) + defender.toughness // 5
+                print(f"Rip roll: {rip_roll} vs Resist: {resist_roll}")
                 if rip_roll > resist_roll:
-                    print(f"💥 {attacker.name} rips {defender.name}'s limb—horrific tear!")
+                    print(f"💥 {attacker.name} rips {defender.name}'s limb—horrific tear! 🩸 Gore sprays as the limb is torn off!")
                     defender_health.take_damage_to_zone(aimed_zone, 30, "slashing", critical=True)
+                    defender.bleeding_rate += 2.4
+                    defender.pain_penalty += 15
+                    defender.mobility_penalty += 25
                 else:
                     print(f"❌ {defender.name} resists the rip—slips free!")
                 attacker.grapple_committed = False
@@ -102,6 +110,7 @@ class CombatEngine:
                 # Struggle option: Strength vs grappler strength to escape
                 struggle_roll = random.randint(1, 100) + defender.strength // 10
                 grappler_roll = random.randint(1, 100) + defender.grappled_by.strength // 10
+                print(f"Struggle roll: {struggle_roll} vs Grappler: {grappler_roll}")
                 if struggle_roll > grappler_roll:
                     print(f"🆓 {defender.name} breaks free!")
                     defender.grappled_by = None
@@ -145,7 +154,7 @@ class CombatEngine:
 
         defense_roll = defense_base_roll  # Initialize defense_roll
 
-        # New: Ogre Mass Penalty for Block/Parry with Strength Test
+        # New: Ogre Mass Penalty for Block/Parry
         if (defense_type in ["Block", "Parry"]) and (attacker.mass > defender.mass * 1.5):
             mass_penalty = (attacker.strength - defender.strength) // 5
             strength_roll = random.randint(1, 100) + defender.strength // 5

@@ -93,7 +93,7 @@
     "lore": "Ogres wield improvised weapons, their bear-like mass crushing foes. No females exist, and crafting eludes them.",
     "mass": 600, 
       "hp_bonus": 100,
-      "stamina_bonus": 50,
+      "stamina_bonus": 500,
       "strength_modifier": 20, 
       "agility_modifier": -10,
       "intelligence_modifier": -15, 
