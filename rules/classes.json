@@ -1,153 +1,260 @@
 {
-  "Warrior": {
-    "description": "A master of melee combat, built for war.",
-    "stats": {
-      "strength_modifier": 2,
-      "attack_cost_reduction": 1
-    }
-  },
-  "Mage": {
-    "description": "A wielder of Veil or Breath magic, bending reality.",
-    "stats": {
-      "intelligence_modifier": 2
-    },
-    "restrictions": {
-      "gender": "Female",
-      "race": "Human"
-    }
-  },
-  "Rogue": {
-    "description": "A shadow in the empire, striking unseen.",
-    "stats": {
-      "agility_modifier": 2,
-      "dodge_bonus": 5
-    }
-  },
-  "Cleric": {
-    "description": "A conduit of the Breath, healing and smiting.",
-    "stats": {
-      "willpower_modifier": 2,
-      "healing_bonus": 10
-    }
-  },
-  "Paladin": {
-    "description": "A holy warrior, champion of the Breath.",
-    "stats": {
-      "strength_modifier": 2,
-      "willpower_modifier": 1,
-      "healing_bonus": 5
-    },
-    "restrictions": {}
-  },
-  "Outlaw_Mercenary_Warrior": {
-    "description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
-    "stats": {
-      "strength_modifier": 2,
-      "toughness_modifier": 1,
-      "endurance_modifier": 1,
-      "charisma_modifier": -1
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human",
-      "background": "Outlaw"
-    },
-    "starting_equipment": {
-      "weapon": "greatsword",
-      "shield": true,
-      "armor": "Medium_Heavy"
-    },
-    "stances": {
-      "default": "wrath_guard",
-      "vom_tag": {"type": "offensive", "attack_bonus": 3, "defense_penalty": 1},
-      "half_sword": {"type": "defensive", "attack_penalty": 3, "defense_bonus": 5},
-      "wrath_guard": {"type": "neutral", "initiative_bonus": 1}
-    },
-    "maneuvers": {
-      "2H_sword": [
-        {"name": "Zwerchhau", "stance": "vom_tag", "effects": {"attack_bonus": 5}},
-        {"name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": {"attack_bonus": 8}},
-        {"name": "Durchwechseln", "stance": "wrath_guard", "effects": {"attack_bonus": 3, "defense_bonus": 3}},
-        {"name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": {"attack_bonus": 10, "armor_bypass": 0.5}},
-        {"name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": {"attack_bonus": 7, "damage_type": "blunt"}},
-        {"name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": {"mobility_penalty": 30}}
-      ]
-    },
-    "abilities": {
-      "active": {
-        "brutal_strike": {"damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike."},
-        "intimidating_shout": {"fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies."}
-      },
-      "passive": {
-        "iron_wall": {"block_bonus": 0.2, "desc": "20% increased block with shield."},
-        "resilient_outlaw": {"pain_resist": 10, "desc": "Reduce pain penalties by 10%."}
-      }
-    },
-    "skills": {
-      "swordsmanship": 3,
-      "shield_defense": 2,
-      "intimidation": 1,
-      "stealth": 1
-    },
-    "traits": [
-      "Brave (+5 willpower vs fear/morale)",
-      "Loyal (+10% ally buffs)",
-      "Resilient (-10% bleeding duration)"
-    ],
-    "progression": {
-      "level_up_stats": {"strength": 2, "endurance": 1},
-      "unlocks": {"lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)"}
-    }
-  },
-  "Ogre_Brute": {
-    "description": "Massive powerhouse wielding improvised weapons like grizzly swipes—devastating hits, but slow and exhausting.",
-    "stats": {
-      "strength_modifier": 5,
-      "toughness_modifier": 3,
-      "agility_modifier": -2,
-      "endurance_modifier": 2,
-      "mass_base": 600
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre",
-      "background": "Bounty Hunter"
-    },
-    "starting_equipment": {
-      "weapon": "improvised_club",
-      "shield": false,
-      "armor": "Light_Heavy"
-    },
-    "stances": {
-      "default": "neutral",
-      "offensive": {"attack_bonus": 5, "defense_penalty": 5}
-    },
-    "maneuvers": {
-      "improvised": [
-        {"name": "Brute Swipe", "stance": "offensive", "effects": {"damage_bonus": 10, "stun_chance_head": 0.5}}
-      ]
-    },
-    "abilities": {
-      "active": {
-        "grab_rip": {"stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)."},
-        "heavy_throw": {"stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)."}
-      },
-      "passive": {
-        "bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use."},
-        "thick_skull": {"head_stun_resist": 20, "desc": "-20% stun from head hits."}
-      }
-    },
-    "skills": {
-      "club_smash": 4,
-      "intimidation": 3
-    },
-    "traits": [
-      "Grizzly Force (+mass//10 damage bonus).",
-      "Thick Hide (-10% piercing damage)."
-    ],
-    "progression": {
-      "level_up_stats": {"strength": 3, "toughness": 2},
-      "unlocks": {"lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)"}
-    }
-  }
+"Warrior": {
+"description": "A master of melee combat, built for war.",
+"stats": {
+"strength_modifier": 2,
+"attack_cost_reduction": 1
+}
+},
+"Mage": {
+"description": "A wielder of Veil or Breath magic, bending reality.",
+"stats": {
+"intelligence_modifier": 2
+},
+"restrictions": {
+"gender": "Female",
+"race": "Human"
+}
+},
+"Rogue": {
+"description": "A shadow in the empire, striking unseen.",
+"stats": {
+"agility_modifier": 2,
+"dodge_bonus": 5
+}
+},
+"Cleric": {
+"description": "A conduit of the Breath, healing and smiting.",
+"stats": {
+"willpower_modifier": 2,
+"healing_bonus": 10
+}
+},
+"Paladin": {
+"description": "A holy warrior, champion of the Breath.",
+"stats": {
+"strength_modifier": 2,
+"willpower_modifier": 1,
+"healing_bonus": 5
+},
+"restrictions": {}
+},
+"Outlaw_Mercenary_Warrior": {
+"description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
+"stats": {
+"strength_modifier": 2,
+"toughness_modifier": 1,
+"endurance_modifier": 1,
+"charisma_modifier": -1
+},
+"restrictions": {
+"gender": "Male",
+"race": "Human",
+"background": "Outlaw"
+},
+"starting_equipment": {
+"weapon": "greatsword",
+"shield": true,
+"armor": "Medium_Heavy"
+},
+"stances": {
+"default": "wrath_guard",
+"vom_tag": {"type": "offensive", "attack_bonus": 3, "defense_penalty": 1},
+"half_sword": {"type": "defensive", "attack_penalty": 3, "defense_bonus": 5},
+"wrath_guard": {"type": "neutral", "initiative_bonus": 1}
+},
+"maneuvers": {
+"2H_sword": [
+{"name": "Zwerchhau", "stance": "vom_tag", "effects": {"attack_bonus": 5}},
+{"name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": {"attack_bonus": 8}},
+{"name": "Durchwechseln", "stance": "wrath_guard", "effects": {"attack_bonus": 3, "defense_bonus": 3}},
+{"name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": {"attack_bonus": 10, "armor_bypass": 0.5}},
+{"name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": {"attack_bonus": 7, "damage_type": "blunt"}},
+{"name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": {"mobility_penalty": 30}}
+]
+},
+"abilities": {
+"active": {
+"brutal_strike": {"damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike."},
+"intimidating_shout": {"fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies."}
+},
+"passive": {
+"iron_wall": {"block_bonus": 0.2, "desc": "20% increased block with shield."},
+"resilient_outlaw": {"pain_resist": 10, "desc": "Reduce pain penalties by 10%."}
+}
+},
+"skills": {
+"swordsmanship": 3,
+"shield_defense": 2,
+"intimidation": 1,
+"stealth": 1
+},
+"traits": [
+"Brave (+5 willpower vs fear/morale)",
+"Loyal (+10% ally buffs)",
+"Resilient (-10% bleeding duration)"
+],
+"progression": {
+"level_up_stats": {"strength": 2, "endurance": 1},
+"unlocks": {"lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)"}
+}
+},
+"Ogre_Brute": {
+"description": "Massive powerhouse wielding improvised weapons like grizzly swipes—devastating hits, but slow and exhausting.",
+"stats": {
+"strength_modifier": 5,
+"toughness_modifier": 3,
+"agility_modifier": -2,
+"endurance_modifier": 2,
+"mass_base": 600
+},
+"restrictions": {
+"gender": "Male",
+"race": "Ogre",
+"background": "Bounty Hunter"
+},
+"starting_equipment": {
+"weapon": "improvised_club",
+"shield": false,
+"armor": "Light_Heavy"
+},
+"stances": {
+"default": "neutral",
+"offensive": {"attack_bonus": 5, "defense_penalty": 5}
+},
+"maneuvers": {
+"improvised": [
+{"name": "Brute Swipe", "stance": "offensive", "effects": {"damage_bonus": 10, "stun_chance_head": 0.5}}
+]
+},
+"abilities": {
+"active": {
+"grab_rip": {"stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)."},
+"heavy_throw": {"stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)."}
+},
+"passive": {
+"bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use."},
+"thick_skull": {"head_stun_resist": 20, "desc": "-20% stun from head hits."}
+}
+},
+"skills": {
+"club_smash": 4,
+"intimidation": 3
+},
+"traits": [
+"Grizzly Force (+mass//10 damage bonus).",
+"Thick Hide (-10% piercing damage)."
+],
+"progression": {
+"level_up_stats": {"strength": 3, "toughness": 2},
+"unlocks": {"lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)"}
+}
+},
+"Ogre Ravager": {
+"description": "Brutal melee destroyer driven by hunger, tearing foes apart in grimdark frenzy.",
+"stats": {
+"strength": 5,
+"toughness": 3,
+"dexterity": -2
+},
+"abilities": {
+"flesh_rend": {
+"level": 1,
+"type": "active",
+"description": "Enhanced grab_rip with devour heal on rip success.",
+"stamina_cost": 10
+},
+"gluttons_vitality": {
+"level": 3,
+"type": "passive",
+"description": "Recover stamina/health after rip/smash, +bleeding to grabbed, corruption penalty."
+},
+"devour_charge": {
+"level": 5,
+"type": "active",
+"description": "Throw + bonus attack, with self-stun risk.",
+"stamina_cost": 15
+}
+}
+},
+"Ogre Behemoth": {
+"description": "Immovable tank absorbing punishment, guarding in a world of endless pain.",
+"stats": {
+"toughness": 5,
+"strength": 3,
+"agility": -2
+},
+"abilities": {
+"unyielding_bulk": {
+"level": 1,
+"type": "passive",
+"description": "Boost mass penalty/stun, reduce incoming damage."
+},
+"earthquake_slam": {
+"level": 3,
+"type": "active",
+"description": "AOE slam on grapple, stun multiple foes.",
+"stamina_cost": 10
+},
+"flesh_shield": {
+"level": 5,
+"type": "active",
+"description": "Use grabbed as shield/club for defense/damage."
+}
+}
+},
+"Ogre Flesh Eater": {
+"description": "Corrupted healer consuming foes for regeneration in a starving world.",
+"stats": {
+"strength": 4,
+"toughness": 4,
+"willpower": -3
+},
+"abilities": {
+"consume_rip": {
+"level": 1,
+"type": "active",
+"description": "Rip with heal/corruption gain.",
+"stamina_cost": 10
+},
+"regenerative_feast": {
+"level": 3,
+"type": "passive",
+"description": "Regen on kill, +bleeding to grabbed, corruption penalty."
+},
+"voracious_grasp": {
+"level": 5,
+"type": "active",
+"description": "Auto-rip on grab with high heal/self-stun risk.",
+"stamina_cost": 12
+}
+}
+},
+"Ogre Stormbreaker": {
+"description": "Siege specialist destroying defenses in a crumbling world.",
+"stats": {
+"strength": 5,
+"perception": 2,
+"charisma": -2
+},
+"abilities": {
+"armor_crusher": {
+"level": 1,
+"type": "passive",
+"description": "Boost penetration/durability damage, ignore armor on throws."
+},
+"shatter_throw": {
+"level": 3,
+"type": "active",
+"description": "Throw with armor break.",
+"stamina_cost": 10
+},
+"rampage_grip": {
+"level": 5,
+"type": "active",
+"description": "Chain rip + slam AOE, with recoil risk.",
+"stamina_cost": 15
+}
+}
+}
 }

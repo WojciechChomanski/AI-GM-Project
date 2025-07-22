@@ -35,9 +35,16 @@ class CombatEngine:
         self.grapple_flags = {}  # New: Track grappled targets
 
     def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[]):
-        if defender.grappled_by and defender.weapon.get("size_class") != "small":
-            print(f"⚠️ {defender.name} can't attack with large weapon while grappled!")
-            return {"result": "grapple_restricted"}
+        if defender.grappled_by and defender.weapon.get("size_class") in ["large", "two-handed"]:
+            print(f"⚠️ {defender.name} can't attack with large weapon while grappled—struggle only!")
+            struggle_roll = random.randint(1, 100) + defender.strength // 10
+            grappler_roll = random.randint(1, 100) + defender.grappled_by.strength // 10
+            print(f"Struggle roll: {struggle_roll} vs Grappler: {grappler_roll}")
+            if struggle_roll > grappler_roll:
+                print(f"🆓 {defender.name} breaks free!")
+                defender.grappled_by = None
+                self.grapple_flags.pop(defender.name, None)
+            return {"result": "grapple_struggle"}
 
         if not attacker.alive or attacker.exhausted or attacker.last_action:
             print(f"⚠️ {attacker.name} is incapacitated and cannot act!")
@@ -55,12 +62,13 @@ class CombatEngine:
             print(f"⚠️ {attacker.name} is committed to grapple—choose action!")
             grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower()
             if grapple_choice == "rip apart":
+                aimed_zone = input("Enter target zone for rip (e.g., left_upper_arm): ").strip().lower()
                 rip_roll = random.randint(1, 100) + attacker.strength // 5
                 resist_roll = random.randint(1, 100) + defender.toughness // 5
                 print(f"Rip roll: {rip_roll} vs Resist: {resist_roll}")
                 if rip_roll > resist_roll:
-                    print(f"💥 {attacker.name} rips {defender.name}'s limb—horrific tear! 🩸 Gore sprays as the limb is torn off!")
-                    defender_health.take_damage_to_zone(aimed_zone, 30, "slashing", critical=True)
+                    print(f"💥 {attacker.name} rips {defender.name}'s {aimed_zone}—horrific tear! 🩸 Gore sprays as the limb is torn off!")
+                    defender_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)
                     defender.bleeding_rate += 2.4
                     defender.pain_penalty += 15
                     defender.mobility_penalty += 25
@@ -154,11 +162,11 @@ class CombatEngine:
 
         defense_roll = defense_base_roll  # Initialize defense_roll
 
-        # New: Ogre Mass Penalty for Block/Parry
+        # New: Ogre Mass Penalty for Block/Parry with Strength Test
         if (defense_type in ["Block", "Parry"]) and (attacker.mass > defender.mass * 1.5):
             mass_penalty = (attacker.strength - defender.strength) // 5
             strength_roll = random.randint(1, 100) + defender.strength // 5
-            strength_threshold = attacker.strength // 5 + 50  # Adjust threshold based on attacker strength
+            strength_threshold = 40  # Lowered for ~70% ogre success
             print(f"💪 {defender.name} attempts strength test (needs {strength_threshold}+): rolled {strength_roll}")
             if strength_roll < strength_threshold:
                 print(f"🌀 {defender.name} fails to resist ogre's mass! Thrown back, stunned for 1 turn.")
