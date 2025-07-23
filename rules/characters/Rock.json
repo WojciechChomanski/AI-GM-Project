@@ -2,7 +2,7 @@
   "name": "Rock",
   "race": "Ogre",
   "gender": "Male",
-  "class": "Ogre_Brute",
+  "class": "Ogre Ravager",
   "background": "Bounty Hunter",
   "total_hp": 200,
   "max_stamina": 150,

@@ -1,6 +1,8 @@
 # ✅ Updated: combat_engine.py for ogre mechanics
 
 import random
+import json
+import os
 from combat_health import CombatHealthManager
 from character import Character
 from stance_logic import apply_stance_modifiers, get_stamina_cost_modifier
@@ -33,8 +35,19 @@ class CombatEngine:
         self.stance_locks = {}
         self.upper_leg_priority = ["left_upper_leg", "right_upper_leg"]
         self.grapple_flags = {}  # New: Track grappled targets
+        self.rules = self.load_combat_rules()
+
+    def load_combat_rules(self):
+        path = os.path.join(os.path.dirname(__file__), "../rules/combat_rules.json")
+        with open(path, 'r') as f:
+            return json.load(f)
 
     def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[]):
+        if defender.stunned:
+            print(f"😵 {defender.name} is stunned—skips turn!")
+            defender.stunned = False
+            return {"result": "stunned_skip"}
+
         if defender.grappled_by and defender.weapon.get("size_class") in ["large", "two-handed"]:
             print(f"⚠️ {defender.name} can't attack with large weapon while grappled—struggle only!")
             struggle_roll = random.randint(1, 100) + defender.strength // 10
@@ -60,18 +73,29 @@ class CombatEngine:
         # New: If grapple_committed, can't normal attack
         if attacker.grapple_committed:
             print(f"⚠️ {attacker.name} is committed to grapple—choose action!")
-            grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower()
+            grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower().strip('.')
             if grapple_choice == "rip apart":
                 aimed_zone = input("Enter target zone for rip (e.g., left_upper_arm): ").strip().lower()
                 rip_roll = random.randint(1, 100) + attacker.strength // 5
                 resist_roll = random.randint(1, 100) + defender.toughness // 5
+                # Easier rip on limbs
+                limb_zones = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg", "left_lower_arm", "right_lower_arm", "left_upper_arm", "right_upper_arm"]
+                if aimed_zone in limb_zones:
+                    rip_roll += 10  # Bonus for limbs
+                elif aimed_zone == "head":
+                    resist_roll += 10  # Harder for head
                 print(f"Rip roll: {rip_roll} vs Resist: {resist_roll}")
                 if rip_roll > resist_roll:
                     print(f"💥 {attacker.name} rips {defender.name}'s {aimed_zone}—horrific tear! 🩸 Gore sprays as the limb is torn off!")
-                    defender_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)
+                    defender_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)  # Full damage to one zone
                     defender.bleeding_rate += 2.4
                     defender.pain_penalty += 15
                     defender.mobility_penalty += 25
+                    defender_health.recalculate_penalties()  # Immediate penalty update
+                    if attacker.class_name == "Ogre Ravager":
+                        attacker.health += 15  # Flesh Rend heal
+                        attacker.corruption_level = min(100, attacker.corruption_level + 5)
+                        print(f"🩸 {attacker.name} devours the flesh, healing 15 health! Corruption rises to {attacker.corruption_level}%.")
                 else:
                     print(f"❌ {defender.name} resists the rip—slips free!")
                 attacker.grapple_committed = False
@@ -83,7 +107,8 @@ class CombatEngine:
                 defender_health.distribute_damage(smash_damage, "blunt")
                 if random.random() < 0.5:
                     defender.stunned = True
-                    print(f"😵 {defender.name} dazed from smash!")
+                    print(f"😵 {defender.name} dazed from smash! Skip next turn.")
+                    defender.skip_turn = True  # Add stun effect (skip turn)
                 attacker.grapple_committed = False
                 self.grapple_flags.pop(defender.name, None)
                 attacker.consume_stamina(15)

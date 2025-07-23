@@ -159,22 +159,17 @@ class CombatHealthManager:
 
     def apply_bleeding(self):
         if not self.bleeding_wounds:
-            self.character.bleeding = 0
             return
-        total_bleeding = 0
+        total_bleeding_damage = 0
         for wound in self.bleeding_wounds[:]:
-            total_bleeding += wound["amount"]
+            wound_damage = int(wound["amount"])
+            total_bleeding_damage += wound_damage
+            self.character.receive_damage(wound_damage)
             wound["duration"] -= 1
             if wound["duration"] <= 0:
                 self.bleeding_wounds.remove(wound)
-        total_bleeding = min(total_bleeding, 8.0)
-        self.character.bleeding = round(total_bleeding, 1)
-        if total_bleeding > 0:
-            self.inflict_bleed_damage()
-
-    def inflict_bleed_damage(self):
-        print(f"🩸 {self.character.name} suffers {self.character.bleeding} bleeding damage!")
-        self.character.receive_damage(int(self.character.bleeding))
+        if total_bleeding_damage > 0:
+            print(f"🩸 {self.character.name} suffers {total_bleeding_damage} bleeding damage!")
         self.check_blood_loss_collapse()
 
     def add_bleeding_wound(self, severity, is_critical=False):
@@ -188,8 +183,7 @@ class CombatHealthManager:
             amount *= 1.5
             duration += 1
         self.bleeding_wounds.append({"amount": amount, "duration": duration})
-        total_bleeding = sum(w["amount"] for w in self.bleeding_wounds)
-        self.character.bleeding = round(min(total_bleeding, 8.0 if not is_critical else 16.0), 1)
+        self.character.bleeding = round(sum(w["amount"] for w in self.bleeding_wounds), 1)
 
     def apply_pain(self):
         if self.character.pain_penalty >= 30:
@@ -318,3 +312,8 @@ class CombatHealthManager:
         if self.total_hp <= 0:
             self.character.alive = False
             print(f"💀 {self.character.name} bleeds out!")
+
+    def recalculate_penalties(self):
+        self.character.pain_penalty = sum(5 for key, hp in self.health.items() if hp < self.initial_health.get(key, 1) * 0.5)
+        self.character.mobility_penalty = sum(5 for part in self.health if 'leg' in part and self.health[part] <= 0)
+        print(f"📉 {self.character.name} recalculates penalties: Pain {self.character.pain_penalty}%, Mobility {self.character.mobility_penalty}%")

@@ -162,7 +162,7 @@ class Adventure:
                 else:
                     print(f"  - {part.replace('_', ' ')}: {current}/{max_repairable} durability (intact)")
 
-    def combat_encounter(self, player, opponents, player_health, opponent_healths, ambush_bonus=0):
+    def combat_encounter(self, player, opponents, player_health, opponent_healths, ambush_bonus):
         round_number = 1
         first_strike = True
         self.opponent_names = {}
@@ -209,20 +209,70 @@ class Adventure:
 
                 # New: Prompt for abilities
                 print("Available active abilities: grab_rip, heavy_throw")
-                ability = input("Use ability? (name or none): ").lower()
+                ability = input("Use ability? (name or none): ").lower().strip('.')
                 roll_penalty = 0  # Reset roll_penalty
+                weapon_damage = player.weapon.get("base_damage", 10) + (player.strength // 10)  # Define here for grapple
                 if ability == "grab_rip":
-                    grab_roll = random.randint(1, 100) + player.dexterity // 10 + player.strength // 20
+                    grab_roll = random.randint(1, 100) + player.strength // 8 + player.dexterity // 5  # Ogre ~70% success
                     dodge_roll = random.randint(1, 100) + target.agility // 5
+                    print(f"Grab roll: {grab_roll} vs Dodge: {dodge_roll}")
                     if grab_roll > dodge_roll:
                         print(f"🔗 {player.name} grabs {target.name} in a vise grip!")
                         player.grapple_committed = True
                         self.grapple_flags[target.name] = player.name  # Use Adventure's grapple_flags
-                        player.consume_stamina(15)
+                        player.consume_stamina(10)  # Lowered for ogre racial trait
+                        # Immediate follow-up prompt
+                        grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower().strip('.')
+                        if grapple_choice == "rip apart":
+                            aimed_zone = input("Enter target zone for rip (e.g., left_upper_arm): ").strip().lower()
+                            rip_roll = random.randint(1, 100) + player.strength // 5
+                            resist_roll = random.randint(1, 100) + target.toughness // 5
+                            # Easier rip on limbs
+                            limb_zones = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg", "left_lower_arm", "right_lower_arm", "left_upper_arm", "right_upper_arm"]
+                            if aimed_zone in limb_zones:
+                                rip_roll += 10  # Bonus for limbs
+                            elif aimed_zone == "head":
+                                resist_roll += 10  # Harder for head
+                            print(f"Rip roll: {rip_roll} vs Resist: {resist_roll}")
+                            if rip_roll > resist_roll:
+                                print(f"💥 {player.name} rips {target.name}'s {aimed_zone}—horrific tear! 🩸 Gore sprays as the limb is torn off!")
+                                target_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)  # Full damage to one zone
+                                target.bleeding_rate += 2.4
+                                target.pain_penalty += 15
+                                target.mobility_penalty += 25
+                                target_health.recalculate_penalties()  # Immediate penalty update
+                                if player.class_name == "Ogre Ravager":
+                                    player.health += 15  # Flesh Rend heal
+                                    player.corruption_level = min(100, player.corruption_level + 5)
+                                    print(f"🩸 Rock devours the flesh, healing 15 health! Corruption rises to {player.corruption_level}%.")
+                            else:
+                                print(f"❌ {target.name} resists the rip—slips free!")
+                        elif grapple_choice == "smash ground":
+                            smash_damage = weapon_damage + 10  # Blunt + stun
+                            target_health.distribute_damage(smash_damage, "blunt")
+                            if random.random() < 0.5:
+                                target.stunned = True
+                                print(f"😵 {target.name} dazed from smash! Skip next turn.")
+                                target.skip_turn = True  # Add stun effect (skip turn)
+                        elif grapple_choice == "use as club":
+                            if len(opponents) > 1:
+                                other_target = random.choice([opp for opp in opponents if opp != target])
+                                print(f"🌀 {player.name} swings {target.name} as a club at {other_target.name}!")
+                                other_target_health = CombatHealthManager(other_target)
+                                other_target_health.distribute_damage(weapon_damage, "blunt")
+                                target_health.distribute_damage(10, "blunt")  # Damage to grappled too
+                            else:
+                                print(f"❌ No other foes—smash ground instead!")
+                                smash_damage = weapon_damage + 10
+                                target_health.distribute_damage(smash_damage, "blunt")
+                        else:
+                            print(f"🛑 {player.name} releases the grapple!")
+                        player.grapple_committed = False
+                        self.grapple_flags.pop(target.name, None)
                     else:
                         print(f"❌ {target.name} slips free from {player.name}'s grasp!")
-                        player.consume_stamina(15 // 2)
-                    continue  # Skip normal attack
+                        player.consume_stamina(5)
+                    # Remove continue here to let round proceed
                 elif ability == "heavy_throw":
                     weapon_damage += player.mass // 10 + player.strength // 5
                     roll_penalty += 20  # Accuracy penalty for throw

@@ -19,6 +19,7 @@ class Character:
         self.max_stamina = 0
         self.stamina = 0
         self.bleeding = 0
+        self.bleeding_rate = 0  # Fixed
         self.alive = True
         self.in_combat = False
         self.exhausted = False
@@ -59,6 +60,10 @@ class Character:
         self.reputation = 0
         self.grapple_committed = False  # New: Can't attack normally if grappling
         self.grappled_by = None  # New: If grappled, limits actions
+        self.stunned = False
+        self.skip_turn = False
+        self.health = self.total_hp  # Added for Flesh Rend heal
+        self.tags = []  # Added for elite check
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -101,6 +106,7 @@ class Character:
             self.weapon_skill -= 50  # -50% skill if arm crippled (can't grip properly)
             print(f"⚠️ {self.name}'s {part.replace('_', ' ')} crippled—weapon skill reduced by 50%!")
         self.pain_penalty += 3
+        self.pain_penalty = min(100, self.pain_penalty)  # Cap at 100
         self.stress_level = min(100, self.stress_level + 5)
         print(f"😖 {self.name} suffers pain penalties! Total penalty: {self.pain_penalty}%")
         print(f"🧠 {self.name}'s stress level rises to {self.stress_level}%")
