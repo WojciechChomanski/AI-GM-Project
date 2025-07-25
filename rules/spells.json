@@ -21,5 +21,51 @@
     "difficulty": 30,
     "corruption_chance": 0.05,
     "description": "A vision grants an ally fleeting protection."
-  }
+  },
+
+"shadow_bind": {
+"name": "Shadow Bind",
+"type": "veil",
+"damage": 0,
+"damage_type": "restraint",
+"health_cost": 4,
+"stamina_cost": 7,
+"difficulty": 32,
+"corruption_chance": 0.15,
+"description": "Tendrils from the Veil immobilize foe, but caster feels phantom restraints."
+},
+"decay_touch": {
+"name": "Decay Touch",
+"type": "necromantic",
+"damage": 12,
+"damage_type": "corrosive",
+"health_cost": 6,
+"stamina_cost": 9,
+"difficulty": 40,
+"corruption_chance": 0.2,
+"description": "Wither flesh on contact, caster's skin cracks and ages prematurely."
+},
+"veil_echo": {
+"name": "Veil Echo",
+"type": "prophetic",
+"effect": {
+"fear_intensity": 10
+},
+"health_cost": 5,
+"stamina_cost": 8,
+"difficulty": 35,
+"corruption_chance": 0.12,
+"description": "Whispers from beyond induce terror, caster hears endless echoes in mind."
+},
+"soul_leech": {
+"name": "Soul Leech",
+"type": "veil",
+"damage": 15,
+"damage_type": "draining",
+"health_cost": 7,
+"stamina_cost": 10,
+"difficulty": 45,
+"corruption_chance": 0.25,
+"description": "Drain life to heal self, but invites Veil entities to possess caster."
+}
 }
