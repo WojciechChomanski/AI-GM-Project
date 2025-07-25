@@ -1,31 +1,141 @@
 {
-  "2H_sword": {
-    "default_stance": "wrath_guard",
-    "stances": {
-      "vom_tag": {
-        "type": "offensive",
-        "name": "Vom Tag (From the Roof)",
-        "attack_bonus": 3,
-        "defense_penalty": 1,
-        "stamina_modifier": {"offensive": -1, "defensive": 1},
-        "description": "A high guard that favors powerful downward strikes and aggressive pressure."
-      },
-      "half_sword": {
-        "type": "defensive",
-        "name": "Half-Swording",
-        "attack_penalty": 3,
-        "defense_bonus": 5,
-        "stamina_modifier": {"offensive": 1, "defensive": -1},
-        "description": "A close-range grappling stance allowing precise thrusts and strong defensive control."
-      },
-      "wrath_guard": {
-        "type": "neutral",
-        "name": "Wrath Guard",
-        "initiative_bonus": 1,
-        "fatigue_recovery": 1,
-        "stamina_modifier": {"offensive": 0, "defensive": 0},
-        "description": "A balanced stance ready to shift into attack or defense quickly."
-      }
-    }
-  }
+"2H_sword": {
+"default_stance": "wrath_guard",
+"stances": {
+"vom_tag": {
+"type": "offensive",
+"name": "Vom Tag (From the Roof)",
+"attack_bonus": 3,
+"defense_penalty": 1,
+"stamina_modifier": {"offensive": -1, "defensive": 1},
+"description": "A high guard that favors powerful downward strikes and aggressive pressure."
+},
+"half_sword": {
+"type": "defensive",
+"name": "Half-Swording",
+"attack_penalty": 3,
+"defense_bonus": 5,
+"stamina_modifier": {"offensive": 1, "defensive": -1},
+"description": "A close-range grappling stance allowing precise thrusts and strong defensive control."
+},
+"wrath_guard": {
+"type": "neutral",
+"name": "Wrath Guard",
+"initiative_bonus": 1,
+"fatigue_recovery": 1,
+"stamina_modifier": {"offensive": 0, "defensive": 0},
+"description": "A balanced stance ready to shift into attack or defense quickly."
+},
+"ochs": {
+"type": "offensive",
+"name": "Ochs (Ox)",
+"attack_bonus": 4,
+"defense_penalty": 2,
+"stamina_modifier": {"offensive": -1, "defensive": 1},
+"description": "High guard with point forward at head height, simulating ox horns, good for thrusts from above."
+},
+"pflug": {
+"type": "defensive",
+"name": "Pflug (Plow)",
+"attack_penalty": 2,
+"defense_bonus": 4,
+"stamina_modifier": {"offensive": 1, "defensive": -1},
+"description": "Low guard at hip height, point forward, mimicking a plow, strong for thrusts and parries."
+},
+"alber": {
+"type": "neutral",
+"name": "Alber (Fool)",
+"initiative_bonus": 2,
+"fatigue_recovery": 1,
+"stamina_modifier": {"offensive": 0, "defensive": 0},
+"description": "Deceptive low guard with point down, provoking attacks to counter swiftly."
+},
+"porta_di_ferro": {
+"type": "defensive",
+"name": "Porta di Ferro (Iron Door)",
+"attack_penalty": 4,
+"defense_bonus": 6,
+"stamina_modifier": {"offensive": 2, "defensive": -2},
+"description": "Strong low guard close to the ground, ideal for awaiting and breaking attacks."
+},
+"posta_di_donna": {
+"type": "offensive",
+"name": "Posta di Donna (Woman’s Guard)",
+"attack_bonus": 5,
+"defense_penalty": 3,
+"stamina_modifier": {"offensive": -2, "defensive": 2},
+"description": "High guard above shoulder, breaks other guards with powerful strikes."
+},
+"posta_di_fenestra": {
+"type": "neutral",
+"name": "Posta di Fenestra (Window Guard)",
+"initiative_bonus": 3,
+"fatigue_recovery": 2,
+"stamina_modifier": {"offensive": 0, "defensive": 0},
+"description": "Deceptive high guard, quick for covers, strikes, and transitions."
+},
+"dente_di_zenghiaro": {
+"type": "defensive",
+"name": "Dente di Zenghiaro (Boar’s Tooth)",
+"attack_penalty": 1,
+"defense_bonus": 3,
+"stamina_modifier": {"offensive": 1, "defensive": -1},
+"description": "Low guard mimicking boar’s tusk, strong for underhand thrusts."
 }
+}
+},
+"1H_sword": {
+"default_stance": "wrath_guard",
+"stances": {
+"vom_tag": {
+"type": "offensive",
+"name": "Vom Tag (From the Roof)",
+"attack_bonus": 3,
+"defense_penalty": 1,
+"stamina_modifier": {"offensive": -1, "defensive": 1},
+"description": "High guard for powerful downward strikes."
+},
+"half_sword": {
+"type": "defensive",
+"name": "Half-Swording",
+"attack_penalty": 3,
+"defense_bonus": 5,
+"stamina_modifier": {"offensive": 1, "defensive": -1},
+"description": "Close-range stance for precise thrusts."
+},
+"wrath_guard": {
+"type": "neutral",
+"name": "Wrath Guard",
+"initiative_bonus": 1,
+"fatigue_recovery": 1,
+"stamina_modifier": {"offensive": 0, "defensive": 0},
+"description": "Balanced stance for quick shifts."
+},
+"guardia_alta": {
+"type": "offensive",
+"name": "Guardia Alta (High Guard)",
+"attack_bonus": 4,
+"defense_penalty": 2,
+"stamina_modifier": {"offensive": -1, "defensive": 1},
+"description": "High guard for downward cuts and thrusts."
+},
+"porta_di_ferro": {
+"type": "defensive",
+"name": "Porta di Ferro (Iron Gate)",
+"attack_penalty": 2,
+"defense_bonus": 4,
+"stamina_modifier": {"offensive": 1, "defensive": -1},
+"description": "Low guard strong against incoming attacks."
+},
+"guardia_di_testa": {
+"type": "neutral",
+"name": "Guardia di Testa (Head Guard)",
+"initiative_bonus": 2,
+"fatigue_recovery": 1,
+"stamina_modifier": {"offensive": 0, "defensive": 0},
+"description": "Protects the head, ready for counters."
+}
+}
+}
+}
+
