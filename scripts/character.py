@@ -64,6 +64,9 @@ class Character:
         self.skip_turn = False
         self.health = self.total_hp  # Added for Flesh Rend heal
         self.tags = []  # Added for elite check
+        self.calories_consumed = 0  # Daily tracking
+        self.hunger_level = 0  # Accumulates if underfed
+        self.allies = []  # Assume list of ally Character objects, populate as needed
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -242,6 +245,26 @@ class Character:
             return False
 
         return True
+
+    def consume_food(self, calories):
+        self.calories_consumed += calories
+        if self.race == "Ogre" and self.calories_consumed < 6000:
+            self.hunger_level += 1
+            if self.hunger_level >= 3:  # Example threshold
+                print(f"⚠️ {self.name} hungers—10% chance to attack ally.")
+                if random.random() < 0.1:
+                    if self.allies:
+                        ally = random.choice(self.allies)
+                        print(f"🍖 {self.name} attacks {ally.name} in hunger!")
+                        ally.take_damage_to_zone(random.choice(["left_upper_arm", "right_upper_arm"]), 20)
+                        ally.bleeding_rate += 1.0
+                        ally.pain_penalty += 10
+                        print(f"🩸 {ally.name} bleeds and suffers pain!")
+
+    def reset_daily(self):
+        if self.race == "Ogre" and self.calories_consumed < 6000:
+            self.hunger_level += (6000 - self.calories_consumed) // 1000
+        self.calories_consumed = 0
 
 def load_stats(race, gender):
     path = os.path.join(os.path.dirname(__file__), "../rules/stats.json")

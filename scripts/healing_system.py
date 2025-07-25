@@ -19,6 +19,7 @@ class HealingSystem:
         roll = random.randint(1, 100)
         dexterity_bonus = healer.dexterity // 5
         pain_penalty = min(healer.pain_penalty, 20)
+        roll = random.randint(1, 100)
         total_roll = roll + dexterity_bonus - pain_penalty
 
         print(f"🩹 {healer.name} attempts bandaging with a roll of {total_roll} (raw roll: {roll}, dexterity: +{dexterity_bonus}, pain: -{pain_penalty}) against difficulty {difficulty}.")
@@ -32,3 +33,18 @@ class HealingSystem:
 
     def roll_check(self):
         return random.randint(1, 100)
+
+    def fast_heal(self, character):
+        if character.race == "Ogre":
+            if character.calories_consumed >= 6000:
+                heal_rate = 1.5  # 50% faster
+                healed = int(character.total_hp * 0.1 * heal_rate)  # Example rest heal
+                character.health = min(character.total_hp, character.health + healed)
+                print(f"🩹 {character.name} heals {healed} HP (fast healing)!")
+            else:
+                print(f"⚠️ {character.name} starves—reduced healing.")
+                # Apply hunger effects
+                hunger_roll = random.randint(1, 100)
+                if hunger_roll < 10:
+                    print(f"🍖 {character.name} attacks ally in hunger desperation!")
+                    # Implement attack

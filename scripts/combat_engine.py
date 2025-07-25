@@ -36,13 +36,55 @@ class CombatEngine:
         self.upper_leg_priority = ["left_upper_leg", "right_upper_leg"]
         self.grapple_flags = {}  # New: Track grappled targets
         self.rules = self.load_combat_rules()
+        self.berserk_states = {}  # Track berserk per character
+        self.claustrophobia_checks = {}  # Track claustrophobia per character/environment
 
     def load_combat_rules(self):
         path = os.path.join(os.path.dirname(__file__), "../rules/combat_rules.json")
         with open(path, 'r') as f:
             return json.load(f)
 
-    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[]):
+    def check_berserk(self, character):
+        if character.race == "Ogre" and sum(character.body_parts.values()) / character.total_hp <= 0.1:
+            if character.name not in self.berserk_states:
+                self.berserk_states[character.name] = True
+                print(f"🩸 {character.name} enters Berserk Rage! +15 attack, -20 accuracy, ignores stamina, 5% collapse risk, double bleeding.")
+            return True
+        return False
+
+    def apply_berserk_effects(self, character, outcome):
+        if self.berserk_states.get(character.name, False):
+            outcome["attack_roll"] += 15
+            outcome["attack_roll"] -= 20  # Accuracy penalty
+            # Ignore stamina limits (handled in consume_stamina)
+            character.bleeding_rate *= 2  # Double bleeding
+            collapse_roll = random.random()
+            if collapse_roll < 0.05:
+                print(f"💥 {character.name} collapses from rage!")
+                character.alive = False
+                outcome["result"] = "collapse"
+
+    def check_claustrophobia(self, character, environment="open"):
+        if character.race == "Ogre" and environment == "tight":
+            if character.name not in self.claustrophobia_checks:
+                self.claustrophobia_checks[character.name] = 0
+            roll = random.randint(1, 100)
+            if roll < 25:  # Difficulty 25
+                print(f"😱 {character.name} panics in tight space! Deals 10 blunt to surroundings.")
+                self.claustrophobia_checks[character.name] += 1
+                if self.claustrophobia_checks[character.name] >= 3:
+                    print(f"⚠️ {character.name} attacks allies in panic!")
+                    # Implement ally attack logic here
+                self.fear_system.trigger_fear(character, intensity=8)
+            return True
+        return False
+
+    def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[], environment="open"):
+        self.check_claustrophobia(attacker, environment)
+        if self.check_berserk(attacker):
+            # Apply in roll calculation below
+            pass
+
         if defender.stunned:
             print(f"😵 {defender.name} is stunned—skips turn!")
             defender.stunned = False
@@ -242,6 +284,8 @@ class CombatEngine:
             "spell_used": spell_name
         }
 
+        self.apply_berserk_effects(attacker, outcome)
+
         if spell_name:
             from magic_system import MagicSystem
             magic = MagicSystem()
@@ -347,7 +391,7 @@ class CombatEngine:
         return roll <= threshold
 
     def apply_damage(self, attacker, defender, base_damage, damage_type, defender_health, aimed_zone, critical=False):
-        weapon_type = attacker.weapon.get("type") if isinstance(attacker.weapon, dict) else "none"  # Fix for string weapon
+        weapon_type = attacker.weapon.get("type") if isinstance(attacker.weapon, dict) else "none"
         penetration_factor = self.armor_penetration.get(weapon_type, 0.0)
         durability_multiplier = self.durability_damage_multiplier.get(damage_type, 1.0)
 
@@ -406,7 +450,7 @@ class CombatEngine:
         print(f"Riposte roll: {riposte_roll} vs threshold {threshold}")
         if riposte_roll > threshold:
             print(f"⚡️ {defender.name} counterattacks immediately!")
-            self.apply_damage(defender, attacker, base_damage=5, damage_type="blunt", defender_health=CombatHealthManager(attacker), aimed_zone=None)
+            self.apply_damage(defender, attacker, 5, "blunt", CombatHealthManager(attacker), None, False)
         else:
             print(f"{defender.name} misses the riposte opportunity.")
 
@@ -432,3 +476,13 @@ class CombatEngine:
             character.wear_weapon()
         elif defense_type == "Dodge":
             character.apply_dodge_penalty()
+
+    def consume_stamina(self, character, amount):
+        if self.berserk_states.get(character.name, False) and character.stamina < 0:
+            print(f"⚠️ {character.name} ignores stamina in rage!")
+            return  # No further penalty
+        total_cost = amount + character.stamina_cost_modifier
+        character.stamina -= total_cost
+        if character.stamina <= 0:
+            print(f"⚠️ {character.name} is pushing beyond limits! Stamina: {character.stamina}/{character.max_stamina}")
+            character.stress_level = min(100, character.stress_level + 2)
