@@ -19,7 +19,7 @@ class Character:
         self.max_stamina = 0
         self.stamina = 0
         self.bleeding = 0
-        self.bleeding_rate = 0  # Fixed
+        self.bleeding_rate = 0
         self.alive = True
         self.in_combat = False
         self.exhausted = False
@@ -38,7 +38,7 @@ class Character:
             "stomach": 3, "chest": 6, "left_lower_arm": 1, "right_lower_arm": 1,
             "left_upper_arm": 2, "right_upper_arm": 2, "head": 2, "throat": 1, "groin": 1
         }
-        self.compromised_limbs = []  # New: Track severed/crippled limbs
+        self.compromised_limbs = []
         self.pain_penalty = 0
         self.mobility_penalty = 0
         self.stance = "neutral"
@@ -58,15 +58,16 @@ class Character:
         self.weapon_skill = 0
         self.faith = 0
         self.reputation = 0
-        self.grapple_committed = False  # New: Can't attack normally if grappling
-        self.grappled_by = None  # New: If grappled, limits actions
+        self.grapple_committed = False
+        self.grappled_by = None
         self.stunned = False
         self.skip_turn = False
-        self.health = self.total_hp  # Added for Flesh Rend heal
-        self.tags = []  # Added for elite check
-        self.calories_consumed = 0  # Daily tracking
-        self.hunger_level = 0  # Accumulates if underfed
+        self.health = self.total_hp
+        self.tags = []
+        self.calories_consumed = 0
+        self.hunger_level = 0
         self.allies = []  # Assume list of ally Character objects, populate as needed
+        self.xp = 0  # Added for progression
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -100,16 +101,16 @@ class Character:
             print(f"⚠️ Invalid zone: {zone}")
 
     def on_part_crippled(self, part):
-        self.compromised_limbs.append(part)  # Track crippled
+        self.compromised_limbs.append(part)
         if part in ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg"]:
             self.mobility_penalty += 25
             print(f"⚠️ {self.name}'s {part.replace('_', ' ')} is crippled!")
             print(f"⛔ {self.name}'s mobility reduced by {self.mobility_penalty}% due to crippled legs!")
         if 'arm' in part:
-            self.weapon_skill -= 50  # -50% skill if arm crippled (can't grip properly)
+            self.weapon_skill -= 50
             print(f"⚠️ {self.name}'s {part.replace('_', ' ')} crippled—weapon skill reduced by 50%!")
         self.pain_penalty += 3
-        self.pain_penalty = min(100, self.pain_penalty)  # Cap at 100
+        self.pain_penalty = min(100, self.pain_penalty)
         self.stress_level = min(100, self.stress_level + 5)
         print(f"😖 {self.name} suffers pain penalties! Total penalty: {self.pain_penalty}%")
         print(f"🧠 {self.name}'s stress level rises to {self.stress_level}%")
@@ -236,7 +237,6 @@ class Character:
             print(f"⚠️ {self.name} lacks strength to wield {weapon['name']} (needs {min_str} STR)!")
             return False
 
-        # Mass/Grip Check
         if self.mass > 150 and size_class == "small":  # Ogres can't use small weapons
             print(f"⚠️ {self.name}'s grip too large for {weapon['name']}!")
             return False
@@ -250,16 +250,24 @@ class Character:
         self.calories_consumed += calories
         if self.race == "Ogre" and self.calories_consumed < 6000:
             self.hunger_level += 1
-            if self.hunger_level >= 3:  # Example threshold
+            if self.hunger_level >= 3:
                 print(f"⚠️ {self.name} hungers—10% chance to attack ally.")
-                if random.random() < 0.1:
-                    if self.allies:
-                        ally = random.choice(self.allies)
-                        print(f"🍖 {self.name} attacks {ally.name} in hunger!")
-                        ally.take_damage_to_zone(random.choice(["left_upper_arm", "right_upper_arm"]), 20)
-                        ally.bleeding_rate += 1.0
-                        ally.pain_penalty += 10
-                        print(f"🩸 {ally.name} bleeds and suffers pain!")
+                if random.random() < 0.1 and self.allies:
+                    ally = random.choice(self.allies)
+                    print(f"🍖 {self.name} attacks {ally.name} in hunger!")
+                    limb = random.choice(["left_upper_arm", "right_upper_arm"])
+                    ally.take_damage_to_zone(limb, 20)
+                    ally.bleeding_rate += 1.0
+                    ally.pain_penalty += 10
+                    ally.stress_level += 10
+                    self.health = min(self.total_hp, self.health + 5)  # Ogre heals from eating
+                    print(f"🩸 {ally.name} bleeds and suffers pain! {self.name} gains 5 HP from flesh!")
+                    # Morale check for ally
+                    roll = random.randint(1, 100)
+                    threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10
+                    if roll > threshold:
+                        print(f"💔 {ally.name} panics from the attack and may flee!")
+                        ally.in_combat = False if "elite" not in ally.tags else ally.in_combat
 
     def reset_daily(self):
         if self.race == "Ogre" and self.calories_consumed < 6000:

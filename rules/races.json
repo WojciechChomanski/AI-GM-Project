@@ -2,11 +2,11 @@
   "Human": {
     "description": "Born after the Fall, carrying the Breath of the Maker, a divine spark against the Veil’s corruption.",
     "lore": "Humans wield divine power, feared by demons, coveted by elves, harvested by dwarves. Their versatility is their strength.",
-    "mass": 80, 
+    "mass": 80,
     "stats": {
       "hp_bonus": 0,
       "stamina_bonus": 0,
-      "strength_modifier": 0, 
+      "strength_modifier": 0,
       "agility_modifier": 0,
       "intelligence_modifier": 0,
       "charisma_modifier": 0
@@ -29,11 +29,11 @@
   "Elf": {
     "description": "Immortal heirs of Eve, agile and perceptive, wielding Veil magic at corruption’s cost.",
     "lore": "Elves weave mystical armor and master ranged combat in twilight forests, using humans to evade the Veil’s taint.",
-    "mass": 65, 
+    "mass": 65,
     "stats": {
-      "hp_bonus": 0, 
+      "hp_bonus": 0,
       "stamina_bonus": 10,
-      "strength_modifier": 0, 
+      "strength_modifier": 0,
       "agility_modifier": 5,
       "intelligence_modifier": 2,
       "charisma_modifier": 1
@@ -52,17 +52,17 @@
       "allowed_weapons": ["composite_bow", "throwing_knife", "spear", "sword", "dagger"],
       "forbidden_weapons": ["hammer", "axe", "crossbow", "flintlock"],
       "allowed_armor": ["light", "medium"],
-      "armor_preference": "mystical" 
+      "armor_preference": "mystical"
     }
   },
   "Dwarf": {
     "description": "Dense, resilient sons of Adam, forged in high-gravity holds, wielding axes and gunpowder.",
     "lore": "Dwarves craft rune-forged relics and reject elven blades, their females carving sacred runes in stone cities.",
-    "mass": 100, 
+    "mass": 100,
     "stats": {
       "hp_bonus": 20,
       "stamina_bonus": 15,
-      "strength_modifier": 5, 
+      "strength_modifier": 5,
       "agility_modifier": -2,
       "intelligence_modifier": 0,
       "charisma_modifier": -2
@@ -85,19 +85,19 @@
       "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
       "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
       "allowed_armor": ["medium", "heavy"],
-      "armor_preference": "forged" 
+      "armor_preference": "forged"
     }
   },
   "Ogre": {
-    "description": "Manufactured giants, twisted from boys into 600 kg brutes with childlike minds.",
-    "lore": "Ogres wield improvised weapons, their bear-like mass crushing foes. No females exist, and crafting eludes them.",
-    "mass": 600, 
+    "description": "Manufactured giants, twisted from boys into 600 kg brutes with childlike minds, built for war and logistics.",
+    "lore": "Ogres wield improvised weapons, crushing foes with bear-like mass. Designed for war’s burdens—carrying supplies, enduring slaughter—their childlike minds shrug off trauma but crave open spaces. In Cursed Swamps, they consume tainted meat (+corruption); Dark Elves exploit their hunger. Claustrophobia keeps them from cities, favoring open battlefields or gate entries.",
+    "mass": 600,
     "stats": {
       "hp_bonus": 100,
       "stamina_bonus": 500,
-      "strength_modifier": 20, 
+      "strength_modifier": 20,
       "agility_modifier": -10,
-      "intelligence_modifier": -15, 
+      "intelligence_modifier": -15,
       "charisma_modifier": -10
     },
     "abilities": [
@@ -119,11 +119,19 @@
       },
       {
         "name": "Claustrophobia",
-        "description": "In tight spaces, difficulty 25 check every 10 seconds; fail deals 10 blunt damage to surroundings, 3 fails attacks allies; fear intensity 8."
+        "description": "In tight spaces, difficulty 25 check every 10 seconds; fail deals 10 blunt damage to surroundings, 3 fails attacks allies; fear intensity 8. Avoid indoor spaces; prefer open areas—no interest in cities/houses/castles unless open-gate entry."
       },
       {
         "name": "High Caloric Need & Fast Healing",
-        "description": "Require 6000 calories daily; hunger may trigger cannibalistic desperation (10% chance to attack ally for 20 damage, rip limb); heal 50% faster for non-severed wounds."
+        "description": "Require 6000 calories daily; hunger may trigger cannibalistic desperation (10% chance to attack ally for 20 damage, rip limb); heal 50% faster for non-severed wounds as long as fed."
+      },
+      {
+        "name": "Logistics Beast",
+        "description": "Carry 3x normal weight without encumbrance penalties (gear/food/equipment). Built for war logistics—transport supplies effortlessly."
+      },
+      {
+        "name": "Childlike Mind",
+        "description": "Immune to war trauma/stress (no morale penalties from bloodshed/combat; mind like 6-8 year-old—simple, unaffected by horror)."
       }
     ],
     "magic": {

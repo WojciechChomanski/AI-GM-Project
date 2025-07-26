@@ -1,43 +1,103 @@
 {
   "Warrior": {
     "description": "A master of melee combat, built for war.",
+    "lore": "Warriors thrive in Iron Wastes battles, forging alliances with Havoc Warriors for brutal efficiency.",
     "stats": {
       "strength_modifier": 2,
       "attack_cost_reduction": 1
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300
+      },
+      "unlocks": {
+        "level_2": "Brutal Strike (+5 damage, 8 stamina)",
+        "level_3": "Iron Wall (+20% block)"
+      }
     }
   },
   "Mage": {
     "description": "A wielder of Veil or Breath magic, bending reality.",
+    "lore": "Mages draw from the Veil in Cursed Swamps, risking corruption exploited by Dark Elves.",
     "stats": {
       "intelligence_modifier": 2
     },
     "restrictions": {
       "gender": "Female",
       "race": "Human"
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300
+      },
+      "unlocks": {
+        "level_2": "Veil Whisper (+5 defense, 6 stamina, 0.05 corruption)",
+        "level_3": "Stormrend (AOE damage, high HP cost, charred risk)"
+      }
     }
   },
   "Rogue": {
     "description": "A shadow in the empire, striking unseen.",
+    "lore": "Rogues navigate Beastmen territories, using agility to evade Veil-tainted traps.",
     "stats": {
       "agility_modifier": 2,
       "dodge_bonus": 5
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300
+      },
+      "unlocks": {
+        "level_2": "Shadow Strike (+10 ambush damage)",
+        "level_3": "Eagle Eye (+15 perception)"
+      }
     }
   },
   "Cleric": {
     "description": "A conduit of the Breath, healing and smiting.",
+    "lore": "Clerics purify Veil corruption in human settlements, clashing with Dark Elves' manipulation.",
     "stats": {
       "willpower_modifier": 2,
       "healing_bonus": 10
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300
+      },
+      "unlocks": {
+        "level_2": "Divine Shield (+10 defense buff)",
+        "level_3": "Breath Purge (remove corruption, 10 stamina)"
+      }
     }
   },
   "Paladin": {
     "description": "A holy warrior, champion of the Breath.",
+    "lore": "Paladins lead charges against Beastmen hordes, their faith warding off Veil influences.",
     "stats": {
       "strength_modifier": 2,
       "willpower_modifier": 1,
       "healing_bonus": 5
     },
-    "restrictions": {}
+    "restrictions": {},
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300
+      },
+      "unlocks": {
+        "level_2": "Smiting Strike (+10 holy damage)",
+        "level_3": "Aura of Faith (+5 ally resistance)"
+      }
+    }
   },
   "Outlaw_Mercenary_Warrior": {
     "description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
@@ -101,9 +161,9 @@
   },
   "Ogre_Brute": {
     "description": "Massive powerhouse wielding improvised weapons like grizzly swipes—devastating hits, but slow and exhausting.",
+    "lore": "Brutes roam Iron Wastes, crushing Beastmen, but their hunger draws Dark Elves' manipulative alliances.",
     "stats": {
-      "strength_modifier": 5,
-      "toughness_modifier": 3,
+      "strength_modifier": 4,  
       "agility_modifier": -2,
       "endurance_modifier": 2,
       "mass_base": 600
@@ -152,8 +212,9 @@
   },
   "Ogre Ravager": {
     "description": "Brutal melee destroyer driven by hunger, tearing foes apart in grimdark frenzy.",
+    "lore": "Ravagers devour in Cursed Swamps, their corruption drawing Dark Elves as handlers.",
     "stats": {
-      "strength": 5,
+      "strength": 4,  
       "toughness": 3,
       "dexterity": -2
     },
@@ -161,7 +222,7 @@
       "flesh_rend": {
         "level": 1,
         "type": "active",
-        "description": "Enhanced grab_rip with devour heal on rip success.",
+        "description": "Enhanced grab_rip with devour heal on rip success (+10 HP, +5 corruption).",
         "stamina_cost": 10
       },
       "gluttons_vitality": {
@@ -172,13 +233,24 @@
       "devour_charge": {
         "level": 5,
         "type": "active",
-        "description": "Throw + bonus attack, with self-stun risk.",
+        "description": "Throw + bonus attack, with self-stun risk (5% chance).",
         "stamina_cost": 15
       }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "level_up_stats": {"strength": 2, "toughness": 2}
     }
   },
   "Ogre Behemoth": {
     "description": "Immovable tank absorbing punishment, guarding in a world of endless pain.",
+    "lore": "Behemoths stand as sentinels in Iron Wastes, their bulk a weapon against Havoc Warriors' assaults.",
     "stats": {
       "toughness": 5,
       "strength": 3,
@@ -188,23 +260,34 @@
       "unyielding_bulk": {
         "level": 1,
         "type": "passive",
-        "description": "Boost mass penalty/stun, reduce incoming damage."
+        "description": "Boost mass penalty/stun, reduce incoming damage by 10%."
       },
       "earthquake_slam": {
         "level": 3,
         "type": "active",
-        "description": "AOE slam on grapple, stun multiple foes.",
+        "description": "AOE slam on grapple, stun multiple foes (stamina 10).",
         "stamina_cost": 10
       },
       "flesh_shield": {
         "level": 5,
         "type": "active",
-        "description": "Use grabbed as shield/club for defense/damage."
+        "description": "Use grabbed as shield/club for defense/damage (+20 block, 15 damage)."
       }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "level_up_stats": {"toughness": 3, "strength": 1}
     }
   },
   "Ogre Flesh Eater": {
     "description": "Corrupted healer consuming foes for regeneration in a starving world.",
+    "lore": "Flesh Eaters lurk in Cursed Swamps, their voracity a tool for Dark Elves' dark rituals.",
     "stats": {
       "strength": 4,
       "toughness": 4,
@@ -214,24 +297,35 @@
       "consume_rip": {
         "level": 1,
         "type": "active",
-        "description": "Rip with heal/corruption gain.",
+        "description": "Rip with heal/corruption gain (heal 15 HP, +10 corruption).",
         "stamina_cost": 10
       },
       "regenerative_feast": {
         "level": 3,
         "type": "passive",
-        "description": "Regen on kill, +bleeding to grabbed, corruption penalty."
+        "description": "Regen on kill (+20 HP), +bleeding to grabbed, corruption penalty (+5)."
       },
       "voracious_grasp": {
         "level": 5,
         "type": "active",
-        "description": "Auto-rip on grab with high heal/self-stun risk.",
+        "description": "Auto-rip on grab with high heal/self-stun risk (heal 30 HP, 10% stun).",
         "stamina_cost": 12
       }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "level_up_stats": {"toughness": 2, "strength": 2}
     }
   },
   "Ogre Stormbreaker": {
     "description": "Siege specialist destroying defenses in a crumbling world.",
+    "lore": "Stormbreakers breach Beastmen strongholds in Iron Wastes, their rage a beacon for Havoc Warriors.",
     "stats": {
       "strength": 5,
       "perception": 2,
@@ -241,20 +335,30 @@
       "armor_crusher": {
         "level": 1,
         "type": "passive",
-        "description": "Boost penetration/durability damage, ignore armor on throws."
+        "description": "Boost penetration/durability damage (+20%), ignore armor on throws."
       },
       "shatter_throw": {
         "level": 3,
         "type": "active",
-        "description": "Throw with armor break.",
+        "description": "Throw with armor break (stamina 10, +30 durability damage).",
         "stamina_cost": 10
       },
       "rampage_grip": {
         "level": 5,
         "type": "active",
-        "description": "Chain rip + slam AOE, with recoil risk.",
+        "description": "Chain rip + slam AOE (damage 25, stamina 15, recoil risk 5%).",
         "stamina_cost": 15
       }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "level_up_stats": {"strength": 3, "perception": 1}
     }
   }
 }
