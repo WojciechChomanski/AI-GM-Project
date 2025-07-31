@@ -1,7 +1,7 @@
 {
   "Human": {
     "description": "Born after the Fall, carrying the Breath of the Maker, a divine spark against the Veil’s corruption.",
-    "lore": "Humans wield divine power, feared by demons, coveted by elves, harvested by dwarves. Their versatility is their strength.",
+    "lore": "Humans wield divine power, feared by demons, coveted by elves, harvested by dwarves. Their versatility is their strength. Male Breath magic counters corruption; females risk Veil’s chaos.",
     "mass": 80,
     "stats": {
       "hp_bonus": 0,
@@ -14,12 +14,15 @@
     "abilities": [
       {
         "name": "Breath of the Maker",
-        "description": "Access divine classes (Paladin, Cleric). +5 resistance to Veil corruption."
+        "description": "Access divine classes (Paladin, Cleric) for males. +5 resistance to Veil corruption."
       }
     ],
     "magic": {
-      "type": "breath",
-      "restrictions": {"gender": "Female"}
+      "type": ["breath", "veil"],
+      "restrictions": {
+        "breath": {"gender": "Male"},
+        "veil": {"gender": "Female", "corruption_risk": 0.1, "taint_mark": {"hunt_check_bonus": 5}}
+      }
     },
     "equipment": {
       "allowed_weapons": ["sword", "dagger", "spear", "bow", "crossbow", "flintlock", "hammer", "axe"],
@@ -28,7 +31,7 @@
   },
   "Elf": {
     "description": "Immortal heirs of Eve, agile and perceptive, wielding Veil magic at corruption’s cost.",
-    "lore": "Elves weave mystical armor and master ranged combat in twilight forests, using humans to evade the Veil’s taint.",
+    "lore": "Elves weave mystical armor and master ranged combat in twilight forests, using humans to offload Veil’s taint. Female Veil mages face corruption and sterility risks.",
     "mass": 65,
     "stats": {
       "hp_bonus": 0,
@@ -46,7 +49,7 @@
     ],
     "magic": {
       "type": "veil",
-      "restrictions": {"corruption_risk": 0.1}
+      "restrictions": {"gender": "Female", "corruption_risk": 0.15, "taint_mark": {"hunt_check_bonus": 5}}
     },
     "equipment": {
       "allowed_weapons": ["composite_bow", "throwing_knife", "spear", "sword", "dagger"],

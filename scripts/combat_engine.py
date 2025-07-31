@@ -1,5 +1,3 @@
-# ✅ Updated: combat_engine.py for ogre mechanics
-
 import random
 import json
 import os
@@ -8,11 +6,13 @@ from character import Character
 from stance_logic import apply_stance_modifiers, get_stamina_cost_modifier
 from maneuver_handler import ManeuverHandler
 from fear_system import FearSystem
+from magic_system import MagicSystem
 
 class CombatEngine:
     def __init__(self):
         self.maneuvers = ManeuverHandler()
         self.fear_system = FearSystem()
+        self.magic_system = MagicSystem()
         self.armor_penetration = {
             "warhammer": 0.3, "flanged_mace": 0.25, "battle_axe": 0.15, "sword": 0.05, "claymore": 0.05,
             "dagger": 0.1, "three_edged_dagger": 0.4, "halberd": 0.2, "saber": 0.05, "rapier": 0.15,
@@ -34,10 +34,10 @@ class CombatEngine:
         self.last_outcome = {}
         self.stance_locks = {}
         self.upper_leg_priority = ["left_upper_leg", "right_upper_leg"]
-        self.grapple_flags = {}  # New: Track grappled targets
+        self.grapple_flags = {}
         self.rules = self.load_combat_rules()
-        self.berserk_states = {}  # Track berserk per character
-        self.claustrophobia_checks = {}  # Track claustrophobia per character/environment
+        self.berserk_states = {}
+        self.claustrophobia_checks = {}
 
     def load_combat_rules(self):
         path = os.path.join(os.path.dirname(__file__), "../rules/combat_rules.json")
@@ -55,9 +55,8 @@ class CombatEngine:
     def apply_berserk_effects(self, character, outcome):
         if self.berserk_states.get(character.name, False):
             outcome["attack_roll"] += 15
-            outcome["attack_roll"] -= 20  # Accuracy penalty
-            # Ignore stamina limits (handled in consume_stamina)
-            character.bleeding_rate *= 2  # Double bleeding
+            outcome["attack_roll"] -= 20
+            character.bleeding_rate *= 2
             collapse_roll = random.random()
             if collapse_roll < 0.05:
                 print(f"💥 {character.name} collapses from rage!")
@@ -69,12 +68,25 @@ class CombatEngine:
             if character.name not in self.claustrophobia_checks:
                 self.claustrophobia_checks[character.name] = 0
             roll = random.randint(1, 100)
-            if roll < 25:  # Difficulty 25
+            if roll < 25:
                 print(f"😱 {character.name} panics in tight space! Deals 10 blunt to surroundings.")
                 self.claustrophobia_checks[character.name] += 1
                 if self.claustrophobia_checks[character.name] >= 3:
                     print(f"⚠️ {character.name} attacks allies in panic!")
-                    # Implement ally attack logic here
+                    if character.allies:
+                        ally = random.choice(character.allies)
+                        print(f"🍖 {character.name} attacks {ally.name} in panic!")
+                        limb = random.choice(["left_upper_arm", "right_upper_arm"])
+                        ally.take_damage_to_zone(limb, 20)
+                        ally.bleeding_rate += 1.0
+                        ally.pain_penalty += 10
+                        ally.stress_level += 10
+                        print(f"🩸 {ally.name} bleeds and suffers pain!")
+                        roll = random.randint(1, 100)
+                        threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10
+                        if roll > threshold:
+                            print(f"💔 {ally.name} panics from the attack and may flee!")
+                            ally.in_combat = False if "elite" not in ally.tags else ally.in_combat
                 self.fear_system.trigger_fear(character, intensity=8)
             return True
         return False
@@ -82,7 +94,6 @@ class CombatEngine:
     def attack_roll(self, attacker, defender, weapon_damage, damage_type, attacker_health, defender_health, aimed_zone=None, spell_name=None, chosen_stance=None, ambush_bonus=0, roll_penalty=0, opponents=[], environment="open"):
         self.check_claustrophobia(attacker, environment)
         if self.check_berserk(attacker):
-            # Apply in roll calculation below
             pass
 
         if defender.stunned:
@@ -112,7 +123,6 @@ class CombatEngine:
             attacker.stance = self.stance_locks[attacker.name]
             print(f"🔒 {attacker.name} remains in {attacker.stance.upper()} stance")
 
-        # New: If grapple_committed, can't normal attack
         if attacker.grapple_committed:
             print(f"⚠️ {attacker.name} is committed to grapple—choose action!")
             grapple_choice = input("Rip apart, smash ground, use as club, or release? ").lower().strip('.')
@@ -120,22 +130,21 @@ class CombatEngine:
                 aimed_zone = input("Enter target zone for rip (e.g., left_upper_arm): ").strip().lower()
                 rip_roll = random.randint(1, 100) + attacker.strength // 5
                 resist_roll = random.randint(1, 100) + defender.toughness // 5
-                # Easier rip on limbs
                 limb_zones = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg", "left_lower_arm", "right_lower_arm", "left_upper_arm", "right_upper_arm"]
                 if aimed_zone in limb_zones:
-                    rip_roll += 10  # Bonus for limbs
+                    rip_roll += 10
                 elif aimed_zone == "head":
-                    resist_roll += 10  # Harder for head
+                    resist_roll += 10
                 print(f"Rip roll: {rip_roll} vs Resist: {resist_roll}")
                 if rip_roll > resist_roll:
                     print(f"💥 {attacker.name} rips {defender.name}'s {aimed_zone}—horrific tear! 🩸 Gore sprays as the limb is torn off!")
-                    defender_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)  # Full damage to one zone
+                    defender_health.take_damage_to_zone(aimed_zone, 35, "slashing", critical=True)
                     defender.bleeding_rate += 2.4
                     defender.pain_penalty += 15
                     defender.mobility_penalty += 25
-                    defender_health.recalculate_penalties()  # Immediate penalty update
+                    defender_health.recalculate_penalties()
                     if attacker.class_name == "Ogre Ravager":
-                        attacker.health += 15  # Flesh Rend heal
+                        attacker.health += 15
                         attacker.corruption_level = min(100, attacker.corruption_level + 5)
                         print(f"🩸 {attacker.name} devours the flesh, healing 15 health! Corruption rises to {attacker.corruption_level}%.")
                 else:
@@ -145,23 +154,23 @@ class CombatEngine:
                 attacker.consume_stamina(15)
                 return {"result": "rip_attempt"}
             elif grapple_choice == "smash ground":
-                smash_damage = weapon_damage + 10  # Blunt + stun
+                smash_damage = weapon_damage + 10
                 defender_health.distribute_damage(smash_damage, "blunt")
                 if random.random() < 0.5:
                     defender.stunned = True
                     print(f"😵 {defender.name} dazed from smash! Skip next turn.")
-                    defender.skip_turn = True  # Add stun effect (skip turn)
+                    defender.skip_turn = True
                 attacker.grapple_committed = False
                 self.grapple_flags.pop(defender.name, None)
                 attacker.consume_stamina(15)
                 return {"result": "smash_ground"}
             elif grapple_choice == "use as club":
-                if len(opponents) > 1:  # Assume multi-foe
+                if len(opponents) > 1:
                     other_target = random.choice([opp for opp in opponents if opp != defender])
                     print(f"🌀 {attacker.name} swings {defender.name} as a club at {other_target.name}!")
                     other_target_health = CombatHealthManager(other_target)
                     other_target_health.distribute_damage(weapon_damage, "blunt")
-                    defender_health.distribute_damage(10, "blunt")  # Damage to grappled too
+                    defender_health.distribute_damage(10, "blunt")
                 else:
                     print(f"❌ No other foes—smash ground instead!")
                     smash_damage = weapon_damage + 10
@@ -176,13 +185,10 @@ class CombatEngine:
                 self.grapple_flags.pop(defender.name, None)
                 return {"result": "release_grapple"}
 
-        # New: Grappled Defender Limits
         if defender.grappled_by:
             print(f"🔗 {defender.name} grappled—limited actions!")
-            # Restrict to small weapons (dagger) or struggle
             if defender.weapon.get("size_class") != "small":
                 print(f"⚠️ {defender.name} can't swing large weapon while grappled—use dagger or struggle!")
-                # Struggle option: Strength vs grappler strength to escape
                 struggle_roll = random.randint(1, 100) + defender.strength // 10
                 grappler_roll = random.randint(1, 100) + defender.grappled_by.strength // 10
                 print(f"Struggle roll: {struggle_roll} vs Grappler: {grappler_roll}")
@@ -208,7 +214,7 @@ class CombatEngine:
         attacker_stance = attacker.stance
         defender_stance = getattr(defender, "stance", "neutral")
         current_health = sum(defender.body_parts.values())
-        if current_health < 0.5 * defender.total_hp:  # Stance variation
+        if current_health < 0.5 * defender.total_hp:
             defender_stance = "defensive"
         weapon_type = attacker.weapon.get("type") if isinstance(attacker.weapon, dict) else "none"
 
@@ -225,24 +231,23 @@ class CombatEngine:
         attack_roll += ambush_bonus
         attack_roll -= roll_penalty if aimed_zone else 0
 
-        defense_type = self.select_defense_type(defender)  # Moved here
+        defense_type = self.select_defense_type(defender)
 
-        defense_roll = defense_base_roll  # Initialize defense_roll
+        defense_roll = defense_base_roll
 
-        # New: Ogre Mass Penalty for Block/Parry with Strength Test
         if (defense_type in ["Block", "Parry"]) and (attacker.mass > defender.mass * 1.5):
             mass_penalty = (attacker.strength - defender.strength) // 5
             strength_roll = random.randint(1, 100) + defender.strength // 5
-            strength_threshold = 40  # Lowered for ~70% ogre success
+            strength_threshold = 40
             print(f"💪 {defender.name} attempts strength test (needs {strength_threshold}+): rolled {strength_roll}")
             if strength_roll < strength_threshold:
                 print(f"🌀 {defender.name} fails to resist ogre's mass! Thrown back, stunned for 1 turn.")
                 defender.stunned = True
-                defender.mobility_penalty = min(100, defender.mobility_penalty + 20)  # Temporary mobility penalty
-                defense_roll -= mass_penalty  # Still apply penalty on fail
+                defender.mobility_penalty = min(100, defender.mobility_penalty + 20)
+                defense_roll -= mass_penalty
             else:
                 print(f"💪 {defender.name} braces against ogre's mass!")
-                defense_roll -= mass_penalty  # Apply penalty even on success, but no stun
+                defense_roll -= mass_penalty
 
         if defense_type == "Dodge":
             defense_roll += defender.agility // 2
@@ -251,13 +256,13 @@ class CombatEngine:
         elif defense_type == "Block":
             defense_roll += (defender.strength // 2 if defender.has_shield() else defender.weapon_skill // 2)
             if defender.has_shield():
-                defense_roll += 5  # Flat shield bonus; can adjust or tie to shield stats later
+                defense_roll += 5
 
         defense_roll += apply_stance_modifiers(defender, attacker, defender_stance, "defense")
         defense_roll += maneuver_bonus.get("defense_bonus", 0)
         defense_roll += self.weapon_penalties.get(weapon_type, {"defense": 0})["defense"]
         if defender_stance == "defensive":
-            defense_roll += defender.agility // 10  # Keep small agility boost for defensive stance
+            defense_roll += defender.agility // 10
 
         stress_penalty = max(0, attacker.stress_level - 80) // 10
         pain_penalty = min(attacker.pain_penalty, 20)
@@ -287,21 +292,21 @@ class CombatEngine:
         self.apply_berserk_effects(attacker, outcome)
 
         if spell_name:
-            from magic_system import MagicSystem
-            magic = MagicSystem()
-            if magic.cast_spell(attacker, defender, spell_name, attacker_health, defender_health):
-                spell = magic.spells.get(spell_name)
-                if spell["type"] == "necromantic":
-                    damage = spell["damage"]
+            if self.magic_system.cast_spell(attacker, defender, spell_name, attacker_health, defender_health):
+                spell = self.magic_system.spells.get(spell_name)
+                if spell["type"] == "breath":
                     outcome["result"] = "hit"
-                    outcome["damage"] = damage
+                    outcome["damage"] = spell["damage"]
+                    if defender.corruption_level > 0:
+                        outcome["damage"] += spell["bonus_vs_corrupted"]
                     print(f"✨ {attacker.name} casts {spell_name} successfully!")
-                    attacker.corruption_level = min(100, attacker.corruption_level + 5)
-                    print(f"😈 {attacker.name}'s corruption rises to {attacker.corruption_level}%!")
-                    self.apply_damage(attacker, defender, damage, spell["damage_type"], defender_health, aimed_zone, critical=False)
-                else:
+                    self.apply_damage(attacker, defender, outcome["damage"], spell["damage_type"], defender_health, aimed_zone, critical=False)
+                elif spell["type"] == "veil" and spell_name != "sacrificial_pact":
                     outcome["result"] = "effect"
                     print(f"✨ {attacker.name} casts {spell_name} successfully!")
+                elif spell_name == "sacrificial_pact":
+                    outcome["result"] = "effect"
+                    print(f"✨ {attacker.name} completes {spell_name} ritual!")
             else:
                 outcome["result"] = "spell_failed"
                 print(f"❌ {attacker.name} fails to cast {spell_name}!")
@@ -316,7 +321,7 @@ class CombatEngine:
                 if is_critical:
                     print("🔥 Critical Hit!")
                     outcome["critical"] = True
-                    outcome["damage"] = weapon_damage * 1.2  # Capped
+                    outcome["damage"] = weapon_damage * 1.2
                     self.apply_damage(attacker, defender, outcome["damage"], damage_type, defender_health, aimed_zone, True)
                 else:
                     print(f"✅ {attacker.name} hits {defender.name}!")
@@ -363,13 +368,12 @@ class CombatEngine:
         if outcome["result"] in ["hit", "critical_hit"]:
             self.stance_locks.pop(attacker.name, None)
 
-        # Moral/Willpower check after severe damage
         current_health = sum(defender.body_parts.values())
-        if current_health < 0.3 * defender.total_hp or self.has_severe_wound(defender):  # Nearly lethal or limb loss
+        if current_health < 0.3 * defender.total_hp or self.has_severe_wound(defender):
             if not self.morale_check(defender):
-                if "elite" not in defender.tags:  # Assume non-elite NPCs surrender/collapse
+                if "elite" not in defender.tags:
                     print(f"💔 {defender.name} breaks! They surrender or collapse from the trauma.")
-                    defender.alive = False if random.random() < 0.5 else defender.alive  # 50% chance of death vs collapse
+                    defender.alive = False if random.random() < 0.5 else defender.alive
                     defender.in_combat = False
 
         return outcome
@@ -379,10 +383,9 @@ class CombatEngine:
         for part in severe_parts:
             if character.body_parts.get(part, 1) <= 0:
                 return True
-        # Check for limb loss (assuming body_parts <=0 means severed)
         limb_parts = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg", "left_lower_arm", "right_lower_arm", "left_upper_arm", "right_upper_arm"]
         lost_limbs = sum(1 for part in limb_parts if character.body_parts.get(part, 1) <= 0)
-        return lost_limbs >= 2  # e.g., 2+ limbs lost = severe
+        return lost_limbs >= 2
 
     def morale_check(self, character):
         roll = random.randint(1, 100)
@@ -410,7 +413,6 @@ class CombatEngine:
             if not armor_hit:
                 print(f"⚠️ {aimed_zone} is unprotected, full damage applied!")
             defender_health.take_damage_to_zone(aimed_zone, remaining_damage, damage_type, critical=critical)
-
         else:
             print(f"💥 {attacker.name} deals {base_damage} ({damage_type}) damage across {defender.name}'s body!")
             valid_parts = ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg",
@@ -440,7 +442,7 @@ class CombatEngine:
                     defender_health.take_damage_to_zone(part, remaining_damage, damage_type, critical=critical)
 
     def apply_critical_hit(self, attacker, defender, base_damage, damage_type, attacker_health, defender_health, aimed_zone):
-        critical_damage = int(base_damage * 1.2)  # Capped
+        critical_damage = int(base_damage * 1.2)
         self.apply_damage(attacker, defender, critical_damage, damage_type, defender_health, aimed_zone, True)
 
     def apply_critical_miss(self, attacker, defender):
@@ -480,7 +482,7 @@ class CombatEngine:
     def consume_stamina(self, character, amount):
         if self.berserk_states.get(character.name, False) and character.stamina < 0:
             print(f"⚠️ {character.name} ignores stamina in rage!")
-            return  # No further penalty
+            return
         total_cost = amount + character.stamina_cost_modifier
         character.stamina -= total_cost
         if character.stamina <= 0:

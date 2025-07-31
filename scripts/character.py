@@ -67,7 +67,13 @@ class Character:
         self.calories_consumed = 0
         self.hunger_level = 0
         self.allies = []  # Assume list of ally Character objects, populate as needed
-        self.xp = 0  # Added for progression
+        self.xp = 0  # For progression
+        self.status_effects = []  # For Breath Overload, sterility, taint_mark
+        self.power_bonus = 0  # For Veil Sacrificial Pact
+        self.aging_rate = 1.0  # Modified by Sacrificial Pact
+        self.charisma_penalty = 0  # For sterility debuff
+        self.hunt_check_bonus = 0  # For taint_mark
+        self.defense_bonus = 0  # For Veil Whisper
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -199,7 +205,8 @@ class Character:
         total_weight = sum(getattr(armor, 'weight', 0) for armor in self.armor)
         self.mobility_penalty = 0
         self.stamina_cost_modifier = 0
-
+        if self.race == "Ogre":  # Logistics Beast: 3x weight capacity
+            total_weight = total_weight // 3
         for armor in self.armor:
             weight = getattr(armor, 'weight', 0)
             if weight >= 25:
@@ -232,18 +239,15 @@ class Character:
         min_str = weapon.get("min_STR", 10)
         size_class = weapon.get("size_class", "medium")
         grip_size = weapon.get("grip_size", "standard")
-
         if self.strength < min_str:
             print(f"⚠️ {self.name} lacks strength to wield {weapon['name']} (needs {min_str} STR)!")
             return False
-
         if self.mass > 150 and size_class == "small":  # Ogres can't use small weapons
             print(f"⚠️ {self.name}'s grip too large for {weapon['name']}!")
             return False
         elif self.mass < 50 and size_class == "large":  # Small races can't use large
             print(f"⚠️ {weapon['name']} too heavy for {self.name}'s size!")
             return False
-
         return True
 
     def consume_food(self, calories):
@@ -262,7 +266,6 @@ class Character:
                     ally.stress_level += 10
                     self.health = min(self.total_hp, self.health + 5)  # Ogre heals from eating
                     print(f"🩸 {ally.name} bleeds and suffers pain! {self.name} gains 5 HP from flesh!")
-                    # Morale check for ally
                     roll = random.randint(1, 100)
                     threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10
                     if roll > threshold:
