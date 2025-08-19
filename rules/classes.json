@@ -168,47 +168,6 @@
       }
     }
   },
-  "Crusader_Knight": {
-    "description": "A relentless holy warrior wielding Breath-forged blades against Veil corruption.",
-    "lore": "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
-    "stats": {
-      "strength_modifier": 3,
-      "willpower_modifier": 1,
-      "healing_bonus": 3
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human"
-    },
-    "abilities": {
-      "active": {
-        "holy_smite": {
-          "level": 1,
-          "type": "active",
-          "description": "Deals 20 holy damage, +5 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
-          "stamina_cost": 10,
-          "effects": {
-            "damage": 20,
-            "bonus_vs_corrupted": 5,
-            "overload_chance": 0.01
-          }
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Crusader's Resolve (+10 pain resistance)",
-        "level_3": "Holy Ward (+5 defense vs Veil)"
-      }
-    }
-  },
   "Holy_Judge": {
     "description": "A divine arbiter delivering the Maker’s justice through Breath-infused verdicts.",
     "lore": "Holy Judges stand as the Maker’s voice, purging corruption with radiant authority, feared even by the Church.",
@@ -270,28 +229,28 @@
     },
     "stances": {
       "default": "wrath_guard",
-      "vom_tag": {"type": "offensive", "attack_bonus": 3, "defense_penalty": 1},
-      "half_sword": {"type": "defensive", "attack_penalty": 3, "defense_bonus": 5},
-      "wrath_guard": {"type": "neutral", "initiative_bonus": 1}
+      "vom_tag": { "type": "offensive", "attack_bonus": 3, "defense_penalty": 1 },
+      "half_sword": { "type": "defensive", "attack_penalty": 3, "defense_bonus": 5 },
+      "wrath_guard": { "type": "neutral", "initiative_bonus": 1 }
     },
     "maneuvers": {
       "2H_sword": [
-        {"name": "Zwerchhau", "stance": "vom_tag", "effects": {"attack_bonus": 5}},
-        {"name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": {"attack_bonus": 8}},
-        {"name": "Durchwechseln", "stance": "wrath_guard", "effects": {"attack_bonus": 3, "defense_bonus": 3}},
-        {"name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": {"attack_bonus": 10, "armor_bypass": 0.5}},
-        {"name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": {"attack_bonus": 7, "damage_type": "blunt"}},
-        {"name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": {"mobility_penalty": 30}}
+        { "name": "Zwerchhau", "stance": "vom_tag", "effects": { "attack_bonus": 5 } },
+        { "name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": { "attack_bonus": 8 } },
+        { "name": "Durchwechseln", "stance": "wrath_guard", "effects": { "attack_bonus": 3, "defense_bonus": 3 } },
+        { "name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": { "attack_bonus": 10, "armor_bypass": 0.5 } },
+        { "name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": { "attack_bonus": 7, "damage_type": "blunt" } },
+        { "name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": { "mobility_penalty": 30 } }
       ]
     },
     "abilities": {
       "active": {
-        "brutal_strike": {"damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike."},
-        "intimidating_shout": {"fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies."}
+        "brutal_strike": { "damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike." },
+        "intimidating_shout": { "fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies." }
       },
       "passive": {
-        "iron_wall": {"block_bonus": 0.2, "desc": "20% increased block with shield."},
-        "resilient_outlaw": {"pain_resist": 10, "desc": "Reduce pain penalties by 10%."}
+        "iron_wall": { "block_bonus": 0.2, "desc": "20% increased block with shield." },
+        "resilient_outlaw": { "pain_resist": 10, "desc": "Reduce pain penalties by 10%." }
       }
     },
     "skills": {
@@ -306,8 +265,8 @@
       "Resilient (-10% bleeding duration)"
     ],
     "progression": {
-      "level_up_stats": {"strength": 2, "endurance": 1},
-      "unlocks": {"lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)"}
+      "level_up_stats": { "strength": 2, "endurance": 1 },
+      "unlocks": { "lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)" }
     }
   },
   "Ogre_Brute": {
@@ -332,22 +291,22 @@
     },
     "stances": {
       "default": "neutral",
-      "offensive": {"attack_bonus": 5, "defense_penalty": 5}
+      "offensive": { "attack_bonus": 5, "defense_penalty": 5 }
     },
     "maneuvers": {
       "improvised": [
-        {"name": "Brute Swipe", "stance": "offensive", "effects": {"damage_bonus": 10, "stun_chance_head": 0.5}}
+        { "name": "Brute Swipe", "stance": "offensive", "effects": { "damage_bonus": 10, "stun_chance_head": 0.5 } }
       ]
     },
     "abilities": {
       "active": {
-        "grab_rip": {"stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)."},
-        "heavy_throw": {"stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)."},
-        "heavy_lift": {"stamina_cost": 5, "desc": "Carry additional 500 kg without encumbrance penalty, aiding group logistics."}
+        "grab_rip": { "stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)." },
+        "heavy_throw": { "stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)." },
+        "heavy_lift": { "stamina_cost": 5, "desc": "Carry additional 500 kg without encumbrance penalty, aiding group logistics." }
       },
       "passive": {
-        "bear_mass": {"ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use."},
-        "thick_skull": {"head_stun_resist": 20, "desc": "-20% stun from head hits."}
+        "bear_mass": { "ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use." },
+        "thick_skull": { "head_stun_resist": 20, "desc": "-20% stun from head hits." }
       }
     },
     "skills": {
@@ -366,8 +325,8 @@
         "level_4": 600,
         "level_5": 1000
       },
-      "level_up_stats": {"strength": 3, "toughness": 2},
-      "unlocks": {"lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)"}
+      "level_up_stats": { "strength": 3, "toughness": 2 },
+      "unlocks": { "lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)" }
     }
   },
   "Ogre_Ravager": {
@@ -413,7 +372,7 @@
         "level_4": 600,
         "level_5": 1000
       },
-      "level_up_stats": {"strength": 2, "toughness": 2}
+      "level_up_stats": { "strength": 2, "toughness": 2 }
     }
   },
   "Ogre_Behemoth": {
@@ -458,7 +417,7 @@
         "level_4": 600,
         "level_5": 1000
       },
-      "level_up_stats": {"toughness": 3, "strength": 1}
+      "level_up_stats": { "toughness": 3, "strength": 1 }
     }
   },
   "Ogre_Flesh_Eater": {
@@ -504,7 +463,7 @@
         "level_4": 600,
         "level_5": 1000
       },
-      "level_up_stats": {"toughness": 2, "strength": 2}
+      "level_up_stats": { "toughness": 2, "strength": 2 }
     }
   },
   "Ogre_Stormbreaker": {
@@ -550,7 +509,94 @@
         "level_4": 600,
         "level_5": 1000
       },
-      "level_up_stats": {"strength": 3, "perception": 1}
+      "level_up_stats": { "strength": 3, "perception": 1 }
+    }
+  },
+  "Crusader_Knight": {
+    "description": "Male human-only heavy cavalry/infantry sanctified by the Breath. Bursting power, iron defense, long-term wear.",
+    "lore": "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
+    "race_lock": ["Human"],
+    "gender_lock": ["Male"],
+    "power_source": "Breath",
+    "role_tags": ["tank", "striker", "mounted"],
+    "stat_modifiers": {
+      "strength": 12,
+      "toughness": 10,
+      "agility": 5,
+      "willpower": 8,
+      "stamina_max_flat": 10,
+      "hp_percent": 15
+    },
+    "stats": {
+      "strength_modifier": 12,
+      "toughness_modifier": 10,
+      "agility_modifier": 5,
+      "willpower_modifier": 8,
+      "stamina_max_bonus": 10,
+      "hp_percent_bonus": 15
+    },
+    "proficiencies": {
+      "weapons": ["sword_1h", "sword_2h", "mace", "lance"],
+      "shields": ["heater", "kite"],
+      "armor_tiers": ["medium-light", "medium-medium", "medium-heavy", "heavy-light", "heavy-medium", "heavy-heavy"],
+      "mounts": ["warhorse"]
+    },
+    "progression": [
+      {
+        "tier": 1,
+        "name": "Militia",
+        "requirements": { "age_min": 14 },
+        "abilities_gain": ["Basic_Strike", "Shield_Bash", "Rally_Cry"],
+        "flaws_gain": ["Low_Morale"]
+      },
+      {
+        "tier": 2,
+        "name": "Squire_Sergeant",
+        "requirements": { "battles_survived": 3, "led_victory": 1 },
+        "abilities_gain": ["Precision_Thrust", "Stand_Fast"],
+        "gear_hint": ["chainmail", "short_sword"],
+        "flaws_gain": ["Old_Scars"]
+      },
+      {
+        "tier": 3,
+        "name": "Landsknecht",
+        "requirements": { "named_enemy_slain": 1 },
+        "abilities_gain": ["Cleave", "Mounted_Charge"],
+        "gear_hint": ["plate_partial", "claymore"],
+        "flaws_gain": ["Hubris"]
+      },
+      {
+        "tier": 4,
+        "name": "Knight",
+        "requirements": { "noble_title": true },
+        "abilities_gain": ["Divine_Surge", "Lance_Thrust", "Smite"],
+        "gear_hint": ["full_plate", "warhorse"],
+        "flaws_gain": ["Mortal_Coil"]
+      }
+    ],
+    "abilities": {
+      "Basic_Strike": { "type": "attack", "stamina": 6, "weapon": "any_melee" },
+      "Shield_Bash": { "type": "control", "stamina": 8, "stun_pct": 20, "requires": "shield" },
+      "Rally_Cry": { "type": "buff_team", "stamina": 10, "morale_pct": 15, "cooldown_rounds": 5 },
+      "Precision_Thrust": { "type": "attack", "stamina": 10, "armor_pierce_pct": 10, "aimed": true },
+      "Stand_Fast": { "type": "stance", "defense_pct": 10, "stamina_regen_pct": -10 },
+      "Cleave": { "type": "attack_aoe", "stamina": 14, "targets": 2, "bonus_damage": 8 },
+      "Mounted_Charge": { "type": "charge", "stamina": 18, "requires": "mount", "bonus_damage": 12, "knockdown_pct": 30 },
+      "Smite": { "type": "attack_holy", "stamina": 16, "holy_damage": 15, "vs_veilspawn_bonus_pct": 25 },
+      "Lance_Thrust": { "type": "attack_pierce", "stamina": 16, "requires": "mount", "bonus_damage": 18 },
+      "Divine_Surge": {
+        "type": "ultimate_burst",
+        "uses_per_day": 1,
+        "stamina": 50,
+        "bonus_damage": 20,
+        "tags_apply_after": ["Exhausted_2r"]
+      }
+    },
+    "flaws": {
+      "Low_Morale": { "type": "mental", "damage_pct_if_outnumbered": -10 },
+      "Old_Scars": { "type": "fatigue", "stamina_start_combat": -5 },
+      "Hubris": { "type": "tactical", "overcommit_pct": 10 },
+      "Mortal_Coil": { "type": "attrition", "hp_max_permanent_per_10_battles": -10 }
     }
   }
 }
