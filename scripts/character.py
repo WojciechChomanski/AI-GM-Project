@@ -66,14 +66,16 @@ class Character:
         self.tags = []
         self.calories_consumed = 0
         self.hunger_level = 0
-        self.allies = []  # Assume list of ally Character objects, populate as needed
-        self.xp = 0  # For progression
-        self.status_effects = []  # For Breath Overload, sterility, taint_mark
-        self.power_bonus = 0  # For Veil Sacrificial Pact
-        self.aging_rate = 1.0  # Modified by Sacrificial Pact
-        self.charisma_penalty = 0  # For sterility debuff
-        self.hunt_check_bonus = 0  # For taint_mark
-        self.defense_bonus = 0  # For Veil Whisper
+        self.allies = []
+        self.xp = 0
+        self.status_effects = []
+        self.power_bonus = 0
+        self.aging_rate = 1.0
+        self.charisma_penalty = 0
+        self.hunt_check_bonus = 0
+        self.defense_bonus = 0
+        self.rune_craft = 0  # For Iron Covenant
+        self.brine_marks = 0  # For Daughters of the Drowned Moon
 
     def receive_damage(self, damage):
         if not self.alive:
@@ -130,6 +132,10 @@ class Character:
                 print(f"😈 Corruption consumes {self.name}! They lash out uncontrollably!")
                 self.reputation = max(-100, self.reputation - 20)
                 print(f"🏛️ {self.name}'s reputation falls to {self.reputation} due to their outburst!")
+        if self.brine_marks >= 10:
+            print(f"😈 {self.name} succumbs to Brine Marks: speech loss, visions!")
+            self.charisma_penalty += 5
+            self.perception += 5
 
     def die(self):
         self.alive = False
@@ -264,7 +270,7 @@ class Character:
                     ally.bleeding_rate += 1.0
                     ally.pain_penalty += 10
                     ally.stress_level += 10
-                    self.health = min(self.total_hp, self.health + 5)  # Ogre heals from eating
+                    self.health = min(self.total_hp, self.health + 5)
                     print(f"🩸 {ally.name} bleeds and suffers pain! {self.name} gains 5 HP from flesh!")
                     roll = random.randint(1, 100)
                     threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10

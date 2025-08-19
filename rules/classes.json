@@ -168,6 +168,88 @@
       }
     }
   },
+  "Crusader_Knight": {
+    "description": "A relentless holy warrior wielding Breath-forged blades against Veil corruption.",
+    "lore": "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
+    "stats": {
+      "strength_modifier": 3,
+      "willpower_modifier": 1,
+      "healing_bonus": 3
+    },
+    "restrictions": {
+      "gender": "Male",
+      "race": "Human"
+    },
+    "abilities": {
+      "active": {
+        "holy_smite": {
+          "level": 1,
+          "type": "active",
+          "description": "Deals 20 holy damage, +5 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
+          "stamina_cost": 10,
+          "effects": {
+            "damage": 20,
+            "bonus_vs_corrupted": 5,
+            "overload_chance": 0.01
+          }
+        }
+      }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "unlocks": {
+        "level_2": "Crusader's Resolve (+10 pain resistance)",
+        "level_3": "Holy Ward (+5 defense vs Veil)"
+      }
+    }
+  },
+  "Holy_Judge": {
+    "description": "A divine arbiter delivering the Maker’s justice through Breath-infused verdicts.",
+    "lore": "Holy Judges stand as the Maker’s voice, purging corruption with radiant authority, feared even by the Church.",
+    "stats": {
+      "willpower_modifier": 3,
+      "intelligence_modifier": 2,
+      "healing_bonus": 2
+    },
+    "restrictions": {
+      "gender": "Male",
+      "race": "Human"
+    },
+    "abilities": {
+      "active": {
+        "judgment_call": {
+          "level": 1,
+          "type": "active",
+          "description": "Deals 12 holy damage, +15 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
+          "stamina_cost": 9,
+          "effects": {
+            "damage": 12,
+            "bonus_vs_corrupted": 15,
+            "overload_chance": 0.01
+          }
+        }
+      }
+    },
+    "progression": {
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "unlocks": {
+        "level_2": "Divine Clarity (+10 perception vs deception)",
+        "level_3": "Purge Verdict (remove status effects, 12 stamina)"
+      }
+    }
+  },
   "Outlaw_Mercenary_Warrior": {
     "description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
     "stats": {

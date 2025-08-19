@@ -45,6 +45,37 @@ class MagicSystem:
                         "sterility": True
                     },
                     "description": "Ritual sacrifices fertility for +20 power, halved aging rate, +0.15 corruption risk."
+                },
+                "tide_wail": {
+                    "type": "veil",
+                    "effect": {"fear_intensity": 15},
+                    "stamina_cost": 15,
+                    "corruption_risk": 0.15,
+                    "brine_marks": 1,
+                    "description": "AOE fear, +15 intensity, adds Brine Marks."
+                },
+                "veil_caress": {
+                    "type": "veil",
+                    "effect": {"charm_count": 2},
+                    "stamina_cost": 15,
+                    "corruption_risk": 0.15,
+                    "taint_mark": {"hunt_check_bonus": 5},
+                    "description": "Charms up to 2 targets, leaves taint_mark."
+                },
+                "rune_trap": {
+                    "type": "rune",
+                    "damage": 10,
+                    "effect": {"immobilize_chance": 0.4},
+                    "stamina_cost": 8,
+                    "description": "Deploys a rune trap, deals 10 damage, 40% chance to immobilize."
+                },
+                "salt_kiss": {
+                    "type": "veil",
+                    "effect": {"max_hp_drain": 2},
+                    "stamina_cost": 8,
+                    "corruption_risk": 0.1,
+                    "brine_marks": 1,
+                    "description": "Drains 2 HP/round unless Breath-purified, adds Brine Marks."
                 }
             }
 
@@ -61,6 +92,9 @@ class MagicSystem:
         if spell["type"] == "veil" and (caster.gender != "Female" or caster.race not in ["Human", "Elf"]):
             print(f"❌ {caster.name} cannot cast Veil spell {spell_name} (female Human/Elf only).")
             return False
+        if spell["type"] == "rune" and caster.race != "Dwarf":
+            print(f"❌ {caster.name} cannot use rune ability {spell_name} (Dwarf only).")
+            return False
 
         # Stamina check
         if caster.stamina < spell["stamina_cost"]:
@@ -69,7 +103,7 @@ class MagicSystem:
 
         # Proficiency-based roll
         proficiency = self.get_proficiency(caster.name, spell_name)
-        difficulty = 30 - min(proficiency // 5, 5)  # Base difficulty 30, reduced by proficiency
+        difficulty = 30 - min(proficiency // 5, 5)
         roll = random.randint(1, 100)
         total_roll = roll - caster.pain_penalty - caster.stamina_penalty()
 
@@ -98,7 +132,31 @@ class MagicSystem:
                 caster.status_effects.append({"name": "sterility", "charisma_penalty": -10})
                 caster.corruption_level = min(100, caster.corruption_level + (15 if random.random() < spell["corruption_risk"] else 0))
                 print(f"😈 {caster.name} completes Sacrificial Pact, gains power but sterility. Corruption: {caster.corruption_level}%")
-
+            elif spell_name == "tide_wail":
+                for ally in caster.allies + [caster]:
+                    ally.status_effects.append({"name": "fear", "intensity": spell["effect"]["fear_intensity"], "duration": 1})
+                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
+                caster.status_effects.append({"name": "brine_marks", "count": spell["brine_marks"]})
+                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%, Brine Marks added.")
+            elif spell_name == "veil_caress":
+                charmed = min(spell["effect"]["charm_count"], len(caster.allies))
+                for _ in range(charmed):
+                    if caster.allies:
+                        ally = random.choice(caster.allies)
+                        ally.status_effects.append({"name": "charmed", "duration": 1})
+                        ally.status_effects.append({"name": "taint_mark", "hunt_check_bonus": 5})
+                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
+                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%")
+            elif spell_name == "rune_trap":
+                target_health.take_damage_to_zone("legs", spell["damage"], "blunt")
+                if random.random() < spell["effect"]["immobilize_chance"]:
+                    target.status_effects.append({"name": "immobilized", "duration": 1, "mobility_penalty": 20})
+                    print(f"🪤 {target.name} is immobilized by {caster.name}'s rune trap!")
+            elif spell_name == "salt_kiss":
+                target.status_effects.append({"name": "salt_kiss", "max_hp_drain": 2, "duration": 3})
+                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
+                caster.status_effects.append({"name": "brine_marks", "count": spell["brine_marks"]})
+                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%, Brine Marks added.")
             self.update_proficiency(caster.name, spell_name)
             return True
         else:
@@ -109,7 +167,13 @@ class MagicSystem:
     def use_magic_item(self, user: Character, item_name: str, target: Character):
         items = {
             "potion_vigor": {"stamina_restore": 10},
-            "rune_ward": {"defense_bonus": 2}
+            "rune_ward": {"defense_bonus": 2},
+            "moonbloom_elixir": {
+                "stress_relief": -20,
+                "secret_spill_chance": 0.3,
+                "addiction_risk": 0.15,
+                "description": "Reduces stress, risks addiction and secret spilling."
+            }
         }
         item = items.get(item_name)
         if not item:
@@ -123,6 +187,14 @@ class MagicSystem:
         if "defense_bonus" in item:
             target.defense_bonus = item["defense_bonus"]
             print(f"🛡️ {target.name} gains +{item['defense_bonus']} defense!")
+        if "stress_relief" in item:
+            user.stress_level = max(0, user.stress_level + item["stress_relief"])
+            print(f"😌 {user.name} reduces stress by {abs(item['stress_relief'])}!")
+            if random.random() < item["secret_spill_chance"]:
+                print(f"🗣️ {user.name} spills secrets under Moonbloom's influence!")
+            if random.random() < item["addiction_risk"]:
+                user.status_effects.append({"name": "moonbloom_addiction", "duration": 5, "stress_penalty": 5})
+                print(f"⚠️ {user.name} risks addiction to Moonbloom Elixir!")
         return True
 
     def get_proficiency(self, character_name, spell_name):

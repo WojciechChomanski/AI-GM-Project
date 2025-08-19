@@ -3,9 +3,7 @@
 
 import json
 import logging
-import os
 import random
-import sys
 from pathlib import Path
 
 # ========= Logging setup =========
@@ -20,13 +18,14 @@ HERE = Path(__file__).resolve().parent
 RULES_DIR = (HERE / "../rules").resolve()
 CHAR_DIR = (RULES_DIR / "characters").resolve()
 ARMORS_JSON = (RULES_DIR / "armors.json").resolve()
+WEAPONS_JSON = (RULES_DIR / "weapons.json").resolve()
 
 # ========= Safe I/O =========
-def safe_load_json(path):
+def safe_load_json(path: Path):
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            logging.debug(f"File content for {path}: {json.dumps(data, ensure_ascii=False, indent=2)}")
+            logging.debug(f"File content for {path}: {json.dumps(data, ensure_ascii=False, indent=2)[:2000]}")
             return data
     except FileNotFoundError:
         logging.warning(f"Missing file: {path}")
@@ -58,41 +57,102 @@ def ask_int(prompt, lo=None, hi=None, default=None):
 
 # ========= Armor data =========
 DEFAULT_ARMORS = {
-    # category -> (display_name, weight)
     "Light_Light": ("Padded Cloth", 5),
     "Light_Heavy": ("Light Chainmail", 10),
     "Medium_Heavy": ("Half Plate", 20),
     "Heavy_Heavy": ("Siege Plate", 35),
 }
 
-def load_armors():
-    data = safe_load_json(ARMORS_JSON)
-    if data is None:
-        logging.debug(f"Loaded armors from FALLBACK default table (no {ARMORS_JSON})")
-        # Convert to the common shape used below
-        armors = {}
-        for k, (name, weight) in DEFAULT_ARMORS.items():
-            armors[k] = {"name": name, "weight": weight}
-        return armors
-    else:
-        logging.debug(f"Loaded armors from {ARMORS_JSON}")
-        # Expect either same shape as DEFAULT_ARMORS or map name->weight—normalize it.
-        armors = {}
-        for k, v in data.items():
-            if isinstance(v, dict):
-                name = v.get("name", k)
-                weight = int(v.get("weight", 10))
-            elif isinstance(v, (list, tuple)) and len(v) >= 2:
-                name, weight = v[0], int(v[1])
-            else:
-                name, weight = k, int(v)
-            armors[k] = {"name": name, "weight": weight}
-        # Ensure defaults exist
-        for k, (name, weight) in DEFAULT_ARMORS.items():
-            armors.setdefault(k, {"name": name, "weight": weight})
-        return armors
+ARMORS_RAW = safe_load_json(ARMORS_JSON) or {}
 
-ARMORS = load_armors()
+def resolve_armor(category_key: str):
+    """
+    Resolve an armor *category* (e.g., 'Medium_Heavy') to a concrete piece using armors.json variants.
+    Prefers 'standard' variant; otherwise picks the first available variant.
+    Returns a dict with guaranteed keys: name, weight, mobility_penalty, stamina_penalty, category, variant_key
+    """
+    cat = str(category_key or "").strip()
+    # If the file doesn't define this category, fall back to defaults
+    node = ARMORS_RAW.get(cat)
+    if node is None:
+        name, w = DEFAULT_ARMORS.get(cat, (cat or "Padded Cloth", 10))
+        return {
+            "name": name,
+            "weight": int(w),
+            "mobility_penalty": max(0, int(w) // 10),
+            "stamina_penalty": max(0, int(w) // 20),
+            "category": cat or "Light_Light",
+            "variant_key": "default",
+        }
+
+    # If the node itself looks like a variant-map (no direct name/weight keys)
+    if isinstance(node, dict) and not ("name" in node or "weight" in node):
+        if not node:
+            name, w = DEFAULT_ARMORS.get(cat, (cat, 10))
+            return {
+                "name": name,
+                "weight": int(w),
+                "mobility_penalty": max(0, int(w) // 10),
+                "stamina_penalty": max(0, int(w) // 20),
+                "category": cat,
+                "variant_key": "default-empty",
+            }
+        vkey = "standard" if "standard" in node else next(iter(node.keys()))
+        v = node.get(vkey, {})
+        name = v.get("name", DEFAULT_ARMORS.get(cat, (cat, 10))[0])
+        weight = int(v.get("weight", DEFAULT_ARMORS.get(cat, (cat, 10))[1]))
+        # prefer explicit penalties if present
+        stamina_pen = int(v.get("stamina_penalty", max(0, weight // 20)))
+        # mobility_bonus in file is positive; treat it as reducing penalty
+        mob_bonus = int(v.get("mobility_bonus", 0))
+        mobility_pen = max(0, (weight // 10) - (mob_bonus // 10))
+        return {
+            "name": name,
+            "weight": weight,
+            "mobility_penalty": mobility_pen,
+            "stamina_penalty": stamina_pen,
+            "category": cat,
+            "variant_key": vkey,
+        }
+
+    # Flat dict or other shapes
+    if isinstance(node, dict):
+        name = node.get("name", DEFAULT_ARMORS.get(cat, (cat, 10))[0])
+        weight = int(node.get("weight", DEFAULT_ARMORS.get(cat, (cat, 10))[1]))
+        stamina_pen = int(node.get("stamina_penalty", max(0, weight // 20)))
+        mob_bonus = int(node.get("mobility_bonus", 0))
+        mobility_pen = max(0, (weight // 10) - (mob_bonus // 10))
+        return {
+            "name": name,
+            "weight": weight,
+            "mobility_penalty": mobility_pen,
+            "stamina_penalty": stamina_pen,
+            "category": cat,
+            "variant_key": "flat",
+        }
+
+    # List/tuple -> [name, weight]
+    if isinstance(node, (list, tuple)) and len(node) >= 2:
+        name, weight = node[0], int(node[1])
+        return {
+            "name": name,
+            "weight": weight,
+            "mobility_penalty": max(0, weight // 10),
+            "stamina_penalty": max(0, weight // 20),
+            "category": cat,
+            "variant_key": "inline",
+        }
+
+    # Fallback
+    name, w = DEFAULT_ARMORS.get(cat, (cat, 10))
+    return {
+        "name": name,
+        "weight": int(w),
+        "mobility_penalty": max(0, int(w) // 10),
+        "stamina_penalty": max(0, int(w) // 20),
+        "category": cat,
+        "variant_key": "fallback",
+    }
 
 # ========= Weapons / damage / durability =========
 WEAPON_DAMAGE = {
@@ -102,7 +162,6 @@ WEAPON_DAMAGE = {
     "improvised_club": 12,
     "ceremonial blade": 7,
 }
-
 DEFAULT_DURABILITY = {
     "greatsword": 70,
     "longsword": 60,
@@ -111,21 +170,30 @@ DEFAULT_DURABILITY = {
     "ceremonial blade": 45,
 }
 
-def weapon_label_for_log(wpn):
-    # make logs look like your examples
-    if wpn == "greatsword":
-        return "2h_sword"
-    if wpn == "longsword":
-        return "Longsword"
-    if wpn == "dagger":
-        return "Dagger"
-    if wpn == "improvised_club":
-        return "Club"
-    if wpn == "ceremonial blade":
-        return "Ceremonial Blade"
-    return str(wpn)
+def overlay_weapons_from_json():
+    data = safe_load_json(WEAPONS_JSON)
+    if not data:
+        return
+    for key, w in data.items():
+        key_l = str(key).lower()
+        if isinstance(w, dict):
+            if "base_damage" in w:
+                try:
+                    WEAPON_DAMAGE[key_l] = int(w["base_damage"])
+                except Exception:
+                    pass
+            if "durability" in w:
+                try:
+                    DEFAULT_DURABILITY[key_l] = int(w["durability"])
+                except Exception:
+                    pass
 
-# ========= Logging-safe printers (avoid ValueError) =========
+overlay_weapons_from_json()
+
+def weapon_label_for_log(wpn):
+    return str(wpn or "weapon")
+
+# ========= Logging-safe printers =========
 def safe_print_log(lines):
     for entry in lines:
         if isinstance(entry, dict):
@@ -140,7 +208,7 @@ def safe_print_log(lines):
         else:
             print(str(entry))
 
-# ========= Combat helpers (HP/stalemate) =========
+# ========= Combat helpers =========
 def ensure_hp_fields(unit):
     if "current_hp" not in unit:
         unit["current_hp"] = unit.get("total_hp", unit.get("hp", 1))
@@ -148,7 +216,7 @@ def ensure_hp_fields(unit):
         unit["alive"] = unit["current_hp"] > 0
 
 def init_combatants(units):
-    roster = list(units)  # keep same objects, no deepcopy per round
+    roster = list(units)
     for u in roster:
         ensure_hp_fields(u)
     return roster
@@ -158,17 +226,14 @@ def apply_damage(attacker, target, raw_damage, round_log):
     before = target["current_hp"]
     target["current_hp"] = max(0, before - dmg)
     after = target["current_hp"]
-    round_log.append(("damage", f"{attacker['name']} deals {dmg} to {target['name']} ({before}→{after})"))
     if after <= 0 and target.get("alive", True):
         target["alive"] = False
-        round_log.append(f"💀 {target['name']} has fallen!")
+        round_log.append("🏴 " + f"{target['name']} falls!")
+    else:
+        round_log.append("💥 " + f"{target['name']} takes {dmg} damage! ➜ HP: {after}/{target.get('total_hp', after)}")
 
 def cleanup_dead(units, round_log):
-    alive_units = [u for u in units if u.get("alive", True)]
-    for u in list(units):
-        if not u.get("alive", True):
-            round_log.append(("removed", f"{u['name']} is removed from battle"))
-    return alive_units
+    return [u for u in units if u.get("alive", True)]
 
 class StalemateWatch:
     def __init__(self, threshold=6):
@@ -194,41 +259,72 @@ def apply_fatigue_to_all(all_sides, round_log):
 
 # ========= Character/Armor helpers =========
 def equip_armor(character):
-    # Determine armor category and equip a concrete piece from ARMORS
+    # Determine armor category from character
     if isinstance(character.get("armor"), list) and character["armor"]:
         cat = character["armor"][0]
     else:
         cat = "Light_Light"
-    armor_def = ARMORS.get(cat, {"name": "Padded Cloth", "weight": 5})
-    name = armor_def["name"]
-    weight = int(armor_def["weight"])
-    # compute tiny mobility penalty used in skill checks
-    mobility_penalty = weight // 10  # 20 -> 2, 35 -> 3
-    stamina_increase = max(0, weight // 20)  # 20 -> 1, 35 -> 1 (light touch)
-    character["_equipped_armor"] = {"name": name, "weight": weight, "mobility_penalty": mobility_penalty, "stamina_increase": stamina_increase}
-    # Flavor text to match your outputs
-    if weight <= 5:
-        print(f"🛡️ {character['name']}'s {name} (weight {weight}) has minimal impact on mobility and stamina.")
-    else:
-        print(f"⚠️ {character['name']}'s {name} (weight {weight}) reduces mobility by {mobility_penalty}% and increases stamina costs by {stamina_increase}!")
-    print(f"🛡️ {character['name']} equips {name}")
-    logging.debug(f"Equipped {name} to {character['name']}")
 
-def load_character_file(short):
-    """Map user choice to a filename and load it."""
-    mapping = {
+    ar = resolve_armor(cat)
+
+    # Save for later checks
+    character["_equipped_armor"] = {
+        "name": ar["name"],
+        "weight": ar["weight"],
+        "mobility_penalty": ar["mobility_penalty"],
+        "stamina_increase": ar["stamina_penalty"],
+        "category": ar["category"],
+        "variant": ar["variant_key"],
+    }
+
+    # Flavor text & confirmation with category
+    if ar["weight"] <= 5:
+        print(f"🛡️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) has minimal impact on mobility and stamina.")
+    else:
+        print(f"⚠️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) reduces mobility by {ar['mobility_penalty']}% and increases stamina costs by {ar['stamina_penalty']}!")
+    print(f"🛡️ {character['name']} equips {ar['name']}")
+    logging.debug(f"Equipped {ar['name']} to {character['name']} (category={ar['category']}, variant={ar['variant_key']})")
+
+def _find_character_filename(key_lower: str):
+    # Preferred explicit aliases
+    aliases = {
         "torvald": "Torvald.json",
         "lyssa": "Lyssa.json",
         "ada": "ada.json",
-        "brock": "brock.json",
-        "rock": "rock.json",
+        "brock": "Brock.json",
         "caldran": "Ser_Caldran_Vael.json",
         "ser_caldran": "Ser_Caldran_Vael.json",
+        "ser caldran": "Ser_Caldran_Vael.json",
     }
-    fname = mapping.get(short.lower(), None)
-    if not fname:
+    if key_lower in aliases:
+        return CHAR_DIR / aliases[key_lower]
+
+    # Special handling for 'rock'
+    if key_lower == "rock":
+        # Prefer Rock.json if present
+        p1 = CHAR_DIR / "Rock.json"
+        if p1.exists():
+            return p1
+        # Graceful fallback to Brock.json if it exists
+        p2 = CHAR_DIR / "Brock.json"
+        if p2.exists():
+            print("ℹ️  'Rock.json' not found; loading Brock as a fallback.")
+            return p2
         return None
-    return safe_load_json(CHAR_DIR / fname)
+
+    # scan characters folder case-insensitively
+    normalized_query = key_lower.replace(" ", "_")
+    for p in CHAR_DIR.glob("*.json"):
+        stem = p.stem.lower()
+        if stem == key_lower or stem.replace(" ", "_") == normalized_query or stem.replace("_", " ") == key_lower:
+            return p
+    return None
+
+def load_character_file(short):
+    p = _find_character_filename(short.lower())
+    if p and p.exists():
+        return safe_load_json(p)
+    return None
 
 def load_enemy_template(basename):
     return safe_load_json(CHAR_DIR / f"{basename}.json")
@@ -236,16 +332,18 @@ def load_enemy_template(basename):
 def init_weapon_state(unit):
     wpn = None
     if isinstance(unit.get("weapon"), dict):
-        wpn = unit["weapon"].get("type")
+        wpn = unit["weapon"].get("type") or unit["weapon"].get("name") or unit["weapon"].get("kind")
     else:
         wpn = unit.get("weapon")
+    wpn = (wpn or "").lower().strip()
     unit["_weapon_type"] = wpn
+
     dur = None
     if isinstance(unit.get("weapon"), dict):
         dur = unit["weapon"].get("durability")
     if dur is None:
         dur = DEFAULT_DURABILITY.get(wpn, 50)
-    unit["_weapon_durability"] = dur
+    unit["_weapon_durability"] = int(dur)
 
 # ========= Rolls / math =========
 def stance_mods(stance):
@@ -260,38 +358,30 @@ def stance_mods(stance):
         df += 10
     return atk, df
 
-def attack_roll(attacker, attack_stance, target, target_stance, attack_type="normal", round_num=1, player_turn=False):
-    # Compute modifiers
+def attack_roll(attacker, attack_stance, target, target_stance, attack_type="normal"):
     atk_stance_mod, _ = stance_mods(attack_stance)
     _, def_stance_mod = stance_mods(target_stance)
 
-    # Simple dex mod similar to your +2 in logs from DEX//10
     dex = int(attacker.get("dexterity", attacker.get("Dexterity", 25)))
     dex_mod = dex // 10
+    aimed_pen = -30 + dex_mod if str(attack_type).lower().startswith("aim") else 0
 
-    # Aimed attack penalty (-30 + DEX//10)
-    aimed_pen = 0
-    if (attack_type or "normal").lower().startswith("aim"):
-        aimed_pen = -30 + dex_mod
-
-    # Pain / Stress hooks (currently 0, but we keep them for log compatibility)
-    stress_mod = -int(attacker.get("stress_level", 0))  # usually 0
+    stress_mod = -int(attacker.get("stress_level", 0))
     pain_pct = 0
     if attacker.get("total_hp"):
         pain_pct = int(100 * (1 - attacker.get("current_hp", attacker["total_hp"]) / attacker["total_hp"]))
-    pain_mod = -(pain_pct // 25)  # very mild effect
+    pain_mod = -(pain_pct // 25)
 
-    ambush_mod = 0  # control elsewhere if you want
-    weapon_skill = 0  # if you want to read from skills
+    ambush_mod = 0
+    weapon_skill = 0
 
     atk_roll = random.randint(1, 100)
     def_roll = random.randint(1, 100)
 
     attack_total = atk_roll + weapon_skill + dex_mod + atk_stance_mod + aimed_pen + stress_mod + pain_mod + ambush_mod
-    # Defender uses dex-ish stat too
     t_dex = int(target.get("dexterity", target.get("Dexterity", 25)))
     t_stat = t_dex // 10
-    defense_total = def_roll + t_stat + def_stance_mod  # block/parry abstracted
+    defense_total = def_roll + t_stat + def_stance_mod
 
     return {
         "atk_roll": atk_roll,
@@ -312,10 +402,11 @@ def base_damage_for(unit):
     w = unit.get("_weapon_type")
     if not w:
         if isinstance(unit.get("weapon"), dict):
-            w = unit["weapon"].get("type")
+            w = unit["weapon"].get("type") or unit["weapon"].get("name") or unit["weapon"].get("kind")
         else:
             w = unit.get("weapon")
-    return WEAPON_DAMAGE.get((w or "").lower(), 8)
+    w = (w or "").lower()
+    return WEAPON_DAMAGE.get(w, 8)
 
 def apply_durability_tick(attacker, round_log):
     w = attacker.get("_weapon_type")
@@ -327,20 +418,18 @@ def apply_durability_tick(attacker, round_log):
 
 # ========= UI helpers =========
 def choose_stance():
-    print("Choose stance: [1] Offensive (boost attack, increase stamina), [2] Neutral (balanced), [3] Defensive (boost defense, lower attack)")
+    print("Choose stance: [1] Offensive, [2] Neutral, [3] Defensive")
     x = ask_int("Enter stance (1-3): ", lo=1, hi=3, default=1)
     return {1: "offensive", 2: "neutral", 3: "defensive"}[x]
 
 def choose_attack_type():
-    print("Choose attack type: [1] Normal (spread damage), [2] Aimed (-30 + DEX//10 penalty, single zone)")
+    print("Choose attack type: [1] Normal, [2] Aimed (-30 + DEX//10)")
     x = ask_int("Enter attack type (1-2): ", lo=1, hi=2, default=1)
     return "aimed" if x == 2 else "normal"
 
 def list_active_abilities(unit):
     ab = unit.get("abilities", {})
-    # only active ones
-    names = [k for k, v in ab.items() if isinstance(v, dict) and v.get("type") == "active"]
-    return names
+    return [k for k, v in ab.items() if isinstance(v, dict) and v.get("type") == "active"]
 
 def choose_ability(unit):
     names = list_active_abilities(unit)
@@ -364,115 +453,83 @@ def ability_damage_bonus(unit, ability_name):
     return int(ab.get("damage_bonus", 0))
 
 # ========= Encounter/Combat =========
-def athletics_probe(player):
-    # small opener like in your logs
-    agility = int(player.get("agility", player.get("Agility", 35)))
-    agi_mod = agility // 10  # "+5 (Agility)" if 50 → 5 ; for 35 → 3
-    mobility_pen = int(player.get("_equipped_armor", {}).get("mobility_penalty", 0))
-    # pain currently 0 at start
-    pain_mod = 0
-    roll = random.randint(1, 100)
-    total = roll + agi_mod - mobility_pen - pain_mod
-    need = 30
-    print(f"🏃 {player['name']} attempts athletics check (needs {need}+): rolled {roll} + {agi_mod} (Agility) - {mobility_pen} (Mobility Penalty) - {pain_mod} (Pain) = {total}")
-    return total >= need
-
-def target_header(t):
-    # "Target: Bandit 1 (Pain: 0%, Mobility Penalty: 0%)"
-    pain_pct = 0
-    if t.get("total_hp"):
-        pain_pct = int(100 * (1 - t.get("current_hp", t["total_hp"]) / t["total_hp"]))
-    mobp = int(t.get("_equipped_armor", {}).get("mobility_penalty", 0))
-    return f"Target: {t['name']} (Pain: {pain_pct}%, Mobility Penalty: {mobp}%)"
-
 def run_combat(player, enemies, label):
-    # Initialize combat state
     enemies = init_combatants(enemies)
     player = init_combatants([player])[0]
     init_weapon_state(player)
     for e in enemies:
         init_weapon_state(e)
 
-    print(f"⚔️ {label}")
-    if athletics_probe(player):
-        pass  # flavor only
+    print(f"\n⚔️ {label}")
 
     MAX_ROUNDS = 40
     watch = StalemateWatch(threshold=6)
 
-    for rnd in range(1, MAX_ROUNDS + 1):
-        print(f"\n🎛️⚔️ Round {rnd} ⚔️🎛️")
-        logging.debug(f"Combat round {rnd} started")
+    rnd = 0
+    while rnd < MAX_ROUNDS:
+        rnd += 1
+        print("\n🎛️⚔️ New Round ⚔️🎛️")
         round_log = []
         did_damage = False
 
-        # Pick current target (first alive)
+        # choose first alive target
         enemies = [e for e in enemies if e.get("alive", True)]
         if not enemies:
-            print("🏆 Victory!")
+            print("🎉 The bandits are defeated! Onward to the leader's camp...")
             return True
         target = enemies[0]
-        print(target_header(target))
 
-        # === Player turn ===
+        # Player turn
         p_stance = choose_stance()
         a_type = choose_attack_type()
         ability = choose_ability(player)
 
-        # Calculate and print roll logs similar to yours
-        calc = attack_roll(player, p_stance, target, "neutral", a_type, round_num=rnd, player_turn=True)
+        calc = attack_roll(player, p_stance, target, "neutral", a_type)
         base = base_damage_for(player)
         bonus = ability_damage_bonus(player, ability)
         raw_damage = base + bonus
-        absorbed = 0
-        eff_damage = max(0, raw_damage - absorbed)
-        logging.debug(f"Player attack - damage={raw_damage}, absorbed={absorbed}, effective_damage={eff_damage}")
 
         print(f"⚔️ {player['name']} is in {p_stance.upper()} stance")
         print(f"🛡️ {target['name']} is in NEUTRAL stance")
-        print(f"⚔️ {player['name']} rolls {calc['atk_roll']} + {calc['weapon_skill']} (Weapon Skill) + {calc['dex_mod']} (Dexterity) - {abs(calc['stress_mod'])} (Stress) - {abs(calc['pain_mod'])} (Pain) + {calc['ambush_mod']} (Ambush) = {calc['attack_total']} to attack!")
-        print(f"🛡️ {target['name']} rolls {calc['def_roll']} + {calc['t_stat']} (Stat) - 0 (Stress) - 0 (Pain) = {calc['defense_total']} to defend! (Parry)")
+        print(f"⚔️ {player['name']} rolls {calc['atk_roll']} ➜ {calc['attack_total']} to attack!")
+        print(f"🛡️ {target['name']} rolls {calc['def_roll']} ➜ {calc['defense_total']} to defend!")
 
         if calc["hit"]:
-            apply_damage(player, target, eff_damage, round_log)
+            apply_damage(player, target, raw_damage, round_log)
             did_damage = True
             apply_durability_tick(player, round_log)
         else:
-            print(f"❌ {player['name']} misses or {target['name']} successfully defends!")
+            print("❌ Attack misses or is defended!")
 
-        # Remove dead enemies and victory check before they act
         enemies = cleanup_dead(enemies, round_log)
         if not enemies:
             safe_print_log(round_log)
-            print("🏆 Victory! Enemies defeated.")
+            print("🎉 The bandits are defeated! Onward to the leader's camp...")
             return True
 
-        # === Enemy turns ===
+        # Enemy turns
         for e in list(enemies):
             if not player.get("alive", True):
                 break
-            # Simple stance choice for enemies
             e_stance = "offensive" if e["current_hp"] > e["total_hp"] * 0.35 else "defensive"
-            calc_e = attack_roll(e, e_stance, player, "neutral", "normal", round_num=rnd, player_turn=False)
+            calc_e = attack_roll(e, e_stance, player, "neutral", "normal")
             e_base = base_damage_for(e)
-            e_eff = e_base  # no soak for now
-            logging.debug(f"Opponent {e['name']} attack - damage={e_base}, absorbed=0, effective_damage={e_eff}")
 
-            print(f"⚔️ {e['name']} is in {e_stance.upper()} stance")
+            print(f"⚔️ {e['name']} is in {e_stance.UPPER()} stance" if hasattr(str, "UPPER") else f"⚔️ {e['name']} is in {e_stance.upper()} stance")
             print(f"🛡️ {player['name']} is in NEUTRAL stance")
-            print(f"⚔️ {e['name']} rolls {calc_e['atk_roll']} + {calc_e['weapon_skill']} (Weapon Skill) + {calc_e['dex_mod']} (Dexterity) - {abs(calc_e['stress_mod'])} (Stress) - {abs(calc_e['pain_mod'])} (Pain) + {calc_e['ambush_mod']} (Ambush) = {calc_e['attack_total']} to attack!")
-            print(f"🛡️ {player['name']} rolls {calc_e['def_roll']} + {calc_e['t_stat']} (Stat) - 0 (Stress) - 0 (Pain) = {calc_e['defense_total']} to defend! (Block)")
+            print(f"⚔️ {e['name']} rolls {calc_e['atk_roll']} ➜ {calc_e['attack_total']} to attack!")
+            print(f"🛡️ {player['name']} rolls {calc_e['def_roll']} ➜ {calc_e['defense_total']} to defend!")
 
             if calc_e["hit"]:
-                apply_damage(e, player, e_eff, round_log)
+                apply_damage(e, player, e_base, round_log)
                 did_damage = True
                 apply_durability_tick(e, round_log)
             else:
-                print(f"❌ {e['name']} misses or {player['name']} successfully defends!")
+                print("❌ Enemy attack misses or is defended!")
 
         if not player.get("alive", True) or player["current_hp"] <= 0:
             safe_print_log(round_log)
-            print("☠️ You are defeated!")
+            print("💀 You have been defeated...")
             return False
 
         # Stalemate breaker
@@ -484,7 +541,7 @@ def run_combat(player, enemies, label):
     print("⏱️ Combat auto-ended (max rounds reached).")
     return False
 
-# ========= Scenario =========
+# ========= Scenario helpers =========
 def choose_player():
     print("Choose your character (torvald, lyssa, ada, brock, rock): ", end="")
     who = ask("", default="torvald").lower()
@@ -501,7 +558,6 @@ def equip_starters(characters):
 def make_bandits(n=2):
     base = load_enemy_template("bandit")
     if not base:
-        # Fallback small template
         base = {
             "name": "Bandit",
             "race": "Human",
@@ -513,7 +569,7 @@ def make_bandits(n=2):
         }
     out = []
     for i in range(1, n + 1):
-        b = json.loads(json.dumps(base))  # shallow copy via json to detach
+        b = json.loads(json.dumps(base))
         b["name"] = f"Bandit {i}"
         equip_armor(b)
         out.append(b)
@@ -534,6 +590,7 @@ def make_bandit_leader():
     equip_armor(base)
     return base
 
+# ========= Main =========
 def main():
     print("⚔️ Welcome to the Grimdark Village Rescue ⚔️")
     player = choose_player()
@@ -542,35 +599,27 @@ def main():
         return
     logging.info("Starting Grimdark Village Rescue")
 
-    # Equip player + minimal NPCs mentioned in your logs (purely cosmetic here)
     equip_armor(player)
 
-    print("📜 Wojtek, the chronicler, speaks of a village under siege...")
-    # (No HTTP/NPC call here; we keep it simple and offline.)
-
-    print("Options: [1] Fight bandits, [2] Persuade bandits (Lyssa, Ada), [3] Sneak (Lyssa, Ada), [4] Test combat vs. Caldran")
-    print("Debug: Before input prompt")
+    print("📜 A village pleads for help. Bandits hold a hostage...")
+    print("Options: [1] Fight bandits, [2] Persuade bandits (Lyssa, Ada), [3] Sneak (Lyssa, Ada), [4] Test combat vs. Caldran]")
     choice = ask_int("Choose action (1-4): ", lo=1, hi=4, default=1)
-    print(f"Debug: After input prompt, choice =  {choice}")
 
     if choice != 1:
         print("Only the combat path is implemented in this simplified build. Proceeding to fight…")
 
-    # --- Encounter 1: Two bandits ---
+    # Encounter 1: two bandits
     enemies = make_bandits(2)
-    ok = run_combat(player, enemies, "You confront two bandits at the village outskirts!")
+    ok = run_combat(player, enemies, "You confront Bandit!")
     if not ok:
+        print("The attempt failed.")
         return
 
-    # --- Encounter 2: Bandit Leader ---
+    # Encounter 2: leader
     leader = make_bandit_leader()
-    _ = run_combat(player, [leader], "The Bandit Leader steps forward, greatsword raised!")
-
-    print("🎉 Scenario complete.")
+    _ = run_combat(player, [leader], "You confront Bandit Leader!")
 
 if __name__ == "__main__":
-    # Make randomness a bit more exciting each run
     random.seed()
     main()
-
 
