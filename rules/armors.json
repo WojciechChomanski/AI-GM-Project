@@ -1,4 +1,17 @@
 {
+  "Unarmored": {
+  "standard": {
+    "name": "Veil Wraps",
+    "coverage": [],
+    "armor_rating": { "slashing": 0, "piercing": 0, "blunt": 0 },
+    "stamina_penalty": 0,
+    "max_durability": 10,
+    "weight": 0,
+    "mobility_bonus": 12,
+    "lore": "Tattered silk and leather wraps; no real protection, but unburdened."
+  }
+},
+
   "Light_Light": {
     "standard": {
       "name": "Padded Cloth",

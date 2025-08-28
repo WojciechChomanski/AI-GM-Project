@@ -1,0 +1,50 @@
+{
+  "name": "Isolde",
+  "race": "Elf",
+  "gender": "Female",
+  "class": "Sorceress",
+  "background": "Exiled Veil Adept",
+  "role": "Caster",
+  "description": "A fragile, Veil-touched sorceress with dark hair and faint runes glowing along her arms. Power is real—but messy; every spell has a cost.",
+
+  "total_hp": 45,
+  "max_stamina": 50,
+
+  "strength": 25,
+  "toughness": 25,
+  "agility": 35,
+  "mobility": 45,
+  "dexterity": 30,
+  "endurance": 25,
+  "intelligence": 40,
+  "willpower": 35,
+  "perception": 35,
+  "charisma": 30,
+  "weapon_skill": 20,
+
+  "weapon_equipped": true,
+  "weapon": "dagger",
+  "shield_equipped": false,
+
+  "armor": ["Light_Light"],
+
+  "corruption_level": 0,
+  "max_corruption": 150,
+
+  "traits": [
+    "Fragile",
+    "Eerie",
+    "Veil-Touched",
+    "Melee Vulnerability"
+  ],
+
+  "abilities": {},
+
+  "dialogue": {
+    "greeting": "The Veil stirs... and so do I.",
+    "combat": "Breathe it in. Let the shadows work.",
+    "victory": "Their fear feeds me.",
+    "defeat": "The Veil... takes its due..."
+  }
+}
+

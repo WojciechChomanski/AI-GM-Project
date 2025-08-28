@@ -33,7 +33,16 @@
 
   "two_handed_and_shields": {
     "allow": false,
-    "two_handed_types": ["2H", "2H_sword", "greatsword", "polearm", "zweihander", "montante"]
+    "two_handed_types": [
+      "2H",
+      "2H_sword",
+      "2H_axe",
+      "2H_hammer",
+      "polearm",
+      "greatsword",
+      "zweihander",
+      "montante"
+    ]
   },
 
   "fear_system": {
@@ -166,7 +175,14 @@
     "rounds_to_execute": 2,
     "resist_check": "vs_strength",
     "disables_heavy_weapons": true
-  }
+  },
+
+  "veil_fog":  { "stamina_cost": 5,  "tags": ["debuff","veil"], "log": "Veil Fog shrouds the field." },
+  "blood_pact": { "stamina_cost": 15, "hp_cost_percent": 10, "damage_bonus": 12, "tags": ["self_hp_cost","blast"] },
+  "whisper_of_fear": { "stamina_cost": 10, "tags": ["fear","control"], "log": "Whispers claw at the mind." },
+  "fade_step": { "stamina_cost": 10, "tags": ["evade","movement"], "log": "She slips between moments." },
+  "shrouds_embrace": { "stamina_cost": 30, "cooldown": 15, "tags": ["ultimate","aoe","veil"], "log": "The Shroud opens and hungers." }
 }
+
 
 
