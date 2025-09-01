@@ -104,11 +104,15 @@ def overlay_weapons_from_json():
         key_l = str(key).lower()
         if isinstance(w, dict):
             if "base_damage" in w:
-                try: WEAPON_DAMAGE[key_l] = int(w["base_damage"])
-                except Exception: pass
+                try:
+                    WEAPON_DAMAGE[key_l] = int(w["base_damage"])
+                except Exception:
+                    pass
             if "durability" in w:
-                try: DEFAULT_DURABILITY[key_l] = int(w["durability"])
-                except Exception: pass
+                try:
+                    DEFAULT_DURABILITY[key_l] = int(w["durability"])
+                except Exception:
+                    pass
 
 overlay_weapons_from_json()
 
@@ -127,6 +131,7 @@ def resolve_armor(category_key: str):
     """
     cat = str(category_key or "").strip()
     node = ARMORS_RAW.get(cat)
+
     def pack(name, weight, vkey, coverage=None, mob_bonus=0, stam_pen=None):
         weight = int(weight)
         stamina_pen = int(stam_pen if stam_pen is not None else max(0, weight // 20))
@@ -338,24 +343,49 @@ def choose_target_zone():
             return z
     return AIM_ZONES[0]
 
-def coverage_keys_for_zone(zone):
+def coverage_keys_for_zone(zone: str):
+    """Return coverage keys that should count as protection for a given hit zone.
+    This version also respects generic armor entries like 'arms', 'legs', 'torso', 'hips'."""
     z = zone.lower()
-    return {
-        "head": ["head"],
-        "throat": ["neck", "throat"],
-        "neck": ["neck"],
-        "chest": ["chest", "torso"],
-        "stomach": ["stomach", "abdomen", "belly"],
-        "groin": ["groin", "hips"],
-        "left_upper_arm": ["left_upper_arm"],
-        "left_lower_arm": ["left_lower_arm", "left_forearm"],
-        "right_upper_arm": ["right_upper_arm"],
-        "right_lower_arm": ["right_lower_arm", "right_forearm"],
-        "left_upper_leg": ["left_upper_leg", "left_thigh"],
-        "left_lower_leg": ["left_lower_leg", "left_shin"],
-        "right_upper_leg": ["right_upper_leg", "right_thigh"],
-        "right_lower_leg": ["right_lower_leg", "right_shin"],
-    }.get(z, [z])
+    if z in ("head","skull","face"):
+        return ["head","skull","face","eyes","neck"]
+    if z in ("neck",):
+        return ["neck","gorget","collar","torso"]
+    if z in ("chest","heart","rib","ribs"):
+        return ["chest","torso","breast","cuirass"]
+    if z in ("stomach","belly","abdomen","gut"):
+        return ["stomach","abdomen","belly","torso"]
+    if z in ("groin","hip","hips"):
+        return ["groin","hips","pelvis","torso"]
+
+    # Arms (generic and sided)
+    if "arm" in z:
+        keys = [z, "arm", "arms", "shoulder", "upper_arm", "forearm"]
+        if "left" in z:
+            keys += ["left_arm","left_upper_arm","left_forearm"]
+        if "right" in z:
+            keys += ["right_arm","right_upper_arm","right_forearm"]
+        return keys
+
+    # Hands (often included with arms)
+    if "hand" in z:
+        return [z, "hand", "hands", "gauntlet", "arms"]
+
+    # Legs (generic and sided)
+    if any(part in z for part in ("leg","thigh","calf","shin")):
+        keys = [z, "leg", "legs", "thigh", "calf", "shin"]
+        if "left" in z:
+            keys += ["left_leg","left_thigh","left_calf","left_shin"]
+        if "right" in z:
+            keys += ["right_leg","right_thigh","right_calf","right_shin"]
+        return keys
+
+    # Feet (often included with legs)
+    if any(part in z for part in ("foot","feet")):
+        return [z, "foot", "feet", "boots", "shoes", "legs"]
+
+    # Fallback: check the zone itself and torso generic
+    return [z, "torso"]
 
 def is_zone_covered(target, zone):
     cov = (target.get("_equipped_armor") or {}).get("coverage") or []
@@ -755,7 +785,8 @@ def choose_player():
     if player and is_sorceress(player) and str(player.get("gender","")).lower() != "female":
         print("⚠️ Only women can wield Veil sorcery. Loading Isolde instead.")
         iso = load_character_file("Isolde")
-        if iso: player = iso
+        if iso:
+            player = iso
     return player
 
 
@@ -830,6 +861,7 @@ def main():
 if __name__ == "__main__":
     random.seed()
     main()
+
 
 
 

@@ -1,0 +1,105 @@
+{
+  "orders_version": 1,
+  "applies_to_class": "Crusader_Knight",
+
+  "orders": [
+    {
+      "id": "templar",
+      "display_name": "Order of the Temple",
+      "heraldry": { "cloak": "white", "cross": "red" },
+      "theme": "Poverty, obedience, chastity; iron discipline; shock cavalry.",
+      "class_overrides": {
+        "oaths": {
+          "templar": {
+            "enabled": true,
+            "diet": { "meat_days_per_week_max": 3 },
+            "alms_tax_on_loot_pct": 12,
+            "contact_with_women_forbidden": true,
+            "violation_penalties": {
+              "stamina_regen_next_2r": -6,
+              "morale_next_battle": -8,
+              "cooldown_lockouts_rounds": 2
+            }
+          }
+        },
+        "formation": {
+          "fear_advantage_near_allies": 12,
+          "morale_loss_reduction_pct": 18,
+          "ally_radius_units": 8
+        },
+        "mounted": {
+          "charge_bonus_damage_pct": 12,
+          "lance_knockdown_pct_bonus": 10
+        },
+        "encumbrance": { "ignore_pct": 25, "sprint_in_armor": true },
+        "temperament": {
+          "escalation_tendency_pct": 15,
+          "civic_reputation_malus_after_violence": -8
+        }
+      }
+    },
+
+    {
+      "id": "hospitaller",
+      "display_name": "Order of the Hospital",
+      "heraldry": { "cloak": "black", "cross": "white" },
+      "theme": "Combat monks and medics; steadiness on the line; organized relief.",
+      "class_overrides": {
+        "oaths": {
+          "templar": {
+            "enabled": false
+          }
+        },
+        "formation": {
+          "fear_advantage_near_allies": 10,
+          "morale_loss_reduction_pct": 12,
+          "ally_radius_units": 10
+        },
+        "field_care": {
+          "self_heal_on_kill_pct": 3,
+          "ally_stabilize_bonus_pct": 15,
+          "camp_healing_bonus_pct": 20
+        },
+        "rest_rules": {
+          "hypervigilant_requires": ["back_to_wall", "weapon_within_reach"],
+          "town_rest_penalty_pct": -15
+        },
+        "encumbrance": { "ignore_pct": 20, "sprint_in_armor": true },
+        "temperament": {
+          "escalation_tendency_pct": 10,
+          "civic_reputation_malus_after_violence": -5
+        }
+      }
+    },
+
+    {
+      "id": "teutonic",
+      "display_name": "Teutonic Order",
+      "heraldry": { "cloak": "white", "cross": "black" },
+      "theme": "Grim discipline; heavy kit tolerance; relentless advance.",
+      "class_overrides": {
+        "oaths": {
+          "templar": { "enabled": false }
+        },
+        "encumbrance": { "ignore_pct": 30, "sprint_in_armor": true },
+        "formation": {
+          "fear_advantage_near_allies": 8,
+          "morale_loss_reduction_pct": 12,
+          "ally_radius_units": 7
+        },
+        "mounted": {
+          "charge_bonus_damage_pct": 8,
+          "lance_knockdown_pct_bonus": 5
+        },
+        "infantry_push": {
+          "shield_wall_resist_pct": 8,
+          "brace_vs_charge_pct": 10
+        },
+        "temperament": {
+          "escalation_tendency_pct": 25,
+          "civic_reputation_malus_after_violence": -12
+        }
+      }
+    }
+  ]
+}

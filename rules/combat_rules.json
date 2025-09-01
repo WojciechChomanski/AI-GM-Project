@@ -19,6 +19,8 @@
     "resting": 15
   },
 
+  "stamina_regen": { "offensive": 2, "neutral": 3, "defensive": 4 },
+
   "stamina_costs": {
     "attack_base": 2,
     "parry": 1,
@@ -149,6 +151,14 @@
     }
   },
 
+  "aimed_penalties": {
+    "default": 25,
+    "head": 40, "throat": 35, "neck": 32,
+    "chest": 20, "stomach": 22, "groin": 30,
+    "left_upper_arm": 18, "left_lower_arm": 20, "right_upper_arm": 18, "right_lower_arm": 20,
+    "left_upper_leg": 16, "left_lower_leg": 18, "right_upper_leg": 16, "right_lower_leg": 18
+  },
+
   "bleed_pips_by_zone": { "arm": 2, "leg": 2, "chest": 5, "stomach": 5 },
 
   "shield_system": {
@@ -183,6 +193,7 @@
   "fade_step": { "stamina_cost": 10, "tags": ["evade","movement"], "log": "She slips between moments." },
   "shrouds_embrace": { "stamina_cost": 30, "cooldown": 15, "tags": ["ultimate","aoe","veil"], "log": "The Shroud opens and hungers." }
 }
+
 
 
 

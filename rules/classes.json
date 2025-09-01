@@ -598,5 +598,23 @@
       "Hubris": { "type": "tactical", "overcommit_pct": 10 },
       "Mortal_Coil": { "type": "attrition", "hp_max_permanent_per_10_battles": -10 }
     }
+  },
+  "Veil_Sorceress": {
+    "description": "A fragile but terrifying caster who draws on the Veil. Only human and elven women can wield this active magic. Power always exacts a cost: stamina, blood, or sanity (corruption).",
+    "role": "Caster",
+    "allowed_races": ["Human", "Elf"],
+    "allowed_genders": ["Female"],
+    "base_stats": { "max_hp": 45, "max_stamina": 50 },
+    "stat_bonuses": { "intelligence": 5, "willpower": 5, "agility": -5 },
+    "equipment_rules": {
+      "armor_allowed": ["None", "Light_Light"],
+      "shields_allowed": false,
+      "weapons_allowed": ["dagger", "staff"]
+    },
+    "class_flags": { "melee_vulnerability_pct": 50, "active_magic_user": true },
+    "hidden_stats": { "corruption": { "start": 0, "max": 100 } },
+    "passives": ["veils_whisper"],
+    "spells": ["veil_fog", "blood_pact", "whisper_of_fear", "fade_step", "shrouds_embrace"]
   }
 }
+
