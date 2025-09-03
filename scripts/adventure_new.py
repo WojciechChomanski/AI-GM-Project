@@ -4,7 +4,7 @@
 """
 Grimdark Village Rescue – battle loop with:
 - Aimed strikes to body parts (zones) with number OR name entry
-- Rules-driven aimed penalty (from combat_rules.json) without extra head penalty
+- Flat aimed penalty (rules-driven) with DEX relief (no per-zone extra)
 - Critical hits and critical misses -> riposte
 - Stamina regen/costs + durability + 2H+shield enforcement (from combat_engine_ext)
 - Sorceress spell system (from sorcery_ext) including veil aura, fog/fear, shroud, melee vuln, Veil’s Grace
@@ -192,7 +192,7 @@ def equip_armor(character):
         "stamina_increase": ar["stamina_penalty"],
         "category": ar["category"],
         "variant": ar["variant_key"],
-        "coverage": ar["coverage"],  # NEW
+        "coverage": ar["coverage"],  # coverage list (e.g., ["chest"])
     }
 
     if ar["weight"] <= 5:
@@ -344,8 +344,7 @@ def choose_target_zone():
     return AIM_ZONES[0]
 
 def coverage_keys_for_zone(zone: str):
-    """Return coverage keys that should count as protection for a given hit zone.
-    This version also respects generic armor entries like 'arms', 'legs', 'torso', 'hips'."""
+    """Return coverage keys that should count as protection for a given hit zone."""
     z = zone.lower()
     if z in ("head","skull","face"):
         return ["head","skull","face","eyes","neck"]
@@ -358,7 +357,7 @@ def coverage_keys_for_zone(zone: str):
     if z in ("groin","hip","hips"):
         return ["groin","hips","pelvis","torso"]
 
-    # Arms (generic and sided)
+    # Arms
     if "arm" in z:
         keys = [z, "arm", "arms", "shoulder", "upper_arm", "forearm"]
         if "left" in z:
@@ -367,11 +366,10 @@ def coverage_keys_for_zone(zone: str):
             keys += ["right_arm","right_upper_arm","right_forearm"]
         return keys
 
-    # Hands (often included with arms)
     if "hand" in z:
         return [z, "hand", "hands", "gauntlet", "arms"]
 
-    # Legs (generic and sided)
+    # Legs
     if any(part in z for part in ("leg","thigh","calf","shin")):
         keys = [z, "leg", "legs", "thigh", "calf", "shin"]
         if "left" in z:
@@ -380,11 +378,9 @@ def coverage_keys_for_zone(zone: str):
             keys += ["right_leg","right_thigh","right_calf","right_shin"]
         return keys
 
-    # Feet (often included with legs)
     if any(part in z for part in ("foot","feet")):
         return [z, "foot", "feet", "boots", "shoes", "legs"]
 
-    # Fallback: check the zone itself and torso generic
     return [z, "torso"]
 
 def is_zone_covered(target, zone):
@@ -403,7 +399,7 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
     dex_mod = dex // 10
 
     aimed_pen_rules = aimed_attack_penalty(attacker, rules) if str(attack_type).lower().startswith("aim") else 0
-    total_aimed_pen = aimed_pen_rules  # no per-zone extra in this build
+    total_aimed_pen = aimed_pen_rules  # flat penalty (no per-zone extra)
 
     stress_mod = -int(attacker.get("stress_level", 0))
     pain_pct = 0
@@ -449,11 +445,22 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
 
 # ========= Damage application =========
 def apply_damage(attacker, target, raw_damage, round_log, zone=None, is_crit=False):
+    global rules
     dmg = max(0, int(raw_damage))
-    # armor mitigation if zone is covered; "zone=None" bypasses armor (used by Veil damage)
+
+    # Armor mitigation if zone is covered; "zone=None" bypasses armor (e.g., Veil damages)
+    covered = False
     if zone and is_zone_covered(target, zone):
+        covered = True
         dmg = max(0, int(round(dmg * 0.75)))
         round_log.append(f"🛡️ Armor absorbs part of the blow to {zone}!")
+
+    # Unhelmeted headshot multiplier (only if not covered)
+    if zone and zone.lower() in ("head","skull","face") and not covered:
+        mult = float((rules.get("helmet_rules") or {}).get("unhelmeted_headshot_mult", 1.0))
+        if mult > 1.0:
+            dmg = int(round(dmg * mult))
+            round_log.append("🩸 Unhelmeted head strike — damage multiplied!")
 
     before = target["current_hp"]
     target["current_hp"] = max(0, before - dmg)
@@ -591,7 +598,7 @@ def run_combat(player, enemies, label):
         # =========================
         p_stance = choose_stance()
 
-        # regen at start of your turn (applies to both casting and melee paths)
+        # regen at start of your turn
         regen_stamina(player, p_stance, rules, round_log)
 
         # If rooted by Shroud, you lose this action (both sides get rooted when cast)
@@ -861,6 +868,7 @@ def main():
 if __name__ == "__main__":
     random.seed()
     main()
+
 
 
 

@@ -70,14 +70,26 @@ def spend_stamina(actor, action_kind, stance, ability_name, rules, logs):
     return final_cost
 
 def regen_stamina(char, stance, rules, logs):
+    """
+    Prefers rules.stamina_regen map (e.g., {'offensive':2,'neutral':3,'defensive':4}).
+    Falls back to rules.stamina_regeneration.base * (1+stance_synergies.stamina_regen_pct/100).
+    """
     if char is None:
         return 0
     if "current_stamina" not in char:
         char["current_stamina"] = char.get("max_stamina", 0)
-    base = int(_get(rules, "stamina_regeneration.base", 0))
-    stance_rules = _get(rules, f"stance_synergies.{_stance_key(stance)}", {}) or {}
-    regen_pct = int(stance_rules.get("stamina_regen_pct", 0))
-    regen = int(round(base * (1 + regen_pct / 100.0)))
+
+    # Preferred: explicit per-stance values
+    sr = _get(rules, "stamina_regen", None)
+    if isinstance(sr, dict):
+        regen = int(sr.get(_stance_key(stance), sr.get("neutral", 0)))
+    else:
+        # Legacy fallback
+        base = int(_get(rules, "stamina_regeneration.base", 0))
+        stance_rules = _get(rules, f"stance_synergies.{_stance_key(stance)}", {}) or {}
+        regen_pct = int(stance_rules.get("stamina_regen_pct", 0))
+        regen = int(round(base * (1 + regen_pct / 100.0)))
+
     before = char["current_stamina"]
     char["current_stamina"] = min(char.get("max_stamina", 0), before + regen)
     gained = char["current_stamina"] - before
@@ -127,6 +139,10 @@ def check_rout(team_chars, rules, logs):
     return False
 
 def aimed_attack_penalty(attacker, rules):
+    """
+    Flat aimed penalty (e.g., 30) minus DEX relief ratio.
+    Keeps your classic feel; ignores per-zone maps.
+    """
     base = int(_get(rules, "aimed_attack.base_penalty", 30))
     ratio = float(_get(rules, "aimed_attack.dex_bonus_ratio", 0.0))
     dex = int(attacker.get("dexterity", attacker.get("DEX", attacker.get("dex", 0))))
@@ -209,6 +225,7 @@ __all__ = [
     # engine + rules loader
     "CombatEngine", "load_rules",
 ]
+
 
 
 
