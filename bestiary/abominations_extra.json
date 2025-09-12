@@ -1,0 +1,32 @@
+{
+  "Ghoul": {
+    "tags": ["abomination","undead"],
+    "resists": { "slash": 15, "cold": 10 },
+    "vulnerable_to": { "breath": 15, "fire": 10 }
+  },
+  "Wight": {
+    "tags": ["abomination","undead","veil_host"],
+    "resists": { "pierce": 15, "slash": 15, "shock": 20 },
+    "vulnerable_to": { "breath": 25, "holy_relic": 10 }
+  },
+  "Veil_Host_Cultist": {
+    "tags": ["abomination","humanoid","veil_host"],
+    "resists": { "slash": 5 },
+    "vulnerable_to": { "breath": 20 }
+  },
+  "Drowned_Witch_Acolyte": {
+    "tags": ["abomination","witch","drowned_moon"],
+    "resists": { "pierce": 10, "cold": 20 },
+    "vulnerable_to": { "breath": 15, "fire": 15, "salt": 999 }
+  },
+  "Kelp_Husk": {
+    "tags": ["abomination","construct","drowned_moon"],
+    "resists": { "slash": 20, "pierce": 20 },
+    "vulnerable_to": { "breath": 10, "fire": 20, "salt": 999 }
+  },
+  "Shadow_Wolf": {
+    "tags": ["abomination","beast","veil_touched"],
+    "resists": { "slash": 10, "cold": 10 },
+    "vulnerable_to": { "breath": 15, "radiant": 10 }
+  }
+}

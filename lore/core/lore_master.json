@@ -1,0 +1,48 @@
+{
+  "cosmology": {
+    "veil": "Primordial darkness (Genesis 1:2) — uncreation, not a person; it tempts by luring creation back to formlessness.",
+    "breath": "Divine Word/Light (Genesis 1:3) — order and life; uniquely echoed in humankind after the Fall."
+  },
+  "eden_and_tower": {
+    "eden": "A continent-realm bridging Heaven and Earth; no hunger, age, or illness. Home to humans and Eldran before the Sundering.",
+    "tower_of_va": "A spire with roots in the Veil and a crown toward Heaven, raised by Eve with Adam's inaction and Eldran craft. Angels shattered it; Eden sealed; shards scattered across the world."
+  },
+  "races": {
+    "Elves": "Mystics, immortal yet decaying; sacrifice to offload Veil corruption; reject gunpowder; prefer bows/curved blades.",
+    "Dwarves": "Artificers, gravity-hardened; runic seals; gunpowder masters; no swords/bows; females carve passive runes.",
+    "Humans": "Frail heirs of the Breath; only men with Virtue and vows can channel Breath in battle; women risk Veil’s power.",
+    "Ogres": "Vats' children, engineered from stolen boys by Eldran machines and alchemy; hulking, childlike, disfigured."
+  },
+  "power_systems": {
+    "Breath": "Holy, restorative, oath-bound; activates mainly vs abominations.",
+    "Veil": "Destructive, seductive, corrupting; stronger with risk.",
+    "Runes": "Dwarven passive bindings and engines; females gain +10% potency."
+  },
+  "corruption": {
+    "scale_max": 150,
+    "stages": [
+      "0–30: whispers, rune glows, minor stealth penalty",
+      "31–60: paranoia, tremors, eye specks; -accuracy, +spell power",
+      "61–90: alluring malice; black eyes, jagged teeth; social penalty, +spell damage",
+      "91–120: bloodlust; horns/scales; friendly fire risk",
+      "121–150: possession; becomes a Veil host"
+    ]
+  },
+  "factions": {
+    "Breathbound Orders": "Human monastic/militant orders preserving relics, training CrusaderKnights and Confessors; seek Abel’s Echo.",
+    "Iron Wards": "Dwarven rune-sealers; soul-forges; aim to bind the Veil forever; feud with elves.",
+    "Echelon of Thorns": "Elven rulers; doctrine of sacrifice to purge corruption; hunt humans for rituals.",
+    "Daughters of the Drowned Moon": "Water witches, brine rites, drowning altars; thin boundaries at river/sea.",
+    "Reclaimers of Va": "Cult of the Tower; rebuild Va with pylons and living Breath counterweights."
+  },
+  "places": {
+    "Cinderhold": "Human port of soot and relic markets; Breath pulpits amid smog; matchlock/flintlock rare but present.",
+    "Thornskull": "Elven spire-tree city; blood altars; no gunpowder; veiled beasts for mounts.",
+    "Ironcrag": "Dwarven forge-citadel under mountains; soul-metal cannons, rune pylons; high gravity culture.",
+    "Gearwomb": "Ogre scrapyard-fortress of war machines; nomad bands; hidden vats rumored."
+  },
+  "scripture": "Scroll of Light and Fall (5 chapters, verse-numbered).",
+  "prophecy": "Abel’s Echo: when many hearts truly breathe, Eden’s seal loosens; the path opens only through costly repentance."
+}
+
+

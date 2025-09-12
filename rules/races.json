@@ -14,14 +14,31 @@
     "abilities": [
       {
         "name": "Breath of the Maker",
-        "description": "Access divine classes (Paladin, Cleric) for males. +5 resistance to Veil corruption."
+        "description": "Male-only and conditional: requires a Breath-bound class AND Virtue ≥ 70. Breath powers awaken only against abominations. +5 resistance to Veil corruption."
+      },
+      {
+        "name": "Aegis of the Word (conditional)",
+        "description": "While Virtue ≥ 70 AND target is an abomination: −20% Veil/fear effects taken."
+      },
+      {
+        "name": "Sanctified Steel (conditional)",
+        "description": "While Virtue ≥ 70 AND target is an abomination: +15% weapon damage and +10 armor penetration."
       }
     ],
     "magic": {
       "type": ["breath", "veil"],
       "restrictions": {
-        "breath": {"gender": "Male"},
-        "veil": {"gender": "Female", "corruption_risk": 0.1, "taint_mark": {"hunt_check_bonus": 5}}
+        "breath": {
+          "gender": "Male",
+          "requires_class_tag": "breath_bound",
+          "requires_virtue_min": 70,
+          "vs_abominations_only": true
+        },
+        "veil": {
+          "gender": "Female",
+          "corruption_risk": 0.1,
+          "taint_mark": { "hunt_check_bonus": 5 }
+        }
       }
     },
     "equipment": {
@@ -49,7 +66,7 @@
     ],
     "magic": {
       "type": "veil",
-      "restrictions": {"gender": "Female", "corruption_risk": 0.15, "taint_mark": {"hunt_check_bonus": 5}}
+      "restrictions": { "gender": "Female", "corruption_risk": 0.15, "taint_mark": { "hunt_check_bonus": 5 } }
     },
     "equipment": {
       "allowed_weapons": ["composite_bow", "throwing_knife", "spear", "sword", "dagger"],
@@ -82,7 +99,7 @@
     ],
     "magic": {
       "type": "rune",
-      "restrictions": {"gender": "Female", "passive_only": true}
+      "restrictions": { "gender": "Female", "passive_only": true }
     },
     "equipment": {
       "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
@@ -139,10 +156,11 @@
     ],
     "magic": {
       "type": "none",
-      "restrictions": {"all": false}
+      "restrictions": { "all": false }
     },
     "equipment": {
-      "restrictions": {"improvised_only": true}
+      "restrictions": { "improvised_only": true }
     }
   }
 }
+
