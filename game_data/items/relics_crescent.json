@@ -1,0 +1,21 @@
+{
+  "Crescent_Betyl": {
+    "slot": "trinket",
+    "lore": "Meteoric black stone shard; hums near Va-Pylons.",
+    "effects": ["−5% Veil miscast chance", "+1 corruption per Veil cast"],
+    "set": "Pylon-Surveyor",
+    "notes": "Reclaimer surveyors and Khilafate priests covet these."
+  },
+  "Pylon_Tuning_Key": {
+    "slot": "consumable",
+    "lore": "Geometric brass rod etched with Eldran ratios.",
+    "effects": ["Retune an active pylon once; on success, lower local Veil Pressure by 1; on fail, spawn Betyl Warden"],
+    "uses": 1
+  },
+  "Seal_Brand": {
+    "slot": "tool",
+    "lore": "Dwarf brand heated in soul-forges; marks flesh with anti-Veil runes.",
+    "effects": ["Apply ‘Seal Scar’: bearer gains +10 Veil resistance; −1 max stamina tier"],
+    "requirements": ["Iron Wards favor ≥ 1"]
+  }
+}
