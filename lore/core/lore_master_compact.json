@@ -1,0 +1,166 @@
+{
+  "version": "2025-09-12",
+  "design_pillars": [
+    "Costly power and moral consequence",
+    "Breath vs. Veil duality",
+    "Asymmetry between races and tech",
+    "Demons are campaign events, not fodder",
+    "Scripture is actionable gameplay"
+  ],
+  "era": "Hybrid-Earth 1580-1650 (pike & shot; early firearms; plate-and-mail still relevant)",
+  "cosmology": {
+    "breath": "Divine Word/Light (Genesis 1:3). Heals and orders. Echoes uniquely in humankind.",
+    "veil": "Primordial darkness (Genesis 1:2). Un-creation; tempts by luring back to formlessness. Not a person."
+  },
+  "eden_and_tower": {
+    "eden": "Continent-realm bridging Heaven and Earth; no hunger, age, or disease; home of humans and Eldran.",
+    "tower_of_va": "Eve, swayed by Veil whispers, led Eldran to raise a spire rooted in the Veil and crowned toward Heaven. Angels shattered it; Eden sealed. World fractured (the Sundering)."
+  },
+  "races": {
+    "Human": {
+      "blurb": "Mortal heirs of the Breath; fragile but spiritually unique.",
+      "gameplay": "Breath perks: male + class tag 'breath_bound' + Virtue ≥ 70 + target is abomination.",
+      "arms": "Mixed; rare matchlocks/flintlocks; shields allowed.",
+      "tags": ["breath", "versatile"]
+    },
+    "Elf": {
+      "blurb": "Mystics, immortal yet decaying; offload corruption via sacrifice (high-echelon secret).",
+      "gameplay": "Veil affinity; higher corruption rate; 'Thorn's Sacrifice' transfers corruption on kill.",
+      "arms": "No gunpowder; bows, curved blades, thrown knives; ritual/organic armor; veiled mounts.",
+      "tags": ["veil", "sacrifice", "no_guns"]
+    },
+    "Dwarf": {
+      "blurb": "Artificers, gravity-hardened; bind and seal with runes; soul-metal forges.",
+      "gameplay": "Passive runes (female potency +10%); natural Veil resistance.",
+      "arms": "Axes, hammers, crossbows, gunpowder; no swords/bows; steam-carts; heavy shields.",
+      "tags": ["runes", "gunpowder", "sealing"]
+    },
+    "Ogre": {
+      "blurb": "Vats' children; engineered from stolen boys; huge, disfigured, childlike minds.",
+      "gameplay": "3x carry; high calories; claustrophobia; devour-to-heal (corruption risk); berserk at low HP.",
+      "arms": "Improvised: clubs, chains, broken shields; patchwork armor.",
+      "tags": ["engineered", "brute", "tragic"]
+    }
+  },
+  "power_systems": {
+    "Breath": {
+      "tooltip": "Holy, restorative, oath-bound; awakens chiefly vs abominations.",
+      "access": "Human males only; requires class tag 'breath_bound' and Virtue ≥ 70"
+    },
+    "Veil": {
+      "tooltip": "Destructive, seductive, corruptive; stronger with risk.",
+      "access": "Any who dare; Elves culturally aligned; corruption accrues"
+    },
+    "Runes": {
+      "tooltip": "Dwarven bindings and engines; passive, pre-crafted power.",
+      "access": "Dwarves; females gain +10% potency"
+    }
+  },
+  "corruption": {
+    "max": 150,
+    "stages": [
+      { "range": "0-30", "name": "Whispers", "fx": "Faint glow; minor stealth penalty" },
+      { "range": "31-60", "name": "Fissures", "fx": "Tremors, eye-specks; -accuracy, +spell damage" },
+      { "range": "61-90", "name": "Allure", "fx": "Black eyes/teeth; -trust, ++spell damage" },
+      { "range": "91-120", "name": "Unmasking", "fx": "Horns/scales; +damage; friendly-fire risk" },
+      { "range": "121-150", "name": "Possession", "fx": "Becomes Veil host (monster/NPC control)" }
+    ],
+    "purification": {
+      "breath": "Cleanses without corrupting",
+      "elves": "Sacrifice transfers corruption",
+      "dwarves": "Runes suppress",
+      "ogres": "Low tolerance; frenzy risk"
+    }
+  },
+  "factions": {
+    "Breathbound Orders": {
+      "blurb": "Human sacred orders; relics, confession, knightly formation; pursue Abel's Echo.",
+      "hooks": ["Escort relics", "Cleanse/torch corrupted shrines", "Hunt a veil-host preying on pilgrims"]
+    },
+    "Iron Wards": {
+      "blurb": "Dwarven sealers; rune pylons, soul-forges; aim to bind the Veil forever.",
+      "hooks": ["Defend a pylon", "Smuggle ore", "Use the Soul Crucible on a captive?"]
+    },
+    "Echelon of Thorns": {
+      "blurb": "Elven regime; doctrine of sacrifice to purge corruption; guard Veil rifts.",
+      "hooks": ["Sabotage the Altar of Rot", "Rescue conduits", "Steal a highborn grimoire"]
+    },
+    "Daughters of the Drowned Moon": {
+      "blurb": "Water witches; brine rites; thin boundaries at rivers/estuaries; salt is bane.",
+      "hooks": ["Stop a moon drowning", "Track a taken barge", "Break a brine altar for a hostage"]
+    },
+    "Reclaimers of Va": {
+      "blurb": "Cult of the Tower; rebuild Va using leyline pylons and living Breath counterweights.",
+      "hooks": ["Disrupt a three-pylon consecration", "Rescue a Breath conduit", "Retune a pylon to reveal an Eldran vault (high risk)"]
+    }
+  },
+  "places": {
+    "Cinderhold": "Human port: soot, relic markets, soot-smeared pulpits; rare firearms.",
+    "Thornskull": "Elven spire-tree city; Altar of Rot; bone-lattice skyways; ritual hunts.",
+    "Ironcrag": "Dwarven forge-citadel; Soul Crucible; rune-pylon arrays; ash and steam-carts.",
+    "Gearwomb": "Ogre scrapyard fortress; buried engines; rumor of a pulsing vat."
+  },
+  "classes": {
+    "Human": [
+      { "name": "CrusaderKnight", "tooltip": "Breath-bound melee; Aegis/Sanctified Steel vs abominations (Virtue gated)" },
+      { "name": "Confessor", "tooltip": "Breath support; purification, morale, wards (Virtue gated)" },
+      { "name": "Judge", "tooltip": "Breath control; interdiction, declarations, executions (Virtue gated)" }
+    ],
+    "Elf": [
+      { "name": "Hollow Warden", "tooltip": "Ritual control; sacrifice mechanics; high corruption risk" },
+      { "name": "Arcanite", "tooltip": "Veil caster; damage and debuffs; escalating corruption" },
+      { "name": "Sorceress", "tooltip": "Female-only; seductive fear, blood pacts, veils; vessel at max corruption" }
+    ],
+    "Dwarf": [
+      { "name": "Runebearer", "tooltip": "Passive wards/binds, anti-magic suppression" },
+      { "name": "Forge Sentinel", "tooltip": "Heavy line-holder; soul-metal arms; pylon defense" },
+      { "name": "Ash Priest", "tooltip": "Seal rites; purification through craft; moral costs" }
+    ],
+    "Ogre": [
+      { "name": "Ravager", "tooltip": "Shock melee, grapples, frenzy control, devour-to-heal" },
+      { "name": "Siegeborn", "tooltip": "Logistics, breachwork, improvised artillery and cover" }
+    ]
+  },
+  "professions": {
+    "Prophecy Seeker": "Human relic-finder, corruption sense, morale boons.",
+    "Veil Ritualist": "Elf/Human heretic; boosts Veil potency; sacrifices at a cost.",
+    "Soul-Grinder": "Dwarf; forge durability buffs; Crucible logistics.",
+    "Awakening Ritualist": "Ogre; vat-quest unlocks ally or reveals ongoing births."
+  },
+  "scripture": {
+    "scroll": "Scroll of Light and Fall",
+    "chapters": 5,
+    "tooltip": "Verse-numbered creation, Eden, Va, Sundering, and the choice between Breath and Veil."
+  },
+  "prophecy": "Abel's Echo: when many hearts truly breathe, Eden's seal loosens (repentance as key).",
+  "glossary": {
+    "Eldran": "Ancient people before the split; source of Elves and Dwarves.",
+    "Sundering": "World fracture after Va's fall and Eden's sealing.",
+    "Va-Pylon": "Reclaimer leyline spire that thins the boundary.",
+    "Soul-Metal": "Trace iron/copper essence refined from bodies for rune-forging.",
+    "Abomination": "Undead, demons, veil-hosts, warped constructs."
+  },
+  "hooks": [
+    "Stop a Va-Pylon triangulation",
+    "Sabotage the Altar of Rot",
+    "Decide the Soul Crucible's use",
+    "Break a moon drowning with consecrated salt",
+    "Investigate a reawakening vat in Gearwomb"
+  ],
+  "doctrine_of_spite": "Dwarves refuse swords/bows; Elves refuse guns/shields; Humans use what works.",
+  "combat_triggers": {
+    "abomination_tags": ["abomination", "undead", "veil_host"],
+    "breath_awaken_condition": "human male + class tag 'breath_bound' + virtue >= 70 + target has abomination tag"
+  },
+  "config_refs": {
+    "races": "AI_GM_Project/rules/races.json",
+    "class_tags": "AI_GM_Project/rules/class_tags.json",
+    "virtue_rules": "AI_GM_Project/rules/virtue_rules.json",
+    "breath_config": "AI_GM_Project/rules/breath_config.json",
+    "lore_master": "AI_GM_Project/lore/core/lore_master.json",
+    "lore_master_md": "AI_GM_Project/lore/core/lore_master.md",
+    "factions": "AI_GM_Project/lore/factions/factions.json",
+    "scroll": "AI_GM_Project/lore/scrolls/scroll_of_light_and_fall.json",
+    "bestiary": "AI_GM_Project/bestiary/*.json"
+  }
+}
