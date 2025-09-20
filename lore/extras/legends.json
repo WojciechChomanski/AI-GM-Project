@@ -1,0 +1,55 @@
+{
+  "legends": [
+    {
+      "id": "LEG-THORN-FIRST",
+      "title": "The First Thorn",
+      "summary": "A splinter from the seduction in Eden, now a living briar that drinks corruption and memory alike.",
+      "hooks": [
+        "Elves bleed to keep it tame",
+        "Witches want it drowned in brine",
+        "A Confessor dreams of burning it at dawn"
+      ],
+      "ties": ["Q-1670-THORN-RELIC"]
+    },
+    {
+      "id": "LEG-STAIR-BROKEN",
+      "title": "The Broken Stair",
+      "summary": "Dreamers climb a staircase of ash and salt; every step remembers a sin; the door at the top won’t open.",
+      "hooks": [
+        "Reclaimers claim the key is geometry, not repentance",
+        "A dwarf says the door is a seal and the seal is a mercy"
+      ],
+      "ties": ["Q-1670-CHILD-ALTAR"]
+    },
+    {
+      "id": "LEG-FOUNDRY-HEART",
+      "title": "Foundry Heart",
+      "summary": "The Soul Crucible sings a name in the night. Those who speak it are never seen again, except as sparks in the smoke.",
+      "hooks": [
+        "Miners strike iron that bleeds",
+        "A rune-mother hides a ledger of the lost"
+      ],
+      "ties": ["Q-1670-GRIND-IRON"]
+    },
+    {
+      "id": "LEG-SAND-CRESCENT",
+      "title": "Crescent in the Sand",
+      "summary": "A shard fell like a star and taught the dunes to move. It obeys only the branded and the bereft.",
+      "hooks": [
+        "The Emir’s blade points where the wind already leans",
+        "A slave child draws maps in sleep—of cities not yet buried"
+      ],
+      "ties": ["Q-1670-SAND-CRESCENT"]
+    },
+    {
+      "id": "LEG-GEARWOMB-KING",
+      "title": "The Ogre Who Would Be King",
+      "summary": "He wears a crown of rivets and wire because no one told him kings bleed too.",
+      "hooks": [
+        "Some say he remembers a mother; some say he remembers a machine",
+        "He speaks with the voice of stairs and storms"
+      ],
+      "ties": ["Q-1670-GEARWOMB-KING"]
+    }
+  ]
+}

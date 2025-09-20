@@ -1,0 +1,111 @@
+{
+  "era": "1670",
+  "quests": [
+    {
+      "id": "Q-1670-CHILD-ALTAR",
+      "title": "Child of the Altar",
+      "region": "Cinderhold",
+      "factions": ["Breathbound Orders", "Reclaimers of Va"],
+      "tier": "low_to_mid",
+      "hook": "A mass-sacrifice is planned in the old amphitheater to 'seal the sky'.",
+      "objectives": [
+        "Locate the hidden Reclaimer lodge",
+        "Free or replace the Breath 'counterweight'",
+        "Choose: destroy a pylon, or retune it to open a vault"
+      ],
+      "outcomes": [
+        "Destroy: the Veil-storm passes; Relic scarcity rises",
+        "Retune: Eldran vault opens; Veil pressure spikes region-wide"
+      ],
+      "rewards": [
+        "Relic: Shard-Compass (reveals nearest Va-geometry for 1 minute/day)",
+        "Breath boon (if child saved): +1 corruption resist vs Veil this session"
+      ]
+    },
+    {
+      "id": "Q-1670-GRIND-IRON",
+      "title": "The Black Harvest",
+      "region": "Ironcrag",
+      "factions": ["Iron Wards"],
+      "tier": "mid",
+      "hook": "Debtor-prisoners disappear at night; the Soul Crucible roars by dawn.",
+      "objectives": [
+        "Infiltrate the lower forges",
+        "Gather proof of the Crucible’s inputs",
+        "Confront or bargain with the Runebearer in charge"
+      ],
+      "outcomes": [
+        "Expose: public riot, short-term shutdown, Veil leak in mines",
+        "Enable: gain soul-metal arms, +Order suspicion"
+      ],
+      "rewards": [
+        "Soul-Metal Buckler (+5 vs Veil effects, dents on Breath contact)",
+        "Blueprint scrap: Portable Seal Engine (incomplete)"
+      ]
+    },
+    {
+      "id": "Q-1670-THORN-RELIC",
+      "title": "The First Thorn",
+      "region": "Veilwoods Rim",
+      "factions": ["Echelon of Thorns", "Daughters of the Drowned Moon"],
+      "tier": "mid_to_high",
+      "hook": "Elven hunters seek the Thorn that first tempted Eve, now grown into a living briar.",
+      "objectives": [
+        "Track the elven coterie through the bleeding wood",
+        "Parley with brine-witches for safe mire-crossing",
+        "Decide the Thorn’s fate: burn, bind, or bear it"
+      ],
+      "outcomes": [
+        "Burn: elves turn to open raids; local corruption dips",
+        "Bind: craft a one-use anti-corruption rite; risk backlash",
+        "Bear: wielder gains Veil ward and whispers"
+      ],
+      "rewards": [
+        "Thorn-Twine Fetish (consume to halve corruption once)",
+        "Moon-brine Charm (advantage vs drowning, disadvantage vs fire)"
+      ]
+    },
+    {
+      "id": "Q-1670-SAND-CRESCENT",
+      "title": "Blade in the Crescent",
+      "region": "Desert Marches",
+      "factions": ["Khilafate of the Scoured Veil"],
+      "tier": "mid",
+      "hook": "Emir Zulfiqar hunts a shard that makes the sand obey.",
+      "objectives": [
+        "Shadow a raiding column to a brass altar",
+        "Intercept the shard courier",
+        "Sabotage the branding rite or turn it upon its masters"
+      ],
+      "outcomes": [
+        "Stop the rite: caravan dissolves; slaves flee into dunes",
+        "Reverse the rite: a sand-djinn is bound, then bargains"
+      ],
+      "rewards": [
+        "Crescent-Brand (once per day: create Difficult Terrain of sand)",
+        "Djinn’s Favor (one impossible crossing, one terrible rumor)"
+      ]
+    },
+    {
+      "id": "Q-1670-GEARWOMB-KING",
+      "title": "The Ogre Who Would Be King",
+      "region": "Gearwomb",
+      "factions": ["Ogre Tribes", "Reclaimers of Va (shadow)"],
+      "tier": "mid",
+      "hook": "An ogre warlord dreams in Va-geometry and calls a horde.",
+      "objectives": [
+        "Enter the scrap-fortress without triggering a stampede",
+        "Discover who seeds the warlord’s dreams",
+        "End the dream: smash the vat-core or sever the whisper"
+      ],
+      "outcomes": [
+        "Smash: horde breaks; scattered ogres imprint on closest leader",
+        "Sever: warlord becomes lucid, remembers he was a boy"
+      ],
+      "rewards": [
+        "Vat-Core Fragment (power source for ancient devices)",
+        "Ogre Oath (one ogre ally follows for a single battle)"
+      ]
+    }
+  ]
+}

@@ -1,112 +1,26 @@
 {
-  "Breathbound Orders": {
-    "type": "Sacred Order",
-    "belief": "Only contrite hearts may channel the Breath; defend the innocent; abominations must be purged.",
-    "goals": [
-      "Preserve relics and scripture fragments",
-      "Train CrusaderKnights, Confessors, and Judges",
-      "Recover sites tied to Abel's Echo"
-    ],
-    "rites": [
-      "Confession and Atonement",
-      "Vigil of Ash (fasting, night watch)",
-      "Relic Procession (public courage aura)"
-    ],
-    "rivals": ["Echelon of Thorns", "Reclaimers of Va", "Daughters of the Drowned Moon"],
-    "ranks": ["Novice", "Brother/Sister", "Knight", "Confessor", "High Judge", "Prior"],
-    "encounter_hooks": [
-      "Escort a Relic Procession through hostile streets",
-      "Cleanse a corrupted chapel or burn it if needed",
-      "Hunt a Veil-host preying on pilgrims"
-    ]
-  },
-
-  "Iron Wards": {
-    "type": "Dwarven Order",
-    "belief": "The Veil must be bound; craft and seal are the true answer to chaos.",
-    "goals": [
-      "Expand rune-pylon networks",
-      "Recover Eldran machines for containment",
-      "Secure soul-metal supply"
-    ],
-    "rites": [
-      "Binding Hammer (seal minor rifts)",
-      "Soul Crucible (forge enhancement, moral cost)",
-      "Gravity Trial (initiate endurance rite)"
-    ],
-    "rivals": ["Echelon of Thorns", "Reclaimers of Va"],
-    "ranks": ["Apprentice", "Binder", "Warden", "Forge-Marshal"],
-    "encounter_hooks": [
-      "Defend a pylon under elven sabotage",
-      "Smuggle ore past ogre bands",
-      "Decide whether to use the Crucible on a captive"
-    ]
-  },
-
   "Echelon of Thorns": {
-    "type": "Elven Regime",
-    "belief": "Sacrifice purges corruption; beauty must endure at any price.",
-    "goals": [
-      "Sustain immortality by offloading corruption",
-      "Guard Veil rifts in the Twilight Veilwoods",
-      "Crush dwarven gunworks and human shrines"
-    ],
-    "rites": [
-      "Thorn Sacrifice (transfer corruption on kill)",
-      "Echelon Rite (area corruption transfer)",
-      "Veil Whisper (power at sanity cost)"
-    ],
-    "rivals": ["Iron Wards", "Breathbound Orders"],
-    "ranks": ["Initiate", "Thorn-Sworn", "Warden", "High Thorn"],
-    "encounter_hooks": [
-      "Sabotage a mass sacrifice at the Altar of Rot",
-      "Rescue captives marked as conduits",
-      "Choose: strike their highborn or steal their grimoire"
-    ]
+    "race": "Elf",
+    "belief": "Corruption can be transferred through ritual sacrifice.",
+    "goal": "Maintain magical purity and power through human vessels.",
+    "enemy": ["Iron Wards", "Breathbound Orders"]
   },
-
-  "Daughters of the Drowned Moon": {
-    "type": "Coven",
-    "belief": "Water remembers the first night; drown the world until the Veil rises.",
-    "goals": [
-      "Thin the boundary at river mouths and estuaries",
-      "Birth brine-beasts under the black moon",
-      "Break coastal shrines to silence the Breath"
-    ],
-    "rites": [
-      "Salt Baptism (mark prey with brine sigils)",
-      "Moon Drowning (sacrifice to open a riftlet)",
-      "Undertow Call (drag foes, summon kelp-husks)"
-    ],
-    "rivals": ["Breathbound Orders", "Iron Wards", "Reclaimers of Va"],
-    "ranks": ["Reefling", "Weeper", "Marrow-Witch", "Tide-Mother"],
-    "encounter_hooks": [
-      "Stop a moon drowning at a tidal stone circle",
-      "Track a missing barge taken by kelp-husks",
-      "Strike a brine altar or bargain for a hostage"
-    ]
+  "Iron Wards": {
+    "race": "Dwarf",
+    "belief": "Power must be sealed and purified through discipline.",
+    "goal": "Harness remnants of the Veil to forge relics without breaking containment.",
+    "enemy": ["Echelon of Thorns"]
   },
-
-  "Reclaimers of Va": {
-    "type": "Cult",
-    "belief": "The Tower must rise again; the Veil can be bridged by perfected geometry and living counterweights.",
-    "goals": [
-      "Recover Eldran blueprints and spire shards",
-      "Erect Va-Pylons on leylines",
-      "Harness human Breath as stabilizers"
-    ],
-    "rites": [
-      "Geometric Consecration (three-pylon ritual)",
-      "Breath Counterweight (human conduit)",
-      "Spire Shard Relics (set items)"
-    ],
-    "rivals": ["Breathbound Orders", "Iron Wards", "Daughters of the Drowned Moon"],
-    "ranks": ["Architect", "Surveyor", "Binder", "Mason"],
-    "encounter_hooks": [
-      "Disrupt a three-pylon site before aperture opens",
-      "Rescue a Breath conduit from a lodge",
-      "Retune a pylon to reveal an Eldran vault (high risk)"
-    ]
+  "Breathbound Orders": {
+    "race": "Human",
+    "belief": "Only through divine Breath can the world be restored.",
+    "goal": "Protect the last divine-bloodlines and reclaim Eden’s legacy.",
+    "enemy": ["Echelon of Thorns", "Veilborn Cults"]
+  },
+  "Veilborn Cults": {
+    "race": "Various",
+    "belief": "The Veil is truth. Corruption is evolution.",
+    "goal": "Reopen the Spire beneath the ruins of Eden.",
+    "enemy": ["All others"]
   }
 }
-
