@@ -1,0 +1,38 @@
+{
+  "id": "EV-1670-SAND-CRESCENT",
+  "title": "Blade in the Crescent",
+  "era": "1670",
+  "region": "Desert Marches",
+  "factions": ["Khilafate of the Scoured Veil"],
+  "type": "desert_event",
+  "trigger": "Emir Zulfiqar locates a shard said to make the sand obey.",
+  "stakes": "Stop a branding rite or reverse it to bind a djinn.",
+  "state": {
+    "raid_intensity": 0.6,
+    "altar_heat": 0.9
+  },
+  "beats": [
+    "Brass altars glow red; captives branded with crescent sigils.",
+    "Sand moves like water beneath a black crescent standard.",
+    "A shard courier departs under moonlight toward a singing dune."
+  ],
+  "objectives": [
+    "Shadow the raiding column without leaving prints (night travel, clay soles).",
+    "Intercept or impersonate the shard courier.",
+    "Sabotage the branding rite or turn it upon its masters."
+  ],
+  "consequences": {
+    "stop_rite": [
+      "Caravan dissolves; slaves flee into dunes (spawn: rescue chain).",
+      "Khilafate reprisals increase along trade roads for 14 days."
+    ],
+    "reverse_rite": [
+      "A Sand_Djinn is bound; offers one bargain, one betrayal.",
+      "Veil pressure +5% in the Desert Marches."
+    ]
+  },
+  "links": {
+    "quests": ["Q-1670-SAND-CRESCENT"],
+    "legends": ["LEG-SAND-CRESCENT"]
+  }
+}

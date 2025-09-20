@@ -1,0 +1,50 @@
+{
+  "Revenant": {
+    "tags": ["abomination", "undead"],
+    "resists": { "slash": 30 },
+    "vulnerable_to": { "breath": 20, "fire": 15 },
+    "notes": "Corpse called back by grievance. Slow to fall unless named and forgiven."
+  },
+  "Vampire_Noble": {
+    "tags": ["abomination", "undead", "veil_host"],
+    "resists": { "pierce": 20, "slash": 10 },
+    "vulnerable_to": { "breath": 30, "sunlight": 999 },
+    "notes": "Courteous until hungry. Courts favor, drains cities."
+  },
+  "Pylon_Shade": {
+    "tags": ["construct", "veil_host"],
+    "resists": { "pierce": 40, "slash": 40, "blunt": 10 },
+    "vulnerable_to": { "breath": 25, "rune": 20 },
+    "notes": "Born when a Va-Pylon half-activates. Flickers, phases through walls near leylines."
+  },
+  "Thorn_Stalker": {
+    "tags": ["abomination", "elf_rite", "beast"],
+    "resists": { "slash": 20 },
+    "vulnerable_to": { "fire": 20, "breath": 10 },
+    "notes": "Grown from briars and bone. Hunts by the taste of fear-sweat."
+  },
+  "Ironbound_Golem": {
+    "tags": ["construct", "dwarf_rune"],
+    "resists": { "pierce": 50, "slash": 50, "blunt": 20 },
+    "vulnerable_to": { "rune": 25, "breath": 10 },
+    "notes": "Runes gone feral. Soul-metal heart hammers like a forge."
+  },
+  "Drowned_Matron": {
+    "tags": ["abomination", "undead", "water_witch"],
+    "resists": { "pierce": 20, "cold": 20 },
+    "vulnerable_to": { "fire": 10, "breath": 15, "salt": 25 },
+    "notes": "Sings kindly, drowns cruelly. Salt breaks her hold."
+  },
+  "Gearwomb_Hulk": {
+    "tags": ["ogrekin", "beast"],
+    "resists": { "blunt": 10 },
+    "vulnerable_to": { "fire": 10, "pierce": 5, "breath": 10 },
+    "notes": "Vat-bred ogre variant with iron staples and chain-mail scars. Charges at loudest sound."
+  },
+  "Sand_Djinn": {
+    "tags": ["veil_host", "spirit"],
+    "resists": { "pierce": 100, "slash": 100, "blunt": 100 },
+    "vulnerable_to": { "breath": 15, "rune": 10, "silver": 10 },
+    "notes": "Formed of blowing grit and old names. Bound by circles of wet clay and true bargains."
+  }
+}

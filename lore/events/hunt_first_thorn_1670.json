@@ -1,0 +1,42 @@
+{
+  "id": "EV-1670-FIRST-THORN",
+  "title": "Hunt of the First Thorn",
+  "era": "1670",
+  "region": "Veilwoods Rim",
+  "factions": ["Echelon of Thorns", "Daughters of the Drowned Moon"],
+  "type": "wilds_event",
+  "trigger": "Elven rites fail repeatedly to offload corruption among highborn.",
+  "stakes": "Recover or destroy the relic that once tempted Eve.",
+  "state": {
+    "forest_corruption": 0.7,
+    "elf_elite_health": 0.41
+  },
+  "beats": [
+    "Black sap sings under bark; hunters track by taste of fear-sweat.",
+    "Brine-fog rolls inland; drowned bells toll where no chapel stands.",
+    "A living briar forms around a thorn the size of a dirk."
+  ],
+  "objectives": [
+    "Trail the elven coterie without entering the singing groves.",
+    "Parley with brine-witches for safe mire-crossing (offer salt or names).",
+    "Decide the Thorn’s fate: burn, bind, or bear it."
+  ],
+  "consequences": {
+    "burn": [
+      "Local corruption -15% for 30 days.",
+      "Elves shift to open raids; relations worsen."
+    ],
+    "bind": [
+      "Craft a one-use anti-corruption rite (halve corruption once).",
+      "Backlash risk: target gains 'Veil Whispers' for 24 hours."
+    ],
+    "bear": [
+      "Wielder gains Veil ward (+10 resist) and occasional whispers.",
+      "Random Thorn_Stalker ambush chance increases in the region."
+    ]
+  },
+  "links": {
+    "quests": ["Q-1670-THORN-RELIC"],
+    "legends": ["LEG-THORN-FIRST"]
+  }
+}

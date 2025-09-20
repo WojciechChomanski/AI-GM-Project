@@ -1,0 +1,38 @@
+{
+  "id": "EV-1670-OGRE-KING",
+  "title": "The Ogre Who Would Be King",
+  "era": "1670",
+  "region": "Gearwomb",
+  "factions": ["Ogre Tribes", "Reclaimers of Va (shadow)"],
+  "type": "scrap_fortress_event",
+  "trigger": "An ogre warlord dreams in Va-geometry and calls a horde.",
+  "stakes": "Break the horde or free the boy inside the monster.",
+  "state": {
+    "horde_size": 0.58,
+    "vat_core_hum": 0.76
+  },
+  "beats": [
+    "Stampedes begin at thunder or laughter; both sound alike to ogres.",
+    "The warlord sketches perfect circles in soot with broken fingers.",
+    "A hidden whisper-engine pulses beneath the scrap keep."
+  ],
+  "objectives": [
+    "Enter the scrap-fortress without triggering a stampede.",
+    "Discover who seeds the warlord’s dreams (trace the whisper-engine).",
+    "End the dream: smash the vat-core or sever the whisper."
+  ],
+  "consequences": {
+    "smash_core": [
+      "Horde breaks; scattered ogres imprint on the nearest strong leader (could be a PC).",
+      "Vat-core fragment recoverable (ancient power source)."
+    ],
+    "sever_whisper": [
+      "Warlord becomes lucid, remembers he was a boy; horde hesitates.",
+      "Reclaimers attempt extraction; new pursuit thread opens."
+    ]
+  },
+  "links": {
+    "quests": ["Q-1670-GEARWOMB-KING"],
+    "legends": ["LEG-GEARWOMB-KING"]
+  }
+}
