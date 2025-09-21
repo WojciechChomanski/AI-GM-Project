@@ -1,0 +1,12 @@
+{
+  "Revenant": {
+    "tags": ["abomination","undead"],
+    "resists": { "slash": 30 },
+    "vulnerable_to": { "breath": 20, "fire": 15 }
+  },
+  "Vampire_Noble": {
+    "tags": ["abomination","undead","veil_host"],
+    "resists": { "pierce": 20, "slash": 10 },
+    "vulnerable_to": { "breath": 30, "sunlight": 999 }
+  }
+}

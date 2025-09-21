@@ -1,0 +1,39 @@
+{
+  "name": "Khilafate of the Scoured Veil",
+  "type": "Theocratic Conquest-State",
+  "symbol": "Black crescent pierced by a blade",
+  "origin": "Desert prophecy of Khadim the Veiled; the Veil as a furnace to purge the world.",
+  "belief": "Suffering cleanses; conquest is prayer; submission is purity.",
+  "doctrine": [
+    "The Veil is a divine trial; embrace its fire to be remade",
+    "Blood offerings steady the world’s trembling edge",
+    "Mercy breeds corruption; strength births order"
+  ],
+  "rituals": [
+    "Brass-altar offerings under black banners",
+    "Branding of children as ‘Sand-Vowed’",
+    "Desert exposure rites (‘becoming sand’)"
+  ],
+  "leadership": {
+    "title": "Emir",
+    "name": "Zulfiqar al-Saqr",
+    "profile": "Warlord-mystic; claims to speak with the voice of sand; rides veiled camel; pain as prayer."
+  },
+  "ranks": ["Imam-Lashkar", "Sand Qadi", "Banner-Captain", "Veil-Vowed"],
+  "territory": "Crescent Wastes, oasis chains to Qudayn",
+  "relations": {
+    "Breathbound Orders": "Apostates; targets for cleansing raids",
+    "Echelon of Thorns": "Useful chaos; covert exchanges",
+    "Iron Wards": "Arms for tithe; mutual disdain",
+    "Reclaimers of Va": "Rival claim on ‘true tower’; occasional alignment"
+  },
+  "encounter_hooks": [
+    "Intercept a slave-caravan bound for a brass altar",
+    "Expose a Sand Qadi who hoards Breath relics",
+    "Turn a Veil-Vowed priestess (Laila) double-agent with a stolen Shard"
+  ],
+  "mechanics": {
+    "army_trait": "Desert Raid: +20% overland speed on sand; −30% in marsh/forest",
+    "rite_of_scouring": "Once per campaign turn, raise regional Veil Pressure by +1 in occupied hex; generates unrest"
+  }
+}
