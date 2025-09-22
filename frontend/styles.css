@@ -1,0 +1,68 @@
+:root{
+  --bg:#0f1115; --panel:#171a21; --muted:#232735; --text:#e7e9ee;
+  --accent:#8dd3ff; --accent2:#ffb86c; --danger:#ff5c5c; --ok:#22c55e;
+  --grid:#2a2f40;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+  --radius:14px;
+  font-synthesis-weight:none;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{margin:0;background:linear-gradient(180deg,#0e1014,#0b0d12 40%,#0a0c10);color:var(--text);font:14px/1.4 system-ui,Segoe UI,Roboto,Inter,Arial}
+#app{display:grid;grid-template-columns:300px 1fr 360px;gap:12px;padding:12px}
+
+.sidebar,.chat{background:var(--panel);border:1px solid #1f2330;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
+.stage{position:relative;background:#0a0c11;border:1px solid #1a1e29;border-radius:var(--radius);box-shadow:var(--shadow);min-height:0;overflow:hidden}
+
+.brand{padding:16px 16px 8px;border-bottom:1px solid #1e2230}
+.brand h1{margin:0;font-size:18px;letter-spacing:.5px}
+.brand small{opacity:.7}
+
+.panel{border-bottom:1px solid #1b2030}
+.panel:last-of-type{border-bottom:none}
+.panel>header{padding:12px 16px;font-weight:600;opacity:.9}
+.panel-body{padding:0 12px 12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.list{list-style:none;margin:8px 0 0;padding:0;max-height:200px;overflow:auto}
+.list li{display:flex;align-items:center;justify-content:space-between;padding:8px;border:1px solid #1f2433;border-radius:10px;background:#141823;margin-bottom:6px}
+.list .meta{opacity:.75;font-size:12px}
+.btn{background:linear-gradient(180deg,#273045,#21273a);border:1px solid #2a3247;border-radius:10px;padding:8px 10px;color:var(--text);cursor:pointer}
+.btn:hover{border-color:#3a4562}
+.btn-ghost{background:transparent;border:1px dashed #2a3144}
+.btn-warn{border-color:#4a1f1f;background:linear-gradient(180deg,#3a2121,#2b1717);color:#ffd2d2}
+.checkbox{display:flex;align-items:center;gap:8px;margin:6px 0}
+.label-inline{display:flex;align-items:center;gap:8px;margin:6px 0}
+.muted{opacity:.7}
+
+.stage canvas{width:100%;height:100%}
+.overlay.hud{position:absolute;left:12px;bottom:12px;display:flex;gap:8px;background:#0b0f18b8;border:1px solid #1b2131;padding:6px 10px;border-radius:12px}
+.overlay.hud span{opacity:.85}
+#hud-zoom::before{content:"Zoom: "}
+#hud-pos::before{content:" | Pos: "}
+#hud-char::before{content:" | Active: "}
+
+.chat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1b2030}
+.chat-header h2{margin:0}
+.chat-log{padding:12px;overflow:auto;flex:1}
+.chat-msg{padding:10px 12px;margin-bottom:8px;border-radius:12px;border:1px solid #243049}
+.chat-msg.user{background:#171e2a}
+.chat-msg.ai{background:#151a24;border-color:#2a3652}
+.chat-form{padding:12px;border-top:1px solid #1b2030;display:flex;gap:8px}
+.chat-form textarea{flex:1;resize:vertical;min-height:64px;background:#111521;border:1px solid #20263a;border-radius:10px;color:var(--text);padding:8px}
+#api-status{color:var(--ok)}
+
+dialog{border:none;border-radius:16px;padding:0;background:#0f131d;box-shadow:var(--shadow);width:min(520px,90vw)}
+.dialog-card{padding:16px}
+.dialog-card h3{margin-top:0}
+.dialog-card label{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+
+.hint{opacity:.8;margin-top:8px}
+
+/* Combat extras */
+.combat .turn-info{margin:6px 0;opacity:.85}
+.order li{gap:12px}
+.badge{padding:2px 6px;border-radius:8px;border:1px solid #2a3247;background:#1a1f2b;font-size:12px}
+.badge.green{background:#142318;border-color:#1d3b26}
+.badge.red{background:#2a1717;border-color:#3b2020}
+.badge.yellow{background:#2a2517;border-color:#3a3320}
