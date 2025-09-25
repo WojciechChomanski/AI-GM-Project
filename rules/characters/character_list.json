@@ -11,6 +11,7 @@
     {"name": "Gorthak", "file": "gorthak.json"},
     {"name": "Ada", "file": "ada.json"},
     {"name": "Brock", "file": "brock.json"},
-    {"name": "Rock", "file": "rock.json"}
+    {"name": "Rock", "file": "rock.json"},
+    {"name": "Elara Voss", "file": "elara_voss.json"}
   ]
 }
