@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Breath & Veil — Character Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0e1117; --panel:#151a23; --muted:#1c2330; --line:#242c3d; --text:#e7eaf0;
+      --accent:#8dd3ff; --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+      --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0d0f14,#0a0c11); color:var(--text); font:14px/1.5 system-ui,Segoe UI,Inter,Roboto,Arial}
+    .wrap{max-width:980px; margin:24px auto; padding:0 12px}
+    .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    h1,h2,h3{margin:0 0 8px}
+    .muted{opacity:.75}
+    .grid{display:grid; gap:12px}
+    .g2{grid-template-columns:1fr 1fr}
+    .g3{grid-template-columns:repeat(3,1fr)}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    label{display:flex; flex-direction:column; gap:6px}
+    input,select,textarea{
+      background:#0f141f; border:1px solid var(--line); color:var(--text); border-radius:10px; padding:8px
+    }
+    textarea{resize:vertical; min-height:72px}
+    .section{border-top:1px solid var(--line); margin-top:14px; padding-top:14px}
+    .btn{cursor:pointer; border-radius:10px; border:1px solid #2a344a; background:linear-gradient(180deg,#283249,#20283a); color:var(--text); padding:10px 12px}
+    .btn:hover{border-color:#3a4a6a}
+    .btn-ghost{background:transparent; border:1px dashed #32425f}
+    .btn-ok{border-color:#1f3a26; background:linear-gradient(180deg,#1b2a1d,#142015)}
+    .btn-warn{border-color:#4a351f; background:linear-gradient(180deg,#3a2a18,#2a1d12)}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background:#0c111a; border:1px solid var(--line); padding:2px 6px; border-radius:6px}
+    .pill{border:1px solid var(--line); padding:6px 8px; border-radius:999px; display:inline-block; background:#0f141f; margin-right:6px}
+    small.help{opacity:.75; display:block; margin-top:4px}
+    .right{margin-left:auto}
+    .stat{display:grid; grid-template-columns:1fr 84px 84px; gap:8px; align-items:center}
+    .stat input[type=number]{text-align:center}
+    .stat .mod{background:#0f141f; border:1px solid var(--line); border-radius:10px; padding:8px; text-align:center}
+    .footer{display:flex; justify-content:space-between; align-items:center; margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Character Builder <span class="muted">— Breath & Veil</span></h1>
+      <p class="muted">Single-page builder that saves to <span class="kbd">localStorage</span>. Your main UI will auto-load the saved player as the active character.</p>
+
+      <!-- Identity -->
+      <div class="section grid g3">
+        <label> Name
+          <input id="name" placeholder="Your character’s name" required />
+        </label>
+        <label> Race
+          <select id="race">
+            <option>Human</option><option>Elf</option><option>Dwarf</option><option>Ogre</option>
+          </select>
+        </label>
+        <label> Class
+          <input id="cls" placeholder="Crusader, Hollow Warden, Broker…" />
+        </label>
+      </div>
+
+      <div class="grid g3" style="margin-top:8px">
+        <label> Gender
+          <select id="gender">
+            <option>Male</option><option>Female</option><option>Nonbinary</option>
+          </select>
+        </label>
+        <label> Orientation
+          <select id="orientation">
+            <option>Heterosexual</option>
+            <option>Homosexual</option>
+            <option>Bisexual</option>
+            <option>Pansexual</option>
+            <option>Asexual</option>
+          </select>
+        </label>
+        <label> Alignment
+          <input id="alignment" placeholder="e.g. Breath-leaning idealist" />
+        </label>
+      </div>
+
+      <div class="section">
+        <label> Background
+          <textarea id="background" placeholder="One or two sentences that define who you are and where you came from."></textarea>
+        </label>
+      </div>
+
+      <!-- Stats -->
+      <div class="section">
+        <div class="row" style="align-items:center">
+          <h2 style="margin:0">Attributes</h2>
+          <span class="pill">Point-buy or type numbers (20–80 typical)</span>
+          <button class="btn btn-ghost right" id="btn-presets">Quick Preset: Balanced</button>
+          <button class="btn btn-ghost" id="btn-random">Randomize</button>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px; margin-top:6px">
+          <div>
+            <div class="stat"><label>Strength</label><input type="number" id="str" min="1" max="99" value="30"/><div class="mod" id="mod-str">-2</div></div>
+            <div class="stat"><label>Toughness</label><input type="number" id="tou" min="1" max="99" value="30"/><div class="mod" id="mod-tou">-2</div></div>
+            <div class="stat"><label>Agility</label><input type="number" id="agi" min="1" max="99" value="40"/><div class="mod" id="mod-agi">0</div></div>
+            <div class="stat"><label>Mobility</label><input type="number" id="mob" min="1" max="99" value="40"/><div class="mod" id="mod-mob">0</div></div>
+            <div class="stat"><label>Dexterity</label><input type="number" id="dex" min="1" max="99" value="35"/><div class="mod" id="mod-dex">-1</div></div>
+          </div>
+          <div>
+            <div class="stat"><label>Endurance</label><input type="number" id="end" min="1" max="99" value="35"/><div class="mod" id="mod-end">-1</div></div>
+            <div class="stat"><label>Intelligence</label><input type="number" id="int" min="1" max="99" value="35"/><div class="mod" id="mod-int">-1</div></div>
+            <div class="stat"><label>Willpower</label><input type="number" id="wil" min="1" max="99" value="35"/><div class="mod" id="mod-wil">-1</div></div>
+            <div class="stat"><label>Perception</label><input type="number" id="per" min="1" max="99" value="35"/><div class="mod" id="mod-per">-1</div></div>
+            <div class="stat"><label>Charisma</label><input type="number" id="cha" min="1" max="99" value="45"/><div class="mod" id="mod-cha">+2</div></div>
+          </div>
+        </div>
+
+        <small class="help">Modifier = <span class="kbd">floor((score - 10)/2)</span>. Your quest JSON uses <span class="kbd">charisma</span> and <span class="kbd">skills.persuasion/deception/insight</span> for social checks.</small>
+      </div>
+
+      <!-- Skills -->
+      <div class="section">
+        <h2>Skills</h2>
+        <div class="grid g3">
+          <label> Persuasion
+            <input type="number" id="sk_persuasion" min="0" max="5" value="3" />
+          </label>
+          <label> Deception
+            <input type="number" id="sk_deception" min="0" max="5" value="2" />
+          </label>
+          <label> Insight
+            <input type="number" id="sk_insight" min="0" max="5" value="2" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Vital -->
+      <div class="section grid g3">
+        <label>Total HP <input type="number" id="hp" min="1" max="999" value="70"/></label>
+        <label>Max Stamina <input type="number" id="sta" min="1" max="999" value="75"/></label>
+        <label>Weapon Skill <input type="number" id="wsk" min="0" max="99" value="25"/></label>
+      </div>
+
+      <!-- Actions -->
+      <div class="footer">
+        <div class="row">
+          <button class="btn btn-warn" id="btn-clear">Clear Saved Player</button>
+        </div>
+        <div class="row">
+          <button class="btn btn-ghost" id="btn-load">Load Saved</button>
+          <button class="btn btn-ok" id="btn-save">Save Player</button>
+        </div>
+      </div>
+      <small class="muted">After saving, open your main UI (index.html). The player will appear in the Characters list and be set Active.</small>
+    </div>
+  </div>
+
+  <script>
+    // --- tiny helpers ---
+    const $ = s => document.querySelector(s);
+    function load(key, fallback){ try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch{ return fallback; } }
+    function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+    function uid(){ return Math.random().toString(36).slice(2)+Date.now().toString(36); }
+    function mod(x){ return Math.floor((x-10)/2); }
+    function updateMods(){
+      const ids = ["str","tou","agi","mob","dex","end","int","wil","per","cha"];
+      ids.forEach(id=>{
+        const v = Number($("#"+id).value||0);
+        const m = mod(v);
+        $("#mod-"+id)?.textContent = (m>=0?"+":"")+m;
+      });
+    }
+    document.addEventListener('input', e=>{
+      if(e.target.matches('input[type=number]')) updateMods();
+    });
+
+    // Presets & random
+    $("#btn-presets").addEventListener('click', ()=>{
+      const set = { str:32,tou:32,agi:40,mob:40,dex:36,end:36,int:36,wil:36,per:36,cha:48,
+                    hp:70, sta:75, wsk:25, sk_persuasion:3, sk_deception:2, sk_insight:2 };
+      for(const [k,v] of Object.entries(set)){
+        const el = $("#"+k); if(el) el.value = v;
+      }
+      updateMods();
+    });
+    $("#btn-random").addEventListener('click', ()=>{
+      function r(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+      const fields = ["str","tou","agi","mob","dex","end","int","wil","per","cha"];
+      fields.forEach(id=> $("#"+id).value = r(28,52));
+      $("#hp").value = r(60,90); $("#sta").value = r(60,90); $("#wsk").value = r(15,35);
+      $("#sk_persuasion").value = r(1,4); $("#sk_deception").value = r(0,4); $("#sk_insight").value = r(1,4);
+      updateMods();
+    });
+
+    // Save / Load
+    $("#btn-save").addEventListener('click', ()=>{
+      const name = $("#name").value.trim();
+      if(!name){ alert("Name required."); return; }
+
+      const player = {
+        id: load('btv.player', null)?.id || uid(),
+        isPlayer: true,
+        name,
+        race: $("#race").value,
+        class: $("#cls").value.trim(),
+        gender: $("#gender").value,
+        sexuality: $("#orientation").value,
+        alignment: $("#alignment").value.trim(),
+        background: $("#background").value.trim(),
+        stats: {
+          total_hp: Number($("#hp").value)||70,
+          max_stamina: Number($("#sta").value)||75,
+          strength: Number($("#str").value)||30,
+          toughness: Number($("#tou").value)||30,
+          agility: Number($("#agi").value)||40,
+          mobility: Number($("#mob").value)||40,
+          dexterity: Number($("#dex").value)||35,
+          endurance: Number($("#end").value)||35,
+          intelligence: Number($("#int").value)||35,
+          willpower: Number($("#wil").value)||35,
+          perception: Number($("#per").value)||35,
+          charisma: Number($("#cha").value)||45,
+          weapon_skill: Number($("#wsk").value)||25
+        },
+        skills: {
+          persuasion: Number($("#sk_persuasion").value)||0,
+          deception: Number($("#sk_deception").value)||0,
+          insight: Number($("#sk_insight").value)||0
+        }
+      };
+
+      // Store dedicated player copy
+      save('btv.player', player);
+
+      // Also sync into characters list so the existing UI sees it
+      const chars = load('btv.characters', []);
+      const idxExistingById = chars.findIndex(c=>c.id===player.id);
+      const idxExistingPlayer = chars.findIndex(c=>c.isPlayer);
+      if(idxExistingById>=0){ chars[idxExistingById] = {...chars[idxExistingById], ...player}; }
+      else if(idxExistingPlayer>=0){ chars[idxExistingPlayer] = {...chars[idxExistingPlayer], ...player}; }
+      else { chars.push(player); }
+      save('btv.characters', chars);
+      save('btv.activeCharacterId', player.id);
+
+      alert("Saved! Open the main UI (index.html). Your player is set Active.");
+    });
+
+    $("#btn-load").addEventListener('click', ()=>{
+      const p = load('btv.player', null);
+      if(!p){ alert("No saved player found."); return; }
+      $("#name").value = p.name||"";
+      $("#race").value = p.race||"Human";
+      $("#cls").value = p.class||"";
+      $("#gender").value = p.gender||"Male";
+      $("#orientation").value = p.sexuality||"Heterosexual";
+      $("#alignment").value = p.alignment||"";
+      $("#background").value = p.background||"";
+
+      const s = p.stats||{};
+      $("#hp").value = s.total_hp ?? 70;
+      $("#sta").value = s.max_stamina ?? 75;
+      $("#wsk").value = s.weapon_skill ?? 25;
+
+      $("#str").value = s.strength ?? 30;
+      $("#tou").value = s.toughness ?? 30;
+      $("#agi").value = s.agility ?? 40;
+      $("#mob").value = s.mobility ?? 40;
+      $("#dex").value = s.dexterity ?? 35;
+      $("#end").value = s.endurance ?? 35;
+      $("#int").value = s.intelligence ?? 35;
+      $("#wil").value = s.willpower ?? 35;
+      $("#per").value = s.perception ?? 35;
+      $("#cha").value = s.charisma ?? 45;
+
+      const k = p.skills||{};
+      $("#sk_persuasion").value = k.persuasion ?? 0;
+      $("#sk_deception").value  = k.deception ?? 0;
+      $("#sk_insight").value    = k.insight ?? 0;
+
+      updateMods();
+      alert("Loaded saved player.");
+    });
+
+    $("#btn-clear").addEventListener('click', ()=>{
+      if(!confirm("Delete saved player and remove from character list?")) return;
+      const p = load('btv.player', null);
+      localStorage.removeItem('btv.player');
+      const chars = load('btv.characters', []);
+      const out = chars.filter(c=> !(c.isPlayer || (p && c.id===p.id)) );
+      save('btv.characters', out);
+      const active = load('btv.activeCharacterId', null);
+      if(p && active===p.id){
+        // pick first remaining char (if any)
+        save('btv.activeCharacterId', out[0]?.id || null);
+      }
+      alert("Cleared saved player.");
+    });
+
+    // initialize
+    updateMods();
+  </script>
+</body>
+</html>

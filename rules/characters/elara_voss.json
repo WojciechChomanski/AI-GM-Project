@@ -46,7 +46,7 @@
   },
 
   "status": {
-    "corruption_level": 8,
+    "corruption_level": 28,
     "max_corruption": 120,
     "stress_level": 12,
     "reputation": 60,
@@ -239,7 +239,7 @@
   "combat_profile": {
     "style": "Avoids brawls; controls openings, strikes first if cornered, disengages behind allies.",
     "range": "Melee 1 tile; prefers bodyguards.",
-    "special": "On first blood against Elara, she may offer parley—if accepted, remove one hostile from combat for one round."
+    "special": "On first blood against Elara, she may offer parley—if accepted, remove one hostile from combat for one round. If rejected, she gains +2 corruption and uses Silk Knife next turn."
   },
 
   "dialogue": {
@@ -250,35 +250,43 @@
     "lines_extra": [
       "Do you know the cruelest truth, darling? The world is bought and sold between sheets, not battlefields.",
       "I don’t take lovers. I take investments.",
-      "You mistake me for a courtesan still? I am the hand that moves the coin."
+      "You mistake me for a courtesan still? I am the hand that moves the coin.",
+      "I used to beg."
     ]
+  },
+
+  "triggers": {
+    "property": "0.5s pause. 'Call me that again, and I’ll carve your tongue for a keepsake.' Scar twitches."
   },
 
   "total_hp": 70,
   "max_stamina": 75,
-  "strength": 24,
-  "toughness": 28,
-  "agility": 36,
-  "mobility": 42,
-  "dexterity": 32,
-  "endurance": 30,
-  "intelligence": 38,
-  "willpower": 34,
-  "perception": 40,
-  "charisma": 80,
-  "weapon_skill": 25,
-  "weapon_equipped": true,
-  "weapon": "stiletto",
-  "shield_equipped": false,
-  "armor": ["Light_Light"],
   "armor_weight": 5,
   "inventory_weight": 6,
-  "status_effects": [],
-  "corruption_level": 8,
-  "max_corruption": 120,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "stiletto",
+  "armor": ["Light_Light"],
+  "weapon_skill": 25,
+  "skills": {
+    "persuasion": 4,
+    "deception": 4,
+    "insight": 3,
+    "daggers": 2
+  },
+  "traits": [
+    "Charismatic",
+    "Calculating",
+    "Protective_of_staff"
+  ],
+  "corruption_level": 28,
   "stress_level": 12,
-  "reputation": 60
+  "reputation": 60,
+  "status_effects": []
 }
+
+
+
 
 
 
