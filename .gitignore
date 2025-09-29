@@ -14,3 +14,10 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# helpers & zips
+aigm_security_helper/
+aigm_security_helper_anyfolder/
+aigm_stats_helper_anyfolder/
+aigm_velvet_gallows_data_only/
+*.zip
