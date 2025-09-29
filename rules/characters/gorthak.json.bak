@@ -10,16 +10,5 @@
   "weapon": "improvised_club",
   "armor": [
     "Light_Light"
-  ],
-  "strength": 45,
-  "toughness": 45,
-  "agility": 25,
-  "mobility": 30,
-  "dexterity": 25,
-  "endurance": 45,
-  "intelligence": 20,
-  "willpower": 30,
-  "perception": 25,
-  "charisma": 15,
-  "weapon_skill": 40
+  ]
 }

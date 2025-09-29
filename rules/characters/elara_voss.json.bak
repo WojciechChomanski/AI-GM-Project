@@ -321,15 +321,5 @@
   "corruption_level": 28,
   "stress_level": 12,
   "reputation": 60,
-  "status_effects": [],
-  "strength": 28,
-  "toughness": 28,
-  "agility": 38,
-  "mobility": 42,
-  "dexterity": 34,
-  "endurance": 32,
-  "intelligence": 40,
-  "willpower": 34,
-  "perception": 36,
-  "charisma": 40
+  "status_effects": []
 }

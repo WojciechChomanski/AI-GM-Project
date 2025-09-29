@@ -1,0 +1,22 @@
+{
+  "name": "Cutthroat Captain",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Bandit_Leader",
+  "strength": 38,
+  "toughness": 38,
+  "agility": 28,
+  "mobility": 28,
+  "dexterity": 32,
+  "endurance": 34,
+  "intelligence": 28,
+  "willpower": 32,
+  "perception": 30,
+  "charisma": 26,
+  "weapon_skill": 36,
+  "weapon": "warhammer",
+  "armor": [
+    "mail_shirt",
+    "kettle_hat"
+  ]
+}
