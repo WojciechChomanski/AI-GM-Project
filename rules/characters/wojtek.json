@@ -2,20 +2,47 @@
   "name": "Wojtek",
   "race": "Human",
   "gender": "Male",
-  "age": 43,
-  "sexuality": "Heterosexual",
+  "class": "Mercenary",
+  "background": "Noble",
   "total_hp": 100,
   "max_stamina": 100,
-  "armor_weight": 15,
+  "strength": 30,
+  "toughness": 25,
+  "agility": 25,
+  "mobility": 30,
+  "dexterity": 25,
+  "endurance": 25,
+  "intelligence": 30,
+  "willpower": 30,
+  "perception": 25,
+  "charisma": 40,
+  "corruption_level": 0,
+  "stress_level": 0,
+  "reputation": 0,
+  "status_effects": [],
+  "power_bonus": 0,
+  "aging_rate": 1.0,
+  "charisma_penalty": 0,
+  "hunt_check_bonus": 0,
+  "defense_bonus": 0,
+  "rune_craft": 0,
+  "brine_marks": 0,
+  "armor_weight": 7,
   "inventory_weight": 10,
   "shield_equipped": true,
   "weapon_equipped": true,
-  "weapon": "greatsword",
+  "weapon": {
+    "type": "greatsword",
+    "base_damage": 10,
+    "damage_type": "slashing",
+    "durability": 50
+  },
+  "armor": [
+    "Medium_Heavy"
+  ],
   "role": "Wandering Chronicler",
   "faction": "None",
-  "background": "A fallen prophet-scholar whose visions once changed kingdoms \u2014 now a silent observer of decay.",
   "relationship_with_player": "Ambiguous",
-  "charisma": 40,
   "alive": true,
   "personality": {
     "big_five": {
@@ -63,5 +90,6 @@
     "Failed to prevent a massacre in the city of Harthor",
     "Once prophesied a hopeful future that never came",
     "Lost a daughter during the Hollow Fire purge"
-  ]
+  ],
+  "weapon_skill": 35
 }

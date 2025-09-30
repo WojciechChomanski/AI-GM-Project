@@ -1,0 +1,257 @@
+{
+  "quest_id": "Q-ELARA-BLACK-PEARL",
+  "title": "The Black Pearl Ledger",
+  "era": "1670",
+  "recommended_duration_min": 10,
+  "tags": ["social", "combat", "corruption", "relationship", "orientation_logic", "elara_voss"],
+
+  "summary": "Elara Voss hires the player to recover a missing page from her Black Pearl ledger. The scene tests conversation (with orientation-aware flirting), trust/respect/desire, corruption temptations, and a dockside combat with parley.",
+
+  "actors": {
+    "primary_npc": "Elara Voss",
+    "faction": "Velvet Gallows (Cinderhold)"
+  },
+
+  "orientation_rules": {
+    "enabled": true,
+    "notes": "Applied only to choices flagged as flirt/seduce. Non-romantic persuasion is unaffected.",
+    "modifiers": {
+      "match_bonus": 10,
+      "mismatch_penalty": -25,
+      "bisexual_pan_bonus": 5,
+      "asexual_block": -999
+    },
+    "matrix": [
+      { "npc_orientation": "Heterosexual", "npc_gender": "Female", "target_gender": "Male",   "modifier": "match_bonus" },
+      { "npc_orientation": "Heterosexual", "npc_gender": "Female", "target_gender": "Female", "modifier": "mismatch_penalty" },
+      { "npc_orientation": "Bisexual",     "npc_gender": "Female", "target_gender": "Male",   "modifier": "bisexual_pan_bonus" },
+      { "npc_orientation": "Bisexual",     "npc_gender": "Female", "target_gender": "Female", "modifier": "bisexual_pan_bonus" },
+      { "npc_orientation": "Pansexual",    "npc_gender": "Female", "target_gender": "Any",    "modifier": "bisexual_pan_bonus" },
+      { "npc_orientation": "Asexual",      "npc_gender": "Any",    "target_gender": "Any",    "modifier": "asexual_block" }
+    ]
+  },
+
+  "variables": {
+    "relationship_delta": { "trust": 0, "respect": 0, "desire": 0, "leverage": 0 },
+    "memory_tags_added": [],
+    "flags": {
+      "ledger_page_recovered": false,
+      "ledger_page_damaged": false,
+      "ledger_page_stolen": false,
+      "dockside_parley_offered": false,
+      "dockside_parley_accepted": false,
+      "public_slight_triggered": false
+    }
+  },
+
+  "locations": [
+    { "id": "L-SALON", "name": "Velvet Gallows — Private Salon" },
+    { "id": "L-STREET", "name": "Ashen Coast Street" },
+    { "id": "L-DOCKS", "name": "Cinderhold Docks — Night" }
+  ],
+
+  "flow": [
+    { "id": "ACT1_INTRO", "at": "L-SALON", "type": "dialogue", "node": "D-ELARA-INTRO" },
+    { "id": "ACT2_JOB",   "at": "L-SALON", "type": "dialogue", "node": "D-ELARA-JOB" },
+    { "id": "ACT3_PATH",  "at": "L-STREET", "type": "travel", "next": "ACT4_DOCKS" },
+    { "id": "ACT4_DOCKS", "at": "L-DOCKS", "type": "encounter", "encounter_id": "E-DOCKSIDE-AMBUSH" },
+    { "id": "ACT5_RETURN","at": "L-SALON", "type": "dialogue", "node": "D-ELARA-RESOLVE" }
+  ],
+
+  "checks": {
+    "rolls": {
+      "persuasion_base_dc": 12,
+      "intimidation_base_dc": 12,
+      "insight_dc": 12
+    },
+    "derived_mods": {
+      "charisma_mod": "floor((player.stats.charisma - 10)/2)",
+      "social_skill_mod": "player.skills.persuasion ?? 0"
+    }
+  },
+
+  "dialogue": [
+    {
+      "id": "D-ELARA-INTRO",
+      "speaker": "Elara Voss",
+      "line": "Welcome to Cinderhold, love. Let’s decide who eats whom—gently.",
+      "options": [
+        {
+          "id": "O-HONORIFIC",
+          "text": "Bow with respect. “Lady Voss.”",
+          "effects": { "respect": 3, "trust": 2 }
+        },
+        {
+          "id": "O-FLIRT",
+          "text": "Flirt: “I prefer to be the one doing the eating.”",
+          "flirt": true,
+          "orientation_applies": true,
+          "checks": [
+            {
+              "type": "persuasion",
+              "dc": "@persuasion_base_dc + (orientation_modifier) - (@charisma_mod + @social_skill_mod)"
+            }
+          ],
+          "onSuccess": { "desire": 6, "trust": 2, "memory_add": ["shared_secret"] },
+          "onFail":    { "respect": -2, "desire": -3 }
+        },
+        {
+          "id": "O-SLIGHT",
+          "text": "“Property does as it’s told.” (test narcissism trigger)",
+          "effects": {
+            "respect": -6,
+            "trust": -6
+          },
+          "flags_set": { "public_slight_triggered": true },
+          "narcissism_trigger": "collapse_signs"
+        }
+      ]
+    },
+
+    {
+      "id": "D-ELARA-JOB",
+      "speaker": "Elara Voss",
+      "line": "A page from my ledger has gone wandering. Bring it back before a name is sold.",
+      "options": [
+        {
+          "id": "O-TERMS-UPFRONT",
+          "text": "Negotiate terms up front (professional).",
+          "checks": [{ "type": "persuasion", "dc": "@persuasion_base_dc - 1 - (@charisma_mod + @social_skill_mod)" }],
+          "onSuccess": { "respect": 4, "trust": 3 },
+          "onFail":    { "respect": 1 },
+          "memory_add": ["paid_full_price"]
+        },
+        {
+          "id": "O-TOUCH-RELIC",
+          "text": "Examine her Veil-silver hairpin (risk Veil temptation).",
+          "effects": { "player_corruption_delta": 2 },
+          "note": "Demonstrates corruption tick from proximity."
+        },
+        {
+          "id": "O-TAKE-JOB",
+          "text": "“I’ll handle it.”",
+          "effects": { "trust": 3 },
+          "next": "ACT3_PATH"
+        }
+      ]
+    },
+
+    {
+      "id": "D-ELARA-RESOLVE",
+      "speaker": "Elara Voss",
+      "line": "Well? Show me how much I can trust you.",
+      "branches": [
+        {
+          "when": "flags.ledger_page_recovered",
+          "options": [
+            {
+              "id": "O-RETURN-INTACT",
+              "text": "Return the page intact.",
+              "effects": { "trust": 12, "respect": 8 },
+              "memory_add": ["shared_secret"],
+              "threshold_rewards": [
+                { "at": "T1_introduction", "grant": "Access to private salon; minor rumors at cost" },
+                { "at": "T2_professional", "grant": "Broker minor meetings; 1 favor on ledger" }
+              ]
+            },
+            {
+              "id": "O-LEVERAGE",
+              "text": "Demand a favor first (leverage play).",
+              "checks": [{ "type": "intimidation", "dc": "@intimidation_base_dc + 1 - @charisma_mod" }],
+              "onSuccess": { "leverage": 10, "respect": 3, "trust": 2 },
+              "onFail":    { "respect": -3, "trust": -3 }
+            }
+          ]
+        },
+        {
+          "when": "flags.ledger_page_damaged",
+          "options": [
+            {
+              "id": "O-RETURN-DAMAGED",
+              "text": "Return the page damaged and apologize.",
+              "effects": { "trust": 4, "respect": 2 }
+            }
+          ]
+        },
+        {
+          "when": "flags.ledger_page_stolen",
+          "options": [
+            {
+              "id": "O-FAILURE",
+              "text": "Admit failure; the page is gone.",
+              "effects": { "trust": -12, "respect": -6 },
+              "memory_add": ["betrayed_in_public"]
+            }
+          ]
+        }
+      ],
+      "closure": {
+        "dialogue_line": "A little choreography, and even violence becomes elegant. Come back when you want harder steps.",
+        "grant_tags": ["quest_elara_black_pearl_complete"]
+      }
+    }
+  ],
+
+  "encounters": [
+    {
+      "id": "E-DOCKSIDE-AMBUSH",
+      "name": "Dockside Ambush",
+      "location": "L-DOCKS",
+      "enemies": [
+        { "id": "bandit_1", "type": "Bandit", "hp": 24, "armor": 1, "team": "enemies" },
+        { "id": "bandit_2", "type": "Bandit", "hp": 24, "armor": 1, "team": "enemies" },
+        { "id": "bandit_leader", "type": "Bandit Leader", "hp": 36, "armor": 2, "team": "enemies", "traits": ["cautious"] }
+      ],
+      "allies": [
+        { "id": "elara_voss", "ref": "rules/characters/elara_voss.json", "team": "players", "ai": "support", "present": true }
+      ],
+      "onStart": {
+        "line": "Shadows peel off crates. Steel whispers.",
+        "effects": {}
+      },
+      "special_rules": {
+        "parley_on_first_blood": true,
+        "parley_source": "Elara Voss",
+        "parley_once": true,
+        "parley_text": "Stop. We can share a profit or share a grave. Choose.",
+        "on_parley_offer": { "set_flag": "dockside_parley_offered", "show_choice": true },
+        "on_parley_accept": {
+          "effects": { "remove_hostile_for_rounds": 1, "respect": 4, "trust": 3 },
+          "set_flag": "dockside_parley_accepted",
+          "memory_add": ["protected_her_cover"]
+        },
+        "on_parley_reject": {
+          "effects": { "npc_corruption_delta": { "name": "Elara Voss", "amount": 2 }, "elara_use_next_ability": "Silk Knife" },
+          "note": "Implements the corruption bump + immediate tactical response."
+        }
+      },
+      "victory": {
+        "outcome": "Bandits routed; leader drops a sealed folio.",
+        "loot": [
+          { "type": "quest", "name": "Black Pearl Page", "set_flags": ["ledger_page_recovered"] }
+        ]
+      },
+      "defeat": {
+        "outcome": "You’re beaten back; the page is stolen down an alley.",
+        "set_flags": ["ledger_page_stolen"]
+      }
+    }
+  ],
+
+  "sandbox_chat": {
+    "enabled": true,
+    "npc": "Elara Voss",
+    "entry_node": "D-ELARA-INTRO",
+    "notes": "Use for quick testing without map/combat. Orientation modifiers apply to flirt options the same way."
+  },
+
+  "ui_feedback": {
+    "relationship_popups": true,
+    "show_delta_toasts": true,
+    "examples": [
+      "Trust +3 (Elara Voss)",
+      "Desire -3 (Orientation mismatch)",
+      "Elara Voss: Corruption +2 (Parley rejected)"
+    ]
+  }
+}

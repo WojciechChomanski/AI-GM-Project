@@ -1,0 +1,39 @@
+{
+  "id": "EV-1670-IRONCRAG-RIOTS",
+  "title": "The Ironcrag Fuel Riots",
+  "era": "1670",
+  "region": "Ironcrag",
+  "factions": ["Iron Wards", "Breathbound Orders", "Cinderhold Mercenaries"],
+  "type": "citadel_event",
+  "trigger": "Soul Crucible fuel levels fall below safe runic threshold for 7 days.",
+  "stakes": "Civil revolt vs. Veil breach in the mines.",
+  "state": {
+    "tension": 0.65,
+    "seal_integrity": 0.52,
+    "crucible_fuel": 0.18
+  },
+  "beats": [
+    "Miners whisper about 'names in the smoke'; three crews refuse the night shift.",
+    "Iron Ward enforcers seize debtor-prisoners; families gather outside the lower forges.",
+    "A runic surge rattles the western shaft; ward-stones frost over from inside."
+  ],
+  "objectives": [
+    "Infiltrate the lower forges and locate the Soul Crucible intake.",
+    "Secure or expose the ledger that lists 'fuel' procurement.",
+    "Choose: protect the Grand Seal or sabotage it to free captives."
+  ],
+  "consequences": {
+    "expose": [
+      "Public riot shuts the Crucible for 48 hours.",
+      "A latent Veil pocket tears open in the mines (spawn: Pylon_Shade x2)."
+    ],
+    "enable": [
+      "Grand Seal progress +5%.",
+      "Gain access to soul-metal gear; Order suspicion rises in human lands."
+    ]
+  },
+  "links": {
+    "quests": ["Q-1670-GRIND-IRON"],
+    "legends": ["LEG-FOUNDRY-HEART"]
+  }
+}

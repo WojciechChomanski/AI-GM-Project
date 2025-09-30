@@ -1,0 +1,26 @@
+{
+  "Echelon of Thorns": {
+    "race": "Elf",
+    "belief": "Corruption can be transferred through ritual sacrifice.",
+    "goal": "Maintain magical purity and power through human vessels.",
+    "enemy": ["Iron Wards", "Breathbound Orders"]
+  },
+  "Iron Wards": {
+    "race": "Dwarf",
+    "belief": "Power must be sealed and purified through discipline.",
+    "goal": "Harness remnants of the Veil to forge relics without breaking containment.",
+    "enemy": ["Echelon of Thorns"]
+  },
+  "Breathbound Orders": {
+    "race": "Human",
+    "belief": "Only through divine Breath can the world be restored.",
+    "goal": "Protect the last divine-bloodlines and reclaim Eden’s legacy.",
+    "enemy": ["Echelon of Thorns", "Veilborn Cults"]
+  },
+  "Veilborn Cults": {
+    "race": "Various",
+    "belief": "The Veil is truth. Corruption is evolution.",
+    "goal": "Reopen the Spire beneath the ruins of Eden.",
+    "enemy": ["All others"]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "virtue": {
+    "start": 75,
+    "thresholds": { "full": 70, "dim": 40 },
+    "loss_events": {
+      "needless_killing": 8,
+      "cruelty": 10,
+      "broken_oath": 10,
+      "desecration": 12,
+      "vice_gambling": 4,
+      "vice_debauchery": 6
+    },
+    "gain_events": {
+      "defend_innocent": 8,
+      "destroy_abomination": 6,
+      "confession": 8,
+      "fasting_day": 5,
+      "guard_shrine": 6,
+      "alms": 3
+    }
+  }
+}
+

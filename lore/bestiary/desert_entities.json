@@ -1,0 +1,32 @@
+{
+  "Sand_Wight": {
+    "tags": ["abomination", "desert"],
+    "lore": "A corpse mummified by Veil-dry winds, animated by whispers; hunts by sound.",
+    "resists": { "pierce": 20, "slash": 10 },
+    "vulnerable_to": { "water": 20, "breath": 25 },
+    "abilities": [
+      "Dust Shroud: −15% ranged accuracy against it",
+      "Burrow Lunge: surprise attack from sand (+10 to hit)"
+    ]
+  },
+  "Veil_Sirocco": {
+    "tags": ["phenomenon", "desert", "veil_host"],
+    "lore": "A heated, shrieking wind that carries whispers; flays skin and mind.",
+    "resists": { "slash": 999, "pierce": 999 },
+    "vulnerable_to": { "breath": 30, "seal_runes": 15 },
+    "abilities": [
+      "Mind Flay: target Willpower check or gain 1d3 corruption",
+      "Scour: deal 2d6 cutting to exposed targets"
+    ]
+  },
+  "Betyl_Warden_Desert_Variant": {
+    "tags": ["construct", "relic", "desert"],
+    "lore": "Meteor-stone sentinel awakened by pylon resonance; hates Mercy Rites.",
+    "resists": { "blunt": 20, "slash": 20, "pierce": 20 },
+    "vulnerable_to": { "rune_hammers": 25, "breath": 15 },
+    "abilities": [
+      "Shard Pulse: AOE Veil shock (1d6 corruption, push 2m)",
+      "Anchor Step: cannot be knocked down; halves incoming knockback"
+    ]
+  }
+}

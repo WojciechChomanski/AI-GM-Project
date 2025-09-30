@@ -1,0 +1,23 @@
+# secrets
+.env
+*.env
+.env.*
+
+# local artifacts
+chat_logs/
+memory_logs/
+
+# python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# helpers & zips
+aigm_security_helper/
+aigm_security_helper_anyfolder/
+aigm_stats_helper_anyfolder/
+aigm_velvet_gallows_data_only/
+*.zip

@@ -1,0 +1,8 @@
+{
+  "blurred": { "category": "debuff", "modifiers": { "accuracy_pct": -20 } },
+  "dazed":   { "category": "debuff", "modifiers": { "action_penalty": 1 }, "tags": ["stagger"] },
+  "frozen":  { "category": "debuff", "modifiers": { "skip_turn": 1 }, "tags": ["stun"] },
+  "confused":{ "category": "debuff", "modifiers": { "force_attack_allies": 1 } },
+  "phased":  { "category": "buff",   "modifiers": { "melee_auto_miss": 1 } },
+  "dread":   { "category": "debuff", "modifiers": { "attack_pct": -10 } }
+}

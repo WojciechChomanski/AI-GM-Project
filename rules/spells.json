@@ -1,25 +1,128 @@
 {
   "blood_lash": {
+    "id": "blood_lash",
     "name": "Blood Lash",
-    "type": "necromantic",
+    "school": "necromantic",
+    "power_source": "Veil",
     "damage": 10,
     "damage_type": "slashing",
-    "health_cost": 5,
-    "stamina_cost": 8,
+    "effect": null,
+    "costs": { "health": 5, "stamina": 8 },
     "difficulty": 35,
-    "corruption_chance": 0.1,
-    "description": "A whip of blood tears into the foe, fueled by the caster's life."
+    "corruption": { "base_chance": 0.1, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "A whip of blood tears into the foe, fueled by the caster's life.",
+    "tags": ["corrupting","damage"]
   },
   "fate_whisper": {
+    "id": "fate_whisper",
     "name": "Fate Whisper",
-    "type": "prophetic",
-    "effect": {
-      "defense_bonus": 5
-    },
-    "health_cost": 3,
-    "stamina_cost": 6,
+    "school": "prophetic",
+    "power_source": "Breath",
+    "damage": 0,
+    "damage_type": null,
+    "effect": { "defense_bonus": 5 },
+    "costs": { "health": 3, "stamina": 6 },
     "difficulty": 30,
-    "corruption_chance": 0.05,
-    "description": "A vision grants an ally fleeting protection."
+    "corruption": { "base_chance": 0.05, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "A vision grants an ally fleeting protection.",
+    "tags": ["breath-aspected","buff"]
+  },
+  "shadow_bind": {
+    "id": "shadow_bind",
+    "name": "Shadow Bind",
+    "school": "veil",
+    "power_source": "Veil",
+    "damage": 0,
+    "damage_type": "restraint",
+    "effect": null,
+    "costs": { "health": 4, "stamina": 7 },
+    "difficulty": 32,
+    "corruption": { "base_chance": 0.15, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "Tendrils from the Veil immobilize foe, but caster feels phantom restraints.",
+    "tags": ["corrupting","control"]
+  },
+  "decay_touch": {
+    "id": "decay_touch",
+    "name": "Decay Touch",
+    "school": "necromantic",
+    "power_source": "Veil",
+    "damage": 12,
+    "damage_type": "corrosive",
+    "effect": null,
+    "costs": { "health": 6, "stamina": 9 },
+    "difficulty": 40,
+    "corruption": { "base_chance": 0.2, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "Wither flesh on contact, caster's skin cracks and ages prematurely.",
+    "tags": ["corrupting","damage"]
+  },
+  "veil_echo": {
+    "id": "veil_echo",
+    "name": "Veil Echo",
+    "school": "prophetic",
+    "power_source": "Breath",
+    "damage": 0,
+    "damage_type": null,
+    "effect": { "fear_intensity": 10 },
+    "costs": { "health": 5, "stamina": 8 },
+    "difficulty": 35,
+    "corruption": { "base_chance": 0.12, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "Whispers from beyond induce terror, caster hears endless echoes in mind.",
+    "tags": ["breath-aspected","fear"]
+  },
+  "soul_leech": {
+    "id": "soul_leech",
+    "name": "Soul Leech",
+    "school": "veil",
+    "power_source": "Veil",
+    "damage": 15,
+    "damage_type": "draining",
+    "effect": null,
+    "costs": { "health": 7, "stamina": 10 },
+    "difficulty": 45,
+    "corruption": { "base_chance": 0.25, "on_success_extra": 0.0, "on_fail_extra": 0.1 },
+    "backlash": {
+      "fail_margin_scale": {
+        "minor": { "hp": 2, "stamina": 2 },
+        "major": { "hp": 5, "stamina": 5 },
+        "catastrophic": { "hp": 10, "stamina": 10, "status": "staggered_1r" }
+      }
+    },
+    "description": "Drain life to heal self, but invites Veil entities to possess caster.",
+    "tags": ["corrupting","damage","lifesteal"]
   }
 }

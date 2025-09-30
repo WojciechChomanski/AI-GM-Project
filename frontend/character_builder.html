@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Breath & Veil — Character Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    :root{--bg:#0f1115;--panel:#171a21;--muted:#232735;--text:#e7e9ee;--grid:#2a2f40;--accent:#8dd3ff;--ok:#22c55e;--warn:#ffb86c;--bad:#ef4444;--radius:14px;--shadow:0 6px 24px rgba(0,0,0,.35)}
+    *{box-sizing:border-box} html,body{height:100%} body{margin:0;background:linear-gradient(180deg,#0e1014,#0b0d12 40%,#0a0c10);color:var(--text);font:14px/1.4 system-ui,Segoe UI,Roboto,Inter,Arial}
+    .wrap{max-width:980px;margin:24px auto;padding:12px}
+    .card{background:var(--panel);border:1px solid #1f2330;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    h1,h2,h3{margin:0 0 8px 0}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    label{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+    input,select,textarea{background:#111521;border:1px solid #20263a;border-radius:10px;color:var(--text);padding:8px}
+    input[type="range"]{width:100%}
+    .muted{opacity:.75}
+    .btn{background:linear-gradient(180deg,#273045,#21273a);border:1px solid #2a3247;border-radius:10px;padding:10px 12px;color:var(--text);cursor:pointer}
+    .btn:hover{border-color:#3a4562}
+    .btn-ok{border-color:#1e3a2a;background:linear-gradient(180deg,#1b2a20,#152218)}
+    .btn-warn{border-color:#4a341f;background:linear-gradient(180deg,#3a2a21,#2b1f17)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .stat{display:flex;align-items:center;gap:10px}
+    .stat b{min-width:110px;display:inline-block}
+    .pill{display:inline-block;padding:2px 8px;border:1px solid #2a3247;border-radius:999px;background:#141823;font-size:12px;margin-left:8px}
+    .footer{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+    .error{color:var(--bad);font-weight:600}
+    .ok{color:var(--ok);font-weight:600}
+    .hr{height:1px;background:#1f2433;margin:12px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Character Builder</h1>
+      <p class="muted">Create or update your **player character** and push it straight into the game’s storage.
+        On save, you can go back to <code>index.html</code>, refresh, and your character will be active.</p>
+
+      <div class="row">
+        <label>Name
+          <input id="name" placeholder="Your character’s name" required />
+        </label>
+        <label>Class
+          <input id="class" placeholder="Crusader, Operative, Sorcerer…" />
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Race
+          <select id="race">
+            <option>Human</option>
+            <option>Elf</option>
+            <option>Dwarf</option>
+            <option>Ogre</option>
+          </select>
+        </label>
+        <label>Gender
+          <select id="gender">
+            <option>Female</option>
+            <option>Male</option>
+            <option>Nonbinary</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Sexual Orientation
+          <select id="orientation">
+            <option>Heterosexual</option>
+            <option>Homosexual</option>
+            <option>Bisexual</option>
+            <option>Asexual</option>
+          </select>
+        </label>
+        <label>Age
+          <input id="age" type="number" min="16" value="25" />
+        </label>
+      </div>
+
+      <label>Notes
+        <textarea id="notes" rows="2" placeholder="One-liner background, quirks, etc."></textarea>
+      </label>
+
+      <div class="hr"></div>
+      <h2>Stats <span class="pill" id="points-pill">Points left: 10</span></h2>
+      <p class="muted">Point-buy: start at 8 across the board, spend **10** points; each +1 costs 1 point (cap 18). Charisma is shown in the HUD and used by social checks.</p>
+
+      <div id="stats-grid" class="row3"></div>
+
+      <div class="hr"></div>
+      <h2>Personality (optional)</h2>
+      <div class="row3">
+        <label>Openness <input type="range" id="bf-op" min="0" max="100" value="50"/></label>
+        <label>Conscientiousness <input type="range" id="bf-co" min="0" max="100" value="50"/></label>
+        <label>Extraversion <input type="range" id="bf-ex" min="0" max="100" value="50"/></label>
+        <label>Agreeableness <input type="range" id="bf-ag" min="0" max="100" value="50"/></label>
+        <label>Neuroticism <input type="range" id="bf-ne" min="0" max="100" value="50"/></label>
+        <div></div>
+      </div>
+
+      <div id="msg" class="muted" style="margin-top:8px;"></div>
+
+      <div class="footer">
+        <button class="btn" id="btn-load">Load Existing (if name matches)</button>
+        <button class="btn btn-warn" id="btn-clear">Clear Form</button>
+        <button class="btn btn-ok" id="btn-save">Save to Game</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- storage helpers (match your app.js keys) ---
+    const KEY_CHARS = 'btv.characters';
+    const KEY_ACTIVE = 'btv.activeCharacterId';
+
+    function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }
+    function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+    function uid(){ return Math.random().toString(36).slice(2)+Date.now().toString(36); }
+
+    // --- stats model ---
+    const STAT_LIST = [
+      'strength','toughness','agility','mobility',
+      'dexterity','endurance','intelligence','willpower','perception','charisma'
+    ];
+    const BASE = 8;
+    const CAP  = 18;
+    const POINTS = 10;
+
+    const stats = Object.fromEntries(STAT_LIST.map(s=>[s, BASE]));
+    let pointsLeft = POINTS;
+
+    const statsGrid = document.getElementById('stats-grid');
+    const pointsPill = document.getElementById('points-pill');
+    const msg = document.getElementById('msg');
+
+    function renderStats(){
+      statsGrid.innerHTML = '';
+      for(const s of STAT_LIST){
+        const wrap = document.createElement('div');
+        wrap.className = 'card stat';
+        wrap.style.padding='10px';
+        wrap.innerHTML = `
+          <b>${s.charAt(0).toUpperCase()+s.slice(1)}</b>
+          <input type="range" min="${BASE}" max="${CAP}" step="1" value="${stats[s]}" data-stat="${s}">
+          <span id="val-${s}" style="min-width:32px;text-align:right">${stats[s]}</span>
+        `;
+        statsGrid.appendChild(wrap);
+      }
+      pointsPill.textContent = `Points left: ${pointsLeft}`;
+    }
+
+    function recalcPoints(){
+      const spent = Object.values(stats).reduce((acc,v)=> acc + (v - BASE), 0);
+      pointsLeft = POINTS - spent;
+      pointsPill.textContent = `Points left: ${pointsLeft}`;
+      if(pointsLeft < 0){ pointsPill.style.color = '#ef4444'; }
+      else { pointsPill.style.color = ''; }
+    }
+
+    statsGrid.addEventListener('input', (e)=>{
+      const r = e.target;
+      if(r?.dataset?.stat){
+        const stat = r.dataset.stat;
+        const val = parseInt(r.value,10);
+        // enforce budget: allow change, then clamp if overspend
+        const before = stats[stat];
+        stats[stat] = val;
+        recalcPoints();
+        if(pointsLeft < 0){
+          // roll back one step
+          stats[stat] = before;
+          r.value = before;
+          recalcPoints();
+        } else {
+          const lbl = document.getElementById('val-'+stat);
+          if(lbl) lbl.textContent = String(stats[stat]);
+        }
+      }
+    });
+
+    renderStats();
+
+    // --- form refs ---
+    const $ = id => document.getElementById(id);
+    const nameEl = $('name'), raceEl=$('race'), genderEl=$('gender'), orientationEl=$('orientation'),
+          classEl=$('class'), ageEl=$('age'), notesEl=$('notes');
+
+    // --- load existing by name ---
+    $('btn-load').addEventListener('click', ()=>{
+      const name = nameEl.value.trim();
+      const chars = load(KEY_CHARS, []);
+      if(!name){ msg.innerHTML = '<span class="error">Enter a name first.</span>'; return; }
+      const found = chars.find(c=> (c.name||'').toLowerCase() === name.toLowerCase());
+      if(!found){ msg.innerHTML = '<span class="error">No existing character with that name.</span>'; return; }
+      // load
+      raceEl.value = found.race || 'Human';
+      genderEl.value = found.gender || 'Female';
+      orientationEl.value = found.sexuality || 'Heterosexual';
+      classEl.value = found.class || '';
+      ageEl.value = found.age ?? 25;
+      notesEl.value = found.notes || '';
+
+      // stats (from either flat top-level or nested stats)
+      const srcStats = found.stats || found;
+      for(const s of STAT_LIST){
+        if(typeof srcStats[s] === 'number'){ stats[s] = srcStats[s]; }
+        else { stats[s] = BASE; }
+      }
+      recalcPoints(); renderStats();
+      msg.innerHTML = '<span class="ok">Loaded from existing.</span>';
+    });
+
+    // --- clear ---
+    $('btn-clear').addEventListener('click', ()=>{
+      nameEl.value = ''; raceEl.value='Human'; genderEl.value='Female'; orientationEl.value='Heterosexual';
+      classEl.value=''; ageEl.value=25; notesEl.value='';
+      for(const s of STAT_LIST){ stats[s]=BASE; }
+      recalcPoints(); renderStats();
+      msg.textContent = 'Cleared.';
+    });
+
+    // --- save ---
+    $('btn-save').addEventListener('click', ()=>{
+      const name = nameEl.value.trim();
+      if(!name){ msg.innerHTML='<span class="error">Name is required.</span>'; return; }
+      if(pointsLeft < 0){ msg.innerHTML='<span class="error">Adjust stats: you overspent points.</span>'; return; }
+
+      const chars = load(KEY_CHARS, []);
+      let existing = chars.find(c=> (c.name||'').toLowerCase() === name.toLowerCase());
+      const id = existing?.id || (Math.random().toString(36).slice(2)+Date.now().toString(36));
+
+      const payload = {
+        id,
+        name,
+        race: raceEl.value,
+        gender: genderEl.value,
+        sexuality: orientationEl.value,
+        class: classEl.value,
+        age: parseInt(ageEl.value,10)||25,
+        notes: notesEl.value,
+        // keep both nested and flat to match your engine’s mixed readers
+        stats: {
+          total_hp: 60,           // base defaults; tweak if you want
+          max_stamina: 60,
+          ...Object.fromEntries(STAT_LIST.map(s=>[s, stats[s]]))
+        },
+        total_hp: 60,
+        max_stamina: 60,
+        ...Object.fromEntries(STAT_LIST.map(s=>[s, stats[s]])),
+        personality: {
+          big_five:{
+            openness: parseInt($('bf-op').value,10),
+            conscientiousness: parseInt($('bf-co').value,10),
+            extraversion: parseInt($('bf-ex').value,10),
+            agreeableness: parseInt($('bf-ag').value,10),
+            neuroticism: parseInt($('bf-ne').value,10)
+          }
+        }
+      };
+
+      if(existing){
+        // update in place
+        Object.assign(existing, payload);
+      } else {
+        chars.push(payload);
+      }
+
+      save(KEY_CHARS, chars);
+      // set active
+      save(KEY_ACTIVE, id);
+
+      msg.innerHTML = '<span class="ok">Saved to game storage. Open <code>index.html</code> and refresh — your character is active.</span>';
+    });
+
+  </script>
+</body>
+</html>

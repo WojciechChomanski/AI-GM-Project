@@ -1,0 +1,41 @@
+{
+  "id": "velvet_gallows",
+  "name": "Velvet Gallows \u2014 Backroom Standoff",
+  "location": "The Velvet Gallows (tavern backroom)",
+  "actors": [
+    {
+      "ref": "player",
+      "file": "wojtek.json"
+    },
+    {
+      "ref": "ally",
+      "file": "elara_voss.json"
+    },
+    {
+      "ref": "enemy1",
+      "file": "bandit.json"
+    },
+    {
+      "ref": "leader",
+      "file": "bandit_leader.json"
+    }
+  ],
+  "flow": [
+    {
+      "type": "dialogue",
+      "speaker": "leader",
+      "text": "You picked the wrong door to open. Put the coin on the table and walk."
+    },
+    {
+      "type": "social_check",
+      "check": "parley",
+      "formula": "player.charisma vs leader.willpower",
+      "success": "Tension eases; pay a small bribe or leave peacefully.",
+      "failure": "Leader orders the attack. Combat begins."
+    },
+    {
+      "type": "combat_stub",
+      "note": "Use your existing combat engine to fight: player+ally vs enemy1+leader."
+    }
+  ]
+}

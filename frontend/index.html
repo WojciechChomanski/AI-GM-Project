@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Breath & The Veil — Tabletop UI (Turn-Based v0.2)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Breath & Veil</h1>
+        <small>v0.2 — HTML/JS (Turn-Based)</small>
+      </div>
+
+      <section class="panel">
+        <header>Characters</header>
+        <div class="panel-body">
+          <div class="row">
+            <button id="btn-new-char" class="btn">New</button>
+            <button id="btn-import-char" class="btn">Import</button>
+            <button id="btn-export-char" class="btn">Export</button>
+          </div>
+          <ul id="char-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="panel">
+        <header>Maps</header>
+        <div class="panel-body">
+          <div class="row">
+            <button id="btn-new-map" class="btn">New</button>
+            <button id="btn-import-map" class="btn">Import</button>
+            <button id="btn-export-map" class="btn">Export</button>
+          </div>
+          <ul id="map-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="panel">
+        <header>Tools</header>
+        <div class="panel-body">
+          <label class="checkbox">
+            <input type="checkbox" id="chk-grid" checked /> Show Grid
+          </label>
+          <label class="label-inline">Grid Size
+            <input type="number" id="grid-size" min="16" max="256" step="4" value="64"/>
+          </label>
+          <div class="row">
+            <button id="btn-add-token" class="btn">Add Active Token</button>
+            <button id="btn-clear-tokens" class="btn btn-warn">Clear Tokens</button>
+          </div>
+          <div class="row">
+            <button id="btn-save-mapstate" class="btn">Save Map State</button>
+          </div>
+          <details class="hint">
+            <summary>Shortcuts</summary>
+            <ul>
+              <li>Wheel: zoom • Drag: pan • Drag token: move</li>
+              <li>Double-click: select token • Delete: remove selected</li>
+              <li>R: reset view • G: toggle grid</li>
+            </ul>
+          </details>
+        </div>
+      </section>
+
+      <section class="panel combat">
+        <header>Combat (Turn-Based)</header>
+        <div class="panel-body">
+          <div class="row">
+            <button id="btn-combat-add" class="btn">Add Selected</button>
+            <button id="btn-combat-remove" class="btn btn-ghost">Remove Sel.</button>
+          </div>
+          <div class="row">
+            <select id="sel-team">
+              <option value="players">Team: Players</option>
+              <option value="enemies">Team: Enemies</option>
+              <option value="neutral">Team: Neutral</option>
+            </select>
+            <button id="btn-roll-init" class="btn">Roll Init</button>
+          </div>
+          <div class="row">
+            <button id="btn-start-combat" class="btn">Start</button>
+            <button id="btn-next-turn" class="btn">Next</button>
+            <button id="btn-end-combat" class="btn btn-warn">End</button>
+          </div>
+
+          <div id="turn-info" class="turn-info">Round — • Turn —</div>
+          <ul id="turn-order" class="list order"></ul>
+
+          <div class="actions">
+            <div class="row">
+              <button id="act-move" class="btn btn-ghost">Move</button>
+              <button id="act-attack" class="btn btn-ghost">Attack</button>
+              <button id="act-ability" class="btn btn-ghost">Ability</button>
+              <button id="act-defend" class="btn btn-ghost">Defend</button>
+              <button id="act-end" class="btn">End Turn</button>
+            </div>
+            <small class="muted">Move: click destination • Attack/Ability: click target token</small>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <main class="stage">
+      <canvas id="map-canvas" tabindex="0" aria-label="Battle Map Canvas"></canvas>
+      <div class="overlay hud">
+        <span id="hud-zoom">100%</span>
+        <span id="hud-pos">0,0</span>
+        <span id="hud-char">—</span>
+      </div>
+    </main>
+
+    <aside class="chat">
+      <header class="chat-header">
+        <div>
+          <h2>AI GM</h2>
+          <small>Connected: <span id="api-status">stub</span></small>
+        </div>
+        <div class="row">
+          <button id="btn-load-races" class="btn btn-ghost">Load races.json</button>
+          <button id="btn-load-lore" class="btn btn-ghost">Load lore</button>
+        </div>
+      </header>
+      <div id="chat-log" class="chat-log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+        <textarea id="chat-input" rows="3" placeholder="Ask the GM, or type /help"></textarea>
+        <button class="btn" type="submit">Send</button>
+      </form>
+    </aside>
+  </div>
+
+  <!-- Modals -->
+  <dialog id="dlg-char">
+    <form method="dialog" class="dialog-card" id="char-form">
+      <h3>Character</h3>
+      <label>Name <input required id="char-name" /></label>
+      <label>Race
+        <select id="char-race">
+          <option>Human</option>
+          <option>Elf</option>
+          <option>Dwarf</option>
+          <option>Ogre</option>
+        </select>
+      </label>
+      <label>Class <input id="char-class" placeholder="Crusader Knight, Hollow Warden…"/></label>
+      <label>Notes <textarea id="char-notes" rows="3"></textarea></label>
+      <menu>
+        <button value="cancel" class="btn btn-ghost">Cancel</button>
+        <button value="default" class="btn">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-map">
+    <form method="dialog" class="dialog-card" id="map-form">
+      <h3>Map</h3>
+      <label>Name <input required id="map-name" /></label>
+      <label>Grid Size (px) <input type="number" min="16" step="4" id="map-grid" value="64"/></label>
+      <label>Image <input type="file" id="map-image" accept="image/*" /></label>
+      <menu>
+        <button value="cancel" class="btn btn-ghost">Cancel</button>
+        <button value="default" class="btn">Create</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <input type="file" id="file-open" hidden />
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

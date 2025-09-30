@@ -2,6 +2,8 @@
   "name": "Lyssa",
   "race": "Human",
   "gender": "Female",
+  "class": "Rogue",
+  "background": "Outlaw",
   "total_hp": 90,
   "max_stamina": 90,
   "armor_weight": 10,
@@ -10,6 +12,7 @@
   "weapon_equipped": true,
   "weapon": "dagger",
   "agility_modifier": 2,
-  "armor": ["leather"],
+  "charisma_modifier": 2,
+  "armor": ["Light_Light"],
   "role": "Rogue"
 }

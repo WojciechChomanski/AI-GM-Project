@@ -6,6 +6,10 @@ import json
 from openai import OpenAI
 
 # === Setup Paths ===
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
 RULES_DIR = os.path.join(BASE_DIR, "rules")
@@ -19,7 +23,7 @@ from scripts.generate_npc_system_prompt import generate_npc_system_prompt
 from scripts.npc_memory_handler import build_interaction_context, add_interaction
 
 # === OpenAI Client ===
-client = OpenAI(api_key="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")  # <-- Set your real key
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # <-- Set your real key
 
 # === Define IDs ===
 npc_id = "Wojtek"

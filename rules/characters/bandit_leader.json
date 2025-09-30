@@ -1,12 +1,22 @@
 {
-  "name": "Bandit Leader",
+  "name": "Cutthroat Captain",
   "race": "Human",
-  "total_hp": 100,
-  "max_stamina": 90,
-  "armor_weight": 15,
-  "inventory_weight": 10,
-  "shield_equipped": true,
-  "weapon_equipped": true,
-  "weapon": "greatsword",
-  "armor": ["chainmail"]
+  "gender": "Male",
+  "class": "Bandit_Leader",
+  "strength": 38,
+  "toughness": 38,
+  "agility": 28,
+  "mobility": 28,
+  "dexterity": 32,
+  "endurance": 34,
+  "intelligence": 28,
+  "willpower": 32,
+  "perception": 30,
+  "charisma": 26,
+  "weapon_skill": 36,
+  "weapon": "warhammer",
+  "armor": [
+    "mail_shirt",
+    "kettle_hat"
+  ]
 }

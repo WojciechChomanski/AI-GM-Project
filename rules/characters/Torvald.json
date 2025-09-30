@@ -1,16 +1,79 @@
-
 {
   "name": "Torvald",
   "race": "Human",
   "gender": "Male",
-  "total_hp": 130,
-  "max_stamina": 110,
-  "armor_weight": 20,
+  "class": "Outlaw_Mercenary_Warrior",
+  "background": "Outlaw",
+  "role": "Mercenary",
+  "description": "Torvald is a seasoned warrior with a strong sense of justice, often found defending the weak and fighting against tyranny.",
+  
+  "total_hp": 140,
+  "strength": 35,
+  "toughness": 35,
+  "agility": 30,
+  "mobility": 40,
+  "dexterity": 30,
+  "endurance": 25,
+  "intelligence": 30,  
+  "willpower":25,
+  "perception": 25,
+  "charisma": 25,
+  "weapon_skill":30,
+  "faith": 20,
+  "max_stamina": 120,
+  "armor_weight": 25,
   "inventory_weight": 10,
-  "shield_equipped": true,
+  "strength_modifier": 1,
+
   "weapon_equipped": true,
   "weapon": "greatsword",
-  "strength_modifier": 1,
-  "armor": ["chainmail"],
-  "role": "Mercenary"
+  "shield_equipped": true,
+  "armor": ["Medium_Heavy"],
+
+  "abilities": {
+    "brutal_strike": {
+      "type": "active",
+      "damage_bonus": 5,
+      "stamina_cost": 8,
+      "description": "A powerful overhead strike that deals bonus damage but costs extra stamina."
+    },
+    "iron_wall": {
+      "type": "passive",
+      "block_bonus": 0.2,
+      "description": "Grants 20% increased block efficiency when using a shield."
+    }
+  },
+
+  "skills": {
+    "swordsmanship": 3,
+    "shield_defense": 2,
+    "intimidation": 1
+  },
+
+  "traits": [
+    "Brave",
+    "Loyal",
+    "Resilient"
+  ],
+
+  "dialogue": {
+    "greeting": "Greetings, traveler. What brings you to these lands?",
+    "combat": "Prepare yourself! I will not hold back!",
+    "victory": "Another foe vanquished. Justice prevails!",
+    "defeat": "I... will not give up... so easily..."
+  },
+
+  "quest": {
+    "current": "Defend the village from bandit raids",
+    "completed": false,
+    "rewards": {
+      "xp": 200,
+      "items": ["Bandit Sword", "Shield of Valor"]
+    }
+  },
+
+  "reputation": 0,
+  "corruption_level": 0,
+  "stress_level": 0
 }
+

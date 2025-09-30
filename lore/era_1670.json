@@ -1,0 +1,198 @@
+{
+  "era": {
+    "name": "Anchor Year 1670 CE",
+    "world_year_ps": 1620,
+    "summary": "Science claws at scripture, gunpowder spreads like rumor, and the Veil presses close. The Breathbound fracture, elves fail to cleanse their rot, dwarves drain the living for iron-seals, ogres gather under a child-minded tyrant, and cults raise pylons to retune the sky.",
+    "theme": "Scripture vs Enlightenment; Faith splintered under Veil pressure"
+  },
+
+  "tech_level": {
+    "humans": "matchlocks common, early flintlocks emerging; pike & shot doctrine uneven",
+    "dwarves": "reliable rifling; early repeaters rumored; heavy artillery with rune-baffling",
+    "elves": "no gunpowder; master bows, alchemic resins, ritual armor",
+    "ogres": "improvised siege clubs, stolen cannons as hand-guns"
+  },
+
+  "world_state": {
+    "humans": "Breathbound Orders peak yet fracturing (Crusader zeal vs Confessor reform). Relic markets thrive; heresy trials rise. Peasant unrest simmers.",
+    "elves": "Echelon of Thorns in crisis; sacrifices fail to fully offload corruption. Radicals push to embrace the Veil; moderates seek a lost Shard linked to the First Temptation.",
+    "dwarves": "Iron Wards rush a continent Grand Seal; Soul Crucible fuel dwindles. Night raids target bodies/essence; some holds falter under rift incursions.",
+    "ogres": "Vat-rumors true: a child-minded tyrant gathers a horde. Tale says he dreams in the Veil’s voice.",
+    "veil": "Rift-lights haunt the sky; crops rot overnight. Reclaimers of Va erect hidden pylons; three active pylons may split the sky."
+  },
+
+  "mechanics": {
+    "veil_pressure": {
+      "region_scale": 0,
+      "effects": [
+        "whispers at 2+ (minor fear tests)",
+        "beast agitation at 3+",
+        "spontaneous rifts at 4+",
+        "mutation surges at 5"
+      ],
+      "decay": "−1 after 1d4 days without new triggers"
+    },
+    "breath_contextual_bonus": "Breath boons auto-activate vs abominations/veil phenomena; disabled by sinful state flags."
+  },
+
+  "notable_sites": [
+    "Cinderhold (smog port, relic black market)",
+    "Thornskull (blood-altars within living wood)",
+    "Ironcrag (soul-forges; seal pylons)",
+    "Gearwomb (half-buried vat-fortress)",
+    "Crescent Wastes (Khilafate heartland)"
+  ],
+
+  "factions_in_motion": [
+    "Breathbound: Crusaders plan purges; Confessors negotiate reforms.",
+    "Echelon of Thorns: schism crisis; child-steal hunts escalate.",
+    "Iron Wards: desperate for fuel; brokering guns to anyone with bodies.",
+    "Reclaimers of Va: three-pylon aperture attempt underway.",
+    "Khilafate of the Scoured Veil: desert conquests baptized as ‘cleansings’."
+  ],
+
+  "regions": [
+    {
+      "name": "Cinderhold",
+      "type": "human_port_city",
+      "state": "smogged_docks, relic-black_market, sermons_vs_shards",
+      "notes": "Relic markets thrive in soot-choked alleys. Some Orders call gunpowder profane; others bless barrels with Breath."
+    },
+    {
+      "name": "Thornskull",
+      "type": "elven_forest_spire",
+      "state": "rites_failing, hunts_intensified, succession_knives_drawn",
+      "notes": "Echelon of Thorns cannot offload corruption as before. A radical coterie whispers: 'Embrace the Veil fully.'"
+    },
+    {
+      "name": "Ironcrag",
+      "type": "dwarven_citadel",
+      "state": "grand_seal_halfwrought, soul_crucible_low, expeditions_desperate",
+      "notes": "Rifled muskets and runic cannon boom, but every advance costs lives poured into the Crucible."
+    },
+    {
+      "name": "Gearwomb",
+      "type": "ogre_scrap_fortress",
+      "state": "vats_murmur, warlord_ascendant, tribes_mustering",
+      "notes": "An ogre warlord with a child's mind and a tyrant's will follows dreams that are not his own."
+    },
+    {
+      "name": "Ashen Coast",
+      "type": "human_hinterland",
+      "state": "harvest_blight, witch_scares, pilgrim_processions",
+      "notes": "Veil-storms ruin crops overnight. Villages whisper of 'mercy sacrifices'."
+    },
+    {
+      "name": "Veilwoods Rim",
+      "type": "border_forest",
+      "state": "rifts_flicker, lights_in_mist, patrols_missing",
+      "notes": "Not stars but Veil-lights drift between trees; trackers return with words wrong-shaped."
+    }
+  ],
+
+  "omens": [
+    "Blood-moon over Cinderhold for three nights; tides refuse the shore.",
+    "Ironcrag’s western rune-tower hums without scribe or steam.",
+    "In Thornskull, sap runs black and sings beneath the bark.",
+    "Dreams of a broken stair spread city to steppe; each dream ends at a door that does not open."
+  ],
+
+  "faction_activity": [
+    {
+      "faction": "Breathbound Orders",
+      "schisms": [
+        "Crusader Chapters demand public purges of Veil-users.",
+        "Confessors argue for hidden rescues and quiet reform.",
+        "Grey Friars trade relics to buy orphans out of elven hunts."
+      ],
+      "operations_1670": [
+        "Seal a rumored mass-sacrifice in Cinderhold’s old amphitheater.",
+        "Smuggle Breath-touched children onto pilgrim ships."
+      ]
+    },
+    {
+      "faction": "Echelon of Thorns",
+      "crises": [
+        "Sacrifices fail to take full corruption; elites sicken behind silks.",
+        "A sect seeks the First Thorn, said to be Eve’s temptation given form."
+      ],
+      "operations_1670": [
+        "Shadow hunts in the Ashen Coast targeting shrine-keepers.",
+        "Deal with Reclaimers for shard maps, then murder the surveyors."
+      ]
+    },
+    {
+      "faction": "Iron Wards",
+      "projects": [
+        "The Grand Seal: a continent-spanning lattice tying rune obelisks to soul-forges.",
+        "Prototype repeating firelocks for tunnel fighting."
+      ],
+      "operations_1670": [
+        "Night-raids to harvest 'fuel' from debtor prisons.",
+        "Hire human mercenaries to test a portable seal-engine."
+      ]
+    },
+    {
+      "faction": "Daughters of the Drowned Moon",
+      "tides": [
+        "Full-moon drownings return fish to dead rivers.",
+        "Swamp altars trade brine charms for firstborn names."
+      ],
+      "operations_1670": [
+        "Call a fog that never lifts over a coastal parish.",
+        "Grow barnacled undead to raid relic boats."
+      ]
+    },
+    {
+      "faction": "Reclaimers of Va",
+      "works": [
+        "Three Va-Pylons sited on leylines beneath Cinderhold, the Veilwoods Rim, and a salt flat.",
+        "Living Breath 'counterweights' chained in hidden vaults."
+      ],
+      "operations_1670": [
+        "Activate two pylons to thin the sky; open the third for a vault door no one else can see."
+      ]
+    },
+    {
+      "faction": "Khilafate of the Scoured Veil",
+      "doctrine": "Suffering is the furnace, conquest the prayer.",
+      "operations_1670": [
+        "Desert raids deliver branded captives to brass altars.",
+        "Emir Zulfiqar seeks a shard said to make sand itself obey."
+      ]
+    }
+  ],
+
+  "pressure_dials": {
+    "veil_activity": 0.7,
+    "plague_risk": 0.3,
+    "famine_risk": 0.6,
+    "order_legitimacy": 0.5,
+    "war_drum": 0.6
+  },
+
+  "flashpoints": [
+    {
+      "name": "The Cinderhold Veil-Storm",
+      "type": "city_event",
+      "trigger": "Three Reclaimer pylons near activation",
+      "stakes": "Mass-sacrifice vs. sky-split",
+      "hooks": ["Stop the ritual", "Steal the counterweights", "Retune a pylon to reveal an Eldran vault"]
+    },
+    {
+      "name": "The Ironcrag Fuel Riots",
+      "type": "citadel_event",
+      "trigger": "Soul Crucible shortages",
+      "stakes": "Civil revolt vs. Veil breach in the mines",
+      "hooks": ["Expose the black harvest", "Protect or sabotage the Grand Seal"]
+    },
+    {
+      "name": "Hunt of the First Thorn",
+      "type": "wilds_event",
+      "trigger": "Elven rites fail repeatedly",
+      "stakes": "Recover or destroy the relic",
+      "hooks": ["Trail the Echelon hunters", "Bargain with Drowned Daughters for passage"]
+    }
+  ]
+}
+
