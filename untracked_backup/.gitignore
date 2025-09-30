@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+notepad .gitignore
+# secrets
+.env
+*.env
+.env.*
+
+# logs & zips
+*.log
+chat_logs/
+memory_logs/
+*.zip
+
+# python cache
+__pycache__/
+*.pyc

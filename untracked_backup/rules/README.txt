@@ -1,0 +1,1 @@
+Copy your original rules JSON files here (e.g., backgrounds.json, weapons.json, memory_log.json, etc.)
