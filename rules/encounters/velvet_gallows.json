@@ -35,7 +35,7 @@
     },
     {
       "type": "combat_stub",
-      "note": "Use your existing combat engine to fight: player+ally vs enemy1+leader"
+      "note": "Use your existing combat engine to fight: player+ally vs enemy1+leader."
     }
   ]
 }
