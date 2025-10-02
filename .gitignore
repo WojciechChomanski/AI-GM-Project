@@ -21,3 +21,18 @@ aigm_security_helper_anyfolder/
 aigm_stats_helper_anyfolder/
 aigm_velvet_gallows_data_only/
 *.zip
+
+'*.zip
+__pycache__/
+.env
+scripts/*.log
+*.log
+' | Out-File -FilePath .gitignore -Encoding utf8 -Append
+
+# untrack the giant log (keep the local file on disk)
+git rm --cached scripts/character.log*.zip
+__pycache__/
+.env
+scripts/*.log
+*.log
+
