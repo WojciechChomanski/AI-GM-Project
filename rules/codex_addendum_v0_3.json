@@ -1,0 +1,59 @@
+{
+  "updated": "2025-09-30",
+  "entries": [
+    {
+      "id": "mira_vey",
+      "title": "Sister Mira Vey",
+      "summary": "Confessor envoy murdered by Elara; her breath is kept by Asha.",
+      "tags": [
+        "confessor",
+        "victim"
+      ]
+    },
+    {
+      "id": "lord_theron",
+      "title": "Lord Theron",
+      "summary": "Noble killed by Elara; his widow is now the Quartermaster.",
+      "tags": [
+        "noble",
+        "death"
+      ]
+    },
+    {
+      "id": "quartermaster_theron",
+      "title": "The Quartermaster",
+      "summary": "Theron’s widow; funds strikes on Elara’s lines.",
+      "tags": [
+        "gallows",
+        "power"
+      ]
+    },
+    {
+      "id": "miras_pearl",
+      "title": "Mira’s Pearl",
+      "summary": "A single rosary pearl taken by Elara; proof and leverage.",
+      "tags": [
+        "item",
+        "evidence"
+      ]
+    },
+    {
+      "id": "confessor_seal",
+      "title": "Confessor Seal",
+      "summary": "Official mark granting temporary sanctuary or writ; tradable favor.",
+      "tags": [
+        "item",
+        "authority"
+      ]
+    },
+    {
+      "id": "eden_clue_2",
+      "title": "Eden Clue #2",
+      "summary": "The Tower’s heart beats in the Hollow Courts.",
+      "tags": [
+        "eden",
+        "clue"
+      ]
+    }
+  ]
+}
