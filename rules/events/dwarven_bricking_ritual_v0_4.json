@@ -8,9 +8,20 @@
     "auto_resolution_event": "echo_swarm_outbreak_v0_4"
   },
   "actors": {
-    "primary": ["Archon Threll (Dwarf Guildmaster)", "Sister Asha (Confessor, captive)"],
-    "factions": ["Dwarven Guild", "Velvet Gallows (Elara Voss)", "Confessors"],
-    "extras": ["Bricking Team (6)", "Ward-Tender (1)", "Echo-Swarm (latent)"]
+    "primary": [
+      "Archon Threll (Dwarf Guildmaster)",
+      "Sister Asha (Confessor, captive)"
+    ],
+    "factions": [
+      "Dwarven Guild",
+      "Velvet Gallows (Elara Voss)",
+      "Confessors"
+    ],
+    "extras": [
+      "Bricking Team (6)",
+      "Ward-Tender (1)",
+      "Echo-Swarm (latent)"
+    ]
   },
   "prerequisites": {
     "notes": "Optional hooks improve outcomes but are not required.",
@@ -26,8 +37,18 @@
       "id": "approach",
       "summary": "Reach the Keystone Chamber before midnight; guards rotate every 10 minutes.",
       "tests": [
-        {"type": "stealth", "tn": 55, "group": true, "fail_consequence": "add_guard_awareness_10"},
-        {"type": "social", "tn": 50, "tags": ["dwarf","guild"], "alt": "present_bricking_writ"}
+        {
+          "type": "stealth",
+          "tn": 55,
+          "group": true,
+          "fail_consequence": "add_guard_awareness_10"
+        },
+        {
+          "type": "social",
+          "tn": 50,
+          "tags": ["dwarf", "guild"],
+          "alt": "present_bricking_writ"
+        }
       ]
     },
     {
@@ -37,17 +58,17 @@
         {
           "key": "confessor_route",
           "label": "Tip the Confessors & attempt a live retrieval (save Asha).",
-          "effects": ["spawn_confessor_cell", "lock_elara_support=false"]
+          "set_flags": { "spawn_confessor_cell": true, "lock_elara_support": false }
         },
         {
           "key": "elara_route",
           "label": "Tip Elara; ensure the bricking completes (Asha dies; streets quiet).",
-          "effects": ["lock_confessor_support=false", "favor_elara=+1"]
+          "set_flags": { "lock_confessor_support": false, "favor_elara_plus1": true }
         },
         {
           "key": "solo_sabotage",
           "label": "Go alone: sabotage the rite or swap the keystone.",
-          "effects": ["requires_runecraft_or_counter_cant"]
+          "requires": ["runecraft_or_counter_cant"]
         }
       ]
     },
@@ -63,21 +84,34 @@
         "skill_tests": [
           {
             "when": "sabotage",
-            "test": {"type": "runecraft", "tn": 60, "components": ["keystone_chalk","chain_sigil_iron"]},
-            "success": "keystone destabilized; rite fails quietly",
-            "fail": "misfire: echo-wail; call guards; +15 TN to next test"
+            "test": {
+              "type": "runecraft",
+              "tn": 60,
+              "components": ["keystone_chalk", "chain_sigil_iron"]
+            },
+            "success": "Keystone destabilized; rite fails quietly.",
+            "fail": "Misfire: echo-wail; call guards; +15 TN to next test."
           },
           {
             "when": "counter_cant",
-            "test": {"type": "willpower", "tn": 55, "requires_knowledge": "counter_cant_eli"},
-            "success": "screaming runes mute for 2 minutes (safe window)",
-            "fail": "rebound: 1d3 stress to party; ward flares (light reveal)"
+            "test": {
+              "type": "willpower",
+              "tn": 55,
+              "requires_knowledge": "counter_cant_eli"
+            },
+            "success": "Screaming runes mute for 2 minutes (safe window).",
+            "fail": "Rebound: 1d3 stress to party; ward flares (light reveal)."
           },
           {
             "when": "complete_rite",
-            "test": {"type": "ritual", "tn": 55, "assist": ["ward_tender"], "notes": "Bricking Team provides +5"},
-            "success": "Asha sealed beyond return; echoes suppressed for 30 days",
-            "fail": "unstable bind: start event echo_swarm_outbreak_v0_4 immediately"
+            "test": {
+              "type": "ritual",
+              "tn": 55,
+              "assist": ["ward_tender"],
+              "notes": "Bricking Team provides +5"
+            },
+            "success": "Asha sealed beyond return; echoes suppressed for 30 days.",
+            "fail": "Unstable bind: start event echo_swarm_outbreak_v0_4 immediately."
           }
         ]
       }
@@ -89,7 +123,7 @@
       "conditions": ["route=confessor_route", "sabotage_success OR counter_cant_success"],
       "result": {
         "world": ["echo_pressure=-1 (local)", "gallows_supply=-10 (30 days)"],
-        "faction_rep": {"dwarven_guild": -20, "confessors": +15, "velvet_gallows": -10},
+        "faction_rep": { "dwarven_guild": -20, "confessors": 15, "velvet_gallows": -10 },
         "rewards": ["Asha alive (ally)", "Clue: 'The Tower’s heart beats in the Hollow Courts'"],
         "flags": ["asha_saved_v0_4=true"]
       }
@@ -99,7 +133,7 @@
       "conditions": ["route=elara_route", "complete_rite_success"],
       "result": {
         "world": ["streets_quiet=30d", "echo_pressure=-2 (local)"],
-        "faction_rep": {"dwarven_guild": +15, "velvet_gallows": +15, "confessors": -20},
+        "faction_rep": { "dwarven_guild": 15, "velvet_gallows": 15, "confessors": -20 },
         "rewards": ["Elara Favor +1", "Guild Access: bricked tunnels (maintenance token)"],
         "flags": ["asha_dead_v0_4=true"]
       }
@@ -109,7 +143,7 @@
       "conditions": ["any_fail_in_phase=perform_rite_or_sabotage", "route!=elara_route OR complete_rite_fail"],
       "result": {
         "start_event": "echo_swarm_outbreak_v0_4",
-        "faction_rep": {"dwarven_guild": -10},
+        "faction_rep": { "dwarven_guild": -10 },
         "flags": ["outbreak_triggered_v0_4=true"]
       }
     },
@@ -128,3 +162,4 @@
     "If Elara Favor ≥ 2 from earlier arcs, she sends a proxy (adds +10 to completing the rite)."
   ]
 }
+
