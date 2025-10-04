@@ -106,5 +106,41 @@
       "faith": 20,
       "reputation": 50
     }
+  },
+  "Dwarf_Male": {
+    "starting_stats": {
+      "strength": 40,
+      "toughness": 40,
+      "agility": 25,
+      "mobility": 30,
+      "dexterity": 30,
+      "endurance": 35,
+      "intelligence": 30,
+      "willpower": 35,
+      "perception": 25,
+      "charisma": 20,
+      "corruption_level": 0,
+      "stress_level": 0,
+      "weapon_skill": 35,
+      "faith": 15,
+      "reputation": 0
+    },
+    "max_stats": {
+      "strength": 60,
+      "toughness": 60,
+      "agility": 45,
+      "mobility": 45,
+      "dexterity": 50,
+      "endurance": 60,
+      "intelligence": 55,
+      "willpower": 65,
+      "perception": 55,
+      "charisma": 45,
+      "corruption_level": 100,
+      "stress_level": 100,
+      "weapon_skill": 60,
+      "faith": 50,
+      "reputation": 100
+    }
   }
 }

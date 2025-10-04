@@ -1,0 +1,9 @@
+# Asha’s Chain-Song (Fragment)
+
+Barukh ata… adonai… Thanatos ou dynatai kataschesai…  
+Mavet lo yichyeh, lo yichyeh… In umbra mea, ego sum… ego sum…  
+…Barukh… adonai… elohai…  
+(Chains strike stone)  
+**Eli.**
+
+> GM: Sung correctly at the keystone during the rite, this grants **+5** to the Counter-Cant: ELI test for all participants and suppresses one echo-leech wave for the next minute.

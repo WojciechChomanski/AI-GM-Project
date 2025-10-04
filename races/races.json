@@ -75,39 +75,45 @@
       "armor_preference": "mystical"
     }
   },
-  "Dwarf": {
-    "description": "Dense, resilient sons of Adam, forged in high-gravity holds, wielding axes and gunpowder.",
-    "lore": "Dwarves craft rune-forged relics and reject elven blades, their females carving sacred runes in stone cities.",
-    "mass": 100,
-    "stats": {
-      "hp_bonus": 20,
-      "stamina_bonus": 15,
-      "strength_modifier": 5,
-      "agility_modifier": -2,
-      "intelligence_modifier": 0,
-      "charisma_modifier": -2
-    },
-    "abilities": [
-      {
-        "name": "Stone Resilience",
-        "description": "Reduce blunt/slash damage by 10%. +10 Veil resistance."
-      },
-      {
-        "name": "Dark Adaptation",
-        "description": "+10 perception in low light. Torches extend vision 20% farther."
-      }
-    ],
-    "magic": {
-      "type": "rune",
-      "restrictions": { "gender": "Female", "passive_only": true }
-    },
-    "equipment": {
-      "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
-      "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
-      "allowed_armor": ["medium", "heavy"],
-      "armor_preference": "forged"
-    }
+"Dwarf": {
+  "description": "Dense, resilient sons of Adam, forged in high-gravity holds, wielding axes and gunpowder.",
+  "lore": "Dwarves craft rune-forged relics and reject elven blades; their females carve sacred runes in stone cities, but dwarves wield no active Breath.",
+  "mass": 100,
+  "stats": {
+    "hp_bonus": 20,
+    "stamina_bonus": 15,
+    "strength_modifier": 5,
+    "agility_modifier": -2,
+    "intelligence_modifier": 0,
+    "charisma_modifier": -2
   },
+  "abilities": [
+    {
+      "name": "Stone Resilience",
+      "description": "Reduce blunt/slash damage by 10%. +10 Veil resistance."
+    },
+    {
+      "name": "Dark Adaptation",
+      "description": "+10 perception in low light. Torches extend vision 20% farther."
+    }
+  ],
+  "magic": {
+    "type": "rune",
+    "restrictions": { "gender": "Female", "passive_only": true }
+  },
+  "equipment": {
+    "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
+    "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
+    "allowed_armor": ["medium", "heavy"],
+    "armor_preference": "forged"
+  },
+  "playable_genders": ["Male"],
+  "notes": {
+    "origin": "Kha'inic line (Qayin) - earth-bound, marked, barred from Breath.",
+    "aging": "Ageless (do not senesce). Deepcall draws elders into the strata over centuries.",
+    "caps_reminder": "See rules/stats.json Dwarf_Male for species caps (STR 60 / TGH 60 / END 60)."
+  }
+},
   "Ogre": {
     "description": "Manufactured giants, twisted from boys into 600 kg brutes with childlike minds, built for war and logistics.",
     "lore": "Ogres wield improvised weapons, crushing foes with bear-like mass. Designed for war’s burdens—carrying supplies, enduring slaughter—their childlike minds shrug off trauma but crave open spaces. In Cursed Swamps, they consume tainted meat (+corruption); Dark Elves exploit their hunger. Claustrophobia keeps them from cities, favoring open battlefields or gate entries.",
