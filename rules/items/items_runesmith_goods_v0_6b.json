@@ -1,0 +1,129 @@
+{
+  "items": [
+    {
+      "id": "plate_blank_small",
+      "name": "Plate Blank (Small)",
+      "desc": "Uninscribed steel plate for quick anchors and light wards.",
+      "tags": ["platework","blank"],
+      "weight": 0.5,
+      "stack_max": 4,
+      "rarity": "common"
+    },
+    {
+      "id": "plate_blank_medium",
+      "name": "Plate Blank (Medium)",
+      "desc": "Mid-size plate for corridor work; takes keystone rivets.",
+      "tags": ["platework","blank"],
+      "weight": 1.0,
+      "stack_max": 3,
+      "rarity": "common"
+    },
+    {
+      "id": "plate_blank_large",
+      "name": "Plate Blank (Large)",
+      "desc": "Heavy plate for choke-points and gate braces.",
+      "tags": ["platework","blank","heavy"],
+      "weight": 2.0,
+      "stack_max": 2,
+      "rarity": "uncommon"
+    },
+
+    {
+      "id": "breach_charge_mk1",
+      "name": "Breach Charge Mk.1",
+      "desc": "Directional powder charge for masonry/doors. Requires blasting cap.",
+      "tags": ["explosive","breach","volatile"],
+      "weight": 2.0,
+      "stack_max": 2,
+      "rarity": "uncommon",
+      "effects": { "structure_damage_die": 10, "blast_radius_m": 2 }
+    },
+    {
+      "id": "satchel_charge_mk1",
+      "name": "Satchel Charge Mk.1",
+      "desc": "Area charge for collapses. Unsafe in close quarters.",
+      "tags": ["explosive","area","volatile"],
+      "weight": 3.5,
+      "stack_max": 1,
+      "rarity": "rare",
+      "effects": { "aoe_radius_m": 3, "structure_damage_die": 8 }
+    },
+    {
+      "id": "blasting_cap_mk1",
+      "name": "Blasting Cap Mk.1",
+      "desc": "Ignition cap; arm breach/satchel charges.",
+      "tags": ["explosive_component"],
+      "weight": 0.1,
+      "stack_max": 10,
+      "rarity": "common"
+    },
+    {
+      "id": "charge_link_cord",
+      "name": "Charge Link Cord (5 m)",
+      "desc": "Fused cord for daisy-chaining charges.",
+      "tags": ["explosive_component"],
+      "weight": 0.3,
+      "stack_max": 6,
+      "rarity": "common",
+      "effects": { "link_length_m": 5 }
+    },
+
+    {
+      "id": "repeater_arbalest",
+      "name": "Repeater Arbalest",
+      "desc": "Dwarven repeating arbalest; selectable fire modes.",
+      "tags": ["weapon","arbalest","repeater"],
+      "weight": 8.0,
+      "rarity": "rare",
+      "weapon": { "type": "arbalest_repeater", "modes": ["single","burst2","strafe3"] }
+    },
+    {
+      "id": "repeater_bolts_box",
+      "name": "Repeater Bolts (Box of 50)",
+      "desc": "Short heavy bolts for repeater magazines.",
+      "tags": ["ammo","arbalest"],
+      "weight": 2.0,
+      "stack_max": 3,
+      "rarity": "common",
+      "ammo": { "count": 50 }
+    },
+    {
+      "id": "arbalest_spring_kit",
+      "name": "Arbalest Spring Kit",
+      "desc": "Spare cams and springs to reduce jams after tune-up.",
+      "tags": ["maintenance","arbalest"],
+      "weight": 0.4,
+      "stack_max": 2,
+      "rarity": "uncommon",
+      "effects": { "jam_pct_bonus_until_rest": -5 }
+    },
+
+    {
+      "id": "blast_shield_foldable",
+      "name": "Foldable Blast Shield",
+      "desc": "Hinged steel panel. Braced stance halves overpressure cone.",
+      "tags": ["shielding","platework"],
+      "weight": 6.0,
+      "rarity": "uncommon",
+      "effects": { "explosion_damage_taken_pct": -40 }
+    },
+    {
+      "id": "dust_mask_mk1",
+      "name": "Dust Mask Mk.1",
+      "desc": "Filters quartz and soot; modest echo-spore resistance.",
+      "tags": ["ppe"],
+      "weight": 0.2,
+      "rarity": "common",
+      "effects": { "resist_inhaled_hazards_bonus": 5 }
+    },
+    {
+      "id": "ear_baffles",
+      "name": "Ear Baffles",
+      "desc": "Wool-and-wax plugs; reduce stun from blasts.",
+      "tags": ["ppe"],
+      "weight": 0.1,
+      "rarity": "common",
+      "effects": { "stun_resist_bonus": 5 }
+    }
+  ]
+}
