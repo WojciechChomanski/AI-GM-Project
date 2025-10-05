@@ -48,7 +48,6 @@
             "power_bonus": 20,
             "aging_rate": 0.5,
             "sterility": true
-          }
         }
       }
     },
@@ -616,5 +615,209 @@
     "passives": ["veils_whisper"],
     "spells": ["veil_fog", "blood_pact", "whisper_of_fear", "fade_step", "shrouds_embrace"]
   }
+},
+  "Stonewarden": {
+    "description": "Dwarven bastion-engineer. Holds lanes, sets plates, shrugs off impacts. No Breath, no Veil—only steel, powder, and platework.",
+    "lore": "Male dwarves of Kha’in’s line who bind law through craft, not prayer. They anchor tunnels, break gates, and make battlefields obey physics.",
+    "restrictions": { "race": ["Dwarf"], "gender": ["Male"] },
+    "role_tags": ["tank", "control", "engineer"],
+    "stats": { "toughness_modifier": 3, "endurance_modifier": 2, "agility_modifier": -1 },
+    "starting_equipment": { "kit": "stonewarden_siege_kit_v0_6a" },
+
+    "progression": [
+      {
+        "tier": 1,
+        "name": "Line-Setter",
+        "abilities_gain": ["Anvil_Stance", "Powder_Savant", "Platework_Deploy", "Iron_Temper", "Repeater_Arbalest"]
+      },
+      {
+        "tier": 2,
+        "name": "Specialization",
+        "path_choice": ["Iron_Anvil", "Thunder_Sapper", "Line_Marshal"],
+        "talent_choices": ["Brace_the_Line", "Blast_Shield_Drill", "Clean_Seat", "Rapid_Tangle"]
+      },
+      {
+        "tier": 3,
+        "name": "Path Advance",
+        "abilities_gain_by_path": {
+          "Iron_Anvil": ["Stonewall_Interpose", "Immovable"],
+          "Thunder_Sapper": ["Over_Prime", "Shock_Haft"],
+          "Line_Marshal": ["Mesh_Overwatch", "Fault_Finder"]
+        }
+      },
+      {
+        "tier": 4,
+        "name": "Capstone",
+        "abilities_gain_by_path": {
+          "Iron_Anvil": ["Granite_Breaker"],
+          "Thunder_Sapper": ["Chain_Det"],
+          "Line_Marshal": ["Seal_Master_Mechanical"]
+        },
+        "talent_choices": ["Anchor_Call", "Repeater_Discipline", "Dust_Lungs"]
+      }
+    ],
+
+    "abilities": {
+      "Anvil_Stance": {
+        "type": "stance",
+        "action_cost": 1,
+        "effects": { "knockback_resist": 15, "mobility_penalty": 10 },
+        "ally_adjacent_bonus": { "knockback_resist": 5 },
+        "nonmagical": true
+      },
+      "Powder_Savant": {
+        "type": "passive",
+        "effects": {
+          "self_explosion_damage_pct": -25,
+          "ally_rear_arc_explosion_damage_pct": -10
+        },
+        "notes": "You plan overpressure and shield your line.",
+        "nonmagical": true
+      },
+      "Platework_Deploy": {
+        "type": "field_deploy",
+        "subactions": ["Set_Plate", "Seat_Keystone", "Seal_Rivet"],
+        "skill_checks": { "Seat_Keystone_TN": 45, "Seal_Rivet_TN": 50 },
+        "notes": "Uses PRE-INSCRIBED plates/keystones crafted by female runesmiths. No inscription/binding performed by this class.",
+        "nonmagical": true
+      },
+      "Iron_Temper": {
+        "type": "reaction",
+        "trigger": "would_fail_fear_or_morale",
+        "costs": { "stamina": 5 },
+        "effects": { "reroll_once": true, "resist_all_checks_bonus_next_round": 5 },
+        "nonmagical": true
+      },
+      "Repeater_Arbalest": {
+        "type": "weapon_training",
+        "modes": {
+          "single": { "accuracy_mod": 0, "jam_pct_add": 0 },
+          "burst2": { "accuracy_mod": 1, "jam_pct_add": 5 },
+          "strafe3": { "accuracy_mod": -10, "jam_pct_add": 10 }
+        },
+        "jam_track": { "base": 0, "per_burst_after_round2": 5, "clear_action_cost": 1 },
+        "nonmagical": true
+      },
+
+      "Brace_the_Line": {
+        "type": "passive",
+        "requires": "Anvil_Stance",
+        "ally_adjacent_bonus": { "knockback_resist": 5 },
+        "nonmagical": true
+      },
+      "Blast_Shield_Drill": {
+        "type": "active",
+        "action_cost": 0,
+        "declare_before_blast": true,
+        "effects": { "self_explosion_damage_pct": -40 },
+        "nonmagical": true
+      },
+      "Clean_Seat": {
+        "type": "passive",
+        "effects": { "Seat_Keystone_TN_delta": -5, "plate_duration_minutes_bonus": 1 },
+        "nonmagical": true
+      },
+      "Rapid_Tangle": {
+        "type": "field_deploy",
+        "action_cost": 1,
+        "consumes_item": "tangle_line",
+        "effects": {
+          "create_difficult_terrain_meters": 1,
+          "strong_duration_rounds": 1,
+          "then_minor_hazard": true
+        },
+        "notes": "Pre-coiled wire + boot-slam spikes. Purely mechanical.",
+        "nonmagical": true
+      },
+
+      "Stonewall_Interpose": {
+        "type": "reaction",
+        "trigger": "adjacent_ally_hit",
+        "costs": { "stamina": 1 },
+        "effects": { "redirect_hit_to_self": true, "damage_die_reduction": 1 },
+        "nonmagical": true
+      },
+      "Immovable": {
+        "type": "passive",
+        "effects": { "negate_first_forced_move_each_round": true },
+        "nonmagical": true
+      },
+
+      "Over_Prime": {
+        "type": "active",
+        "target": "breach_charge",
+        "effects": { "structure_damage_bonus_die": 10, "misfire_range_expand_to": [90, 100] },
+        "nonmagical": true
+      },
+      "Shock_Haft": {
+        "type": "passive",
+        "trigger": "melee_critical",
+        "effects": { "push_meters": 1, "wall_impact_bonus_blunt_die": 4 },
+        "nonmagical": true
+      },
+
+      "Mesh_Overwatch": {
+        "type": "active",
+        "action_cost": 1,
+        "range_meters": 10,
+        "target": "ward_mesh_plate",
+        "effects": { "remote_trigger": true },
+        "nonmagical": true
+      },
+      "Fault_Finder": {
+        "type": "scene_power",
+        "uses_per_scene": 1,
+        "effects": {
+          "mark_span_meters": 2,
+          "ally_breach_TN_bonus": 10,
+          "enemy_shove_you_TN_malus": 10
+        },
+        "nonmagical": true
+      },
+
+      "Granite_Breaker": {
+        "type": "capstone",
+        "trigger": "first_time_drop_to_0_hp_per_scene",
+        "effects": { "set_hp_to": 1, "gain_immovable_for_rounds": 1 },
+        "nonmagical": true
+      },
+      "Chain_Det": {
+        "type": "capstone",
+        "effects": { "link_two_charges_single_pin": true, "resolve_in_sequence": true, "echo_attraction_check_bonus": 10 },
+        "nonmagical": true
+      },
+      "Seal_Master_Mechanical": {
+        "type": "capstone",
+        "effects": {
+          "knot_stone_keystone_brace_duration_days_bonus": 7,
+          "collapse_checks_TN_bonus_within_3m": -5
+        },
+        "nonmagical": true
+      },
+
+      "Anchor_Call": {
+        "type": "active",
+        "action_cost": 0,
+        "trigger": "enter_Anvil_Stance",
+        "ally_radius_meters": 3,
+        "effects": { "ally_knockback_resist": 5, "duration_rounds": 1 },
+        "nonmagical": true
+      },
+      "Repeater_Discipline": {
+        "type": "passive",
+        "effects": { "burst_jam_pct_add": -2 },
+        "nonmagical": true
+      },
+      "Dust_Lungs": {
+        "type": "passive",
+        "effects": {
+          "resist_inhaled_hazards_bonus": 10,
+          "resist_echo_leech_latch_bonus": 10
+        },
+        "nonmagical": true
+      }
+    }
+  }
 }
+
 
