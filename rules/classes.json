@@ -1,823 +1,314 @@
-{
-  "Warrior": {
-    "description": "A master of melee combat, built for war.",
-    "lore": "Warriors thrive in Iron Wastes battles, forging alliances with Havoc Warriors for brutal efficiency.",
-    "stats": {
-      "strength_modifier": 2,
-      "attack_cost_reduction": 1
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Brutal Strike (+5 damage, 8 stamina)",
-        "level_3": "Iron Wall (+20% block)"
-      }
-    }
-  },
-  "Mage": {
-    "description": "A wielder of Veil or Breath magic, bending reality.",
-    "lore": "Mages draw from the Veil in Cursed Swamps, risking corruption exploited by Dark Elves. Females may sacrifice fertility for power via Sacrificial Pact.",
-    "stats": {
-      "intelligence_modifier": 2
-    },
-    "restrictions": {
-      "gender": "Female",
-      "race": ["Human", "Elf"]
-    },
-    "abilities": {
-      "active": {
-        "veil_whisper": {
-          "level": 1,
-          "type": "active",
-          "description": "Grants ally +5 defense, leaves taint_mark (+5 enemy hunt_check), 0.1 corruption risk.",
-          "stamina_cost": 6,
-          "corruption_risk": 0.1
-        },
-        "sacrificial_pact": {
-          "level": 3,
-          "type": "active",
-          "description": "Ritual sacrifices fertility for +20 power, halved aging rate, +0.15 corruption risk, sterility debuff (-10 charisma_check).",
-          "stamina_cost": 10,
-          "effects": {
-            "power_bonus": 20,
-            "aging_rate": 0.5,
-            "sterility": true
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Veil Whisper (+5 defense, 6 stamina, 0.1 corruption)",
-        "level_3": "Sacrificial Pact (power boost, sterility risk)"
-      }
-    }
-  },
-  "Rogue": {
-    "description": "A shadow in the empire, striking unseen.",
-    "lore": "Rogues navigate Beastmen territories, using agility to evade Veil-tainted traps.",
-    "stats": {
-      "agility_modifier": 2,
-      "dodge_bonus": 5
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Shadow Strike (+10 ambush damage)",
-        "level_3": "Eagle Eye (+15 perception)"
-      }
-    }
-  },
-  "Cleric": {
-    "description": "A conduit of the Breath, healing and smiting.",
-    "lore": "Clerics purify Veil corruption in human settlements, clashing with Dark Elves' manipulation.",
-    "stats": {
-      "willpower_modifier": 2,
-      "healing_bonus": 10
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human"
-    },
-    "abilities": {
-      "active": {
-        "divine_verdict": {
-          "level": 1,
-          "type": "active",
-          "description": "Deals 15 holy damage, +10 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
-          "stamina_cost": 8,
-          "effects": {
-            "damage": 15,
-            "bonus_vs_corrupted": 10,
-            "overload_chance": 0.01
-          }
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Divine Shield (+10 defense buff)",
-        "level_3": "Breath Purge (remove corruption, 10 stamina)"
-      }
-    }
-  },
-  "Paladin": {
-    "description": "A holy warrior, champion of the Breath.",
-    "lore": "Paladins lead charges against Beastmen hordes, their faith warding off Veil influences.",
-    "stats": {
-      "strength_modifier": 2,
-      "willpower_modifier": 1,
-      "healing_bonus": 5
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human"
-    },
-    "abilities": {
-      "active": {
-        "divine_verdict": {
-          "level": 1,
-          "type": "active",
-          "description": "Deals 15 holy damage, +10 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
-          "stamina_cost": 8,
-          "effects": {
-            "damage": 15,
-            "bonus_vs_corrupted": 10,
-            "overload_chance": 0.01
-          }
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Smiting Strike (+10 holy damage)",
-        "level_3": "Aura of Faith (+5 ally resistance)"
-      }
-    }
-  },
-  "Holy_Judge": {
-    "description": "A divine arbiter delivering the Maker’s justice through Breath-infused verdicts.",
-    "lore": "Holy Judges stand as the Maker’s voice, purging corruption with radiant authority, feared even by the Church.",
-    "stats": {
-      "willpower_modifier": 3,
-      "intelligence_modifier": 2,
-      "healing_bonus": 2
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human"
-    },
-    "abilities": {
-      "active": {
-        "judgment_call": {
-          "level": 1,
-          "type": "active",
-          "description": "Deals 12 holy damage, +15 vs corrupted, 1% Breath Overload (-5 stamina, 3 rounds).",
-          "stamina_cost": 9,
-          "effects": {
-            "damage": 12,
-            "bonus_vs_corrupted": 15,
-            "overload_chance": 0.01
-          }
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "unlocks": {
-        "level_2": "Divine Clarity (+10 perception vs deception)",
-        "level_3": "Purge Verdict (remove status effects, 12 stamina)"
-      }
-    }
-  },
-  "Outlaw_Mercenary_Warrior": {
-    "description": "Rugged warrior from outlaw roots, mercenary for hire—brutal in melee, resilient, with intimidation edge.",
-    "stats": {
-      "strength_modifier": 2,
-      "toughness_modifier": 1,
-      "endurance_modifier": 1,
-      "charisma_modifier": -1
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Human",
-      "background": "Outlaw"
-    },
-    "starting_equipment": {
-      "weapon": "greatsword",
-      "shield": true,
-      "armor": "Medium_Heavy"
-    },
-    "stances": {
-      "default": "wrath_guard",
-      "vom_tag": { "type": "offensive", "attack_bonus": 3, "defense_penalty": 1 },
-      "half_sword": { "type": "defensive", "attack_penalty": 3, "defense_bonus": 5 },
-      "wrath_guard": { "type": "neutral", "initiative_bonus": 1 }
-    },
-    "maneuvers": {
-      "2H_sword": [
-        { "name": "Zwerchhau", "stance": "vom_tag", "effects": { "attack_bonus": 5 } },
-        { "name": "Absetzen", "stance": "half_sword", "trigger": "after_parry", "effects": { "attack_bonus": 8 } },
-        { "name": "Durchwechseln", "stance": "wrath_guard", "effects": { "attack_bonus": 3, "defense_bonus": 3 } },
-        { "name": "Half-Sword Thrust", "stance": "half_sword", "trigger": "critical_hit", "effects": { "attack_bonus": 10, "armor_bypass": 0.5 } },
-        { "name": "Mordhau", "stance": "vom_tag", "trigger": "after_block", "effects": { "attack_bonus": 7, "damage_type": "blunt" } },
-        { "name": "Aimed Leg Strike", "stance": "wrath_guard", "aimed_zone": ["legs"], "effects": { "mobility_penalty": 30 } }
-      ]
-    },
-    "abilities": {
-      "active": {
-        "brutal_strike": { "damage_bonus": 5, "stamina_cost": 8, "desc": "Powerful overhead strike." },
-        "intimidating_shout": { "fear_chance": 0.3, "stamina_cost": 5, "desc": "Roar to demoralize enemies." }
-      },
-      "passive": {
-        "iron_wall": { "block_bonus": 0.2, "desc": "20% increased block with shield." },
-        "resilient_outlaw": { "pain_resist": 10, "desc": "Reduce pain penalties by 10%." }
-      }
-    },
-    "skills": {
-      "swordsmanship": 3,
-      "shield_defense": 2,
-      "intimidation": 1,
-      "stealth": 1
-    },
-    "traits": [
-      "Brave (+5 willpower vs fear/morale)",
-      "Loyal (+10% ally buffs)",
-      "Resilient (-10% bleeding duration)"
-    ],
-    "progression": {
-      "level_up_stats": { "strength": 2, "endurance": 1 },
-      "unlocks": { "lv3": "Absetzen maneuver", "lv5": "Endure talent (+pain resist)" }
-    }
-  },
-  "Ogre_Brute": {
-    "description": "Massive powerhouse wielding improvised weapons like grizzly swipes—devastating hits, but slow and exhausting.",
-    "lore": "Brutes roam Iron Wastes, crushing Beastmen, but their hunger draws Dark Elves' manipulative alliances.",
-    "stats": {
-      "strength_modifier": 4,
-      "toughness_modifier": 3,
-      "agility_modifier": -2,
-      "endurance_modifier": 2,
-      "mass_base": 600
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre",
-      "background": "Bounty Hunter"
-    },
-    "starting_equipment": {
-      "weapon": "improvised_club",
-      "shield": false,
-      "armor": "Light_Heavy"
-    },
-    "stances": {
-      "default": "neutral",
-      "offensive": { "attack_bonus": 5, "defense_penalty": 5 }
-    },
-    "maneuvers": {
-      "improvised": [
-        { "name": "Brute Swipe", "stance": "offensive", "effects": { "damage_bonus": 10, "stun_chance_head": 0.5 } }
-      ]
-    },
-    "abilities": {
-      "active": {
-        "grab_rip": { "stamina_cost": 15, "desc": "Grab and attempt to tear limb (2-round process)." },
-        "heavy_throw": { "stamina_cost": 20, "desc": "Throw heavy object as projectile (high damage/stun)." },
-        "heavy_lift": { "stamina_cost": 5, "desc": "Carry additional 500 kg without encumbrance penalty, aiding group logistics." }
-      },
-      "passive": {
-        "bear_mass": { "ignore_arm_penalty": 1, "desc": "Ignore 1 arm cripple for improvised use." },
-        "thick_skull": { "head_stun_resist": 20, "desc": "-20% stun from head hits." }
-      }
-    },
-    "skills": {
-      "club_smash": 4,
-      "intimidation": 3
-    },
-    "traits": [
-      "Grizzly Force (+mass//10 damage bonus)",
-      "Thick Hide (-10% piercing damage)"
-    ],
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "level_up_stats": { "strength": 3, "toughness": 2 },
-      "unlocks": { "lv3": "Heavy Throw", "lv5": "Rip Upgrade (lower resist threshold)" }
-    }
-  },
-  "Ogre_Ravager": {
-    "description": "Brutal melee destroyer driven by hunger, tearing foes apart in grimdark frenzy.",
-    "lore": "Ravagers devour in Cursed Swamps, their corruption drawing Dark Elves as handlers.",
-    "stats": {
-      "strength_modifier": 4,
-      "toughness_modifier": 3,
-      "dexterity_modifier": -2
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre"
-    },
-    "abilities": {
-      "active": {
-        "flesh_rend": {
-          "level": 1,
-          "type": "active",
-          "description": "Enhanced grab_rip with devour heal on rip success (+10 HP, +5 corruption).",
-          "stamina_cost": 10
-        },
-        "devour_charge": {
-          "level": 5,
-          "type": "active",
-          "description": "Throw + bonus attack, with self-stun risk (5% chance).",
-          "stamina_cost": 15
-        }
-      },
-      "passive": {
-        "gluttons_vitality": {
-          "level": 3,
-          "type": "passive",
-          "description": "Recover stamina/health after rip/smash, +bleeding to grabbed, corruption penalty (+5)."
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "level_up_stats": { "strength": 2, "toughness": 2 }
-    }
-  },
-  "Ogre_Behemoth": {
-    "description": "Immovable tank absorbing punishment, guarding in a world of endless pain.",
-    "lore": "Behemoths stand as sentinels in Iron Wastes, their bulk a weapon against Havoc Warriors' assaults.",
-    "stats": {
-      "toughness_modifier": 5,
-      "strength_modifier": 3,
-      "agility_modifier": -2
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre"
-    },
-    "abilities": {
-      "passive": {
-        "unyielding_bulk": {
-          "level": 1,
-          "type": "passive",
-          "description": "Boost mass penalty/stun, reduce incoming damage by 10%."
-        }
-      },
-      "active": {
-        "earthquake_slam": {
-          "level": 3,
-          "type": "active",
-          "description": "AOE slam on grapple, stun multiple foes (stamina 10).",
-          "stamina_cost": 10
-        },
-        "flesh_shield": {
-          "level": 5,
-          "type": "active",
-          "description": "Use grabbed as shield/club for defense/damage (+20 block, 15 damage)."
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "level_up_stats": { "toughness": 3, "strength": 1 }
-    }
-  },
-  "Ogre_Flesh_Eater": {
-    "description": "Corrupted healer consuming foes for regeneration in a starving world.",
-    "lore": "Flesh Eaters lurk in Cursed Swamps, their voracity a tool for Dark Elves' dark rituals.",
-    "stats": {
-      "strength_modifier": 4,
-      "toughness_modifier": 4,
-      "willpower_modifier": -3
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre"
-    },
-    "abilities": {
-      "active": {
-        "consume_rip": {
-          "level": 1,
-          "type": "active",
-          "description": "Rip with heal/corruption gain (heal 15 HP, +10 corruption).",
-          "stamina_cost": 10
-        },
-        "voracious_grasp": {
-          "level": 5,
-          "type": "active",
-          "description": "Auto-rip on grab with high heal/self-stun risk (heal 30 HP, 10% stun).",
-          "stamina_cost": 12
-        }
-      },
-      "passive": {
-        "regenerative_feast": {
-          "level": 3,
-          "type": "passive",
-          "description": "Regen on kill (+20 HP), +bleeding to grabbed, corruption penalty (+5)."
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "level_up_stats": { "toughness": 2, "strength": 2 }
-    }
-  },
-  "Ogre_Stormbreaker": {
-    "description": "Siege specialist destroying defenses in a crumbling world.",
-    "lore": "Stormbreakers breach Beastmen strongholds in Iron Wastes, their rage a beacon for Havoc Warriors.",
-    "stats": {
-      "strength_modifier": 5,
-      "perception_modifier": 2,
-      "charisma_modifier": -2
-    },
-    "restrictions": {
-      "gender": "Male",
-      "race": "Ogre"
-    },
-    "abilities": {
-      "passive": {
-        "armor_crusher": {
-          "level": 1,
-          "type": "passive",
-          "description": "Boost penetration/durability damage (+20%), ignore armor on throws."
-        }
-      },
-      "active": {
-        "shatter_throw": {
-          "level": 3,
-          "type": "active",
-          "description": "Throw with armor break (stamina 10, +30 durability damage).",
-          "stamina_cost": 10
-        },
-        "rampage_grip": {
-          "level": 5,
-          "type": "active",
-          "description": "Chain rip + slam AOE (damage 25, stamina 15, recoil risk 5%).",
-          "stamina_cost": 15
-        }
-      }
-    },
-    "progression": {
-      "xp_requirements": {
-        "level_1": 0,
-        "level_2": 100,
-        "level_3": 300,
-        "level_4": 600,
-        "level_5": 1000
-      },
-      "level_up_stats": { "strength": 3, "perception": 1 }
-    }
-  },
-  "Crusader_Knight": {
-    "description": "Male human-only heavy cavalry/infantry sanctified by the Breath. Bursting power, iron defense, long-term wear.",
-    "lore": "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
-    "race_lock": ["Human"],
-    "gender_lock": ["Male"],
-    "power_source": "Breath",
-    "role_tags": ["tank", "striker", "mounted"],
-    "stat_modifiers": {
-      "strength": 12,
-      "toughness": 10,
-      "agility": 5,
-      "willpower": 8,
-      "stamina_max_flat": 10,
-      "hp_percent": 15
-    },
-    "stats": {
-      "strength_modifier": 12,
-      "toughness_modifier": 10,
-      "agility_modifier": 5,
-      "willpower_modifier": 8,
-      "stamina_max_bonus": 10,
-      "hp_percent_bonus": 15
-    },
-    "proficiencies": {
-      "weapons": ["sword_1h", "sword_2h", "mace", "lance"],
-      "shields": ["heater", "kite"],
-      "armor_tiers": ["medium-light", "medium-medium", "medium-heavy", "heavy-light", "heavy-medium", "heavy-heavy"],
-      "mounts": ["warhorse"]
-    },
-    "progression": [
-      {
-        "tier": 1,
-        "name": "Militia",
-        "requirements": { "age_min": 14 },
-        "abilities_gain": ["Basic_Strike", "Shield_Bash", "Rally_Cry"],
-        "flaws_gain": ["Low_Morale"]
-      },
-      {
-        "tier": 2,
-        "name": "Squire_Sergeant",
-        "requirements": { "battles_survived": 3, "led_victory": 1 },
-        "abilities_gain": ["Precision_Thrust", "Stand_Fast"],
-        "gear_hint": ["chainmail", "short_sword"],
-        "flaws_gain": ["Old_Scars"]
-      },
-      {
-        "tier": 3,
-        "name": "Landsknecht",
-        "requirements": { "named_enemy_slain": 1 },
-        "abilities_gain": ["Cleave", "Mounted_Charge"],
-        "gear_hint": ["plate_partial", "claymore"],
-        "flaws_gain": ["Hubris"]
-      },
-      {
-        "tier": 4,
-        "name": "Knight",
-        "requirements": { "noble_title": true },
-        "abilities_gain": ["Divine_Surge", "Lance_Thrust", "Smite"],
-        "gear_hint": ["full_plate", "warhorse"],
-        "flaws_gain": ["Mortal_Coil"]
-      }
-    ],
-    "abilities": {
-      "Basic_Strike": { "type": "attack", "stamina": 6, "weapon": "any_melee" },
-      "Shield_Bash": { "type": "control", "stamina": 8, "stun_pct": 20, "requires": "shield" },
-      "Rally_Cry": { "type": "buff_team", "stamina": 10, "morale_pct": 15, "cooldown_rounds": 5 },
-      "Precision_Thrust": { "type": "attack", "stamina": 10, "armor_pierce_pct": 10, "aimed": true },
-      "Stand_Fast": { "type": "stance", "defense_pct": 10, "stamina_regen_pct": -10 },
-      "Cleave": { "type": "attack_aoe", "stamina": 14, "targets": 2, "bonus_damage": 8 },
-      "Mounted_Charge": { "type": "charge", "stamina": 18, "requires": "mount", "bonus_damage": 12, "knockdown_pct": 30 },
-      "Smite": { "type": "attack_holy", "stamina": 16, "holy_damage": 15, "vs_veilspawn_bonus_pct": 25 },
-      "Lance_Thrust": { "type": "attack_pierce", "stamina": 16, "requires": "mount", "bonus_damage": 18 },
-      "Divine_Surge": {
-        "type": "ultimate_burst",
-        "uses_per_day": 1,
-        "stamina": 50,
-        "bonus_damage": 20,
-        "tags_apply_after": ["Exhausted_2r"]
-      }
-    },
-    "flaws": {
-      "Low_Morale": { "type": "mental", "damage_pct_if_outnumbered": -10 },
-      "Old_Scars": { "type": "fatigue", "stamina_start_combat": -5 },
-      "Hubris": { "type": "tactical", "overcommit_pct": 10 },
-      "Mortal_Coil": { "type": "attrition", "hp_max_permanent_per_10_battles": -10 }
-    }
-  },
-  "Veil_Sorceress": {
-    "description": "A fragile but terrifying caster who draws on the Veil. Only human and elven women can wield this active magic. Power always exacts a cost: stamina, blood, or sanity (corruption).",
-    "role": "Caster",
-    "allowed_races": ["Human", "Elf"],
-    "allowed_genders": ["Female"],
-    "base_stats": { "max_hp": 45, "max_stamina": 50 },
-    "stat_bonuses": { "intelligence": 5, "willpower": 5, "agility": -5 },
-    "equipment_rules": {
-      "armor_allowed": ["None", "Light_Light"],
-      "shields_allowed": false,
-      "weapons_allowed": ["dagger", "staff"]
-    },
-    "class_flags": { "melee_vulnerability_pct": 50, "active_magic_user": true },
-    "hidden_stats": { "corruption": { "start": 0, "max": 100 } },
-    "passives": ["veils_whisper"],
-    "spells": ["veil_fog", "blood_pact", "whisper_of_fear", "fade_step", "shrouds_embrace"]
-  }
-},
-  "Stonewarden": {
-    "description": "Dwarven bastion-engineer. Holds lanes, sets plates, shrugs off impacts. No Breath, no Veil—only steel, powder, and platework.",
-    "lore": "Male dwarves of Kha’in’s line who bind law through craft, not prayer. They anchor tunnels, break gates, and make battlefields obey physics.",
-    "restrictions": { "race": ["Dwarf"], "gender": ["Male"] },
-    "role_tags": ["tank", "control", "engineer"],
-    "stats": { "toughness_modifier": 3, "endurance_modifier": 2, "agility_modifier": -1 },
-    "starting_equipment": { "kit": "stonewarden_siege_kit_v0_6a" },
-
-    "progression": [
-      {
-        "tier": 1,
-        "name": "Line-Setter",
-        "abilities_gain": ["Anvil_Stance", "Powder_Savant", "Platework_Deploy", "Iron_Temper", "Repeater_Arbalest"]
-      },
-      {
-        "tier": 2,
-        "name": "Specialization",
-        "path_choice": ["Iron_Anvil", "Thunder_Sapper", "Line_Marshal"],
-        "talent_choices": ["Brace_the_Line", "Blast_Shield_Drill", "Clean_Seat", "Rapid_Tangle"]
-      },
-      {
-        "tier": 3,
-        "name": "Path Advance",
-        "abilities_gain_by_path": {
-          "Iron_Anvil": ["Stonewall_Interpose", "Immovable"],
-          "Thunder_Sapper": ["Over_Prime", "Shock_Haft"],
-          "Line_Marshal": ["Mesh_Overwatch", "Fault_Finder"]
-        }
-      },
-      {
-        "tier": 4,
-        "name": "Capstone",
-        "abilities_gain_by_path": {
-          "Iron_Anvil": ["Granite_Breaker"],
-          "Thunder_Sapper": ["Chain_Det"],
-          "Line_Marshal": ["Seal_Master_Mechanical"]
-        },
-        "talent_choices": ["Anchor_Call", "Repeater_Discipline", "Dust_Lungs"]
-      }
-    ],
-
-    "abilities": {
-      "Anvil_Stance": {
-        "type": "stance",
-        "action_cost": 1,
-        "effects": { "knockback_resist": 15, "mobility_penalty": 10 },
-        "ally_adjacent_bonus": { "knockback_resist": 5 },
-        "nonmagical": true
-      },
-      "Powder_Savant": {
-        "type": "passive",
-        "effects": {
-          "self_explosion_damage_pct": -25,
-          "ally_rear_arc_explosion_damage_pct": -10
-        },
-        "notes": "You plan overpressure and shield your line.",
-        "nonmagical": true
-      },
-      "Platework_Deploy": {
-        "type": "field_deploy",
-        "subactions": ["Set_Plate", "Seat_Keystone", "Seal_Rivet"],
-        "skill_checks": { "Seat_Keystone_TN": 45, "Seal_Rivet_TN": 50 },
-        "notes": "Uses PRE-INSCRIBED plates/keystones crafted by female runesmiths. No inscription/binding performed by this class.",
-        "nonmagical": true
-      },
-      "Iron_Temper": {
-        "type": "reaction",
-        "trigger": "would_fail_fear_or_morale",
-        "costs": { "stamina": 5 },
-        "effects": { "reroll_once": true, "resist_all_checks_bonus_next_round": 5 },
-        "nonmagical": true
-      },
-      "Repeater_Arbalest": {
-        "type": "weapon_training",
-        "modes": {
-          "single": { "accuracy_mod": 0, "jam_pct_add": 0 },
-          "burst2": { "accuracy_mod": 1, "jam_pct_add": 5 },
-          "strafe3": { "accuracy_mod": -10, "jam_pct_add": 10 }
-        },
-        "jam_track": { "base": 0, "per_burst_after_round2": 5, "clear_action_cost": 1 },
-        "nonmagical": true
-      },
-
-      "Brace_the_Line": {
-        "type": "passive",
-        "requires": "Anvil_Stance",
-        "ally_adjacent_bonus": { "knockback_resist": 5 },
-        "nonmagical": true
-      },
-      "Blast_Shield_Drill": {
-        "type": "active",
-        "action_cost": 0,
-        "declare_before_blast": true,
-        "effects": { "self_explosion_damage_pct": -40 },
-        "nonmagical": true
-      },
-      "Clean_Seat": {
-        "type": "passive",
-        "effects": { "Seat_Keystone_TN_delta": -5, "plate_duration_minutes_bonus": 1 },
-        "nonmagical": true
-      },
-      "Rapid_Tangle": {
-        "type": "field_deploy",
-        "action_cost": 1,
-        "consumes_item": "tangle_line",
-        "effects": {
-          "create_difficult_terrain_meters": 1,
-          "strong_duration_rounds": 1,
-          "then_minor_hazard": true
-        },
-        "notes": "Pre-coiled wire + boot-slam spikes. Purely mechanical.",
-        "nonmagical": true
-      },
-
-      "Stonewall_Interpose": {
-        "type": "reaction",
-        "trigger": "adjacent_ally_hit",
-        "costs": { "stamina": 1 },
-        "effects": { "redirect_hit_to_self": true, "damage_die_reduction": 1 },
-        "nonmagical": true
-      },
-      "Immovable": {
-        "type": "passive",
-        "effects": { "negate_first_forced_move_each_round": true },
-        "nonmagical": true
-      },
-
-      "Over_Prime": {
-        "type": "active",
-        "target": "breach_charge",
-        "effects": { "structure_damage_bonus_die": 10, "misfire_range_expand_to": [90, 100] },
-        "nonmagical": true
-      },
-      "Shock_Haft": {
-        "type": "passive",
-        "trigger": "melee_critical",
-        "effects": { "push_meters": 1, "wall_impact_bonus_blunt_die": 4 },
-        "nonmagical": true
-      },
-
-      "Mesh_Overwatch": {
-        "type": "active",
-        "action_cost": 1,
-        "range_meters": 10,
-        "target": "ward_mesh_plate",
-        "effects": { "remote_trigger": true },
-        "nonmagical": true
-      },
-      "Fault_Finder": {
-        "type": "scene_power",
-        "uses_per_scene": 1,
-        "effects": {
-          "mark_span_meters": 2,
-          "ally_breach_TN_bonus": 10,
-          "enemy_shove_you_TN_malus": 10
-        },
-        "nonmagical": true
-      },
-
-      "Granite_Breaker": {
-        "type": "capstone",
-        "trigger": "first_time_drop_to_0_hp_per_scene",
-        "effects": { "set_hp_to": 1, "gain_immovable_for_rounds": 1 },
-        "nonmagical": true
-      },
-      "Chain_Det": {
-        "type": "capstone",
-        "effects": { "link_two_charges_single_pin": true, "resolve_in_sequence": true, "echo_attraction_check_bonus": 10 },
-        "nonmagical": true
-      },
-      "Seal_Master_Mechanical": {
-        "type": "capstone",
-        "effects": {
-          "knot_stone_keystone_brace_duration_days_bonus": 7,
-          "collapse_checks_TN_bonus_within_3m": -5
-        },
-        "nonmagical": true
-      },
-
-      "Anchor_Call": {
-        "type": "active",
-        "action_cost": 0,
-        "trigger": "enter_Anvil_Stance",
-        "ally_radius_meters": 3,
-        "effects": { "ally_knockback_resist": 5, "duration_rounds": 1 },
-        "nonmagical": true
-      },
-      "Repeater_Discipline": {
-        "type": "passive",
-        "effects": { "burst_jam_pct_add": -2 },
-        "nonmagical": true
-      },
-      "Dust_Lungs": {
-        "type": "passive",
-        "effects": {
-          "resist_inhaled_hazards_bonus": 10,
-          "resist_echo_leech_latch_bonus": 10
-        },
-        "nonmagical": true
-      }
-    }
-  }
+﻿{
+    "Stonewarden":  {
+                        "description":  "Dwarven bastion-engineer. Holds lanes, sets plates, shrugs off impacts. No Breath, no Veilâ€”only steel, powder, and platework.",
+                        "lore":  "Male dwarves of Khaâ€™inâ€™s line who bind law through craft, not prayer. They anchor tunnels, break gates, and make battlefields obey physics.",
+                        "restrictions":  {
+                                             "race":  [
+                                                          "Dwarf"
+                                                      ],
+                                             "gender":  [
+                                                            "Male"
+                                                        ]
+                                         },
+                        "role_tags":  [
+                                          "tank",
+                                          "control",
+                                          "engineer"
+                                      ],
+                        "stats":  {
+                                      "toughness_modifier":  3,
+                                      "endurance_modifier":  2,
+                                      "agility_modifier":  -1
+                                  },
+                        "starting_equipment":  {
+                                                   "kit":  "stonewarden_siege_kit_v0_6a"
+                                               },
+                        "progression":  [
+                                            {
+                                                "tier":  1,
+                                                "name":  "Line-Setter",
+                                                "abilities_gain":  [
+                                                                       "Anvil_Stance",
+                                                                       "Powder_Savant",
+                                                                       "Platework_Deploy",
+                                                                       "Iron_Temper",
+                                                                       "Repeater_Arbalest"
+                                                                   ]
+                                            },
+                                            {
+                                                "tier":  2,
+                                                "name":  "Specialization",
+                                                "path_choice":  [
+                                                                    "Iron_Anvil",
+                                                                    "Thunder_Sapper",
+                                                                    "Line_Marshal"
+                                                                ],
+                                                "talent_choices":  [
+                                                                       "Brace_the_Line",
+                                                                       "Blast_Shield_Drill",
+                                                                       "Clean_Seat",
+                                                                       "Rapid_Tangle"
+                                                                   ]
+                                            },
+                                            {
+                                                "tier":  3,
+                                                "name":  "Path Advance",
+                                                "abilities_gain_by_path":  {
+                                                                               "Iron_Anvil":  [
+                                                                                                  "Stonewall_Interpose",
+                                                                                                  "Immovable"
+                                                                                              ],
+                                                                               "Thunder_Sapper":  [
+                                                                                                      "Over_Prime",
+                                                                                                      "Shock_Haft"
+                                                                                                  ],
+                                                                               "Line_Marshal":  [
+                                                                                                    "Mesh_Overwatch",
+                                                                                                    "Fault_Finder"
+                                                                                                ]
+                                                                           }
+                                            },
+                                            {
+                                                "tier":  4,
+                                                "name":  "Capstone",
+                                                "abilities_gain_by_path":  {
+                                                                               "Iron_Anvil":  [
+                                                                                                  "Granite_Breaker"
+                                                                                              ],
+                                                                               "Thunder_Sapper":  [
+                                                                                                      "Chain_Det"
+                                                                                                  ],
+                                                                               "Line_Marshal":  [
+                                                                                                    "Seal_Master_Mechanical"
+                                                                                                ]
+                                                                           },
+                                                "talent_choices":  [
+                                                                       "Anchor_Call",
+                                                                       "Repeater_Discipline",
+                                                                       "Dust_Lungs"
+                                                                   ]
+                                            }
+                                        ],
+                        "abilities":  {
+                                          "Anvil_Stance":  {
+                                                               "type":  "stance",
+                                                               "action_cost":  1,
+                                                               "effects":  {
+                                                                               "knockback_resist":  15,
+                                                                               "mobility_penalty":  10
+                                                                           },
+                                                               "ally_adjacent_bonus":  {
+                                                                                           "knockback_resist":  5
+                                                                                       },
+                                                               "nonmagical":  true
+                                                           },
+                                          "Powder_Savant":  {
+                                                                "type":  "passive",
+                                                                "effects":  {
+                                                                                "self_explosion_damage_pct":  -25,
+                                                                                "ally_rear_arc_explosion_damage_pct":  -10
+                                                                            },
+                                                                "notes":  "You plan overpressure and shield your line.",
+                                                                "nonmagical":  true
+                                                            },
+                                          "Platework_Deploy":  {
+                                                                   "type":  "field_deploy",
+                                                                   "subactions":  [
+                                                                                      "Set_Plate",
+                                                                                      "Seat_Keystone",
+                                                                                      "Seal_Rivet"
+                                                                                  ],
+                                                                   "skill_checks":  {
+                                                                                        "Seat_Keystone_TN":  45,
+                                                                                        "Seal_Rivet_TN":  50
+                                                                                    },
+                                                                   "notes":  "Uses PRE-INSCRIBED plates/keystones crafted by female runesmiths. No inscription/binding performed by this class.",
+                                                                   "nonmagical":  true
+                                                               },
+                                          "Iron_Temper":  {
+                                                              "type":  "reaction",
+                                                              "trigger":  "would_fail_fear_or_morale",
+                                                              "costs":  {
+                                                                            "stamina":  5
+                                                                        },
+                                                              "effects":  {
+                                                                              "reroll_once":  true,
+                                                                              "resist_all_checks_bonus_next_round":  5
+                                                                          },
+                                                              "nonmagical":  true
+                                                          },
+                                          "Repeater_Arbalest":  {
+                                                                    "type":  "weapon_training",
+                                                                    "modes":  {
+                                                                                  "single":  {
+                                                                                                 "accuracy_mod":  0,
+                                                                                                 "jam_pct_add":  0
+                                                                                             },
+                                                                                  "burst2":  {
+                                                                                                 "accuracy_mod":  1,
+                                                                                                 "jam_pct_add":  5
+                                                                                             },
+                                                                                  "strafe3":  {
+                                                                                                  "accuracy_mod":  -10,
+                                                                                                  "jam_pct_add":  10
+                                                                                              }
+                                                                              },
+                                                                    "jam_track":  {
+                                                                                      "base":  0,
+                                                                                      "per_burst_after_round2":  5,
+                                                                                      "clear_action_cost":  1
+                                                                                  },
+                                                                    "nonmagical":  true
+                                                                },
+                                          "Brace_the_Line":  {
+                                                                 "type":  "passive",
+                                                                 "requires":  "Anvil_Stance",
+                                                                 "ally_adjacent_bonus":  {
+                                                                                             "knockback_resist":  5
+                                                                                         },
+                                                                 "nonmagical":  true
+                                                             },
+                                          "Blast_Shield_Drill":  {
+                                                                     "type":  "active",
+                                                                     "action_cost":  0,
+                                                                     "declare_before_blast":  true,
+                                                                     "effects":  {
+                                                                                     "self_explosion_damage_pct":  -40
+                                                                                 },
+                                                                     "nonmagical":  true
+                                                                 },
+                                          "Clean_Seat":  {
+                                                             "type":  "passive",
+                                                             "effects":  {
+                                                                             "Seat_Keystone_TN_delta":  -5,
+                                                                             "plate_duration_minutes_bonus":  1
+                                                                         },
+                                                             "nonmagical":  true
+                                                         },
+                                          "Rapid_Tangle":  {
+                                                               "type":  "field_deploy",
+                                                               "action_cost":  1,
+                                                               "consumes_item":  "tangle_line",
+                                                               "effects":  {
+                                                                               "create_difficult_terrain_meters":  1,
+                                                                               "strong_duration_rounds":  1,
+                                                                               "then_minor_hazard":  true
+                                                                           },
+                                                               "notes":  "Pre-coiled wire + boot-slam spikes. Purely mechanical.",
+                                                               "nonmagical":  true
+                                                           },
+                                          "Stonewall_Interpose":  {
+                                                                      "type":  "reaction",
+                                                                      "trigger":  "adjacent_ally_hit",
+                                                                      "costs":  {
+                                                                                    "stamina":  1
+                                                                                },
+                                                                      "effects":  {
+                                                                                      "redirect_hit_to_self":  true,
+                                                                                      "damage_die_reduction":  1
+                                                                                  },
+                                                                      "nonmagical":  true
+                                                                  },
+                                          "Immovable":  {
+                                                            "type":  "passive",
+                                                            "effects":  {
+                                                                            "negate_first_forced_move_each_round":  true
+                                                                        },
+                                                            "nonmagical":  true
+                                                        },
+                                          "Over_Prime":  {
+                                                             "type":  "active",
+                                                             "target":  "breach_charge",
+                                                             "effects":  {
+                                                                             "structure_damage_bonus_die":  10,
+                                                                             "misfire_range_expand_to":  [
+                                                                                                             90,
+                                                                                                             100
+                                                                                                         ]
+                                                                         },
+                                                             "nonmagical":  true
+                                                         },
+                                          "Shock_Haft":  {
+                                                             "type":  "passive",
+                                                             "trigger":  "melee_critical",
+                                                             "effects":  {
+                                                                             "push_meters":  1,
+                                                                             "wall_impact_bonus_blunt_die":  4
+                                                                         },
+                                                             "nonmagical":  true
+                                                         },
+                                          "Mesh_Overwatch":  {
+                                                                 "type":  "active",
+                                                                 "action_cost":  1,
+                                                                 "range_meters":  10,
+                                                                 "target":  "ward_mesh_plate",
+                                                                 "effects":  {
+                                                                                 "remote_trigger":  true
+                                                                             },
+                                                                 "nonmagical":  true
+                                                             },
+                                          "Fault_Finder":  {
+                                                               "type":  "scene_power",
+                                                               "uses_per_scene":  1,
+                                                               "effects":  {
+                                                                               "mark_span_meters":  2,
+                                                                               "ally_breach_TN_bonus":  10,
+                                                                               "enemy_shove_you_TN_malus":  10
+                                                                           },
+                                                               "nonmagical":  true
+                                                           },
+                                          "Granite_Breaker":  {
+                                                                  "type":  "capstone",
+                                                                  "trigger":  "first_time_drop_to_0_hp_per_scene",
+                                                                  "effects":  {
+                                                                                  "set_hp_to":  1,
+                                                                                  "gain_immovable_for_rounds":  1
+                                                                              },
+                                                                  "nonmagical":  true
+                                                              },
+                                          "Chain_Det":  {
+                                                            "type":  "capstone",
+                                                            "effects":  {
+                                                                            "link_two_charges_single_pin":  true,
+                                                                            "resolve_in_sequence":  true,
+                                                                            "echo_attraction_check_bonus":  10
+                                                                        },
+                                                            "nonmagical":  true
+                                                        },
+                                          "Seal_Master_Mechanical":  {
+                                                                         "type":  "capstone",
+                                                                         "effects":  {
+                                                                                         "knot_stone_keystone_brace_duration_days_bonus":  7,
+                                                                                         "collapse_checks_TN_bonus_within_3m":  -5
+                                                                                     },
+                                                                         "nonmagical":  true
+                                                                     },
+                                          "Anchor_Call":  {
+                                                              "type":  "active",
+                                                              "action_cost":  0,
+                                                              "trigger":  "enter_Anvil_Stance",
+                                                              "ally_radius_meters":  3,
+                                                              "effects":  {
+                                                                              "ally_knockback_resist":  5,
+                                                                              "duration_rounds":  1
+                                                                          },
+                                                              "nonmagical":  true
+                                                          },
+                                          "Repeater_Discipline":  {
+                                                                      "type":  "passive",
+                                                                      "effects":  {
+                                                                                      "burst_jam_pct_add":  -2
+                                                                                  },
+                                                                      "nonmagical":  true
+                                                                  },
+                                          "Dust_Lungs":  {
+                                                             "type":  "passive",
+                                                             "effects":  {
+                                                                             "resist_inhaled_hazards_bonus":  10,
+                                                                             "resist_echo_leech_latch_bonus":  10
+                                                                         },
+                                                             "nonmagical":  true
+                                                         }
+                                      }
+                    }
 }
-
-
