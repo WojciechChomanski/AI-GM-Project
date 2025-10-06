@@ -1,0 +1,24 @@
+{
+  "overrides": [
+    {
+      "item_ref": "dwarf_full_plate",            
+      "quality": "masterwork",
+      "craftsmanship": "dwarven",
+      "label": "Dwarven Masterwork Full Plate"
+    },
+    {
+      "item_ref": "repeater_arbalest_v0_6b",     
+      "quality": "fine",
+      "craftsmanship": "dwarven",
+      "label": "Dwarven Fine Repeater",
+      "base_defaults_if_missing": { "jam_pct": 6, "misfire_range": 2 } 
+    },
+    {
+      "item_ref": "demo_charge_breach_v0_6b",    
+      "quality": "shoddy",
+      "craftsmanship": "human",
+      "label": "Shoddy Breach Charge (Guild Surplus)",
+      "base_defaults_if_missing": { "dud_pct": 6, "misfire_range": 4 }
+    }
+  ]
+}
