@@ -1,4 +1,4 @@
-﻿{
+{
   "$id": "schemas/stonewarden_kits.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Stonewarden Starter Kits",
