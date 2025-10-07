@@ -1,0 +1,22 @@
+{
+  "version": "0.6d",
+  "base_unit": "cp",
+  "denominations": [
+    { "id": "cp", "name": "copper", "value_cp": 1 },
+    { "id": "sp", "name": "silver", "value_cp": 100 },
+    { "id": "gp", "name": "gold",   "value_cp": 10000 }
+  ],
+  "formatting": {
+    "show_grouping": true,
+    "min_display_unit": "cp"
+  },
+  "coin_weight": {
+    "coins_per_kg": 50,
+    "pouch_capacity_coins": 200,
+    "pouch_encumbrance_reduction_pct": 50
+  },
+  "rounding": {
+    "retail_price_nearest_cp": 10,
+    "service_price_nearest_cp": 5
+  }
+}
