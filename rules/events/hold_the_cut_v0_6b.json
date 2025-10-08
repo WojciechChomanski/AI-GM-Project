@@ -1,55 +1,151 @@
-{
-  "id": "evt_hold_the_cut_v0_6b",
-  "title": "Trial: Hold the Cut",
-  "scene_type": "micro_trial",
-  "summary": "Defend a narrow tunnel cut against an onrushing echo pack using Mesh + Anvil Stance.",
-  "setup": {
-    "location": "Blackhall lower adit, narrow cut (2m wide, 6m long).",
-    "enemy": [
-      { "type": "echo_leech_pack", "count": 6 }
-    ],
-    "terrain": {
-      "lane": { "width_m": 2, "length_m": 6 },
-      "stones": "loose scree, boots slip checks at TN 40 if running",
-      "anchoring_points": 2
-    }
-  },
-  "objectives": [
-    { "id": "OBJ_HOLD_3R", "text": "Hold the lane for 3 rounds without enemy breakthrough.", "mandatory": true },
-    { "id": "OBJ_MIN_INJURY", "text": "End with Stonewarden above 50% HP.", "mandatory": false }
-    ]
-  ,
-  "mechanics": {
-    "core_checks": [
-      { "name": "Platework_Deploy.Seat_Keystone", "tn": 45, "notes": "Seat Mesh at lane mid." },
-      { "name": "Rapid_Tangle", "tn": 0, "notes": "Action cost = 1; creates 1m difficult terrain for 1 round." }
-    ],
-    "stances": { "Anvil_Stance": { "effects": { "knockback_resist": 15, "mobility_penalty": 10 } } },
-    "ai": "Echoes prioritize lowest armor target within 2m of the Mesh unless tangle present.",
-    "win_conditions": [
-      "OBJ_HOLD_3R complete"
-    ],
-    "fail_states": [
-      "Any enemy exits lane behind defender before round 3 end",
-      "Stonewarden drops to 0 HP before round 3 end"
-    ]
-  },
-  "rewards": {
-    "success": [
-      { "type": "item", "id": "plate_mesh_mk1", "qty": 1 },
-      { "type": "currency", "silver": 20 }
-    ],
-    "bonus": [
-      { "cond": "OBJ_MIN_INJURY", "reward": { "type": "service", "name": "Seat & Rivet voucher", "value_silver": 10 } }
-    ],
-    "failure": [
-      { "type": "narrative", "text": "Foreman grumbles; +1 scene heat in Blackhall for next job." }
-    ]
-  },
-  "hooks": [
-    "Vendor Ansel offers discount on Mesh refit after successful hold.",
-    "Blackhall Guard posts a breach contract if hold succeeds cleanly."
-  ],
-  "version": "0.6b"
+﻿{
+    "id":  "evt_hold_the_cut_v0_6b",
+    "title":  "Trial: Hold the Cut",
+    "scene_type":  "micro_trial",
+    "summary":  "Defend a narrow tunnel cut against an onrushing echo pack using Mesh + Anvil Stance.",
+    "setup":  {
+                  "location":  "Blackhall lower adit, narrow cut (2m wide, 6m long).",
+                  "enemy":  [
+                                {
+                                    "type":  "echo_leech_pack",
+                                    "count":  6
+                                }
+                            ],
+                  "terrain":  {
+                                  "lane":  {
+                                               "width_m":  2,
+                                               "length_m":  6
+                                           },
+                                  "stones":  "loose scree, boots slip checks at TN 40 if running",
+                                  "anchoring_points":  2
+                              }
+              },
+    "objectives":  [
+                       {
+                           "id":  "OBJ_HOLD_3R",
+                           "text":  "Hold the lane for 3 rounds without enemy breakthrough.",
+                           "mandatory":  true
+                       },
+                       {
+                           "id":  "OBJ_MIN_INJURY",
+                           "text":  "End with Stonewarden above 50% HP.",
+                           "mandatory":  false
+                       }
+                   ],
+    "mechanics":  {
+                      "core_checks":  [
+                                          {
+                                              "name":  "Platework_Deploy.Seat_Keystone",
+                                              "tn":  45,
+                                              "notes":  "Seat Mesh at lane mid."
+                                          },
+                                          {
+                                              "name":  "Rapid_Tangle",
+                                              "tn":  0,
+                                              "notes":  "Action cost = 1; creates 1m difficult terrain for 1 round."
+                                          }
+                                      ],
+                      "stances":  {
+                                      "Anvil_Stance":  {
+                                                           "effects":  {
+                                                                           "knockback_resist":  15,
+                                                                           "mobility_penalty":  10
+                                                                       }
+                                                       }
+                                  },
+                      "ai":  "Echoes prioritize lowest armor target within 2m of the Mesh unless tangle present.",
+                      "win_conditions":  [
+                                             "OBJ_HOLD_3R complete"
+                                         ],
+                      "fail_states":  [
+                                          "Any enemy exits lane behind defender before round 3 end",
+                                          "Stonewarden drops to 0 HP before round 3 end"
+                                      ]
+                  },
+    "rewards":  {
+                    "success":  [
+                                    {
+                                        "type":  "item",
+                                        "id":  "plate_mesh_mk1",
+                                        "qty":  1
+                                    },
+                                    {
+                                        "type":  "currency",
+                                        "silver":  20
+                                    }
+                                ],
+                    "bonus":  [
+                                  {
+                                      "cond":  "OBJ_MIN_INJURY",
+                                      "reward":  {
+                                                     "type":  "service",
+                                                     "name":  "Seat \u0026 Rivet voucher",
+                                                     "value_silver":  10
+                                                 }
+                                  }
+                              ],
+                    "failure":  [
+                                    {
+                                        "type":  "narrative",
+                                        "text":  "Foreman grumbles; +1 scene heat in Blackhall for next job."
+                                    }
+                                ]
+                },
+    "hooks":  [
+                  "Vendor Ansel offers discount on Mesh refit after successful hold.",
+                  "Blackhall Guard posts a breach contract if hold succeeds cleanly."
+              ],
+    "version":  "0.6b",
+    "aftermath":  {
+                      "on_success":  {
+                                         "set_flags":  [
+                                                           {
+                                                               "id":  "flag_stonewarden_trial_passed",
+                                                               "scope":  "session",
+                                                               "value":  true
+                                                           }
+                                                       ],
+                                         "vendor_adjustments":  [
+                                                                    {
+                                                                        "vendor_id":  "ansel_platewright",
+                                                                        "mode":  "discount_pct",
+                                                                        "value":  -10,
+                                                                        "stacking":  "max",
+                                                                        "expires":  "session_end",
+                                                                        "reason":  "Stonewarden trial passed (Hold the Cut)"
+                                                                    }
+                                                                ],
+                                         "journal":  [
+                                                         "Ansel nods at your lane work: -10% on plates, mags, and bench services for the rest of this session."
+                                                     ]
+                                     },
+                      "on_bonus_success":  {
+                                               "if_objective":  "OBJ_MIN_INJURY",
+                                               "set_flags":  [
+                                                                 {
+                                                                     "id":  "flag_ansel_priority_service",
+                                                                     "scope":  "session",
+                                                                     "value":  true
+                                                                 }
+                                                             ],
+                                               "vendor_adjustments":  [
+                                                                          {
+                                                                              "vendor_id":  "ansel_platewright",
+                                                                              "mode":  "bench_time_credit_min",
+                                                                              "value":  15,
+                                                                              "expires":  "session_end",
+                                                                              "reason":  "Clean hold performance"
+                                                                          }
+                                                                      ]
+                                           },
+                      "on_failure":  {
+                                         "set_flags":  [
+                                                           {
+                                                               "id":  "flag_blackhall_heat_plus1",
+                                                               "scope":  "local_day",
+                                                               "value":  true
+                                                           }
+                                                       ]
+                                     }
+                  }
 }
-

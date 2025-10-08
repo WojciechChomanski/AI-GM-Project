@@ -1,68 +1,197 @@
-{
-  "id": "evt_door_to_breach_v0_6b",
-  "title": "Trial: Door-to-Breach",
-  "scene_type": "micro_trial",
-  "summary": "Set a breach charge under pressure. Choose between safe seat or Over-Prime for a faster break with misfire risk.",
-  "setup": {
-    "location": "Blackhall service door (oak + iron bands), tunnel shoulder 1.5m.",
-    "enemy": [
-      { "type": "echo_brute", "count": 1 },
-      { "type": "echo_leeches", "count": 3 }
-    ],
-    "timer_rounds": 4,
-    "terrain": { "cover": "pillar left, crate right", "door_hp": 30 }
-  },
-  "objectives": [
-    { "id": "OBJ_BREACH", "text": "Open the door before timer expires.", "mandatory": true },
-    { "id": "OBJ_SAFE", "text": "Avoid any misfire result.", "mandatory": false }
-  ],
-  "mechanics": {
-    "checks": [
-      { "name": "Seat_Charge", "tn": 50, "notes": "Place breach charge (standard prime)." },
-      { "name": "Over_Prime", "tn": 0, "notes": "No check; increases structure damage die by +d10; expands misfire range to 90–100." },
-      { "name": "Blast_Shield_Drill", "tn": 0, "notes": "-40% self explosion damage this detonation (declare before blast)." }
-    ],
-    "detonation": {
-      "standard": { "structure_damage_die": "d10+5" },
-      "over_prime": { "structure_damage_die": "2d10+5", "misfire_range": [90, 100] }
-    },
-    "misfire_table": [
-      { "roll": 90, "effect": "Fuse sputter. Lose 1 round; reseat to retry." },
-      { "roll": 91, "effect": "Partial charge. Door HP -5; shrapnel check TN 45 (Stonewarden only)." },
-      { "roll": 92, "effect": "Backblast: self takes 1d6 blunt (apply Powder_Savant/Blast_Shield modifiers)." },
-      { "roll": 93, "effect": "Charge slips; Seat_Charge TN +10 next attempt." },
-      { "roll": 94, "effect": "Tear mesh sleeve; lose 1 Mesh plate if equipped." },
-      { "roll": 95, "effect": "Pin jam; requires 1 action to clear before reattempt." },
-      { "roll": 96, "effect": "Overpressure; allies in rear arc take 1d4 unless behind hard cover." },
-      { "roll": 97, "effect": "Echo-attractor hum; spawn +1 echo_leech next round." },
-      { "roll": 98, "effect": "Charge cooks off late; resolve det at end of next round." },
-      { "roll": 99, "effect": "Det on seat; immediate backblast + shrapnel checks for front arc." },
-      { "roll": 100, "effect": "Catastrophic dud; charge ruined, timer -1 round." }
-    ],
-    "win_conditions": [
-      "Door HP <= 0 before round 5"
-    ],
-    "fail_states": [
-      "Timer expires with door intact",
-      "Stonewarden incapacitates (0 HP)"
-    ]
-  },
-  "rewards": {
-    "success": [
-      { "type": "currency", "silver": 35 },
-      { "type": "item", "id": "charge_breach_mk1", "qty": 1 }
-    ],
-    "bonus": [
-      { "cond": "OBJ_SAFE", "reward": { "type": "service", "name": "Bench time credit (15 min)", "value_silver": 8 } }
-    ],
-    "failure": [
-      { "type": "narrative", "text": "Blackhall Guard marks you ‘impatient’ (social TN +5 vs quartermaster for 1 day)." }
-    ]
-  },
-  "hooks": [
-    "Ansel offers a quick-seat course at discount.",
-    "Guard posts a repeat breach with better pay if you finished under 2 rounds."
-  ],
-  "version": "0.6b"
+﻿{
+    "id":  "evt_door_to_breach_v0_6b",
+    "title":  "Trial: Door-to-Breach",
+    "scene_type":  "micro_trial",
+    "summary":  "Set a breach charge under pressure. Choose between safe seat or Over-Prime for a faster break with misfire risk.",
+    "setup":  {
+                  "location":  "Blackhall service door (oak + iron bands), tunnel shoulder 1.5m.",
+                  "enemy":  [
+                                {
+                                    "type":  "echo_brute",
+                                    "count":  1
+                                },
+                                {
+                                    "type":  "echo_leeches",
+                                    "count":  3
+                                }
+                            ],
+                  "timer_rounds":  4,
+                  "terrain":  {
+                                  "cover":  "pillar left, crate right",
+                                  "door_hp":  30
+                              }
+              },
+    "objectives":  [
+                       {
+                           "id":  "OBJ_BREACH",
+                           "text":  "Open the door before timer expires.",
+                           "mandatory":  true
+                       },
+                       {
+                           "id":  "OBJ_SAFE",
+                           "text":  "Avoid any misfire result.",
+                           "mandatory":  false
+                       }
+                   ],
+    "mechanics":  {
+                      "checks":  [
+                                     {
+                                         "name":  "Seat_Charge",
+                                         "tn":  50,
+                                         "notes":  "Place breach charge (standard prime)."
+                                     },
+                                     {
+                                         "name":  "Over_Prime",
+                                         "tn":  0,
+                                         "notes":  "No check; increases structure damage die by +d10; expands misfire range to 90â€“100."
+                                     },
+                                     {
+                                         "name":  "Blast_Shield_Drill",
+                                         "tn":  0,
+                                         "notes":  "-40% self explosion damage this detonation (declare before blast)."
+                                     }
+                                 ],
+                      "detonation":  {
+                                         "standard":  {
+                                                          "structure_damage_die":  "d10+5"
+                                                      },
+                                         "over_prime":  {
+                                                            "structure_damage_die":  "2d10+5",
+                                                            "misfire_range":  [
+                                                                                  90,
+                                                                                  100
+                                                                              ]
+                                                        }
+                                     },
+                      "misfire_table":  [
+                                            {
+                                                "roll":  90,
+                                                "effect":  "Fuse sputter. Lose 1 round; reseat to retry."
+                                            },
+                                            {
+                                                "roll":  91,
+                                                "effect":  "Partial charge. Door HP -5; shrapnel check TN 45 (Stonewarden only)."
+                                            },
+                                            {
+                                                "roll":  92,
+                                                "effect":  "Backblast: self takes 1d6 blunt (apply Powder_Savant/Blast_Shield modifiers)."
+                                            },
+                                            {
+                                                "roll":  93,
+                                                "effect":  "Charge slips; Seat_Charge TN +10 next attempt."
+                                            },
+                                            {
+                                                "roll":  94,
+                                                "effect":  "Tear mesh sleeve; lose 1 Mesh plate if equipped."
+                                            },
+                                            {
+                                                "roll":  95,
+                                                "effect":  "Pin jam; requires 1 action to clear before reattempt."
+                                            },
+                                            {
+                                                "roll":  96,
+                                                "effect":  "Overpressure; allies in rear arc take 1d4 unless behind hard cover."
+                                            },
+                                            {
+                                                "roll":  97,
+                                                "effect":  "Echo-attractor hum; spawn +1 echo_leech next round."
+                                            },
+                                            {
+                                                "roll":  98,
+                                                "effect":  "Charge cooks off late; resolve det at end of next round."
+                                            },
+                                            {
+                                                "roll":  99,
+                                                "effect":  "Det on seat; immediate backblast + shrapnel checks for front arc."
+                                            },
+                                            {
+                                                "roll":  100,
+                                                "effect":  "Catastrophic dud; charge ruined, timer -1 round."
+                                            }
+                                        ],
+                      "win_conditions":  [
+                                             "Door HP \u003c= 0 before round 5"
+                                         ],
+                      "fail_states":  [
+                                          "Timer expires with door intact",
+                                          "Stonewarden incapacitates (0 HP)"
+                                      ]
+                  },
+    "rewards":  {
+                    "success":  [
+                                    {
+                                        "type":  "currency",
+                                        "silver":  35
+                                    },
+                                    {
+                                        "type":  "item",
+                                        "id":  "charge_breach_mk1",
+                                        "qty":  1
+                                    }
+                                ],
+                    "bonus":  [
+                                  {
+                                      "cond":  "OBJ_SAFE",
+                                      "reward":  {
+                                                     "type":  "service",
+                                                     "name":  "Bench time credit (15 min)",
+                                                     "value_silver":  8
+                                                 }
+                                  }
+                              ],
+                    "failure":  [
+                                    {
+                                        "type":  "narrative",
+                                        "text":  "Blackhall Guard marks you â€˜impatientâ€™ (social TN +5 vs quartermaster for 1 day)."
+                                    }
+                                ]
+                },
+    "hooks":  [
+                  "Ansel offers a quick-seat course at discount.",
+                  "Guard posts a repeat breach with better pay if you finished under 2 rounds."
+              ],
+    "version":  "0.6b",
+    "aftermath":  {
+                      "on_success":  {
+                                         "set_flags":  [
+                                                           {
+                                                               "id":  "flag_breach_trial_passed",
+                                                               "scope":  "session",
+                                                               "value":  true
+                                                           }
+                                                       ],
+                                         "vendor_adjustments":  [
+                                                                    {
+                                                                        "vendor_id":  "ansel_platewright",
+                                                                        "mode":  "discount_pct",
+                                                                        "value":  -10,
+                                                                        "stacking":  "max",
+                                                                        "expires":  "session_end",
+                                                                        "reason":  "Stonewarden trial passed (Door-to-Breach)"
+                                                                    }
+                                                                ],
+                                         "journal":  [
+                                                         "Ansel chalks your foreplate with a maker’s mark: -10% on plates, mags, and bench services this session."
+                                                     ]
+                                     },
+                      "on_bonus_success":  {
+                                               "if_objective":  "OBJ_SAFE",
+                                               "set_flags":  [
+                                                                 {
+                                                                     "id":  "flag_ansel_priority_service",
+                                                                     "scope":  "session",
+                                                                     "value":  true
+                                                                 }
+                                                             ],
+                                               "vendor_adjustments":  [
+                                                                          {
+                                                                              "vendor_id":  "ansel_platewright",
+                                                                              "mode":  "bench_time_credit_min",
+                                                                              "value":  15,
+                                                                              "expires":  "session_end",
+                                                                              "reason":  "Clean breach (no misfire)"
+                                                                          }
+                                                                      ]
+                                           }
+                  }
 }
-
