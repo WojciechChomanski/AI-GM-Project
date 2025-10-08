@@ -36,3 +36,5 @@ __pycache__/
 scripts/*.log
 *.log
 
+
+sessions/
