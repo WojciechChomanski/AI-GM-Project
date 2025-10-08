@@ -38,3 +38,5 @@ scripts/*.log
 
 
 sessions/
+
+*.bak
