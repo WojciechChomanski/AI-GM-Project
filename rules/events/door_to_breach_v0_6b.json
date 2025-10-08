@@ -171,7 +171,7 @@
                                                                     }
                                                                 ],
                                          "journal":  [
-                                                         "Ansel chalks your foreplate with a maker’s mark: -10% on plates, mags, and bench services this session."
+                                                         "Ansel chalks your foreplate with a maker's mark: -10% on plates, mags, and bench services this session."
                                                      ]
                                      },
                       "on_bonus_success":  {
@@ -195,3 +195,4 @@
                                            }
                   }
 }
+
