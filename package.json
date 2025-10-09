@@ -1,0 +1,32 @@
+{
+  "scripts": {
+    "dev": "node server/dev.js",
+    "session:reset": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Reset",
+    "session:init": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Init",
+    "session:show": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Show",
+    "session:resolve:hold:bonus": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Resolve -EventId evt_hold_the_cut_v0_6b -Outcome success -BonusObjectives OBJ_MIN_INJURY",
+    "session:resolve:door:bonus": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Resolve -EventId evt_door_to_breach_v0_6b -Outcome success -BonusObjectives OBJ_SAFE",
+    "session:resolve:hold:fail": "powershell -ExecutionPolicy Bypass -File tools/session_runner.ps1 -Resolve -EventId evt_hold_the_cut_v0_6b -Outcome failure"
+  },
+  "name": "ai_gm_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WojciechChomanski/AI-GM-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WojciechChomanski/AI-GM-Project/issues"
+  },
+  "homepage": "https://github.com/WojciechChomanski/AI-GM-Project#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
