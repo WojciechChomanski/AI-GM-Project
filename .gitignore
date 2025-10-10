@@ -40,3 +40,8 @@ scripts/*.log
 sessions/
 
 *.bak
+
+node_modules/
+*.log
+.env
+

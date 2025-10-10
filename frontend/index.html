@@ -15,7 +15,9 @@
       </div>
 
       <section class="panel">
-        <header>Characters</header>
+        <header>Characters
+          <a href="/debug/session.html" target="_blank" style="margin-left:8px;">Session Debug</a>
+        </header>
         <div class="panel-body">
           <div class="row">
             <button id="btn-new-char" class="btn">New</button>
@@ -168,5 +170,24 @@
 
   <input type="file" id="file-open" hidden />
   <script type="module" src="./app.js"></script>
+  <script type="module">
+  import { getSession, initSession, resetSession, resolveEvent } from '/js/session_api.js';
+
+  async function showFlags() {
+    const s = await getSession();
+    console.log('Flags:', s.flags); // TODO: render into your UI
+  }
+
+  // Example dev-only use:
+  // await initSession();
+  // await resolveEvent('evt_hold_the_cut_v0_6b', 'success', ['OBJ_MIN_INJURY']);
+  // await showFlags();
+</script>
+
 </body>
+<footer>
+  <p style="margin-top:12px">
+  <a href="/debug/session.html" target="_blank">Open Session Debug Panel</a>
+</p>
+</footer>
 </html>
