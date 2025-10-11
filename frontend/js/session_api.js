@@ -1,4 +1,5 @@
-﻿export async function getSession() {
+﻿// frontend/js/session_api.js
+export async function getSession() {
   const r = await fetch('/api/session', { cache: 'no-store' });
   if (!r.ok) throw new Error('Failed to load session');
   const { state } = await r.json();
@@ -29,3 +30,4 @@ export async function chat({ role = 'player', message = '' }) {
   if (!r.ok) throw new Error('Chat failed');
   return r.json();
 }
+
