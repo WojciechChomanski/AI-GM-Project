@@ -75,13 +75,14 @@ app.post('/api/session/resolve', async (req, res) => {
   }
 });
 
-// --- API: chat ---
+// --- API: chat (always returns 200 with a reply; falls back to stub if needed) ---
 app.post('/api/chat', async (req, res) => {
   try {
     const result = await chatOpenAI.chat(req.body || {});
     res.json({ ok: true, ...result });
   } catch (e) {
-    res.status(500).json({ ok: false, error: String(e?.message || e) });
+    console.error('chat route error:', e);
+    res.json({ ok: true, reply: '[[stub]] GM: The wind rasps through broken stone. What do you do?', model: 'stub' });
   }
 });
 
@@ -95,5 +96,6 @@ app.use(express.static(path.join(ROOT, 'frontend')));
 // --- start ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
+
 
 

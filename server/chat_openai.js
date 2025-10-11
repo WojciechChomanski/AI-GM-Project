@@ -24,54 +24,61 @@ function buildSystemPrompt() {
     "Tone: grounded, cinematic, helpful. Keep replies 2–6 sentences unless asked for more.",
     "Rating: keep it PG-13. No explicit sexual content, graphic gore, hate speech, or instructions for real harm.",
     "Stay in-world; describe with concise sensory detail; summarize mechanics without rules lawyering.",
-    "If asked about out-of-scope topics, redirect back to the game.",
+    "If asked about out-of-scope topics, gently redirect back to the game."
   ].join(' ');
+}
+
+function validKey(k) {
+  return !!k && k !== 'PASTE_YOUR_KEY_HERE' && /^sk-/.test(k);
 }
 
 function makeClient() {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return null;
-  return new OpenAI({ apiKey });
+  if (!validKey(apiKey)) return null;
+  try { return new OpenAI({ apiKey }); } catch { return null; }
 }
 
-/** Chat entry point used by the Express route. */
+function stubReply(sessionNote, role, message) {
+  return `[[stub]] ${role === 'player' ? 'You' : 'NPC'} said: "${message}". ` +
+         `GM: The lantern sputters as a draft threads through the hall. ` +
+         `Shadows pull long between cracked pillars. What do you do? (${sessionNote})`;
+}
+
+/** Chat entry point used by the Express route. Always resolves with a reply. */
 async function chat(body = {}) {
   const message = (body.message || '').toString().trim();
   const role = (body.role || 'player').toString();
-
   const sessionNote = loadSessionSummary();
 
-  // Stub fallback if no API key
   const client = makeClient();
   if (!client) {
-    const reply =
-      `[[stub]] ${role === 'player' ? 'You' : 'NPC'} said: "${message}". ` +
-      `GM replies: The lantern sputters as the wind curls through the hall. ` +
-      `What do you do next? (${sessionNote})`;
-    return { reply, model: 'stub' };
+    return { reply: stubReply(sessionNote, role, message), model: 'stub' };
   }
 
-  // OpenAI call (non-stream)
-  const system = buildSystemPrompt();
-  const prompt = [
-    { role: 'system', content: system },
-    { role: 'system', content: sessionNote },
-    { role: 'user', content: message || 'Continue.' },
-  ];
+  // Try live call; on any error, fall back to stub instead of throwing.
+  try {
+    const completion = await client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: buildSystemPrompt() },
+        { role: 'system', content: sessionNote },
+        { role: 'user', content: message || 'Continue.' }
+      ],
+      temperature: 0.7,
+      max_tokens: 400
+    });
 
-  const completion = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: prompt,
-    temperature: 0.7,
-    max_tokens: 400,
-  });
-
-  const reply = completion.choices?.[0]?.message?.content?.trim() || '…';
-  return {
-    reply,
-    model: completion.model,
-    usage: completion.usage || null,
-  };
+    const reply = completion.choices?.[0]?.message?.content?.trim() || '…';
+    return { reply, model: completion.model, usage: completion.usage || null };
+  } catch (e) {
+    return {
+      reply: stubReply(sessionNote, role, message),
+      model: 'stub',
+      // include a hint so we know why it fell back (not shown to the player UI)
+      hint: `fallback: ${e?.message || e}`
+    };
+  }
 }
 
 module.exports = { chat };
+
