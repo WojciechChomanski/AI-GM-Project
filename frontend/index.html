@@ -172,6 +172,9 @@
   <!-- Your app -->
   <script type="module" src="./app.js"></script>
 
+  <!-- Turn order patch (must come BEFORE AP overlay so its capture guard runs first) -->
+  <script type="module" src="./js/turn_order_patch.js"></script>
+
   <!-- AP/Stamina overlay -->
   <script type="module" src="./js/combat_ap_patch.js"></script>
 
@@ -197,6 +200,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
