@@ -1,157 +1,263 @@
 // frontend/js/combat_ap_patch.js
-import { computeAPPerRound, ACTIONS } from './combat_rules.js';
+// Milestone A — AP/Stamina overlay + action spending (no edits to app.js)
 
-const CombatAP = (() => {
-  const state = {
-    roundSeconds: 6,
-    AGI: 8,
-    encumbrance: 'light',
-    staminaMax: 6,
-    stamina: 6,
-    apMax: 0,
-    apLeft: 0,
+(() => {
+  // ---- Tunables (aligned with rules/combat/action_economy_v0_1.json) ----
+  const ROUND_SECONDS = 6;
+
+  // Base AP formula: 6 + floor((AGI - 8)/3) - encPenalty
+  function computeAPPerRound({ AGI = 8, encumbrance = 'light' } = {}) {
+    const base = 6;
+    const agiBonus = Math.floor((AGI - 8) / 3);
+    const encPenalty = encumbrance === 'medium' ? 1 : encumbrance === 'heavy' ? 2 : 0;
+    return Math.max(0, base + agiBonus - encPenalty);
+  }
+
+  // Costs (subset for Milestone A)
+  const ACTIONS = {
+    move:          { ap: 1, stamina: 0 },
+    melee_attack:  { ap: 3, stamina: 1 },
+    ranged_attack: { ap: 3, stamina: 1 },
+    guard:         { ap: 1, stamina: 0 }, // "Defend"
+    ability:       { ap: 2, stamina: 1 },
   };
 
-  function ensureStyles() {
-    const css = `
-      .ap-hud{border:1px solid #eee;border-radius:10px;padding:8px;margin-top:10px;background:#fafafa}
-      .ap-row{margin-bottom:4px}
-      .ap-hud .muted{color:#666;font-size:12px}
-      .ap-bad{color:#b00020}
-    `;
-    const style = document.createElement('style');
-    style.textContent = css;
-    document.head.appendChild(style);
+  const STAMINA_REGEN_PER_TURN = 1;
+  const STAMINA_MAX = 6;   // simple soft cap for playtesting
+  const STAMINA_MIN = 0;
+
+  // ---- Local state (simple, per-current-actor only) ----
+  const State = {
+    round: 0,
+    turn:  0,
+    cur:   {
+      AGI: 8,
+      encumbrance: 'light',
+      apMax: 0,
+      ap: 0,
+      stamina: STAMINA_MAX, // start topped up for now
+    },
+    ui: {
+      hudAP: null,
+      hudSTA: null,
+      toastBox: null,
+    },
+    initialized: false,
+  };
+
+  // ---- DOM helpers ----
+  function $(id) { return document.getElementById(id); }
+
+  function ensureHUD() {
+    const hud = document.querySelector('.overlay.hud');
+    if (!hud) return;
+
+    // AP badge
+    if (!State.ui.hudAP) {
+      const span = document.createElement('span');
+      span.id = 'hud-ap';
+      span.textContent = 'AP —/—';
+      span.style.marginLeft = '8px';
+      State.ui.hudAP = span;
+      hud.appendChild(span);
+    }
+    // Stamina badge
+    if (!State.ui.hudSTA) {
+      const span = document.createElement('span');
+      span.id = 'hud-stamina';
+      span.textContent = 'STA —';
+      span.style.marginLeft = '8px';
+      State.ui.hudSTA = span;
+      hud.appendChild(span);
+    }
+
+    // tiny toast box (non-intrusive)
+    if (!State.ui.toastBox) {
+      const tb = document.createElement('div');
+      tb.id = 'ap-toasts';
+      Object.assign(tb.style, {
+        position: 'absolute',
+        right: '16px',
+        bottom: '16px',
+        zIndex: 9999,
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '12px',
+        maxWidth: '40ch',
+      });
+      document.body.appendChild(tb);
+      State.ui.toastBox = tb;
+    }
   }
 
-  function recomputeApMax() {
-    state.apMax = computeAPPerRound({ AGI: state.AGI, encumbrance: state.encumbrance });
-    if (state.apLeft > state.apMax) state.apLeft = state.apMax;
+  function toast(msg, ms = 1600) {
+    if (!State.ui.toastBox) return;
+    const box = document.createElement('div');
+    Object.assign(box.style, {
+      background: 'rgba(0,0,0,0.72)',
+      color: 'white',
+      padding: '6px 10px',
+      borderRadius: '8px',
+      marginTop: '6px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+    });
+    box.textContent = msg;
+    State.ui.toastBox.appendChild(box);
+    setTimeout(() => box.remove(), ms);
   }
 
-  function render() {
-    const apEl  = document.getElementById('ap-val');
-    const stEl  = document.getElementById('sta-val');
-    if (apEl) apEl.textContent = `${state.apLeft}/${state.apMax}`;
-    if (stEl) stEl.textContent = `${state.stamina}/${state.staminaMax}`;
+  function updateHUD() {
+    ensureHUD();
+    if (State.ui.hudAP)  State.ui.hudAP.textContent  = `AP ${State.cur.ap}/${State.cur.apMax}`;
+    if (State.ui.hudSTA) State.ui.hudSTA.textContent = `STA ${State.cur.stamina}`;
   }
 
-  function flash(el) {
-    try {
-      el.animate(
-        [
-          { transform: 'translateX(0)' },
-          { transform: 'translateX(4px)' },
-          { transform: 'translateX(-4px)' },
-          { transform: 'translateX(0)' },
-        ],
-        { duration: 150 }
-      );
-    } catch {}
+  // ---- Core logic ----
+  function startCombat() {
+    State.round = 1;
+    State.turn  = 1;
+    State.cur.apMax = computeAPPerRound({ AGI: State.cur.AGI, encumbrance: State.cur.encumbrance });
+    State.cur.ap = State.cur.apMax;
+    // Stamina stays as-is (topped for now)
+    updateHUD();
+    toast(`Combat started • Round ${State.round}, Turn ${State.turn}`);
   }
 
-  function getCost(actionId) {
+  function nextTurn() {
+    State.turn += 1;
+    // regen stamina a little each turn
+    State.cur.stamina = Math.min(STAMINA_MAX, State.cur.stamina + STAMINA_REGEN_PER_TURN);
+    // refresh AP
+    State.cur.apMax = computeAPPerRound({ AGI: State.cur.AGI, encumbrance: State.cur.encumbrance });
+    State.cur.ap = State.cur.apMax;
+    updateHUD();
+    toast(`Turn ${State.turn} • AP refreshed`);
+  }
+
+  function endCombat() {
+    toast('Combat ended.');
+    // keep numbers visible but don’t mutate further
+  }
+
+  function canSpend(apCost) {
+    return State.cur.ap >= apCost;
+  }
+
+  function spendAction(actionId) {
     const a = ACTIONS[actionId];
-    if (!a) return { ap: 0, stamina: 0 };
-    return { ap: a.ap ?? a.ap_cost ?? 0, stamina: a.stamina ?? a.stamina_cost ?? 0 };
+    if (!a) { toast(`Unknown action: ${actionId}`); return false; }
+
+    if (!canSpend(a.ap)) {
+      toast(`Not enough AP: need ${a.ap}, have ${State.cur.ap}`);
+      return false;
+    }
+
+    State.cur.ap -= a.ap;
+    State.cur.stamina = Math.max(STAMINA_MIN, State.cur.stamina - (a.stamina || 0));
+    updateHUD();
+    return true;
   }
 
-  function canAfford(actionId) {
-    const { ap, stamina } = getCost(actionId);
-    return state.apLeft >= ap && state.stamina >= stamina;
-  }
+  // ---- Button wiring ----
+  function wireButtons() {
+    const byId = (id) => $(id) || null;
 
-  function spend(actionId) {
-    const { ap, stamina } = getCost(actionId);
-    state.apLeft -= ap;
-    state.stamina = Math.max(0, state.stamina - stamina);
-    render();
-    window.dispatchEvent(new CustomEvent('ap:action', { detail: { actionId, cost: { ap, stamina } } }));
-  }
+    const btnStart = byId('btn-start-combat');
+    const btnNext  = byId('btn-next-turn');
+    const btnEnd   = byId('btn-end-combat');
 
-  function startTurn() {
-    // Regen 1 stamina at start of your turn (per rules JSON)
-    state.stamina = Math.min(state.staminaMax, state.stamina + 1);
-    recomputeApMax();
-    state.apLeft = state.apMax;
-    render();
-    window.dispatchEvent(new CustomEvent('ap:startTurn', { detail: { ...state } }));
-  }
+    const actMove    = byId('act-move');
+    const actAttack  = byId('act-attack');
+    const actAbility = byId('act-ability');
+    const actDefend  = byId('act-defend');
+    const actEnd     = byId('act-end');
 
-  function bindAction(selector, actionId) {
-    const btn = document.querySelector(selector);
-    if (!btn) return;
-    btn.addEventListener(
-      'click',
-      (e) => {
-        if (!canAfford(actionId)) {
-          flash(btn);
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          return;
+    if (btnStart && !btnStart.__ap_wired) {
+      btnStart.addEventListener('click', () => startCombat());
+      btnStart.__ap_wired = true;
+    }
+    if (btnNext && !btnNext.__ap_wired) {
+      btnNext.addEventListener('click', () => nextTurn());
+      btnNext.__ap_wired = true;
+    }
+    if (btnEnd && !btnEnd.__ap_wired) {
+      btnEnd.addEventListener('click', () => endCombat());
+      btnEnd.__ap_wired = true;
+    }
+
+    if (actMove && !actMove.__ap_wired) {
+      actMove.addEventListener('click', () => {
+        if (spendAction('move')) {
+          toast('Move: choose a destination on the map');
+          // (Milestone B/C will integrate real capture on canvas)
         }
-        // Spend before the app's own listeners run
-        spend(actionId);
-      },
-      { capture: true }
-    );
-  }
+      });
+      actMove.__ap_wired = true;
+    }
 
-  function makeHud() {
-    const panel = document.querySelector('.panel.combat .panel-body');
-    if (!panel) return;
-    const hud = document.createElement('div');
-    hud.id = 'ap-hud';
-    hud.className = 'ap-hud';
-    hud.innerHTML = `
-      <div class="ap-row"><strong>AP:</strong> <span id="ap-val">—</span></div>
-      <div class="ap-row"><strong>STA:</strong> <span id="sta-val">—</span></div>
-      <small class="muted">Round: ${state.roundSeconds}s • Costs: Move 1, Attack 3, Ability 2, Defend 1</small>
-    `;
-    panel.appendChild(hud);
-  }
+    if (actAttack && !actAttack.__ap_wired) {
+      actAttack.addEventListener('click', () => {
+        // For now, treat as melee. If you want ranged, swap id to 'ranged_attack'.
+        if (spendAction('melee_attack')) {
+          toast('Attack: click a target token');
+        }
+      });
+      actAttack.__ap_wired = true;
+    }
 
-  function hookTurnButtons() {
-    const startBtn = document.querySelector('#btn-start-combat');
-    const nextBtn  = document.querySelector('#btn-next-turn');
-    const endBtn   = document.querySelector('#act-end');
+    if (actAbility && !actAbility.__ap_wired) {
+      actAbility.addEventListener('click', () => {
+        if (spendAction('ability')) {
+          toast('Ability: select a target or area');
+        }
+      });
+      actAbility.__ap_wired = true;
+    }
 
-    if (startBtn) startBtn.addEventListener('click', () => setTimeout(startTurn, 0), { capture: true });
-    if (nextBtn)  nextBtn.addEventListener('click',  () => setTimeout(startTurn, 0), { capture: true });
-    if (endBtn)   endBtn.addEventListener('click',   () => setTimeout(startTurn, 0), { capture: true });
+    if (actDefend && !actDefend.__ap_wired) {
+      actDefend.addEventListener('click', () => {
+        if (spendAction('guard')) {
+          toast('Defend: guarding (reaction readied)');
+        }
+      });
+      actDefend.__ap_wired = true;
+    }
+
+    if (actEnd && !actEnd.__ap_wired) {
+      actEnd.addEventListener('click', () => nextTurn());
+      actEnd.__ap_wired = true;
+    }
   }
 
   function init() {
-    ensureStyles();
-    makeHud();
-    // Map your buttons to action IDs
-    bindAction('#act-move',    'move');
-    bindAction('#act-attack',  'melee_attack'); // change to 'ranged_attack' if you want
-    bindAction('#act-ability', 'ability');
-    bindAction('#act-defend',  'guard');
-
-    hookTurnButtons();
-
-    recomputeApMax();
-    state.apLeft = state.apMax;
-    render();
+    if (State.initialized) return;
+    ensureHUD();
+    updateHUD();
+    wireButtons();
+    State.initialized = true;
   }
 
-  return {
-    init,
-    state,
-    setActorStats({ AGI, encumbrance, staminaMax }) {
-      if (typeof AGI === 'number') state.AGI = AGI;
-      if (encumbrance) state.encumbrance = encumbrance;
-      if (typeof staminaMax === 'number') {
-        state.staminaMax = staminaMax;
-        state.stamina = Math.min(state.stamina, staminaMax);
-      }
-      recomputeApMax();
-      render();
+  // Kick off after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
+  // Expose a tiny debug handle if needed
+  window.CombatAP = {
+    get state() { return JSON.parse(JSON.stringify(State)); },
+    setStats({ AGI, encumbrance } = {}) {
+      if (Number.isFinite(AGI)) State.cur.AGI = AGI;
+      if (encumbrance) State.cur.encumbrance = encumbrance;
+      State.cur.apMax = computeAPPerRound({ AGI: State.cur.AGI, encumbrance: State.cur.encumbrance });
+      State.cur.ap = Math.min(State.cur.ap, State.cur.apMax);
+      updateHUD();
     },
+    reset() {
+      State.round = 0; State.turn = 0;
+      State.cur.apMax = 0; State.cur.ap = 0;
+      State.cur.stamina = STAMINA_MAX;
+      updateHUD();
+    }
   };
 })();
-
-window.CombatAP = CombatAP;
-document.addEventListener('DOMContentLoaded', () => CombatAP.init());
