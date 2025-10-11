@@ -175,7 +175,10 @@
   <!-- AP/Stamina overlay -->
   <script type="module" src="./js/combat_ap_patch.js"></script>
 
-  <!-- Dev-only helper: update “Connected” if server is healthy -->
+  <!-- Chat wiring (calls /api/chat) -->
+  <script type="module" src="./js/chat_wire.js"></script>
+
+  <!-- Dev-only: ping API -->
   <script type="module">
     (async () => {
       try {
@@ -194,5 +197,7 @@
   </footer>
 </body>
 </html>
+
+
 
 
