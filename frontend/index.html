@@ -173,11 +173,14 @@
   <!-- Your app -->
   <script type="module" src="./app.js"></script>
 
-  <!-- Turn order patch (must come BEFORE AP overlay so its capture guard runs first) -->
+  <!-- Turn order guard (must run before AP overlay) -->
   <script type="module" src="./js/turn_order_patch.js"></script>
 
   <!-- AP/Stamina overlay -->
   <script type="module" src="./js/combat_ap_patch.js"></script>
+
+  <!-- NEW: Attack resolution overlay -->
+  <script type="module" src="./js/combat_resolve_patch.js"></script>
 
   <!-- Chat wiring (calls /api/chat) -->
   <script type="module" src="./js/chat_wire.js"></script>
@@ -201,6 +204,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
