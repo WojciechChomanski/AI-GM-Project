@@ -12,7 +12,6 @@
       <div class="brand">
         <h1>Breath & Veil</h1>
         <small>v0.2 — HTML/JS (Turn-Based)</small>
-        <!-- Single, canonical debug link (dev-only) -->
         <a href="/debug/session.html" target="_blank" style="display:inline-block;margin-top:6px;">Session Debug</a>
       </div>
 
@@ -173,11 +172,11 @@
   <!-- Your app -->
   <script type="module" src="./app.js"></script>
 
-  <!-- Dev-only helper import + health check -->
-  <script type="module">
-    import { getSession, initSession, resetSession, resolveEvent } from './js/session_api.js';
+  <!-- AP/Stamina overlay -->
+  <script type="module" src="./js/combat_ap_patch.js"></script>
 
-    // basic health/connection indicator
+  <!-- Dev-only helper: update “Connected” if server is healthy -->
+  <script type="module">
     (async () => {
       try {
         const r = await fetch('/api/healthz');
@@ -186,11 +185,6 @@
         document.getElementById('api-status').textContent = 'offline';
       }
     })();
-
-    // Example: developer utility (keep commented unless you want it active)
-    // await initSession();
-    // await resolveEvent('evt_hold_the_cut_v0_6b', 'success', ['OBJ_MIN_INJURY']);
-    // const s = await getSession(); console.log('Session:', s);
   </script>
 
   <footer>
@@ -200,4 +194,5 @@
   </footer>
 </body>
 </html>
+
 
