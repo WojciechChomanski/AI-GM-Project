@@ -1,6 +1,5 @@
 // frontend/js/combat_resolve_patch.js
-// Minimal attack resolution overlay that doesn't modify your big app.js.
-// Flow: click "Attack" -> click the map -> we roll to-hit and damage and log to chat.
+// Attack flow that targets the nearest enemy token from BV.tokens, applies damage, and logs a result.
 
 (() => {
   const byId = (id) => document.getElementById(id);
@@ -9,11 +8,9 @@
   const attackBtn = byId('act-attack');
   const endBtn = byId('act-end');
 
-  // Global stash we can re-use without touching your big code
   window.BV = window.BV || {};
   const S = window.BV;
   S.hp = S.hp || {};
-  // Very simple defaults for a proof-of-concept; we’ll replace with real stats later
   S.rules = S.rules || { defaultHP: 12, ac: 12, dmgDie: 8, atkBonus: 2 };
 
   function log(html) {
@@ -26,73 +23,53 @@
   }
 
   function activeName() {
-    // We try to read the HUD label. Your HUD shows "Active: NAME" during combat.
     const t = byId('hud-char')?.textContent || '';
     const m = t.match(/Active:\s*([^|]+)/i);
     return (m ? m[1] : t || 'You').trim();
   }
 
-  function ensureChar(name) {
-    if (!S.hp[name]) S.hp[name] = S.rules.defaultHP;
+  function d(n) { return 1 + Math.floor(Math.random() * n); }
+
+  function canvasPointFromEvent(ev) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
   }
 
-  function d(n) {
-    return 1 + Math.floor(Math.random() * n);
-  }
-
-  function doAttack(attacker, target) {
-    ensureChar(attacker);
-    ensureChar(target);
-
+  function attackVs(targetToken, attacker) {
     const roll = d(20);
     const total = roll + S.rules.atkBonus;
     const hit = total >= S.rules.ac;
-
-    let out = `<b>${attacker}</b> attacks <b>${target}</b> — d20: <b>${roll}</b> + ${S.rules.atkBonus} = <b>${total}</b> vs AC ${S.rules.ac} → ${hit ? 'HIT' : 'MISS'}.`;
+    let out = `<b>${attacker}</b> attacks <b>${targetToken.name}</b> — d20: <b>${roll}</b> + ${S.rules.atkBonus} = <b>${total}</b> vs AC ${S.rules.ac} → ${hit ? 'HIT' : 'MISS'}.`;
 
     if (hit) {
-      const dmg = d(S.rules.dmgDie) + 2; // placeholder STR/DEX bonus
-      S.hp[target] -= dmg;
-      out += ` Damage: <b>${dmg}</b>. ${target} HP: ${Math.max(0, S.hp[target])}.`;
-      if (S.hp[target] <= 0) out += ` <i>${target} is down!</i>`;
+      const dmg = d(S.rules.dmgDie) + 2;
+      if (S.tokens?.applyDamage) S.tokens.applyDamage(targetToken.id, dmg);
+      out += ` Damage: <b>${dmg}</b>. ${targetToken.name} HP updated.`;
     }
-
     log(out);
   }
 
   let waitingForTarget = false;
 
-  // When you click Attack, we arm a one-shot target capture.
-  // Your AP overlay will still enforce AP/stamina — we only add narration.
-  attackBtn?.addEventListener(
-    'click',
-    () => {
-      waitingForTarget = true;
-      log('Select a target on the map (placeholder target will be used for now).');
-    },
-    true // capture so we arm early
-  );
+  attackBtn?.addEventListener('click', () => {
+    waitingForTarget = true;
+    log('Attack armed: click a target (nearest enemy token will be used).');
+  }, true);
 
-  // First click on the canvas after Attack performs the roll.
-  canvas?.addEventListener(
-    'click',
-    () => {
-      if (!waitingForTarget) return;
-      waitingForTarget = false;
+  canvas?.addEventListener('click', (ev) => {
+    if (!waitingForTarget) return;
+    waitingForTarget = false;
 
-      const me = activeName() || 'You';
-      const target = 'Target'; // placeholder until we integrate token selection
-      doAttack(me, target);
-    },
-    true
-  );
+    const pt = canvasPointFromEvent(ev);
+    const tgt = S.tokens?.getNearest?.(pt, { team: 'enemies', maxDist: 28 }) || null;
+    if (!tgt) {
+      log('No enemy token near the click. (Use “Spawn Enemy” first.)');
+      return;
+    }
+    const me = activeName() || 'You';
+    attackVs(tgt, me);
+  }, true);
 
-  // Optional: show a small divider on End Turn
-  endBtn?.addEventListener(
-    'click',
-    () => {
-      log('— End Turn —');
-    },
-    true
-  );
+  endBtn?.addEventListener('click', () => log('— End Turn —'), true);
 })();
+

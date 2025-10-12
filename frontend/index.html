@@ -44,7 +44,7 @@
         <header>Tools</header>
         <div class="panel-body">
           <label class="checkbox">
-            <input type="checkbox" id="chk-grid" checked /> Show Grid
+            <input type="checkbox" id="chk-grid" /> Show Grid
           </label>
           <label class="label-inline">Grid Size
             <input type="number" id="grid-size" min="16" max="256" step="4" value="64"/>
@@ -55,6 +55,9 @@
           </div>
           <div class="row">
             <button id="btn-save-mapstate" class="btn">Save Map State</button>
+          </div>
+          <div class="row">
+            <button id="btn-spawn-enemy" class="btn btn-ghost">Spawn Enemy</button>
           </div>
           <details class="hint">
             <summary>Shortcuts</summary>
@@ -118,7 +121,7 @@
       <header class="chat-header">
         <div>
           <h2>AI GM</h2>
-          <small>Connected: <span id="api-status">stub</span></small>
+          <small>Connected: <span id="api-status">ok</span></small>
         </div>
         <div class="row">
           <button id="btn-load-races" class="btn btn-ghost">Load races.json</button>
@@ -173,16 +176,19 @@
   <!-- Your app -->
   <script type="module" src="./app.js"></script>
 
-  <!-- Turn order guard (must run before AP overlay) -->
+  <!-- Turn order guard -->
   <script type="module" src="./js/turn_order_patch.js"></script>
+
+  <!-- Token overlay MUST be before resolve/AP so its API exists -->
+  <script type="module" src="./js/token_overlay_patch.js"></script>
 
   <!-- AP/Stamina overlay -->
   <script type="module" src="./js/combat_ap_patch.js"></script>
 
-  <!-- NEW: Attack resolution overlay -->
+  <!-- Attack resolution, now token-aware -->
   <script type="module" src="./js/combat_resolve_patch.js"></script>
 
-  <!-- Chat wiring (calls /api/chat) -->
+  <!-- Chat wiring -->
   <script type="module" src="./js/chat_wire.js"></script>
 
   <!-- Dev-only: ping API -->
@@ -204,6 +210,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
