@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>The Breath & The Veil — Tabletop UI (Turn-Based v0.2)</title>
+  <title>The Breath & The Veil — Tabletop UI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./styles.css" />
@@ -12,7 +12,7 @@
     <aside class="sidebar">
       <div class="brand">
         <h1>Breath & Veil</h1>
-        <small>v0.2 — HTML/JS (Turn-Based)</small>
+        <small>HTML/JS (Turn-Based)</small>
         <a href="/debug/session.html" target="_blank" style="display:inline-block;margin-top:6px;">Session Debug</a>
       </div>
 
@@ -55,9 +55,6 @@
           </div>
           <div class="row">
             <button id="btn-save-mapstate" class="btn">Save Map State</button>
-          </div>
-          <div class="row">
-            <button id="btn-spawn-enemy" class="btn btn-ghost">Spawn Enemy</button>
           </div>
           <details class="hint">
             <summary>Shortcuts</summary>
@@ -121,7 +118,7 @@
       <header class="chat-header">
         <div>
           <h2>AI GM</h2>
-          <small>Connected: <span id="api-status">ok</span></small>
+          <small>Connected: <span id="api-status">stub</span></small>
         </div>
         <div class="row">
           <button id="btn-load-races" class="btn btn-ghost">Load races.json</button>
@@ -136,59 +133,9 @@
     </aside>
   </div>
 
-  <!-- Modals -->
-  <dialog id="dlg-char">
-    <form method="dialog" class="dialog-card" id="char-form">
-      <h3>Character</h3>
-      <label>Name <input required id="char-name" /></label>
-      <label>Race
-        <select id="char-race">
-          <option>Human</option>
-          <option>Elf</option>
-          <option>Dwarf</option>
-          <option>Ogre</option>
-        </select>
-      </label>
-      <label>Class <input id="char-class" placeholder="Crusader Knight, Hollow Warden…"/></label>
-      <label>Notes <textarea id="char-notes" rows="3"></textarea></label>
-      <menu>
-        <button value="cancel" class="btn btn-ghost">Cancel</button>
-        <button value="default" class="btn">Save</button>
-      </menu>
-    </form>
-  </dialog>
-
-  <dialog id="dlg-map">
-    <form method="dialog" class="dialog-card" id="map-form">
-      <h3>Map</h3>
-      <label>Name <input required id="map-name" /></label>
-      <label>Grid Size (px) <input type="number" min="16" step="4" id="map-grid" value="64"/></label>
-      <label>Image <input type="file" id="map-image" accept="image/*" /></label>
-      <menu>
-        <button value="cancel" class="btn btn-ghost">Cancel</button>
-        <button value="default" class="btn">Create</button>
-      </menu>
-    </form>
-  </dialog>
-
-  <input type="file" id="file-open" hidden />
-
   <!-- Your app -->
   <script type="module" src="./app.js"></script>
-
-  <!-- Turn order guard -->
-  <script type="module" src="./js/turn_order_patch.js"></script>
-
-  <!-- Token overlay MUST be before resolve/AP so its API exists -->
-  <script type="module" src="./js/token_overlay_patch.js"></script>
-
-  <!-- AP/Stamina overlay -->
-  <script type="module" src="./js/combat_ap_patch.js"></script>
-
-  <!-- Attack resolution, now token-aware -->
-  <script type="module" src="./js/combat_resolve_patch.js"></script>
-
-  <!-- Chat wiring -->
+  <!-- Chat wiring (harmless to keep) -->
   <script type="module" src="./js/chat_wire.js"></script>
 
   <!-- Dev-only: ping API -->
@@ -210,6 +157,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
