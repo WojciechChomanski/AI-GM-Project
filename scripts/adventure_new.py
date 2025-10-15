@@ -51,7 +51,7 @@ eng = CombatEngine(rules)
 # ========= Safe I/O =========
 def safe_load_json(path: Path):
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8-sig") as f: # was 'utf-8'
             data = json.load(f)
             logging.debug(f"File content for {path}: {json.dumps(data, ensure_ascii=False, indent=2)[:2000]}")
             return data

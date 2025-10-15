@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "relic.ulf_kins_maul",
+    "version": "0.6b",
+    "title": "Ulf-Kin’s Maul",
+    "author": "project",
+    "license": "project-internal",
+    "last_updated_utc": "2025-10-14T00:00:00Z"
+  },
+  "item": {
+    "name": "Ulf-Kin’s Maul",
+    "type": "relic",
+    "weapon_class": "maul",
+    "handedness": "2H",
+    "durability": 120,
+    "weight": 18,
+    "requirements": {
+      "min_strength": 35,
+      "training_tag": "hammer_maul"
+    }
+  },
+  "identity": {
+    "origin": "Bone-ash core, bound in silence and grief.",
+    "bound_bias": "Echo-favored; mortal flesh is resisted unless overcharged."
+  },
+  "effects": {
+    "passive": {
+      "id": "ringing_fall",
+      "name": "Ringing Fall",
+      "triggers_on": "on_hit",
+      "intimidate_bonus": 2,
+      "will_check": {
+        "target": "nearby_units",
+        "tn": 40,
+        "on_fail_sanity_loss": 1
+      },
+      "description": "Each hit leaves a low, lingering ring; courage wavers, stone remembers."
+    },
+    "active": {
+      "id": "kin_crack",
+      "name": "Kin Crack",
+      "activation": "bonus_action",
+      "charges": {
+        "resource": "echoes_fed",
+        "required": 5,
+        "on_spend": 5
+      },
+      "next_hit": {
+        "bonus_dice": "2d6",
+        "armor_ignore_percent": 50,
+        "echo_damage_multiplier": 1.5
+      },
+      "sanity_check": {
+        "tn": 55,
+        "on_fail": "weapon_controls_bearer_for_1_round"
+      },
+      "description": "Feed echoes to overcharge the head; the maul may take your hands if your mind slips."
+    },
+    "ritual": {
+      "id": "speak_the_name",
+      "name": "Ritual Break",
+      "action": "free_out_of_combat",
+      "effect": "Silences the ring forever; removes intimidation and echo-bias. Loses uniqueness.",
+      "notes": "Say the true name aloud, once. The maul quiets and becomes a masterwork but mundane maul."
+    },
+    "progression": {
+      "id": "maul_memories",
+      "name": "Maul-Memories",
+      "kill_tally": {
+        "thresholds": [
+          {
+            "kills": 10,
+            "use": {
+              "action": "bonus_action",
+              "will_check_tn": 50,
+              "on_success": {
+                "strength_bonus": 1,
+                "duration_rounds": 3
+              },
+              "on_fail": {
+                "sanity_loss": 1
+              }
+            },
+            "description": "Play the runes back like a broken music box; pain fuels the body."
+          },
+          {
+            "kills": 50,
+            "state_change": "bonded",
+            "effect": "The haft runes creep under skin; cannot be disarmed by mundane means.",
+            "side_effect": "Vendors refuse routine work; requires relic-smith to alter."
+          }
+        ]
+      }
+    }
+  },
+  "combat_bias": {
+    "vs_echoes": {
+      "damage_multiplier": 1.25,
+      "notes": "Baseline bias even without Kin Crack."
+    },
+    "vs_mortals": {
+      "resist_on_normal_hits": true,
+      "notes": "Human flesh tends to bounce unless overcharged or on criticals."
+    }
+  },
+  "integration": {
+    "category": "relic",
+    "tags": [
+      "hammer",
+      "bone_ash",
+      "echo"
+    ],
+    "related_files": [
+      "rules/lore/dwarves.json"
+    ]
+  }
+}
