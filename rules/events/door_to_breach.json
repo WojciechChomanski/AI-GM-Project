@@ -1,0 +1,89 @@
+﻿{
+  "meta": {
+    "id": "evt_door_to_breach_v0_6b",
+    "title": "Trial: Door-to-Breach",
+    "scene_type": "micro_trial",
+    "version": "0.6b",
+    "author": "you",
+    "tags": ["trial", "stonewarden", "sapper"]
+  },
+  "event": {
+    "summary": "Time a breach charge under pressure; manage misfires and crowd control.",
+    "setup": {
+      "location": "Blackhall service gate (iron-bound oaken door, 1.2m x 2m).",
+      "enemy": [
+        { "type": "echo_skulkers", "count": 4 },
+        { "type": "echo_brute", "count": 1 }
+      ],
+      "terrain": {
+        "gate": { "material": "oaken_ironbound", "breach_threshold": 12 },
+        "workspace": "1.5m clear in front of the door",
+        "choke": "narrow approach, 2m"
+      },
+      "timer_rounds": 4
+    },
+    "objectives": [
+      { "id": "OBJ_SET_CHARGE", "text": "Seat & arm a breach charge by end of round 2.", "mandatory": true },
+      { "id": "OBJ_BREACH", "text": "Successfully breach by end of round 4.", "mandatory": true },
+      { "id": "OBJ_LIMIT_MISFIRE", "text": "No critical misfire results.", "mandatory": false }
+    ],
+    "mechanics": {
+      "core_checks": [
+        { "name": "Seat_Charge", "tn": 45, "notes": "Requires steady workspace (push enemies back 1m)." },
+        { "name": "Arm_Fuse", "tn": 40, "notes": "On fail, roll Misfire Table I." },
+        { "name": "Cover_Approach", "tn": 0, "notes": "Any control action that holds the 2m choke for 1 round." }
+      ],
+      "stances": {
+        "Sapper_Stance": {
+          "effects": { "control_bonus": 5, "mobility_penalty": 5 }
+        }
+      },
+      "misfires": {
+        "table_I": [
+          { "roll": "01-20", "result": "Fuse sputter — lose 1 action this round." },
+          { "roll": "21-60", "result": "Short fuse — timer -1 round (min 1)." },
+          { "roll": "61-85", "result": "Loose seat — breach threshold +3." },
+          { "roll": "86-00", "result": "Flashback — 1d6 fire to the sapper; spend 1 action to recover." }
+        ],
+        "table_II": [
+          { "roll": "01-50", "result": "Charge shifts — breach threshold +2." },
+          { "roll": "51-85", "result": "Wet powder — re-arm step required." },
+          { "roll": "86-00", "result": "Premature pop — partial breach (-3 threshold), knocks back 1m in 2m AOE." }
+        ]
+      },
+      "win_conditions": ["OBJ_SET_CHARGE", "OBJ_BREACH"],
+      "fail_states": [
+        "Timer expires before breach",
+        "Sapper reduced to 0 HP before breach completes"
+      ]
+    },
+    "rewards": {
+      "success": [
+        { "type": "item", "id": "fuse_mk2", "qty": 2 },
+        { "type": "currency", "silver": 25 }
+      ],
+      "bonus": [
+        {
+          "cond": "OBJ_LIMIT_MISFIRE",
+          "reward": { "type": "status", "id": "ansel_bench_time_credit_min", "value_min": 10 }
+        }
+      ],
+      "failure": [
+        { "type": "narrative", "text": "Gate holds; contract downgraded. +1 scene heat (Blackhall)." }
+      ]
+    }
+  },
+  "integration": {
+    "ui": {
+      "tips": [
+        "Keep workspace clear or checks suffer disadvantage.",
+        "Short fuse? Adjust timer and commit to crowd control."
+      ]
+    },
+    "engine_hooks": {
+      "flags": ["nonblocking_if_engine_has_no_support"]
+    }
+  }
+}
+
+
