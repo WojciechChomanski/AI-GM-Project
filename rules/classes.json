@@ -618,6 +618,14 @@
       "level_up_stats": { "strength": 3, "perception": 1 }
     }
   },
+  "meta": {
+    "id": "class_crusader_knight_v0_6b",
+    "kind": "class",
+    "name": "Crusader_Knight",
+    "label": "Crusader Knight",
+    "version": "0.6b",
+    "updated": "2025-10-14"
+  },
   "Crusader_Knight": {
     "description": "Male human-only heavy cavalry/infantry sanctified by the Breath. Bursting power, iron defense, long-term wear.",
     "lore": "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
@@ -678,6 +686,51 @@
         "abilities_gain": ["Divine_Surge", "Lance_Thrust", "Smite"],
         "gear_hint": ["full_plate", "warhorse"],
         "flaws_gain": ["Mortal_Coil"]
+      },
+      {
+        "tier": 5,
+        "name": "Templar Ascendant",
+        "requirements": { "battles_survived": 10, "noble_title": true, "vow_oath": "No Retreat" },
+        "abilities_gain": [],
+        "vow": {
+          "name": "No Retreat",
+          "trigger": { "when": "hp_below_pct", "value": 30, "and_enemy_alive": true },
+          "state": "locked_in",
+          "effects": {
+            "damage_taken_multiplier": 2.0,
+            "sanity_per_round": 5,
+            "ally_auras": { "willpower_bonus": 2, "endurance_bonus": 1, "radius_m": 6 },
+            "duration_rounds_max": 3
+          },
+          "reward_on_fulfill": {
+            "condition": "survive_full_duration_without_flee",
+            "miracle": {
+              "choose_one_random": [
+                { "id": "miracle_heal_small", "label": "Heal 1d8" },
+                { "id": "miracle_breath_burst", "label": "Breath Burst (AOE 1.5m, 2d6)" },
+                { "id": "miracle_veil_ward", "label": "Veil Ward (immune to curses 1 round)" }
+              ],
+              "uses": 1
+            },
+            "flavor": "Stone remembers. Faith answers. The Veil recoils."
+          },
+          "break_vow": {
+            "costs": {
+              "sanity_delta": -2,
+              "traits_add": ["Coward"],
+              "reputation_delta": { "faction": "Crusader_Order", "amount": -10 },
+              "tests_modifier": { "vs_fear_willpower": -5 }
+            },
+            "lore": "You ran. The Veil remembers."
+          }
+        },
+        "integration": {
+          "engine_hooks": {
+            "on_round_start": "check_vow_trigger",
+            "on_round_end": "apply_vow_tick_and_miracle",
+            "flags": ["nonblocking_if_engine_has_no_support"]
+          }
+        }
       }
     ],
     "abilities": {
@@ -705,7 +758,10 @@
       "Mortal_Coil": { "type": "attrition", "hp_max_permanent_per_10_battles": -10 }
     }
   },
-  "Veil_Sorceress": {
+  "integration": {
+  "api": { "rules_path": "rules/classes/crusader_knight.json" }
+  },
+"Veil_Sorceress": {
     "description": "A fragile but terrifying caster who draws on the Veil. Only human and elven women can wield this active magic. Power always exacts a cost: stamina, blood, or sanity (corruption).",
     "role": "Caster",
     "allowed_races": ["Human", "Elf"],
