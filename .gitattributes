@@ -1,15 +1,6 @@
-cd H:\Code\AI_GM_Project
-@"
 *.json text eol=lf
 *.js   text eol=lf
 *.ts   text eol=lf
 *.css  text eol=lf
 *.html text eol=lf
 *.ps1  text eol=crlf
-"@ | Set-Content -NoNewline .gitattributes
-
-git add .gitattributes
-git commit -m "chore: normalize line endings (.gitattributes)"
-git add --renormalize .
-git commit -m "chore: apply line-ending normalization"  # if there are changes
-git push
