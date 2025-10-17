@@ -1,8 +1,0 @@
-Set-Content .gitattributes @"
-*.json text eol=lf
-*.js   text eol=lf
-*.ts   text eol=lf
-*.css  text eol=lf
-*.html text eol=lf
-*.ps1  text eol=crlf
-"@
