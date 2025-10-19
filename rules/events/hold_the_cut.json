@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "id": "event.hold_the_cut",
+    "version": "0.6b",
+    "title": "Trial — Hold the Cut",
+    "author": "project",
+    "last_updated_utc": "2025-10-14T00:00:00Z"
+  },
+  "event": {
+    "name": "Hold the Cut",
+    "type": "trial",
+    "location": "Deep Holds — Anvil Path",
+    "objective": "Defend a narrow lane against three timed waves.",
+    "round_limit": 9,
+    "waves": [
+      { "rounds": [1,2,3], "enemies": [ { "id": "bandit", "count": 2 } ] },
+      { "rounds": [4,5,6], "enemies": [ { "id": "bandit", "count": 2 }, { "id": "cutpurse", "count": 1 } ] },
+      { "rounds": [7,8,9], "enemies": [ { "id": "bandit_leader", "count": 1 }, { "id": "bandit", "count": 1 } ] }
+    ],
+    "terrain_modifiers": {
+      "lane_width_m": 2,
+      "high_gravity": true,
+      "dwarf_toughness_bonus": 5,
+      "others_mobility_penalty": -5
+    },
+    "bonus_objectives": [
+      { "id": "no_pushback", "name": "Anvil Set", "desc": "No enemy crosses your rear line.", "reward_xp": 40 },
+      { "id": "no_misfire", "name": "Clean Hands", "desc": "No misfires on deployables.", "reward_xp": 35 }
+    ],
+    "rewards": {
+      "xp": 120,
+      "loot_table": [
+        { "item_id": "coil_holdfast", "chance_percent": 50 },
+        { "item_id": "breach_charge_mk1", "chance_percent": 30 }
+      ]
+    }
+  },
+  "integration": {
+    "category": "event",
+    "tags": ["trial","defense","stonewarden","deep_holds"],
+    "notes": "Mechanics are system-agnostic; your engine can map enemy ids to character sheets."
+  }
+}
