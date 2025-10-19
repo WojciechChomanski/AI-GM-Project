@@ -1,6 +1,16 @@
-*.json text eol=lf
-*.js   text eol=lf
-*.ts   text eol=lf
-*.css  text eol=lf
-*.html text eol=lf
-*.ps1  text eol=crlf
+# Normalize text by default (let Git handle end-of-line)
+* text=auto
+
+# Force LF for source & data
+*.json          text eol=lf
+*.js            text eol=lf
+*.ts            text eol=lf
+*.css           text eol=lf
+*.html          text eol=lf
+*.md            text eol=lf
+.editorconfig   text eol=lf
+.gitattributes  text eol=lf
+.gitignore      text eol=lf
+
+# Keep CRLF for PowerShell scripts
+*.ps1           text eol=crlf

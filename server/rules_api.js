@@ -1,68 +1,81 @@
 // server/rules_api.js
-// Read-only endpoints to serve JSON rule files from /rules/*
-// Safe: no combat/engine wiring changed.
-
-const fs = require('fs');
+const express = require('express');
 const path = require('path');
+const fs = require('fs/promises');
 
-module.exports = function rulesApi(app) {
-  const ROOT = path.resolve(__dirname, '..');
-  const RULES = path.join(ROOT, 'rules');
+const router = express.Router();
 
-  const ALLOWED_DIRS = new Set([
-    'lore', 'relics', 'vendors', 'events', 'characters', 'classes', 'items'
-  ]);
+// -------- helpers --------
+async function readJson(relPath) {
+  const full = path.join(process.cwd(), relPath.replace(/\\/g, '/'));
+  const txt = await fs.readFile(full, 'utf8');
+  const data = JSON.parse(txt);
+  return { full, data };
+}
 
-  function stripBOM(s) {
-    if (typeof s !== 'string') return s;
-    return s.replace(/^\uFEFF/, '');
+async function replyJson(res, relPath) {
+  try {
+    const { data } = await readJson(relPath);
+    return res.json({ ok: true, path: relPath, data });
+  } catch (err) {
+    return res.status(404).json({ ok: false, error: 'not found', path: relPath });
+  }
+}
+
+// -------- routes: events / lore / relics --------
+router.get('/rules/events/:id', async (req, res) => {
+  const id = String(req.params.id).toLowerCase();
+  return replyJson(res, `rules/events/${id}.json`);
+});
+
+router.get('/rules/lore/:id', async (req, res) => {
+  const id = String(req.params.id).toLowerCase();
+  return replyJson(res, `rules/lore/${id}.json`);
+});
+
+router.get('/rules/relics/:id', async (req, res) => {
+  const id = String(req.params.id).toLowerCase();
+  return replyJson(res, `rules/relics/${id}.json`);
+});
+
+// -------- routes: classes --------
+// 1) Prefer per-class shim at rules/classes/<id>.json
+// 2) Fallback: look inside rules/classes.json for a top-level key "Crusader_Knight"
+// 3) Fallback: look for an object at .class where .id or .name matches the id
+router.get('/rules/classes/:id', async (req, res) => {
+  const id = String(req.params.id).toLowerCase();
+
+  // Try shim first
+  try {
+    const { data } = await readJson(`rules/classes/${id}.json`);
+    return res.json({ ok: true, path: `rules/classes/${id}.json`, data });
+  } catch (_) {
+    // fall through
   }
 
-  function readJsonSafe(fp) {
-    const text = stripBOM(fs.readFileSync(fp, 'utf8'));
-    return JSON.parse(text);
-  }
+  // Try centralized classes.json
+  try {
+    const { data } = await readJson('rules/classes.json');
 
-  function safeJoin(dir, file) {
-    const base = path.join(RULES, dir);
-    const target = path.normalize(path.join(base, file));
-    if (!target.startsWith(base)) throw new Error('Path escape blocked');
-    return target;
-  }
-
-  // List simple index of available JSON files
-  app.get('/api/rules/index', (_req, res) => {
-    try {
-      const out = {};
-      for (const d of fs.readdirSync(RULES, { withFileTypes: true })) {
-        if (!d.isDirectory()) continue;
-        if (!ALLOWED_DIRS.has(d.name)) continue;
-        const dirPath = path.join(RULES, d.name);
-        const files = fs.readdirSync(dirPath)
-          .filter(f => f.toLowerCase().endsWith('.json'));
-        out[d.name] = files;
-      }
-      res.json({ ok: true, index: out });
-    } catch (e) {
-      res.status(500).json({ ok: false, error: String(e) });
+    // top-level (e.g., data.Crusader_Knight)
+    const direct = Object.keys(data).find(k => k.toLowerCase() === id);
+    if (direct) {
+      return res.json({ ok: true, path: 'rules/classes.json#' + direct, data: data[direct] });
     }
-  });
 
-  // Generic fetch: /api/rules/<dir>/<file(.json)>
-  app.get('/api/rules/:dir/:file', (req, res) => {
-    try {
-      const dir = String(req.params.dir || '').toLowerCase();
-      if (!ALLOWED_DIRS.has(dir)) {
-        return res.status(400).json({ ok: false, error: 'dir not allowed' });
-      }
-      let file = String(req.params.file || '');
-      if (!file.toLowerCase().endsWith('.json')) file += '.json';
-      const fp = safeJoin(dir, file);
-      if (!fs.existsSync(fp)) return res.status(404).json({ ok: false, error: 'not found' });
-      const data = readJsonSafe(fp);
-      res.json({ ok: true, path: `rules/${dir}/${file}`, data });
-    } catch (e) {
-      res.status(500).json({ ok: false, error: String(e) });
+    // or nested under "class"
+    if (
+      data.class &&
+      (String(data.class.id).toLowerCase() === id || String(data.class.name).toLowerCase() === id)
+    ) {
+      return res.json({ ok: true, path: 'rules/classes.json#class', data: data.class });
     }
-  });
-};
+
+    return res.status(404).json({ ok: false, error: 'not found', path: 'rules/classes.json' });
+  } catch (err) {
+    return res.status(404).json({ ok: false, error: 'not found', path: 'rules/classes.json' });
+  }
+});
+
+module.exports = router;
+
