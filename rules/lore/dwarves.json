@@ -1,158 +1,158 @@
 {
-  "meta": {
-    "id": "lore.dwarves.core",
-    "version": "0.6b",
-    "title": "Dwarves — Stone Vow & Deep Holds",
-    "author": "project",
-    "license": "project-internal",
-    "last_updated_utc": "2025-10-14T00:00:00Z"
-  },
-  "race": "Dwarf",
-  "mechanics": {
-    "stat_caps": {
-      "strength": 55,
-      "toughness": 60,
-      "endurance": 60
-    },
-    "base_modifiers": {
-      "veil_resistance": 10,
-      "carry_capacity_multiplier": 1.5,
-      "swim_sprint_climb_penalty": -10
-    },
-    "age_scaling": {
-      "per_years": 200,
-      "increase": {
-        "strength": 2,
-        "toughness": 2,
-        "endurance": 2
-      },
-      "respects_caps": true,
-      "max_total_increments": 999
-    },
-    "traits": {
-      "positive": [
-        {
-          "id": "bone_iron",
-          "name": "Bone-Iron",
-          "effects": {
-            "bleed_duration_multiplier": 0.8,
-            "knockdown_resist_bonus": 10
-          },
-          "description": "Dense skeleton and musculature; reduced bleed duration and improved stability."
-        },
-        {
-          "id": "anvil_stance",
-          "name": "Anvil Stance",
-          "effects": {
-            "brace_block_bonus": 15,
-            "step_cost_multiplier": 1.1
-          },
-          "description": "Set feet, take the hit: better bracing and blocking; slightly heavier step cost."
-        },
-        {
-          "id": "rune_sense",
-          "name": "Rune-Sense",
-          "effects": {
-            "detect_runic_objects": true,
-            "investigation_bonus": 5
-          },
-          "description": "Attunement to etched pattern; subtle awareness of runes and bound mediums."
-        }
-      ],
-      "negative": [
-        {
-          "id": "stiff_joints",
-          "name": "Stiff Joints",
-          "effects": {
-            "initiative_penalty": -5,
-            "sprint_accel_penalty": -10
-          },
-          "description": "Cold stone and old work leave their mark; a touch slower to start moving."
-        },
-        {
-          "id": "gravel_voice",
-          "name": "Gravel Voice",
-          "effects": {
-            "stealth_audio_penalty": -5,
-            "intimidation_bonus": 5
-          },
-          "description": "Voice like a quarry; less quiet, more commanding."
-        },
-        {
-          "id": "deepcall_dreams",
-          "name": "Deepcall Dreams",
-          "effects": {
-            "long_rest_sanity_check_tn": 40,
-            "sanity_loss_on_fail": 1
-          },
-          "description": "The stone hums in sleep; sometimes it answers."
-        }
-      ]
-    },
-    "runecraft": {
-      "allowed": "female_only",
-      "pipeline": [
-        "pattern",
-        "medium",
-        "binding"
-      ],
-      "definitions": {
-        "pattern": "The abstract geometry to be etched or inscribed.",
-        "medium": "The material substrate (plate, bone-ash, glass, vein-stone).",
-        "binding": "The final seating of intent; sets cost, risk, and channel."
-      },
-      "misfires": [
-        {
-          "code": "VA_SHARD_CRACK",
-          "severity": 2,
-          "effect": "summon_echo_minor",
-          "description": "A hairline crack births an echo that mimics recent sound; nuisance but dangerous in cramped halls."
-        },
-        {
-          "code": "MEDIUM_COLLAPSE",
-          "severity": 3,
-          "effect": "structure_check",
-          "description": "The medium fails; nearby structure must check integrity or collapse partially."
-        },
-        {
-          "code": "BINDING_BRAND",
-          "severity": 4,
-          "effect": "burn_scar_on_caster",
-          "description": "Binding rebounds and etches itself into skin; permanent scar and minor sanity test."
-        }
-      ]
-    },
-    "environment": {
-      "deep_holds": {
-        "dwarf_toughness_bonus": 5,
-        "others_mobility_penalty": -5,
-        "others_endurance_penalty": -5,
-        "notes": "Higher gravity cuts both ways; dwarves thrive, others tire."
-      }
-    }
-  },
-  "rituals_and_vows": [
-    "Stone Vow",
-    "Three Knocks",
-    "Hearth-Wells",
-    "Grief Mortar",
-    "Glass Coinage"
-  ],
-  "lore": {
-    "origins": "Craft of Adam, guard of Kha’in; bound to stone, not Veil.",
-    "aging": "Ageless in face; strength accrues with centuries, yet death by force remains.",
-    "politic": "Cold Peace with the elves since the Tide of Cracks; tribute and proxy cuts."
-  },
-  "integration": {
-    "category": "lore",
-    "tags": [
-      "dwarf",
-      "runecraft",
-      "stonewarden",
-      "deep_holds"
-    ],
-    "related_files": [
-      "rules/relics/ulf_kins_maul.json"
-    ]
-  }
+    "meta":  {
+                 "id":  "lore.dwarves.core",
+                 "version":  "0.6b",
+                 "title":  "Dwarves â€” Stone Vow \u0026 Deep Holds",
+                 "author":  "project",
+                 "license":  "project-internal",
+                 "last_updated_utc":  "2025-10-14T00:00:00Z"
+             },
+    "race":  "Dwarf",
+    "mechanics":  {
+                      "stat_caps":  {
+                                        "strength":  55,
+                                        "toughness":  60,
+                                        "endurance":  60
+                                    },
+                      "base_modifiers":  {
+                                             "veil_resistance":  10,
+                                             "carry_capacity_multiplier":  1.5,
+                                             "swim_sprint_climb_penalty":  -10
+                                         },
+                      "age_scaling":  {
+                                          "per_years":  200,
+                                          "increase":  {
+                                                           "strength":  2,
+                                                           "toughness":  2,
+                                                           "endurance":  2
+                                                       },
+                                          "respects_caps":  true,
+                                          "max_total_increments":  999
+                                      },
+                      "traits":  {
+                                     "positive":  [
+                                                      {
+                                                          "id":  "bone_iron",
+                                                          "name":  "Bone-Iron",
+                                                          "effects":  {
+                                                                          "bleed_duration_multiplier":  0.8,
+                                                                          "knockdown_resist_bonus":  10
+                                                                      },
+                                                          "description":  "Dense skeleton and musculature; reduced bleed duration and improved stability."
+                                                      },
+                                                      {
+                                                          "id":  "anvil_stance",
+                                                          "name":  "Anvil Stance",
+                                                          "effects":  {
+                                                                          "brace_block_bonus":  15,
+                                                                          "step_cost_multiplier":  1.1
+                                                                      },
+                                                          "description":  "Set feet, take the hit: better bracing and blocking; slightly heavier step cost."
+                                                      },
+                                                      {
+                                                          "id":  "rune_sense",
+                                                          "name":  "Rune-Sense",
+                                                          "effects":  {
+                                                                          "detect_runic_objects":  true,
+                                                                          "investigation_bonus":  5
+                                                                      },
+                                                          "description":  "Attunement to etched pattern; subtle awareness of runes and bound mediums."
+                                                      }
+                                                  ],
+                                     "negative":  [
+                                                      {
+                                                          "id":  "stiff_joints",
+                                                          "name":  "Stiff Joints",
+                                                          "effects":  {
+                                                                          "initiative_penalty":  -5,
+                                                                          "sprint_accel_penalty":  -10
+                                                                      },
+                                                          "description":  "Cold stone and old work leave their mark; a touch slower to start moving."
+                                                      },
+                                                      {
+                                                          "id":  "gravel_voice",
+                                                          "name":  "Gravel Voice",
+                                                          "effects":  {
+                                                                          "stealth_audio_penalty":  -5,
+                                                                          "intimidation_bonus":  5
+                                                                      },
+                                                          "description":  "Voice like a quarry; less quiet, more commanding."
+                                                      },
+                                                      {
+                                                          "id":  "deepcall_dreams",
+                                                          "name":  "Deepcall Dreams",
+                                                          "effects":  {
+                                                                          "long_rest_sanity_check_tn":  40,
+                                                                          "sanity_loss_on_fail":  1
+                                                                      },
+                                                          "description":  "The stone hums in sleep; sometimes it answers."
+                                                      }
+                                                  ]
+                                 },
+                      "runecraft":  {
+                                        "allowed":  "female_only",
+                                        "pipeline":  [
+                                                         "pattern",
+                                                         "medium",
+                                                         "binding"
+                                                     ],
+                                        "definitions":  {
+                                                            "pattern":  "The abstract geometry to be etched or inscribed.",
+                                                            "medium":  "The material substrate (plate, bone-ash, glass, vein-stone).",
+                                                            "binding":  "The final seating of intent; sets cost, risk, and channel."
+                                                        },
+                                        "misfires":  [
+                                                         {
+                                                             "code":  "VA_SHARD_CRACK",
+                                                             "severity":  2,
+                                                             "effect":  "summon_echo_minor",
+                                                             "description":  "A hairline crack births an echo that mimics recent sound; nuisance but dangerous in cramped halls."
+                                                         },
+                                                         {
+                                                             "code":  "MEDIUM_COLLAPSE",
+                                                             "severity":  3,
+                                                             "effect":  "structure_check",
+                                                             "description":  "The medium fails; nearby structure must check integrity or collapse partially."
+                                                         },
+                                                         {
+                                                             "code":  "BINDING_BRAND",
+                                                             "severity":  4,
+                                                             "effect":  "burn_scar_on_caster",
+                                                             "description":  "Binding rebounds and etches itself into skin; permanent scar and minor sanity test."
+                                                         }
+                                                     ]
+                                    },
+                      "environment":  {
+                                          "deep_holds":  {
+                                                             "dwarf_toughness_bonus":  5,
+                                                             "others_mobility_penalty":  -5,
+                                                             "others_endurance_penalty":  -5,
+                                                             "notes":  "Higher gravity cuts both ways; dwarves thrive, others tire."
+                                                         }
+                                      }
+                  },
+    "rituals_and_vows":  [
+                             "Stone Vow",
+                             "Three Knocks",
+                             "Hearth-Wells",
+                             "Grief Mortar",
+                             "Glass Coinage"
+                         ],
+    "lore":  {
+                 "origins":  "Craft of Adam, guard of Khaâ€™in; bound to stone, not Veil.",
+                 "aging":  "Ageless in face; strength accrues with centuries, yet death by force remains.",
+                 "politic":  "Cold Peace with the elves since the Tide of Cracks; tribute and proxy cuts."
+             },
+    "integration":  {
+                        "category":  "lore",
+                        "tags":  [
+                                     "dwarf",
+                                     "runecraft",
+                                     "stonewarden",
+                                     "deep_holds"
+                                 ],
+                        "related_files":  [
+                                              "rules/relics/ulf_kins_maul.json"
+                                          ]
+                    }
 }
