@@ -1,0 +1,31 @@
+{
+  "updated": "2025-09-30",
+  "items": [
+    {
+      "name": "Mira’s Pearl",
+      "type": "evidence",
+      "rarity": "unique",
+      "effects": [
+        "unlock_dialogue_paths",
+        "proof_of_crime"
+      ],
+      "hooks": [
+        "Confessors reward with sanctuary or writ",
+        "Quartermaster funds raids if convinced"
+      ]
+    },
+    {
+      "name": "Confessor Seal",
+      "type": "key_item",
+      "rarity": "rare",
+      "effects": [
+        "safe_conduct",
+        "ritual_access"
+      ],
+      "hooks": [
+        "Traded by Elara on fracture route victory",
+        "Allows entry to restricted chapels"
+      ]
+    }
+  ]
+}

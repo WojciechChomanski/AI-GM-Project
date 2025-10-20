@@ -1,0 +1,36 @@
+{
+  "version": "0.6d",
+  "vendor_id": "ansel_platewright_blackhall",
+  "notes": "Base list prices in cp; engine should apply quality/craft multipliers and then vendor modifiers (scarcity, reputation, Stonewarden affinity).",
+  "base_prices_cp": {
+    "plate_anvil_mk1": 7000,
+    "plate_mesh_mk1": 5000,
+    "plate_hybrid_mk1": 7500,
+    "ward_mesh_plate_remote": 4500,
+    "trigger_remote_pin": 2000,
+    "coil_wire_bundle_std": 750,
+    "spike_boot_set": 1200,
+    "face_shield_split_visor": 1200,
+    "gloves_plate_fit": 600,
+    "tool_ankle_winch": 900,
+    "tangle_line_pack": 1800,
+    "breach_rammer": 1200,
+    "fuse_runic_set": 1200,
+    "powder_pouch_small": 300,
+    "powder_pouch_large": 600,
+    "repeater_arbalest_mk1": 6500,
+    "repeater_mag_std_10": 300,
+    "repeater_mag_pen_8": 400,
+    "repeater_mag_scatter_6": 600,
+    "charge_breach_mk1": 3500,
+    "charge_shaped_mk1": 5600
+  },
+  "vendor_modifiers_default": {
+    "class_affinity_pct": { "Stonewarden": -10 },
+    "reputation_pct": 0,
+    "scarcity_pct": 0,
+    "restock_variance_pct": 10,
+    "round_to_nearest_cp": 10
+  }
+}
+

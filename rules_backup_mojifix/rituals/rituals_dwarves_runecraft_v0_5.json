@@ -1,0 +1,177 @@
+{
+  "version": "0.5",
+  "system": {
+    "name": "Dwarven Runecraft",
+    "overview": "Three steps: Pattern, Inscribe, Binding. Any natural roll 95 to 100 on a test triggers Misfire. Ward-Mesh active reduces misfire roll by 10, minimum 1.",
+    "steps": [
+      {
+        "id": "pattern",
+        "label": "Pattern",
+        "time_minutes": 2,
+        "components": ["keystone_chalk"],
+        "test": {
+          "type": "runecraft",
+          "tn": 50,
+          "modifiers": [
+            { "source": "trait:rune_sense", "target": "tn", "value": -5 },
+            { "source": "item:keystone_chalk", "target": "tn", "value": -5 },
+            { "source": "status:fatigued", "target": "tn", "value": 10 }
+          ]
+        }
+      },
+      {
+        "id": "inscribe",
+        "label": "Inscribe",
+        "time_minutes": 5,
+        "tools": ["burin_bone", "chisel_steel"],
+        "mediums": ["stone", "metal", "leather", "wood"],
+        "test": {
+          "type": "craft",
+          "tn": 55,
+          "modifiers": [
+            { "source": "tool:burin_bone", "target": "tn", "value": -5 },
+            { "source": "tool:chisel_steel", "target": "tn", "value": -5 },
+            { "source": "status:fatigued", "target": "tn", "value": 10 }
+          ]
+        }
+      },
+      {
+        "id": "binding",
+        "label": "Binding",
+        "time_minutes": 1,
+        "costs": ["binding_resin:1"],
+        "test": {
+          "type": "willpower",
+          "tn": 55,
+          "modifiers": [
+            { "source": "vow:stone_vow_kept", "target": "tn", "value": -5 },
+            { "source": "terrain:touching_stone", "target": "tn", "value": -5 },
+            { "source": "item:angel_bound_nail", "target": "tn", "value": -10 },
+            { "source": "status:fatigued", "target": "tn", "value": 10 }
+          ]
+        }
+      }
+    ],
+    "sustain": {
+      "upkeep": "Tap the Three Knocks daily",
+      "time_seconds": 10,
+      "missed_day_rule": "Each missed day adds 5 to the next misfire roll until upkeep is performed"
+    },
+    "misfire": {
+      "trigger_roll_min": 95,
+      "table": [
+        {
+          "roll_range": [95, 96],
+          "id": "echo_nibble",
+          "effect": "Nearest character gains 1 Stress and suffers -5 Perception for 10 minutes."
+        },
+        {
+          "roll_range": [97, 98],
+          "id": "rune_bleed",
+          "effect": "Crafter takes 1 damage ignoring armor. Non-dwarf must pass corruption check TN 45 or gain 1 Corruption."
+        },
+        {
+          "roll_range": [99, 99],
+          "id": "hairline_crack",
+          "effect": "If on structure, set delayed_crack tag; first heavy shock causes a fracture test at TN 50. If on gear, reduce durability by 1."
+        },
+        {
+          "roll_range": [100, 100],
+          "id": "anchor_slip",
+          "effect": "Crafter is knocked prone and Immobilized for 1 round. If inscribing footwear, wearer is stuck for 1 round."
+        }
+      ]
+    }
+  },
+  "runes": [
+    {
+      "id": "bind_light",
+      "name": "Bind-Light",
+      "glyph": "IL-3",
+      "pattern_hint": "Three short lines crossing a circle",
+      "mediums": ["stone", "metal", "leather"],
+      "components": ["keystone_chalk", "glass_dust"],
+      "tests": [
+        { "step": "pattern", "tn": 50 },
+        { "step": "inscribe", "tn": 55 },
+        { "step": "binding", "tn": 50 }
+      ],
+      "success": {
+        "effect": "Creates steady white work-light radius 6 meters",
+        "duration_minutes": 60,
+        "notes": "On leather, becomes a wearable charm; on stone or metal, fixed sconce"
+      },
+      "failure": { "effect": "Flicker; half radius 3 meters; duration 10 minutes" }
+    },
+    {
+      "id": "knot_stone",
+      "name": "Knot-Stone",
+      "glyph": "KS-1",
+      "pattern_hint": "Interlocked chevrons",
+      "mediums": ["stone", "mortar", "metal_brackets"],
+      "components": ["keystone_chalk", "binding_resin"],
+      "tests": [
+        { "step": "pattern", "tn": 50 },
+        { "step": "inscribe", "tn": 55 },
+        { "step": "binding", "tn": 55 }
+      ],
+      "success": {
+        "effect": "Reinforces seam or keystone. Collapse checks in a 3 meter span gain -10 TN",
+        "duration_days": 30,
+        "notes": "While a character is braced against the reinforced surface, they gain +1 Wound Threshold"
+      },
+      "failure": { "effect": "No reinforcement; next structural test gains +5 TN due to flawed seam" }
+    },
+    {
+      "id": "ward_mesh_field",
+      "name": "Ward-Mesh Field",
+      "glyph": "WM-2",
+      "pattern_hint": "Hash of short diagonals over a ring",
+      "mediums": ["stone", "metal", "portable_plate_iron"],
+      "components": ["keystone_chalk", "chain_sigil_iron"],
+      "tests": [
+        { "step": "pattern", "tn": 55 },
+        { "step": "inscribe", "tn": 55 },
+        { "step": "binding", "tn": 60 }
+      ],
+      "success": {
+        "effect": "Projects a field similar to Ward-Mesh Lantern, radius 3 meters, suppresses whisper auras and grants -10 TN to stealth against them",
+        "duration_minutes": 10,
+        "notes": "Multiple fields do not stack; the highest applies"
+      },
+      "failure": { "effect": "Sputter; field radius 1 meter; duration 2 minutes; next test within field at -5 TN" }
+    },
+    {
+      "id": "anchor_boots",
+      "name": "Anchor Boots",
+      "glyph": "AB-5",
+      "pattern_hint": "Double cross below a bar",
+      "mediums": ["leather", "metal"],
+      "components": ["keystone_chalk", "binding_resin"],
+      "tests": [
+        { "step": "pattern", "tn": 50 },
+        { "step": "inscribe", "tn": 55 },
+        { "step": "binding", "tn": 55 }
+      ],
+      "success": {
+        "effect": "Wearer gains advantage to resist shove and knockdown; as a 1 action toggle, become Immovable for 1 round",
+        "costs": ["While Immovable, apply -10 Mobility for that round"]
+      },
+      "failure": { "effect": "Sticking; first attempt to move next round is at -10 Mobility" }
+    },
+    {
+      "id": "unbinding_mark",
+      "name": "Unbinding Mark",
+      "glyph": "UM-0",
+      "pattern_hint": "Short chevron through a circle",
+      "mediums": ["any"],
+      "components": ["keystone_chalk"],
+      "tests": [
+        { "step": "pattern", "tn": 45 },
+        { "step": "binding", "tn": 50 }
+      ],
+      "success": { "effect": "Safely disables one visible rune of equal or lower TN" },
+      "failure": { "effect": "Backlash; perform a misfire roll with a +5 bonus to the roll" }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "version": "0.5",
+  "items": [
+    {
+      "id": "burin_bone",
+      "name": "Burin (Bone)",
+      "rarity": "common",
+      "effects": ["Tool for inscribing runes on leather and wood"],
+      "rules": ["Provides -5 TN on Inscribe when used on leather or wood"]
+    },
+    {
+      "id": "chisel_steel",
+      "name": "Chisel (Steel)",
+      "rarity": "common",
+      "effects": ["Tool for inscribing runes on stone and metal"],
+      "rules": ["Provides -5 TN on Inscribe when used on stone or metal"]
+    },
+    {
+      "id": "binding_resin",
+      "name": "Binding Resin",
+      "rarity": "common",
+      "effects": ["Consumed during Binding to stabilize a glyph"],
+      "uses": 3
+    },
+    {
+      "id": "glass_dust",
+      "name": "Glass Dust",
+      "rarity": "uncommon",
+      "effects": ["Improves light capture for Bind-Light"],
+      "rules": ["Provides improved glow quality for Bind-Light; cosmetic or GM may grant +5 minutes duration"]
+    },
+    {
+      "id": "portable_plate_iron",
+      "name": "Portable Rune Plate (Iron)",
+      "rarity": "uncommon",
+      "effects": ["Accepts runes for portable deployment"],
+      "notes": "Often used with Ward-Mesh Field to create mobile suppressors"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "tags": {
+    "CrusaderKnight": ["breath_bound","martial"],
+    "Confessor": ["breath_bound","support"],
+    "Judge": ["breath_bound","control"],
+    "Sorceress": ["veil_bound","caster"]
+  }
+}
+

@@ -1,0 +1,129 @@
+{
+  "item_set_id": "stonewarden_siege_kit_v0_6a",
+  "label": "Stonewarden Siege Kit v0.6a",
+  "items": [
+    {
+      "id": "repeater_arbalest",
+      "name": "Repeater Arbalest",
+      "type": "weapon_ranged",
+      "weight": 6.5,
+      "magazine": 6,
+      "ammo": "short_bolt",
+      "fire_modes": ["single", "burst2", "strafe3"],
+      "jam_rules": { "base": 0, "per_burst_after_round2": 5, "clear_action_cost": 1 },
+      "description": "Rack-lever 6-bolt arbalest for suppression fire."
+    },
+    {
+      "id": "tangle_line",
+      "name": "Tangle Line",
+      "type": "deployable",
+      "weight": 0.4,
+      "stack": 3,
+      "description": "Pre-coiled wire with boot-slam spikes. Deploy to create 1m difficult terrain for 1 round; then minor trip hazard remains."
+    },
+    {
+      "id": "breach_charge",
+      "name": "Breach Charge (Directed)",
+      "type": "explosive",
+      "weight": 1.2,
+      "stack": 2,
+      "structure_damage_dice": "2d10",
+      "cone": { "angle_deg": 60, "length_m": 2 },
+      "effects": { "shove_m": 1, "dust_cloud_rounds": 1 },
+      "misfire_table": {
+        "01-05": "dud",
+        "06-15": "low_yield_50pct",
+        "16-90": "normal",
+        "91-95": "overpressure_self_minus10_blunt",
+        "96-100": "shatter_add_shrapnel_1d6_1m"
+      },
+      "description": "Shaped charge for controlled wall/gate breaching. Loud."
+    },
+    {
+      "id": "shrapnel_can",
+      "name": "Shrapnel Can",
+      "type": "explosive",
+      "weight": 0.8,
+      "stack": 2,
+      "effects": { "radius_m": 2, "damage": "1d8_slash", "ignore_armor_if_unarmored": 3 },
+      "description": "Anti-personnel canister. Short-radius fragmentation."
+    },
+    {
+      "id": "firepot_naphtha",
+      "name": "Firepot (Naphtha)",
+      "type": "incendiary",
+      "weight": 0.6,
+      "stack": 2,
+      "effects": { "impact": "1d6_fire", "burn": "1d4_per_round_2r" },
+      "description": "Sticky fire; creates light and panic. Extinguish or suffer."
+    },
+    {
+      "id": "smoke_pot",
+      "name": "Smoke Pot",
+      "type": "utility",
+      "weight": 0.5,
+      "stack": 1,
+      "effects": { "radius_m": 3, "rounds": 2, "ranged_accuracy_through_pct": -15 },
+      "description": "Line-of-sight denial for repositioning."
+    },
+    {
+      "id": "resin_rivets",
+      "name": "Resin & Rivets",
+      "type": "tool",
+      "weight": 0.7,
+      "stack": 1,
+      "uses": 6,
+      "description": "Seal plates and keystones. Each Seal & Rivet consumes 1 use."
+    },
+    {
+      "id": "ward_mesh_plate",
+      "name": "Ward-Mesh Field Plate",
+      "type": "pre_inscribed_plate",
+      "weight": 1.0,
+      "stack": 1,
+      "effects": { "ally_radius_m": 2, "stealth_vs_echo_bonus": 5, "ambient_shrapnel_damage_mod": -2, "duration_min": 5 },
+      "remote_pin": true,
+      "description": "Runes pre-inscribed by female dwarves. Damps echo notice and shrapnel."
+    },
+    {
+      "id": "knot_stone_plate",
+      "name": "Knot-Stone Plate",
+      "type": "pre_inscribed_plate",
+      "weight": 1.5,
+      "stack": 1,
+      "effects": { "collapse_checks_TN_bonus": -10, "duration": "scene" },
+      "description": "Reinforces seams; hardens load paths."
+    },
+    {
+      "id": "sunder_plate",
+      "name": "Sunder Plate",
+      "type": "pre_inscribed_plate",
+      "weight": 1.2,
+      "stack": 1,
+      "effects": { "next_hit_durability_damage_bonus": 30, "armor_penetration_pct_bonus": 15 },
+      "description": "Marks a weak point for a decisive strike. Single-use."
+    },
+    {
+      "id": "keystone_brace",
+      "name": "Keystone Brace",
+      "type": "keystone",
+      "weight": 0.8,
+      "stack": 1,
+      "effects": { "load_capacity_pct_bonus": 15, "span_m": 2, "duration": "scene" },
+      "description": "Load-bearing pin for arches/doorways."
+    },
+    {
+      "id": "mute_line_chalk",
+      "name": "Mute-Line Chalk",
+      "type": "utility",
+      "weight": 0.1,
+      "stack": 2,
+      "effects": { "sound_damping_bonus": -10, "duration_min": 10, "length_m": 2 },
+      "description": "Sound-damping line for stealth against echoes. Not terrain control."
+    }
+  ],
+  "echo_attraction_rule": {
+    "base_pct_per_blast": 30,
+    "modifiers": { "per_extra_blast_this_round": 10, "per_active_mute_line": -10 }
+  }
+}

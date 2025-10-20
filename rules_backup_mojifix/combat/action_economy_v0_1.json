@@ -1,0 +1,38 @@
+﻿{
+  "version": "0.1",
+  "round_seconds": 6,
+  "ap_formula": {
+    "base_ap": 6,
+    "agility_bonus": "floor((AGI - 8) / 3)",
+    "endurance_penalty": "if CARRY_PENALTY then 1 else 0"
+  },
+  "stamina": {
+    "per_round_regen": 1,
+    "min_to_act": 0
+  },
+  "encumbrance": {
+    "light":  { "carry_ratio_max": 0.5, "ap_penalty": 0, "speed_penalty_pct": 0  },
+    "medium": { "carry_ratio_max": 0.8, "ap_penalty": 1, "speed_penalty_pct": 10 },
+    "heavy":  { "carry_ratio_max": 1.0, "ap_penalty": 2, "speed_penalty_pct": 25 }
+  },
+  "actions": [
+    { "id": "move",          "ap_cost": 1, "stamina_cost": 0, "meta": { "distance_per_ap": 5 } },
+    { "id": "melee_attack",  "ap_cost": 3, "stamina_cost": 1 },
+    { "id": "ranged_attack", "ap_cost": 3, "stamina_cost": 1 },
+    { "id": "reload",        "ap_cost": 2, "stamina_cost": 0 },
+    { "id": "guard",         "ap_cost": 1, "stamina_cost": 0, "meta": { "grants_reaction": true } },
+    { "id": "use_item",      "ap_cost": 2, "stamina_cost": 0, "examples": ["drink_potion", "throw_grenade"] },
+    { "id": "first_aid",     "ap_cost": 4, "stamina_cost": 1 },
+    { "id": "ability",       "ap_cost": 2, "stamina_cost": 1, "meta": { "scales": true } },
+    { "id": "interact",      "ap_cost": 1, "stamina_cost": 0, "examples": ["open_door", "pick_up"] }
+  ],
+  "reactions": [
+    { "id": "opportunity_attack", "trigger": "enemy_leaves_reach", "per_round": 1 }
+  ],
+  "notes": [
+    "Round length is 6s. Base AP = 6.",
+    "AGI increases AP modestly; encumbrance can reduce AP.",
+    "Use stamina as a soft limit against repeating heavy actions.",
+    "Tune numbers as we playtest."
+  ]
+}

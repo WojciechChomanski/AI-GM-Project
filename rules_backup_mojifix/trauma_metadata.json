@@ -1,0 +1,67 @@
+{
+  "general_rules": {
+    "trauma_interference_chance": 0.25,
+    "max_active_traumas": 3,
+    "trauma_severity_scale": {
+      "1": "Mild",
+      "2": "Moderate",
+      "3": "Severe",
+      "4": "Critical"
+    },
+    "interference_types": [
+      "paranoia_phrase",
+      "emotional_outburst",
+      "fearful_retreat"
+    ]
+  },
+  "trauma_management": {
+    "healing_methods": [
+      {
+        "method": "counseling",
+        "effectiveness": 0.5,
+        "description": "Professional counseling to help process trauma."
+      },
+      {
+        "method": "meditation",
+        "effectiveness": 0.3,
+        "description": "Meditation and mindfulness exercises to reduce anxiety."
+      },
+      {
+        "method": "exposure_therapy",
+        "effectiveness": 0.4,
+        "description": "Gradual exposure to feared stimuli in a controlled environment."
+      }
+    ],
+    "trauma_recovery_time": {
+      "1": "1 week",
+      "2": "2 weeks",
+      "3": "1 month",
+      "4": "3 months"
+    },
+    "trauma_prevention_tips": [
+      "Encourage open communication about fears and experiences.",
+      "Create a supportive environment for discussing traumas.",
+      "Avoid triggering situations when possible.",
+      "Provide reassurance and understanding during trauma episodes.",
+      "Educate about trauma and its effects on behavior."
+    ]
+  },
+  "trauma_statistics": {
+    "total_traumas": 3,
+    "active_traumas": 3,
+    "trauma_distribution": {
+      "wojtek": 1,
+      "vyrda_the_hollow": 1,
+      "Bandit Leader": 1
+    },
+    "most_common_trauma": "fire_phobia",
+    "least_common_trauma": "betrayal_flashbacks",
+    "average_severity": 2.33,
+    "trauma_severity_distribution": {
+      "1": 0,
+      "2": 2,
+      "3": 1,
+      "4": 0
+    }
+  }
+}
