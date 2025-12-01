@@ -27,8 +27,9 @@
   },
   "homepage": "https://github.com/WojciechChomanski/AI-GM-Project#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "openai": "^6.3.0"
+    "openai": "^6.7.0"
   }
 }

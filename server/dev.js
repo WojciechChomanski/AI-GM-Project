@@ -1,31 +1,71 @@
-// server/dev.js  — minimal, mounts /api (rules) and /api/engine (engine)
-require('dotenv').config();
-const path = require('path');
-const express = require('express');
+// server/dev.js (full updated file - copy-paste this into your server/dev.js to fix the route error)
+require("dotenv").config();
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "..", "frontend"), { index: 'index.html' }));
 
-// Health
-app.get('/api/healthz', (_req, res) => res.json({ ok: true }));
+// Health check
+app.get("/api/healthz", (req, res) => {
+  res.json({
+    ok: true,
+    mode: process.env.OPENAI_API_KEY ? "openai" : "stub",
+    uptime_s: Math.round(process.uptime()),
+  });
+});
 
-// Routers (must exist: server/rules_api.js and server/engine_bridge.js exporting an Express.Router)
-const rulesApi = require('./rules_api');         // defines routes starting with '/rules/...'
-const engineBridge = require('./engine_bridge'); // defines routes starting with '/ping', '/start', etc.
+// Serve rules files
+app.get("/api/rules/:file", (req, res) => {
+  const file = req.params.file;
+  const filePath = path.join(__dirname, "..", "rules", file);
+  
+  if (!filePath.startsWith(path.join(__dirname, "..", "rules"))) {
+    return res.status(403).send("Forbidden");
+  }
 
-// Mount routers
-app.use('/api', rulesApi);          // yields: /api/rules/...
-app.use('/api/engine', engineBridge); // yields: /api/engine/ping, /api/engine/start, ...
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.warn(`[404] /api/rules/${file} — file not found`);
+      return res.status(404).send("File not found");
+    }
+    res.sendFile(filePath);
+  });
+});
 
-// Static (optional)
-app.use('/', express.static(path.join(process.cwd())));
+// Engine bridge stub
+app.post("/api/engine/start", (req, res) => {
+  res.json({started: true});
+});
+app.get("/api/engine/log", (req, res) => {
+  res.send("");
+});
 
-// Start
-const PORT = Number(process.env.PORT || 3000);
+// Chat stub (expand later)
+app.post("/api/chat", (req, res) => {
+  const {message} = req.body;
+  res.json({ok: true, reply: `Stub: "${message}"`});
+});
+
+// SPA fallback: serve index.html for all non-API routes
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api/')) {
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+  } else {
+    next(); // pass to 404 handler
+  }
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Dev server on http://localhost:${PORT}`);
-  console.log(`Root: ${process.cwd()}`);
-  console.log('Mounted: /api (rules), /api/engine (engine)');
+  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Serving frontend from: ${path.join(__dirname, "..", "frontend")}`);
+  console.log(`Serving rules from: ${path.join(__dirname, "..", "rules")}`);
 });
 
 

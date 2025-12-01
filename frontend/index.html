@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>The Breath & The Veil — Tabletop UI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://localhost:3000; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -133,31 +134,83 @@
     </aside>
   </div>
 
+  <!-- Hidden file input -->
+  <input type="file" id="file-open" style="display:none" />
+
+  <!-- Character Dialog -->
+  <dialog id="dlg-char" style="background:#1a1f2d; color:#e7eaf0; border:1px solid #2a344a; border-radius:12px; padding:16px; width:420px;">
+    <form id="char-form" style="display:grid; gap:10px;">
+      <h3 style="margin:0;">Create Character</h3>
+      <label style="display:flex; flex-direction:column; gap:4px;">
+        Name: <input id="char-name" required style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;" />
+      </label>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <label style="display:flex; flex-direction:column; gap:4px;">
+          Race: 
+          <select id="char-race" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;">
+            <option>Human</option>
+            <option>Dwarf</option>
+            <option>Elf</option>
+            <option>Ogre</option>
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px;">
+          Gender: 
+          <select id="char-gender" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </label>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <label style="display:flex; flex-direction:column; gap:4px;">
+          Class: 
+          <select id="char-class" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;">
+            <!-- Filled by JS -->
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px;">
+          Orientation: 
+          <select id="char-orientation" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;">
+            <option>Straight</option>
+            <option>Gay</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:flex; flex-direction:column; gap:4px;">
+        Notes: <textarea id="char-notes" rows="2" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0; resize:vertical;"></textarea>
+      </label>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <button type="submit" style="padding:8px 16px; border-radius:8px; border:none; background:#22c55e; color:white; cursor:pointer;">Save</button>
+        <button type="button" onclick="document.getElementById('dlg-char').close()" style="padding:8px 16px; border-radius:8px; border:1px solid #6b7280; background:#1f2937; color:#e7eaf0; cursor:pointer;">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Map Dialog -->
+  <dialog id="dlg-map" style="background:#1a1f2d; color:#e7eaf0; border:1px solid #2a344a; border-radius:12px; padding:16px; width:420px;">
+    <form id="map-form" style="display:grid; gap:10px;">
+      <h3 style="margin:0;">Create Map</h3>
+      <label style="display:flex; flex-direction:column; gap:4px;">
+        Name: <input id="map-name" required style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;" />
+      </label>
+      <label style="display:flex; flex-direction:column; gap:4px;">
+        Grid Size: <input id="map-grid" type="number" min="16" value="64" style="padding:8px; border-radius:8px; border:1px solid #3a4562; background:#111521; color:#e7eaf0;" />
+      </label>
+      <label style="display:flex; flex-direction:column; gap:4px;">
+        Image: <input id="map-image" type="file" accept="image/*" style="padding:8px;" />
+      </label>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <button type="submit" style="padding:8px 16px; border-radius:8px; border:none; background:#22c55e; color:white; cursor:pointer;">Save</button>
+        <button type="button" onclick="document.getElementById('dlg-map').close()" style="padding:8px 16px; border-radius:8px; border:1px solid #6b7280; background:#1f2937; color:#e7eaf0; cursor:pointer;">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
   <!-- Your app -->
-  <script type="module" src="./app.js"></script>
-  <!-- Chat wiring (harmless to keep) -->
-  <script type="module" src="./js/chat_wire.js"></script>
-
-  <!-- Dev-only: ping API -->
-  <script type="module">
-    (async () => {
-      try {
-        const r = await fetch('/api/healthz');
-        if (r.ok) document.getElementById('api-status').textContent = 'ok';
-      } catch {
-        document.getElementById('api-status').textContent = 'offline';
-      }
-    })();
-  </script>
-
-  <footer>
-    <p style="margin-top:12px">
-      <a href="/debug/session.html" target="_blank">Open Session Debug Panel</a>
-    </p>
-  </footer>
+  <script src="./app.js"></script>
 </body>
 </html>
-
 
 
 
