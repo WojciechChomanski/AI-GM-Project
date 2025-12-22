@@ -33,7 +33,7 @@ class Combatant:
         self.weapon_equipped = data["weapon_equipped"]
         self.weapon = data["weapon"]
         self.armor = data["armor"]
-        self.abilities = data["abilities"]
+        self.abilities = data.get("abilities", {})  # Make optional with default {}
         self.skills = data["skills"]
         self.strength = data.get("strength", 10)
         self.dexterity = data.get("dexterity", 10)
@@ -209,21 +209,6 @@ def combat_round(player: Combatant, enemies: List[Combatant], round_num: int):
     if all(e.hp <= 0 for e in enemies):
         print("🏆 Victory! Enemies defeated.")
 
-# Example usage
-armors = load_json("rules/armors.json")
-player_data = load_json("rules/characters/Torvald.json")
-player = Combatant(player_data)
-equip_armor(player, armors)
-enemy_data = load_json("rules/characters/bandit_leader.json")
-enemy = Combatant(enemy_data)
-equip_armor(enemy, armors)
-enemies = [enemy]
-
-round_num = 1
-while player.hp > 0 and any(e.hp > 0 for e in enemies):
-    combat_round(player, enemies, round_num)
-    round_num += 1
-
 # For frontend: expose via API (e.g., FastAPI endpoint)
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -247,14 +232,14 @@ class CombatEngine:
         if isinstance(attacker, dict):
             attacker = Combatant(attacker)
             try:
-                armors = load_json("rules/armors.json")
+                armors = load_json("../rules/armors.json")
             except Exception:
                 armors = {}
             equip_armor(attacker, armors)
         if isinstance(defender, dict):
             defender = Combatant(defender)
             try:
-                armors = load_json("rules/armors.json")
+                armors = load_json("../rules/armors.json")
             except Exception:
                 armors = {}
             equip_armor(defender, armors)
