@@ -646,33 +646,39 @@ async function handlePendingActionPointer(world){
   }
   combat.pending=null; draw(); saveCombatState();
 }
-async function resolveAttack(attId, tgtId){
-  const A = combat.actors[attId], T = combat.actors[tgtId];
-  if(!A||!T) return;
-  const attackerTok = view.tokens.find(t=>t.id===attId);
-  const targetTok = view.tokens.find(t=>t.id===tgtId);
-  const dist = Math.hypot(attackerTok.x - targetTok.x, attackerTok.y - targetTok.y);
-  const inRange = dist <= (view.grid.size * 1.25);
-  if(!inRange){ toast('Out of melee range.'); return; }
-  const roll = d20();
-  const weaponSkill = A.str;
-  const atk = roll + mod(weaponSkill) + mod(A.agi) - A.stress - A.pain;
-  const def = 10 + mod(T.agi) + (T.defend?2:0);
-  console.log('Attack Debug:', {attId, tgtId, roll, weaponSkill, agiMod: mod(A.agi), stress: A.stress, pain: A.pain, atk, def});
-  toast(`⚔️ ${A.name} rolls ${roll} + ${mod(weaponSkill)} (Weapon) + ${mod(A.agi)} (Agi) - ${A.stress} (Stress) - ${A.pain} (Pain) = ${atk} vs ${def}!`);
-  if(roll===20){
-    const dmg = Math.max(0, rollDie(8) + mod(A.str) + 4 - T.armor);
-    T.hp -= dmg;
-    toast(`${A.name} CRITS ${T.name} for ${dmg}!`);
-  } else if(atk >= def){
-    const dmg = Math.max(0, rollDie(8) + mod(A.str) - T.armor);
-    T.hp -= dmg;
-    toast(`${A.name} hits ${T.name} for ${dmg}!`);
-  } else {
-    toast(`${A.name} misses ${T.name}.`);
+async function resolveAttack(attId, tgtId) {
+  const A = combat.actors[attId];
+  const T = combat.actors[tgtId];
+  if (!A || !T) return toast('Missing actor');
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000/combat/attack', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attacker: A, defender: T, weapon_damage: 14 }) // 14 = greatsword base; adjust per weapon later
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const result = await res.json();
+
+    // Update defender
+    T.hp = result.defender_hp;
+    T.pain = result.defender_pain;
+
+    // Cinematic log with race/class flavor
+    const raceFlavor = T.race === 'Ogre' ? 'massive frame trembles' : T.race === 'Elf' ? 'grace falters' : 'blood flows';
+    const classFlavor = T.class && T.class.includes('Crusader') ? 'holy light dims' : '';
+    if (result.hit) {
+      toast(`⚔️ ${A.name} (${A.race} ${A.class || ''}) rolls ${result.attack_roll} + ${A.weapon_skill || 0} (WS) + ${Math.floor((A.dexterity || 0)/10)} (Dex) = ${result.atk_total} vs ${result.def_total} (${result.def_type})! Deals ${result.damage} (${result.absorbed} absorbed). ${raceFlavor} ${classFlavor}`);
+    } else {
+      toast(`❌ ${A.name} misses ${T.name} (${result.def_type})!`);
+    }
+  } catch (err) {
+    toast(`Backend error: ${err.message}`);
+    console.error(err);
   }
-  postDamageCheck(tgtId);
-  renderCombat(); draw();
+
+  renderCombat();
+  draw();
 }
 async function resolveAbility(attId, tgtId){
   const A = combat.actors[attId], T = combat.actors[tgtId];
