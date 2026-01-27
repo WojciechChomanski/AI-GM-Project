@@ -1,7 +1,7 @@
 /* =========================================================================
    The Breath & The Veil — Minimal Frontend (Turn-Based v1.1 — Debugged)
    ========================================================================= */
-const API_BASE_URL = ""; // Relative fetches
+const API_BASE_URL = "http://127.0.0.1:8000"; // Backend URL
 const STORAGE = {
   chars: 'btv.characters',
   maps: 'btv.maps',
