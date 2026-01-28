@@ -5,10 +5,21 @@ import os
 from typing import List, Tuple, Dict
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.middleware.cors import CORSMiddleware
 import dotenv
 
 dotenv.load_dotenv()
 app = FastAPI()
+
+# CORS middleware to allow frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 security = HTTPBasic()
 
 USERNAME = os.getenv("API_USERNAME", "admin")
@@ -18,6 +29,18 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     if credentials.username != USERNAME or credentials.password != PASSWORD:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return credentials.username
+
+# Reliable path to rules folder
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RULES_DIR = os.path.join(BASE_DIR, "..", "rules")
+
+def load_json(file_path):
+    full_path = os.path.join(RULES_DIR, file_path)
+    logging.debug(f"File content for {full_path}: {open(full_path).read()}")
+    with open(full_path, "r") as f:
+        data = json.load(f)
+    logging.debug(f"Loaded from {full_path}")
+    return data
 
 class Combatant:
     def __init__(self, data):
@@ -41,13 +64,6 @@ class Combatant:
         self.pain = 0
         self.stress = 0
         self.armor_specs = []  # Resolved armor pieces
-
-def load_json(file_path):
-    logging.debug(f"File content for {file_path}: {open(file_path).read()}")
-    with open(file_path, "r") as f:
-        data = json.load(f)
-    logging.debug(f"Loaded from {file_path}")
-    return data
 
 def resolve_armor_spec(armors_dict, tier: str, race: str | None = None):
     tier_data = armors_dict.get(tier)
@@ -161,7 +177,7 @@ def combat_round(player: Combatant, enemies: List[Combatant], round_num: int):
 
     # Defender roll with stance modifier
     def_roll = d100()
-    def_type = random.choice(["Parry", "Block", "Dodge"])
+    def_type = random.choice(["Parry", "Block", "Dodge"])  # Fixed typo from "BlockBurn"
     def_mod = (target.dexterity // 10) - target.stress - target.pain
     def_mod += {"OFFENSIVE": -10, "NEUTRAL": 0, "DEFENSIVE": 10}.get(stance, 0)
     def_score = def_roll + def_mod
@@ -209,22 +225,20 @@ def combat_round(player: Combatant, enemies: List[Combatant], round_num: int):
     if all(e.hp <= 0 for e in enemies):
         print("🏆 Victory! Enemies defeated.")
 
-# For frontend: expose via API (e.g., FastAPI endpoint)
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import dotenv
+# Example usage
+armors = load_json("armors.json")
+player_data = load_json("characters/Torvald.json")
+player = Combatant(player_data)
+equip_armor(player, armors)
+enemy_data = load_json("characters/bandit_leader.json")
+enemy = Combatant(enemy_data)
+equip_armor(enemy, armors)
+enemies = [enemy]
 
-dotenv.load_dotenv()
-app = FastAPI()
-security = HTTPBasic()
-
-USERNAME = os.getenv("API_USERNAME", "admin")
-PASSWORD = os.getenv("API_PASSWORD", "secret")
-
-def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
-    if credentials.username != USERNAME or credentials.password != PASSWORD:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    return credentials.username
+round_num = 1
+while player.hp > 0 and any(e.hp > 0 for e in enemies):
+    combat_round(player, enemies, round_num)
+    round_num += 1
 
 class CombatEngine:
     def attack_roll(self, attacker, defender, weapon_damage):
@@ -232,14 +246,14 @@ class CombatEngine:
         if isinstance(attacker, dict):
             attacker = Combatant(attacker)
             try:
-                armors = load_json("../rules/armors.json")
+                armors = load_json("armors.json")
             except Exception:
                 armors = {}
             equip_armor(attacker, armors)
         if isinstance(defender, dict):
             defender = Combatant(defender)
             try:
-                armors = load_json("../rules/armors.json")
+                armors = load_json("armors.json")
             except Exception:
                 armors = {}
             equip_armor(defender, armors)
@@ -282,4 +296,4 @@ engine = CombatEngine()
 
 @app.post("/combat/attack")
 def api_attack_roll(data: dict, username: str = Depends(verify_credentials)):
-    return engine.attack_roll(data['attacker'], data['defender'], data['weapon_damage'])
+    return engine.attack_roll(data['attacker'], data['defender'], data.get('weapon_damage', 14))

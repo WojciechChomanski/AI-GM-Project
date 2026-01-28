@@ -1,4 +1,3 @@
-// server/dev.js (full updated file - copy-paste this into your server/dev.js to fix the route error)
 require("dotenv").config();
 const path = require("path");
 const express = require("express");
@@ -7,9 +6,21 @@ const fs = require("fs");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "frontend"), { index: 'index.html' }));
+
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:8000; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+  );
+  next();
+});
 
 // Health check
 app.get("/api/healthz", (req, res) => {
@@ -38,26 +49,12 @@ app.get("/api/rules/:file", (req, res) => {
   });
 });
 
-// Engine bridge stub
-app.post("/api/engine/start", (req, res) => {
-  res.json({started: true});
-});
-app.get("/api/engine/log", (req, res) => {
-  res.send("");
-});
-
-// Chat stub (expand later)
-app.post("/api/chat", (req, res) => {
-  const {message} = req.body;
-  res.json({ok: true, reply: `Stub: "${message}"`});
-});
-
-// SPA fallback: serve index.html for all non-API routes
-app.use((req, res, next) => {
+// SPA fallback
+app.get('*', (req, res) => {
   if (!req.url.startsWith('/api/')) {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
   } else {
-    next(); // pass to 404 handler
+    res.status(404).send("Not found");
   }
 });
 
