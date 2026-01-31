@@ -1,0 +1,59 @@
+{
+      "Ogre_Stormbreaker":  {
+                              "description":  "Siege specialist destroying defenses in a crumbling world.",
+                              "lore":  "Stormbreakers breach Beastmen strongholds in Iron Wastes, their rage a beacon for Havoc Warriors.",
+                              "stats":  {
+                                            "strength_modifier":  5,
+                                            "perception_modifier":  2,
+                                            "charisma_modifier":  -2
+                                        },
+                              "restrictions":  {
+                                                   "gender":  "Male",
+                                                   "race":  "Ogre"
+                                               },
+                              "abilities":  {
+                                                "passive":  {
+                                                                "armor_crusher":  {
+                                                                                      "level":  1,
+                                                                                      "type":  "passive",
+                                                                                      "description":  "Boost penetration/durability damage (+20%), ignore armor on throws."
+                                                                                  }
+                                                            },
+                                                "active":  {
+                                                               "shatter_throw":  {
+                                                                                     "level":  3,
+                                                                                     "type":  "active",
+                                                                                     "description":  "Throw with armor break (stamina 10, +30 durability damage).",
+                                                                                     "stamina_cost":  10
+                                                                                 },
+                                                               "rampage_grip":  {
+                                                                                    "level":  5,
+                                                                                    "type":  "active",
+                                                                                    "description":  "Chain rip + slam AOE (damage 25, stamina 15, recoil risk 5%).",
+                                                                                    "stamina_cost":  15
+                                                                                }
+                                                           }
+                                            },
+                              "progression":  {
+                                                  "xp_requirements":  {
+                                                                          "level_1":  0,
+                                                                          "level_2":  100,
+                                                                          "level_3":  300,
+                                                                          "level_4":  600,
+                                                                          "level_5":  1000
+                                                                      },
+                                                  "level_up_stats":  {
+                                                                         "strength":  3,
+                                                                         "perception":  1
+                                                                     }
+                                              }
+                          },
+    "meta":  {
+                 "id":  "class_crusader_knight_v0_6b",
+                 "kind":  "class",
+                 "name":  "Crusader_Knight",
+                 "label":  "Crusader Knight",
+                 "version":  "0.6b",
+                 "updated":  "2025-10-14"
+             }
+}

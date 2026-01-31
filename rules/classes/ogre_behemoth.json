@@ -1,0 +1,50 @@
+{
+      "Ogre_Behemoth":  {
+                          "description":  "Immovable tank absorbing punishment, guarding in a world of endless pain.",
+                          "lore":  "Behemoths stand as sentinels in Iron Wastes, their bulk a weapon against Havoc Warriors\u0027 assaults.",
+                          "stats":  {
+                                        "toughness_modifier":  5,
+                                        "strength_modifier":  3,
+                                        "agility_modifier":  -2
+                                    },
+                          "restrictions":  {
+                                               "gender":  "Male",
+                                               "race":  "Ogre"
+                                           },
+                          "abilities":  {
+                                            "passive":  {
+                                                            "unyielding_bulk":  {
+                                                                                    "level":  1,
+                                                                                    "type":  "passive",
+                                                                                    "description":  "Boost mass penalty/stun, reduce incoming damage by 10%."
+                                                                                }
+                                                        },
+                                            "active":  {
+                                                           "earthquake_slam":  {
+                                                                                   "level":  3,
+                                                                                   "type":  "active",
+                                                                                   "description":  "AOE slam on grapple, stun multiple foes (stamina 10).",
+                                                                                   "stamina_cost":  10
+                                                                               },
+                                                           "flesh_shield":  {
+                                                                                "level":  5,
+                                                                                "type":  "active",
+                                                                                "description":  "Use grabbed as shield/club for defense/damage (+20 block, 15 damage)."
+                                                                            }
+                                                       }
+                                        },
+                          "progression":  {
+                                              "xp_requirements":  {
+                                                                      "level_1":  0,
+                                                                      "level_2":  100,
+                                                                      "level_3":  300,
+                                                                      "level_4":  600,
+                                                                      "level_5":  1000
+                                                                  },
+                                              "level_up_stats":  {
+                                                                     "toughness":  3,
+                                                                     "strength":  1
+                                                                 }
+                                          }
+                      }
+}

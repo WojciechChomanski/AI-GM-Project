@@ -1,0 +1,51 @@
+{
+      "Ogre_Flesh_Eater":  {
+                             "description":  "Corrupted healer consuming foes for regeneration in a starving world.",
+                             "lore":  "Flesh Eaters lurk in Cursed Swamps, their voracity a tool for Dark Elves\u0027 dark rituals.",
+                             "stats":  {
+                                           "strength_modifier":  4,
+                                           "toughness_modifier":  4,
+                                           "willpower_modifier":  -3
+                                       },
+                             "restrictions":  {
+                                                  "gender":  "Male",
+                                                  "race":  "Ogre"
+                                              },
+                             "abilities":  {
+                                               "active":  {
+                                                              "consume_rip":  {
+                                                                                  "level":  1,
+                                                                                  "type":  "active",
+                                                                                  "description":  "Rip with heal/corruption gain (heal 15 HP, +10 corruption).",
+                                                                                  "stamina_cost":  10
+                                                                              },
+                                                              "voracious_grasp":  {
+                                                                                      "level":  5,
+                                                                                      "type":  "active",
+                                                                                      "description":  "Auto-rip on grab with high heal/self-stun risk (heal 30 HP, 10% stun).",
+                                                                                      "stamina_cost":  12
+                                                                                  }
+                                                          },
+                                               "passive":  {
+                                                               "regenerative_feast":  {
+                                                                                          "level":  3,
+                                                                                          "type":  "passive",
+                                                                                          "description":  "Regen on kill (+20 HP), +bleeding to grabbed, corruption penalty (+5)."
+                                                                                      }
+                                                           }
+                                           },
+                             "progression":  {
+                                                 "xp_requirements":  {
+                                                                         "level_1":  0,
+                                                                         "level_2":  100,
+                                                                         "level_3":  300,
+                                                                         "level_4":  600,
+                                                                         "level_5":  1000
+                                                                     },
+                                                 "level_up_stats":  {
+                                                                        "toughness":  2,
+                                                                        "strength":  2
+                                                                    }
+                                             }
+                         }
+}

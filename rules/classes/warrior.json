@@ -1,0 +1,23 @@
+{
+      "Warrior":  {
+                    "description":  "A master of melee combat, built for war.",
+                    "lore":  "Warriors thrive in Iron Wastes battles, forging alliances with Havoc Warriors for brutal efficiency.",
+                    "stats":  {
+                                  "strength_modifier":  2,
+                                  "attack_cost_reduction":  1
+                              },
+                    "progression":  {
+                                        "xp_requirements":  {
+                                                                "level_1":  0,
+                                                                "level_2":  100,
+                                                                "level_3":  300,
+                                                                "level_4":  600,
+                                                                "level_5":  1000
+                                                            },
+                                        "unlocks":  {
+                                                        "level_2":  "Brutal Strike (+5 damage, 8 stamina)",
+                                                        "level_3":  "Iron Wall (+20% block)"
+                                                    }
+                                    }
+                }
+}

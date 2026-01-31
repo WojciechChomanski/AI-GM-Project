@@ -1,0 +1,23 @@
+{
+      "Rogue":  {
+                  "description":  "A shadow in the empire, striking unseen.",
+                  "lore":  "Rogues navigate Beastmen territories, using agility to evade Veil-tainted traps.",
+                  "stats":  {
+                                "agility_modifier":  2,
+                                "dodge_bonus":  5
+                            },
+                  "progression":  {
+                                      "xp_requirements":  {
+                                                              "level_1":  0,
+                                                              "level_2":  100,
+                                                              "level_3":  300,
+                                                              "level_4":  600,
+                                                              "level_5":  1000
+                                                          },
+                                      "unlocks":  {
+                                                      "level_2":  "Shadow Strike (+10 ambush damage)",
+                                                      "level_3":  "Eagle Eye (+15 perception)"
+                                                  }
+                                  }
+              }
+}
