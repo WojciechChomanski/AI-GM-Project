@@ -19,6 +19,50 @@ const state = {
   classes: null,
   spells: null
 };
+
+// Auto-load demo scenario if empty (quick testing)
+if (state.characters.length === 0 && state.maps.length === 0) {
+  const demoChar = {
+    id: 'demo-torvald',
+    name: 'Torvald',
+    race: 'Human',
+    gender: 'Male',
+    class: 'Outlaw_Mercenary_Warrior',
+    stats: { strength: 35, dexterity: 30, weapon_skill: 30 },
+    abilities: { brutal_strike: { damage_bonus: 5, stamina_cost: 8 } },
+    armor: ['Medium_Heavy'],
+    weapon: 'greatsword'
+  };
+  const demoEnemy = {
+    id: 'demo-bandit',
+    name: 'Bandit Leader',
+    race: 'Human',
+    gender: 'Male',
+    stats: { dexterity: 25, weapon_skill: 20 },
+    armor: ['Light_Heavy'],
+    weapon: 'greatsword'
+  };
+  const demoMap = {
+    id: 'demo-village',
+    name: 'Village Outskirts',
+    gridSize: 64,
+    showGrid: true,
+    tokens: [
+      { id: 'token-torvald', x: 200, y: 300, color: '#8dd3ff', label: 'Torvald', charId: 'demo-torvald' },
+      { id: 'token-bandit', x: 600, y: 300, color: '#fda4af', label: 'Bandit Leader', charId: 'demo-bandit' }
+    ]
+  };
+  state.characters = [demoChar, demoEnemy];
+  state.maps = [demoMap];
+  state.activeCharId = 'demo-torvald';
+  state.activeMapId = 'demo-village';
+  save(STORAGE.chars, state.characters);
+  save(STORAGE.maps, state.maps);
+  save(STORAGE.activeChar, state.activeCharId);
+  save(STORAGE.activeMap, state.activeMapId);
+  toast('Demo scenario loaded for quick testing!');
+}
+
 function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }
 function uid(){ return Math.random().toString(36).slice(2)+Date.now().toString(36); }
@@ -307,6 +351,12 @@ function createCharacter({name,race,gender,orientation,cls,notes}){
   state.characters.push(ch); save(STORAGE.chars, state.characters);
   if(!state.activeCharId){ state.activeCharId = ch.id; save(STORAGE.activeChar, ch.id); }
   renderCharList();
+
+  // Auto-create and place token for new character
+  const token = { id: uid(), label: ch.name, color: pickColorForRace(ch.race), x: 300, y: 300, charId: ch.id };
+  view.tokens.push(token);
+  draw();
+  toast(`${ch.name} created and placed on map!`);
 }
 function updateCharacter(id, patch){
   const c = byId(state.characters, id); if(!c) return;
@@ -655,7 +705,7 @@ async function resolveAttack(attId, tgtId) {
     const res = await fetch('http://127.0.0.1:8000/combat/attack', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attacker: A, defender: T, weapon_damage: 14 }) // 14 = greatsword base; adjust per weapon later
+      body: JSON.stringify({ attacker: A, defender: T, weapon_damage: 14 }) // 14 = greatsword base
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const result = await res.json();
@@ -939,4 +989,15 @@ function bindUI(){
   });
   els.actEnd.addEventListener('click', nextTurn);
   resizeCanvas();
+
+  // Hotkey: Ctrl+Shift+C = instant combat start
+  window.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key.toUpperCase() === 'C') {
+      e.preventDefault();
+      if (combat.inProgress) return toast('Combat already in progress');
+      rollInitiative();
+      startCombat();
+      toast('Combat auto-started! (Ctrl+Shift+C)');
+    }
+  });
 }
