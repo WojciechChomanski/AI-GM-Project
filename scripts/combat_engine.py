@@ -57,7 +57,7 @@ class Combatant:
         self.weapon = data["weapon"]
         self.armor = data["armor"]
         self.abilities = data.get("abilities", {})  # Make optional with default {}
-        self.skills = data["skills"]
+        self.skills = data.get("skills", {})  # Make optional
         self.strength = data.get("strength", 10)
         self.dexterity = data.get("dexterity", 10)
         self.weapon_skill = data.get("weapon_skill", 0)
