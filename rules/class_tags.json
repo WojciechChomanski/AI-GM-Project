@@ -1,9 +1,20 @@
 {
   "tags": {
-    "CrusaderKnight": ["breath_bound","martial"],
-    "Confessor": ["breath_bound","support"],
-    "Judge": ["breath_bound","control"],
-    "Sorceress": ["veil_bound","caster"]
+    "Crusader_Knight": ["breath_bound", "martial", "tank"],
+    "Confessor": ["breath_bound", "support", "healer"],
+    "Holy_Judge": ["breath_bound", "control", "judge"],
+    "Veil_Sorceress": ["veil_bound", "caster", "corruption_risk"],
+    "Stonewarden": ["mechanical", "tank", "engineer", "nonmagical"],
+    "Warrior": ["martial", "melee", "versatile"],
+    "Mage": ["veil_bound", "caster", "corruption_risk"],
+    "Rogue": ["martial", "stealth", "agile"],
+    "Cleric": ["breath_bound", "healer", "support"],
+    "Paladin": ["breath_bound", "martial", "tank"],
+    "Outlaw_Mercenary_Warrior": ["martial", "melee", "intimidation"],
+    "Ogre_Brute": ["brute", "melee", "hunger_risk", "nonmagical"],
+    "Ogre_Ravager": ["brute", "melee", "hunger_risk", "corruption_risk"],
+    "Ogre_Behemoth": ["brute", "tank", "hunger_risk", "nonmagical"],
+    "Ogre_Flesh_Eater": ["brute", "regeneration", "hunger_risk", "corruption_risk"],
+    "Ogre_Stormbreaker": ["brute", "siege", "hunger_risk", "nonmagical"]
   }
 }
-
