@@ -31,7 +31,7 @@ app.get("/api/healthz", (req, res) => {
   });
 });
 
-// Serve rules files
+// Serve rules files (including classes folder)
 app.get("/api/rules/:file", (req, res) => {
   const file = req.params.file;
   const filePath = path.join(__dirname, "..", "rules", file);
@@ -49,7 +49,28 @@ app.get("/api/rules/:file", (req, res) => {
   });
 });
 
-// SPA fallback (fixed: use app.use instead of app.get('*'))
+// List individual class files
+app.get("/api/rules/classes/", (req, res) => {
+  const dir = path.join(__dirname, "..", "rules", "classes");
+  fs.readdir(dir, (err, files) => {
+    if (err) return res.status(500).send("Error reading classes folder");
+    const jsonFiles = files.filter(f => f.endsWith('.json'));
+    res.json(jsonFiles);
+  });
+});
+
+// Serve individual class files
+app.get("/api/rules/classes/:file", (req, res) => {
+  const file = req.params.file;
+  const filePath = path.join(__dirname, "..", "rules", "classes", file);
+  if (!filePath.startsWith(path.join(__dirname, "..", "rules", "classes"))) return res.status(403).send("Forbidden");
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) return res.status(404).send("File not found");
+    res.sendFile(filePath);
+  });
+});
+
+// SPA fallback
 app.use((req, res) => {
   if (!req.path.startsWith('/api/')) {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));

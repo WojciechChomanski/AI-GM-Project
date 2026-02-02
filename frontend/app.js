@@ -315,7 +315,7 @@ function pickColorForRace(r){
   }
 }
 function resetView(){
-  view.zoom = 1; view.pan = {x:0, y:0};
+  view.zoom = 1; view.pan = {x:0, y: 0};
   draw(); updateHud();
 }
 /* ------------------------------ Characters ------------------------------ */
@@ -352,6 +352,7 @@ function createCharacter({name,race,gender,orientation,cls,notes}){
   state.characters.push(ch); save(STORAGE.chars, state.characters);
   if(!state.activeCharId){ state.activeCharId = ch.id; save(STORAGE.activeChar, ch.id); }
   renderCharList();
+
   // Auto-create and place token for new character
   const token = { id: uid(), label: ch.name, color: pickColorForRace(ch.race), x: 300, y: 300, charId: ch.id };
   view.tokens.push(token);
@@ -372,11 +373,19 @@ function deleteCharacter(id){
 async function loadClasses() {
   if (state.classes) return;
   try {
-    const res = await fetch('/api/rules/classes.json');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    state.classes = await res.json();
+    const listRes = await fetch('/api/rules/classes/');
+    if (!listRes.ok) throw new Error('Failed to list classes');
+    const files = await listRes.json(); // ["crusader_knight.json", "stonewarden.json", ...]
+    state.classes = {};
+    for (const file of files) {
+      const clsRes = await fetch(`/api/rules/classes/${file}`);
+      if (!clsRes.ok) continue;
+      const data = await clsRes.json();
+      const key = file.replace('.json', '');
+      state.classes[key] = data;
+    }
   } catch (err) {
-    console.error('Failed to load classes.json:', err);
+    console.error('Failed to load classes:', err);
     els.charClass.innerHTML = '<option value="">Load failed</option>';
   }
 }
@@ -478,7 +487,7 @@ function fileToDataURL(file){
   return new Promise((res,rej)=>{
     const r = new FileReader();
     r.onload = ()=>res(r.result);
-    r.onerror= rej;
+    r.onerror = rej;
     r.readAsDataURL(file);
   });
 }
@@ -495,7 +504,7 @@ function loadImage(dataURL){
     if(!dataURL) { rej(); return; }
     const img = new Image();
     img.onload = ()=>res(img);
-    img.onerror= rej;
+    img.onerror = rej;
     img.src = dataURL;
   });
 }
