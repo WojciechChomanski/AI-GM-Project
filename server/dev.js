@@ -49,9 +49,9 @@ app.get("/api/rules/:file", (req, res) => {
   });
 });
 
-// SPA fallback
-app.get('*', (req, res) => {
-  if (!req.url.startsWith('/api/')) {
+// SPA fallback (fixed: use app.use instead of app.get('*'))
+app.use((req, res) => {
+  if (!req.path.startsWith('/api/')) {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
   } else {
     res.status(404).send("Not found");
@@ -64,12 +64,6 @@ app.listen(PORT, () => {
   console.log(`Serving frontend from: ${path.join(__dirname, "..", "frontend")}`);
   console.log(`Serving rules from: ${path.join(__dirname, "..", "rules")}`);
 });
-
-
-
-
-
-
 
 
 
