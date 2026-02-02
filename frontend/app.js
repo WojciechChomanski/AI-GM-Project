@@ -104,7 +104,8 @@ const els = {
   charRace: $('#char-race'),
   charGender: $('#char-gender'),
   charClass: $('#char-class'),
-  charOrientation: $('#char-orientation')
+  charOrientation: $('#char-orientation'),
+  btnStartAdventure: $('#btn-start-adventure') // New button
 };
 const ctx = els.canvas.getContext('2d');
 const view = {
@@ -351,7 +352,6 @@ function createCharacter({name,race,gender,orientation,cls,notes}){
   state.characters.push(ch); save(STORAGE.chars, state.characters);
   if(!state.activeCharId){ state.activeCharId = ch.id; save(STORAGE.activeChar, ch.id); }
   renderCharList();
-
   // Auto-create and place token for new character
   const token = { id: uid(), label: ch.name, color: pickColorForRace(ch.race), x: 300, y: 300, charId: ch.id };
   view.tokens.push(token);
@@ -630,8 +630,53 @@ function nextTurn(){
     combat.round++;
   }
   combat.pending = null;
+
+  // Auto enemy turn if current actor is enemy
+  const currentId = combat.order[combat.currentIndex];
+  const current = combat.actors[currentId];
+  if (current && current.team === 'enemies') {
+    autoEnemyTurn(currentId);
+  }
+
   saveCombatState();
   renderCombat(); draw();
+  checkCombatEnd();
+}
+
+async function autoEnemyTurn(actorId) {
+  const actor = combat.actors[actorId];
+  if (!actor) return;
+
+  // Simple AI: find nearest player token
+  const actorToken = view.tokens.find(t => t.id === actorId);
+  let target = null;
+  let minDist = Infinity;
+  for (const t of view.tokens) {
+    if (combat.actors[t.id]?.team === 'players') {
+      const dist = Math.hypot(t.x - actorToken.x, t.y - actorToken.y);
+      if (dist < minDist) {
+        minDist = dist;
+        target = t.id;
+      }
+    }
+  }
+  if (target && minDist <= view.grid.size * 2) { // Melee range
+    await resolveAttack(actorId, target);
+  } else {
+    toast(`${actor.name} holds position or moves closer.`);
+  }
+}
+
+function checkCombatEnd() {
+  const playersAlive = Object.values(combat.actors).some(a => a.team === 'players' && a.hp > 0);
+  const enemiesAlive = Object.values(combat.actors).some(a => a.team === 'enemies' && a.hp > 0);
+  if (!playersAlive) {
+    toast('💀 Defeat! You fall in battle...');
+    endCombat();
+  } else if (!enemiesAlive) {
+    toast('🏆 Victory! Enemies defeated.');
+    endCombat();
+  }
 }
 function endCombat(){
   combat.inProgress = false;
@@ -990,7 +1035,59 @@ function bindUI(){
   els.actEnd.addEventListener('click', nextTurn);
   resizeCanvas();
 
-  // Hotkey: Ctrl+Shift+C = instant combat start
+  // Start Adventure button - auto-spawn enemies + start combat
+  if (els.btnStartAdventure) {
+    els.btnStartAdventure.addEventListener('click', () => {
+      if (combat.inProgress) {
+        toast('Combat already in progress');
+        return;
+      }
+      // Hardcoded minimal enemies for quick test (bandit + leader)
+      const bandit = {
+        id: uid(),
+        name: "Bandit",
+        race: "Human",
+        gender: "Male",
+        class: "Warrior",
+        stats: { strength: 12, dexterity: 12, weapon_skill: 15 },
+        hpMax: 18,
+        hp: 18,
+        armor: ["Light_Heavy"],
+        weapon: "sword_1h",
+        team: "enemies"
+      };
+      const leader = {
+        id: uid(),
+        name: "Bandit Leader",
+        race: "Human",
+        gender: "Male",
+        class: "Outlaw_Mercenary_Warrior",
+        stats: { strength: 16, dexterity: 14, weapon_skill: 25 },
+        hpMax: 25,
+        hp: 25,
+        armor: ["Medium_Heavy"],
+        weapon: "greatsword",
+        team: "enemies"
+      };
+      // Place tokens opposite player
+      const playerToken = view.tokens.find(t => t.charId === state.activeCharId);
+      const baseX = playerToken ? playerToken.x + 400 : 600;
+      view.tokens.push(
+        { id: uid(), label: bandit.name, color: '#fda4af', x: baseX, y: 200, charId: bandit.id },
+        { id: uid(), label: leader.name, color: '#ff6b6b', x: baseX + 100, y: 300, charId: leader.id }
+      );
+      // Add to combat actors
+      combat.actors[bandit.id] = bandit;
+      combat.actors[leader.id] = leader;
+      // Auto-roll init + start
+      rollInitiative();
+      startCombat();
+      toast('Adventure begins! Bandits ambush you...');
+      draw();
+    });
+  }
+
+  // Hotkey: Ctrl+Shift+C = instant combat start (backup)
   window.addEventListener('keydown', e => {
     if (e.ctrlKey && e.shiftKey && e.key.toUpperCase() === 'C') {
       e.preventDefault();
