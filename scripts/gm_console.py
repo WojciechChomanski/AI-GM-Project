@@ -6,7 +6,11 @@ import random
 from pathlib import Path
 from collections import defaultdict
 
-# Load from rules
+# Import combat_engine
+from combat_engine import CombatEngine
+engine = CombatEngine()
+
+# Load from rules (fixed path)
 BASE_DIR = Path(__file__).parent.parent / "rules"
 races = json.loads((BASE_DIR / "races.json").read_text())
 weapons = json.loads((BASE_DIR / "weapons.json").read_text())
