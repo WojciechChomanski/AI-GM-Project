@@ -25,7 +25,7 @@ import random
 from pathlib import Path
 
 # ---- Extensions / rules loader ----
-from AI_GM_Project.scripts.combat_engine_ext import (
+from AI_GM_Project.scripts.combat_engine import (
     CombatEngine, load_rules,
     enforce_two_handed_and_shield, spend_stamina, regen_stamina,
     init_morale, morale_event, check_rout, aimed_attack_penalty
