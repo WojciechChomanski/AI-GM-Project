@@ -1,7 +1,7 @@
 /* =========================================================================
-   The Breath & The Veil — Minimal Frontend (Turn-Based v1.1 — Debugged)
+   The Breath & The Veil — Minimal Frontend (Turn-Based v1.2)
    ========================================================================= */
-const API_BASE_URL = "http://127.0.0.1:8000"; // Backend URL
+const API_BASE_URL = "http://127.0.0.1:8000";
 const STORAGE = {
   chars: 'btv.characters',
   maps: 'btv.maps',
@@ -10,6 +10,7 @@ const STORAGE = {
   combat: mapId => `btv.combat.${mapId||'none'}`
 };
 const $ = sel => document.querySelector(sel);
+
 /* ------------------------- State & Persistence -------------------------- */
 const state = {
   characters: load('btv.characters', []),
@@ -20,55 +21,13 @@ const state = {
   spells: null
 };
 
-// Auto-load demo scenario if empty (quick testing)
-if (state.characters.length === 0 && state.maps.length === 0) {
-  const demoChar = {
-    id: 'demo-torvald',
-    name: 'Torvald',
-    race: 'Human',
-    gender: 'Male',
-    class: 'Outlaw_Mercenary_Warrior',
-    stats: { strength: 35, dexterity: 30, weapon_skill: 30 },
-    abilities: { brutal_strike: { damage_bonus: 5, stamina_cost: 8 } },
-    armor: ['Medium_Heavy'],
-    weapon: 'greatsword'
-  };
-  const demoEnemy = {
-    id: 'demo-bandit',
-    name: 'Bandit Leader',
-    race: 'Human',
-    gender: 'Male',
-    stats: { dexterity: 25, weapon_skill: 20 },
-    armor: ['Light_Heavy'],
-    weapon: 'greatsword'
-  };
-  const demoMap = {
-    id: 'demo-village',
-    name: 'Village Outskirts',
-    gridSize: 64,
-    showGrid: true,
-    tokens: [
-      { id: 'token-torvald', x: 200, y: 300, color: '#8dd3ff', label: 'Torvald', charId: 'demo-torvald' },
-      { id: 'token-bandit', x: 600, y: 300, color: '#fda4af', label: 'Bandit Leader', charId: 'demo-bandit' }
-    ]
-  };
-  state.characters = [demoChar, demoEnemy];
-  state.maps = [demoMap];
-  state.activeCharId = 'demo-torvald';
-  state.activeMapId = 'demo-village';
-  save(STORAGE.chars, state.characters);
-  save(STORAGE.maps, state.maps);
-  save(STORAGE.activeChar, state.activeCharId);
-  save(STORAGE.activeMap, state.activeMapId);
-  toast('Demo scenario loaded for quick testing!');
-}
-
 function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }
-function uid(){ return Math.random().toString(36).slice(2)+Date.now().toString(36); }
-function byId(arr,id){ return arr.find(x=>x.id===id) || null; }
-function escapeHtml(s){ return (s??'').toString().replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-/* ------------------------------- Canvas Map ----------------------------- */
+function uid(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+function byId(arr, id){ return arr.find(x => x.id === id) || null; }
+function escapeHtml(s){ return (s??'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* ------------------------------- Canvas & View -------------------------- */
 const els = {
   charList: $('#char-list'),
   mapList: $('#map-list'),
@@ -105,34 +64,71 @@ const els = {
   charGender: $('#char-gender'),
   charClass: $('#char-class'),
   charOrientation: $('#char-orientation'),
-  btnStartAdventure: $('#btn-start-adventure') // New button
+  btnStartAdventure: $('#btn-start-adventure')
 };
+
 const ctx = els.canvas.getContext('2d');
-const view = {
-  img: null,
-  zoom: 1, minZoom: 0.25, maxZoom: 3,
-  pan: {x:0,y:0},
-  grid: {show:true, size:64},
-  tokens: [],
-  selectedTokenId: null,
-};
+const view = { img: null, zoom: 1, minZoom: 0.25, maxZoom: 3, pan: {x:0,y:0}, grid: {show:true, size:64}, tokens: [], selectedTokenId: null };
+
+/* ------------------------------- Helpers -------------------------------- */
+function toast(msg) { pushChat('ai', `ℹ️ ${msg}`); }
+function pushChat(role, text) {
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role==='user' ? 'user' : 'ai'}`;
+  div.textContent = text;
+  els.chatLog.appendChild(div);
+  els.chatLog.scrollTop = els.chatLog.scrollHeight;
+}
+
+/* -------------------------- Auto Demo (safe place) ---------------------- */
+function loadDemoIfEmpty() {
+  if (state.characters.length > 0) return;
+  const demoChar = {
+    id: 'demo-torvald', name: 'Torvald', race: 'Human', gender: 'Male',
+    class: 'Outlaw_Mercenary_Warrior', stats: { strength: 35, dexterity: 30, weapon_skill: 30 },
+    abilities: { brutal_strike: { damage_bonus: 5, stamina_cost: 8 } },
+    armor: ['Medium_Heavy'], weapon: 'greatsword'
+  };
+  const demoEnemy = {
+    id: 'demo-bandit', name: 'Bandit Leader', race: 'Human', gender: 'Male',
+    stats: { dexterity: 25, weapon_skill: 20 }, armor: ['Light_Heavy'], weapon: 'greatsword'
+  };
+  const demoMap = {
+    id: 'demo-village', name: 'Village Outskirts', gridSize: 64, showGrid: true,
+    tokens: [
+      { id: 'token-torvald', x: 200, y: 300, color: '#8dd3ff', label: 'Torvald', charId: 'demo-torvald' },
+      { id: 'token-bandit', x: 600, y: 300, color: '#fda4af', label: 'Bandit Leader', charId: 'demo-bandit' }
+    ]
+  };
+  state.characters = [demoChar, demoEnemy];
+  state.maps = [demoMap];
+  state.activeCharId = 'demo-torvald';
+  state.activeMapId = 'demo-village';
+  save(STORAGE.chars, state.characters);
+  save(STORAGE.maps, state.maps);
+  save(STORAGE.activeChar, state.activeCharId);
+  save(STORAGE.activeMap, state.activeMapId);
+  toast('Demo scenario loaded for quick testing!');
+}
+
+/* ------------------------------- Canvas Functions ----------------------- */
 function resizeCanvas(){
   const dpr = window.devicePixelRatio || 1;
   const rect = els.canvas.getBoundingClientRect();
   els.canvas.width = Math.floor(rect.width * dpr);
-  els.canvas.height = Math.floor(rect.height* dpr);
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+  els.canvas.height = Math.floor(rect.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   draw();
 }
 window.addEventListener('resize', resizeCanvas);
+
 function draw(){
   ctx.clearRect(0,0,els.canvas.width,els.canvas.height);
   ctx.save();
   ctx.translate(view.pan.x, view.pan.y);
   ctx.scale(view.zoom, view.zoom);
-  if(view.img){
-    ctx.drawImage(view.img, 0, 0);
-  } else {
+  if(view.img) ctx.drawImage(view.img, 0, 0);
+  else {
     const s=64;
     for(let y=0;y<els.canvas.height;y+=s){
       for(let x=0;x<els.canvas.width;x+=s){
@@ -143,41 +139,42 @@ function draw(){
   }
   if(view.grid.show){
     const s = view.grid.size;
-    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--grid') || '#2a2f40';
-    ctx.lineWidth = 1/ view.zoom;
+    ctx.strokeStyle = '#2a2f40';
+    ctx.lineWidth = 1 / view.zoom;
     ctx.beginPath();
     const W = view.img ? view.img.width : els.canvas.width;
-    const H = view.img ? view.img.height: els.canvas.height;
+    const H = view.img ? view.img.height : els.canvas.height;
     for(let x=0;x<=W;x+=s){ ctx.moveTo(x,0); ctx.lineTo(x,H); }
     for(let y=0;y<=H;y+=s){ ctx.moveTo(0,y); ctx.lineTo(W,y); }
     ctx.stroke();
   }
-  for(const t of view.tokens){
-    drawToken(t);
-  }
+  for(const t of view.tokens) drawToken(t);
   ctx.restore();
 }
+
 function drawToken(t){
   const r = 16;
-  const x=t.x, y=t.y;
-  const isSelected = view.selectedTokenId===t.id;
+  const x = t.x, y = t.y;
+  const isSelected = view.selectedTokenId === t.id;
   const actor = combat.actors[t.id];
-  const isCurrent = combat.inProgress && combat.order[combat.currentIndex]===t.id;
+  const isCurrent = combat.inProgress && combat.order[combat.currentIndex] === t.id;
+
   if(isCurrent){
     ctx.save();
     ctx.translate(view.pan.x, view.pan.y);
     ctx.scale(view.zoom, view.zoom);
     ctx.beginPath();
-    ctx.arc(x,y, r+8, 0, Math.PI*2);
+    ctx.arc(x, y, r+8, 0, Math.PI*2);
     ctx.strokeStyle = '#ffb86c';
     ctx.lineWidth = 2 / view.zoom;
     ctx.stroke();
     ctx.restore();
   }
+
   ctx.save();
   ctx.fillStyle = t.color || '#8dd3ff';
   ctx.beginPath();
-  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.arc(x, y, r, 0, Math.PI*2);
   ctx.fill();
   if(isSelected){
     ctx.lineWidth = 3 / view.zoom;
@@ -185,22 +182,25 @@ function drawToken(t){
     ctx.stroke();
   }
   ctx.fillStyle = '#0b0f18';
-  ctx.font = `${12/ view.zoom}px system-ui, Arial`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(t.label ?? 'X', x, y-24/ view.zoom);
+  ctx.font = `${12 / view.zoom}px system-ui, Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(t.label ?? 'X', x, y - 24 / view.zoom);
+
   if(actor){
-    const w = 44, h = 6, px = x - w/2, py = y - 36/ view.zoom;
-    const pct = Math.max(0, Math.min(1, actor.hp/actor.hpMax));
+    const w = 44, h = 6, px = x - w/2, py = y - 36 / view.zoom;
+    const pct = Math.max(0, Math.min(1, actor.hp / actor.hpMax));
     ctx.fillStyle = '#202636';
     ctx.fillRect(px, py, w, h);
-    ctx.fillStyle = pct>0.5 ? '#22c55e' : (pct>0.25 ? '#facc15' : '#ef4444');
-    ctx.fillRect(px, py, w*pct, h);
+    ctx.fillStyle = pct > 0.5 ? '#22c55e' : (pct > 0.25 ? '#facc15' : '#ef4444');
+    ctx.fillRect(px, py, w * pct, h);
     ctx.strokeStyle = '#0e1420';
-    ctx.lineWidth = 1/ view.zoom;
+    ctx.lineWidth = 1 / view.zoom;
     ctx.strokeRect(px, py, w, h);
   }
   ctx.restore();
 }
+
 /* ----------------------------- Input & Utils ---------------------------- */
 function screenToWorld(e){
   const rect = els.canvas.getBoundingClientRect();
@@ -304,7 +304,6 @@ function updateHud(){
   const active = byId(state.characters, state.activeCharId);
   els.hudChar.textContent = active ? active.name : '—';
 }
-function toast(msg){ pushChat('ai', `ℹ️ ${msg}`); }
 function pickColorForRace(r){
   switch((r||'').toLowerCase()){
     case 'human': return '#8dd3ff';
@@ -315,9 +314,10 @@ function pickColorForRace(r){
   }
 }
 function resetView(){
-  view.zoom = 1; view.pan = {x:0, y: 0};
+  view.zoom = 1; view.pan = {x:0, y:0};
   draw(); updateHud();
 }
+
 /* ------------------------------ Characters ------------------------------ */
 function renderCharList(){
   els.charList.innerHTML='';
@@ -353,7 +353,6 @@ function createCharacter({name,race,gender,orientation,cls,notes}){
   if(!state.activeCharId){ state.activeCharId = ch.id; save(STORAGE.activeChar, ch.id); }
   renderCharList();
 
-  // Auto-create and place token for new character
   const token = { id: uid(), label: ch.name, color: pickColorForRace(ch.race), x: 300, y: 300, charId: ch.id };
   view.tokens.push(token);
   draw();
@@ -369,13 +368,14 @@ function deleteCharacter(id){
   if(state.activeCharId===id){ state.activeCharId = state.characters[0]?.id || null; save(STORAGE.activeChar, state.activeCharId); }
   renderCharList();
 }
-/* ----------------------------- Class & Spell Loader ----------------------------- */
+
+/* ----------------------------- Class Loader ----------------------------- */
 async function loadClasses() {
   if (state.classes) return;
   try {
     const listRes = await fetch('/api/rules/classes/');
     if (!listRes.ok) throw new Error('Failed to list classes');
-    const files = await listRes.json(); // ["crusader_knight.json", "stonewarden.json", ...]
+    const files = await listRes.json();
     state.classes = {};
     for (const file of files) {
       const clsRes = await fetch(`/api/rules/classes/${file}`);
@@ -418,6 +418,7 @@ async function populateClasses(race, gender) {
     }
   }
 }
+
 /* -------------------------------- Maps ---------------------------------- */
 function renderMapList(){
   els.mapList.innerHTML='';
@@ -482,6 +483,7 @@ function deleteMap(id){
   renderMapList();
   if(state.activeMapId) activateMap(state.activeMapId); else { view.img=null; view.tokens=[]; draw(); }
 }
+
 /* ----------------------------- File helpers ----------------------------- */
 function fileToDataURL(file){
   return new Promise((res,rej)=>{
@@ -508,12 +510,11 @@ function loadImage(dataURL){
     img.src = dataURL;
   });
 }
+
 /* ------------------------------ Chat (API) ------------------------------ */
 async function apiSendChat(message, context={}){
   if(!API_BASE_URL){
-    const loreLine = state.lore?.scripture?.[Math.floor(Math.random()*state.lore.scripture.length)];
-    const hint = loreLine ? `\n\n> ${loreLine}` : '';
-    return { ok:true, reply: `Stub: "${message}" received.${hint}` };
+    return { ok:true, reply: `Stub: "${message}" received.` };
   }
   try{
     const r = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -528,13 +529,7 @@ async function apiSendChat(message, context={}){
     return { ok:false, reply: `Error contacting API: ${String(err)}` };
   }
 }
-function pushChat(role, text){
-  const div = document.createElement('div');
-  div.className = `chat-msg ${role==='user'?'user':'ai'}`;
-  div.textContent = text;
-  els.chatLog.appendChild(div);
-  els.chatLog.scrollTop = els.chatLog.scrollHeight;
-}
+
 /* ------------------------------ Data Loaders ---------------------------- */
 function pickFile(onPick){
   els.fileOpen.onchange = async () =>{
@@ -543,6 +538,7 @@ function pickFile(onPick){
   };
   els.fileOpen.click();
 }
+
 /* ------------------------------ Combat Core ----------------------------- */
 const combat = {
   inProgress: false,
@@ -553,7 +549,6 @@ const combat = {
   pending: null
 };
 function defaultsForRace(race){
-  const g = view.grid.size || 64;
   switch((race||'').toLowerCase()){
     case 'human': return {hpMax:18, armor:1, speedTiles:6, str:10, agi:10};
     case 'elf': return {hpMax:16, armor:0, speedTiles:7, str:9, agi:12};
@@ -640,7 +635,6 @@ function nextTurn(){
   }
   combat.pending = null;
 
-  // Auto enemy turn if current actor is enemy
   const currentId = combat.order[combat.currentIndex];
   const current = combat.actors[currentId];
   if (current && current.team === 'enemies') {
@@ -655,8 +649,6 @@ function nextTurn(){
 async function autoEnemyTurn(actorId) {
   const actor = combat.actors[actorId];
   if (!actor) return;
-
-  // Simple AI: find nearest player token
   const actorToken = view.tokens.find(t => t.id === actorId);
   let target = null;
   let minDist = Infinity;
@@ -669,10 +661,10 @@ async function autoEnemyTurn(actorId) {
       }
     }
   }
-  if (target && minDist <= view.grid.size * 2) { // Melee range
+  if (target && minDist <= view.grid.size * 2) {
     await resolveAttack(actorId, target);
   } else {
-    toast(`${actor.name} holds position or moves closer.`);
+    toast(`${actor.name} holds position.`);
   }
 }
 
@@ -697,20 +689,11 @@ function endCombat(){
   saveCombatState();
   renderCombat(); draw();
 }
+
 /* Actions */
-function requestMove(actorId){
-  combat.pending = {type:'move', actorId};
-  toast('Select destination (click on map).');
-}
-function requestAttack(actorId){
-  combat.pending = {type:'attack', actorId};
-  toast('Select a target token to attack.');
-}
-function requestAbility(actorId){
-  combat.pending = {type:'ability', actorId};
-  const ability = combat.actors[actorId]?.ability || 'Ability';
-  toast(`Select a target for ${ability}.`);
-}
+function requestMove(actorId){ combat.pending = {type:'move', actorId}; toast('Select destination (click on map).'); }
+function requestAttack(actorId){ combat.pending = {type:'attack', actorId}; toast('Select a target token to attack.'); }
+function requestAbility(actorId){ combat.pending = {type:'ability', actorId}; toast(`Select a target for ${combat.actors[actorId]?.ability || 'Ability'}.`); }
 function defend(actorId){
   const a = combat.actors[actorId]; if(!a) return;
   a.defend = true;
@@ -754,21 +737,16 @@ async function resolveAttack(attId, tgtId) {
   const A = combat.actors[attId];
   const T = combat.actors[tgtId];
   if (!A || !T) return toast('Missing actor');
-
   try {
     const res = await fetch('http://127.0.0.1:8000/combat/attack', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attacker: A, defender: T, weapon_damage: 14 }) // 14 = greatsword base
+      body: JSON.stringify({ attacker: A, defender: T, weapon_damage: 14 })
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const result = await res.json();
-
-    // Update defender
     T.hp = result.defender_hp;
     T.pain = result.defender_pain;
-
-    // Cinematic log with race/class flavor
     const raceFlavor = T.race === 'Ogre' ? 'massive frame trembles' : T.race === 'Elf' ? 'grace falters' : 'blood flows';
     const classFlavor = T.class && T.class.includes('Crusader') ? 'holy light dims' : '';
     if (result.hit) {
@@ -780,7 +758,6 @@ async function resolveAttack(attId, tgtId) {
     toast(`Backend error: ${err.message}`);
     console.error(err);
   }
-
   renderCombat();
   draw();
 }
@@ -822,8 +799,8 @@ function postDamageCheck(tgtId){
   }
 }
 function d20(){ return 1 + Math.floor(Math.random()*20); }
-function rollDie(sides){ return 1 + Math.floor(Math.random()*sides); }
 function mod(stat){ return Math.floor((stat-10)/2); }
+
 /* Combat UI */
 function renderCombat(){
   els.turnInfo.textContent = combat.inProgress
@@ -874,6 +851,7 @@ function loadCombatState(){
   combat.actors = data.actors || {};
   combat.pending = null;
 }
+
 /* ------------------------------- Init UI -------------------------------- */
 document.addEventListener('DOMContentLoaded', async () => {
   await loadClasses();
@@ -881,9 +859,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   bindUI();
   renderCharList();
   renderMapList();
+  loadDemoIfEmpty();
   if (state.activeMapId) activateMap(state.activeMapId);
-  pushChat('ai', 'Welcome. Create a character → Add Token → Combat.');
+  pushChat('ai', 'Welcome. Create a character → Start Adventure or Ctrl+Shift+C');
 });
+
 function bindUI(){
   $('#btn-new-char').addEventListener('click', async () => {
     $('#char-form').reset();
@@ -1044,51 +1024,20 @@ function bindUI(){
   els.actEnd.addEventListener('click', nextTurn);
   resizeCanvas();
 
-  // Start Adventure button - auto-spawn enemies + start combat
+  // Start Adventure button
   if (els.btnStartAdventure) {
     els.btnStartAdventure.addEventListener('click', () => {
-      if (combat.inProgress) {
-        toast('Combat already in progress');
-        return;
-      }
-      // Hardcoded minimal enemies for quick test (bandit + leader)
-      const bandit = {
-        id: uid(),
-        name: "Bandit",
-        race: "Human",
-        gender: "Male",
-        class: "Warrior",
-        stats: { strength: 12, dexterity: 12, weapon_skill: 15 },
-        hpMax: 18,
-        hp: 18,
-        armor: ["Light_Heavy"],
-        weapon: "sword_1h",
-        team: "enemies"
-      };
-      const leader = {
-        id: uid(),
-        name: "Bandit Leader",
-        race: "Human",
-        gender: "Male",
-        class: "Outlaw_Mercenary_Warrior",
-        stats: { strength: 16, dexterity: 14, weapon_skill: 25 },
-        hpMax: 25,
-        hp: 25,
-        armor: ["Medium_Heavy"],
-        weapon: "greatsword",
-        team: "enemies"
-      };
-      // Place tokens opposite player
+      if (combat.inProgress) return toast('Combat already in progress');
+      const bandit = { id: uid(), name: "Bandit", race: "Human", gender: "Male", class: "Warrior", stats: { strength: 12, dexterity: 12, weapon_skill: 15 }, hpMax: 18, hp: 18, armor: ["Light_Heavy"], weapon: "sword_1h", team: "enemies" };
+      const leader = { id: uid(), name: "Bandit Leader", race: "Human", gender: "Male", class: "Outlaw_Mercenary_Warrior", stats: { strength: 16, dexterity: 14, weapon_skill: 25 }, hpMax: 25, hp: 25, armor: ["Medium_Heavy"], weapon: "greatsword", team: "enemies" };
       const playerToken = view.tokens.find(t => t.charId === state.activeCharId);
       const baseX = playerToken ? playerToken.x + 400 : 600;
       view.tokens.push(
         { id: uid(), label: bandit.name, color: '#fda4af', x: baseX, y: 200, charId: bandit.id },
         { id: uid(), label: leader.name, color: '#ff6b6b', x: baseX + 100, y: 300, charId: leader.id }
       );
-      // Add to combat actors
       combat.actors[bandit.id] = bandit;
       combat.actors[leader.id] = leader;
-      // Auto-roll init + start
       rollInitiative();
       startCombat();
       toast('Adventure begins! Bandits ambush you...');
@@ -1096,7 +1045,7 @@ function bindUI(){
     });
   }
 
-  // Hotkey: Ctrl+Shift+C = instant combat start (backup)
+  // Hotkey Ctrl+Shift+C
   window.addEventListener('keydown', e => {
     if (e.ctrlKey && e.shiftKey && e.key.toUpperCase() === 'C') {
       e.preventDefault();
