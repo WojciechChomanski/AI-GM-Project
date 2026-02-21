@@ -1,53 +1,117 @@
 {
-      "Veil_Sorceress":  {
-                           "description":  "A fragile but terrifying caster who draws on the Veil. Only human and elven women can wield this active magic. Power always exacts a cost: stamina, blood, or sanity (corruption).",
-                           "role":  "Caster",
-                           "allowed_races":  [
-                                                 "Human",
-                                                 "Elf"
-                                             ],
-                           "allowed_genders":  [
-                                                   "Female"
-                                               ],
-                           "base_stats":  {
-                                              "max_hp":  45,
-                                              "max_stamina":  50
-                                          },
-                           "stat_bonuses":  {
-                                                "intelligence":  5,
-                                                "willpower":  5,
-                                                "agility":  -5
-                                            },
-                           "equipment_rules":  {
-                                                   "armor_allowed":  [
-                                                                         "None",
-                                                                         "Light_Light"
-                                                                     ],
-                                                   "shields_allowed":  false,
-                                                   "weapons_allowed":  [
-                                                                           "dagger",
-                                                                           "staff"
-                                                                       ]
-                                               },
-                           "class_flags":  {
-                                               "melee_vulnerability_pct":  50,
-                                               "active_magic_user":  true
-                                           },
-                           "hidden_stats":  {
-                                                "corruption":  {
-                                                                   "start":  0,
-                                                                   "max":  100
-                                                               }
-                                            },
-                           "passives":  [
-                                            "veils_whisper"
-                                        ],
-                           "spells":  [
-                                          "veil_fog",
-                                          "blood_pact",
-                                          "whisper_of_fear",
-                                          "fade_step",
-                                          "shrouds_embrace"
-                                      ]
-                       }
+  "meta": {
+    "id": "class_veil_sorceress_v1_0",
+    "kind": "class",
+    "name": "Veil_Sorceress",
+    "label": "Veil Sorceress",
+    "version": "1.0",
+    "updated": "2026-02-20"
+  },
+  "Veil_Sorceress": {
+    "description": "A fragile yet terrifying female caster who tears raw, chaotic power directly from the Veil. Only human and elven women can wield active Veil magic. The power is immense — the price is always higher than you think.",
+    "lore": "When Eve’s daughters rejected the Maker’s gift, some chose to drink from the rift instead. They became the first Veil Sorceresses — living conduits between the world and the whispering chaos beyond. Their magic is not a tool. It is a lover that never stops demanding more. Many begin as brilliant, ambitious women. Most end as Hollowed — beautiful empty shells that still walk, talk, and smile while something else looks out through their eyes.",
+    "allowed_races": ["Human", "Elf"],
+    "allowed_genders": ["Female"],
+    "power_source": "Veil",
+    "role_tags": ["caster", "controller", "glass_cannon", "high_risk_high_reward"],
+    "stat_modifiers": {
+      "intelligence": 14,
+      "willpower": 12,
+      "agility": -4,
+      "strength": -8,
+      "toughness": -6
+    },
+    "base_stats": { "max_hp": 45, "max_stamina": 55 },
+    "proficiencies": {
+      "weapons": ["dagger", "staff", "wand"],
+      "armor_tiers": ["none", "light_light"],
+      "shields": false
+    },
+    "mastery_system": {
+      "description": "Repeated use of the same spell grants permanent mastery bonuses. These are small, flavorful, and never game-breaking. Mastery is tracked per spell.",
+      "bonuses_per_uses": {
+        "50_uses": "Corruption cost reduced by 1",
+        "100_uses": "Corruption cost reduced by 2 + small efficiency bonus",
+        "200_uses": "Corruption cost reduced by 3 + +1 to spell effect (e.g. +1 die, +5% duration, etc.)"
+      }
+    },
+    "corruption_system": {
+      "starting": 0,
+      "max": 100,
+      "visible_to_player": false,
+      "gain_per_spell": "listed_in_ability",
+      "mitigation": "Willpower save (once per long rest) can halve gain",
+      "thresholds": {
+        "25": "Vivid nightmares, subtle personality shifts",
+        "50": "Minor physical changes, intrusive whispers, occasional loss of short-term memory",
+        "75": "Major behavioral changes, blackouts, friends begin to notice 'something is wrong'",
+        "90": "The Veil begins to speak with your voice. You sometimes act without deciding to",
+        "100": "Hollowed — the character is no longer yours. She becomes an NPC under GM control"
+      },
+      "flavor": "Corruption is never shown on the character sheet. It is felt in play."
+    },
+    "progression": [
+      {
+        "tier": 1,
+        "name": "Veil-Touched",
+        "requirements": { "age_min": 16 },
+        "abilities_gain": ["Veils_Whisper", "Fade_Step", "Veil_Fog"],
+        "flaws_gain": ["Fragile"],
+        "gear_hint": ["simple_robe", "silver_dagger"]
+      },
+      {
+        "tier": 2,
+        "name": "Whisperer",
+        "requirements": { "spells_cast": 20 },
+        "abilities_gain": ["Whisper_of_Fear", "Blood_Pact", "Shroud_Slip"],
+        "flaws_gain": ["Veil_Scars"],
+        "gear_hint": ["rune-etched_staff"]
+      },
+      {
+        "tier": 3,
+        "name": "Shroudweaver",
+        "requirements": { "corruption_reached": 30 },
+        "abilities_gain": ["Shrouds_Embrace", "Veil_Lash", "Rift_Thread"],
+        "flaws_gain": ["Addiction_to_Power"],
+        "gear_hint": ["veilweave_cloak"]
+      },
+      {
+        "tier": 4,
+        "name": "Harbinger",
+        "requirements": { "major_ritual_completed": true },
+        "abilities_gain": ["Rift_Tear", "Echo_of_Eve"],
+        "flaws_gain": ["Hollowing_Begins"],
+        "gear_hint": ["rift_focus_crystal"]
+      },
+      {
+        "tier": 5,
+        "name": "Ascendant (or Hollowed)",
+        "requirements": { "corruption_reached": 75 },
+        "abilities_gain": ["Veil_Apotheosis"],
+        "flaws_gain": ["Hollowed"],
+        "special": "At this point the GM may begin secretly rolling for loss of control."
+      }
+    ],
+    "abilities": {
+      "Veils_Whisper": { "type": "passive", "effect": "+10 perception & initiative in shadow/dim light" },
+      "Fade_Step": { "type": "mobility", "stamina": 8, "effect": "Teleport 6m into shadow/mist", "corruption": 2, "mastery_note": "Repeated use reduces corruption to 1 at 100 uses" },
+      "Veil_Fog": { "type": "aoe_debuff", "stamina": 12, "effect": "8m fog: -15 accuracy & fear checks", "corruption": 4, "mastery_note": "At 200 uses: +2m radius" },
+      "Whisper_of_Fear": { "type": "single_target", "stamina": 10, "effect": "Willpower check or flee 2 rounds", "corruption": 5 },
+      "Blood_Pact": { "type": "self_buff", "effect": "Sacrifice 8 HP for +20% spell power 3 rounds", "corruption": 6 },
+      "Shroud_Slip": { "type": "mobility", "stamina": 9, "effect": "Become nearly invisible for 1 round while moving", "corruption": 4 },
+      "Shrouds_Embrace": { "type": "defensive", "stamina": 15, "effect": "Near-invisible 1 round + 50% damage reduction", "corruption": 8 },
+      "Veil_Lash": { "type": "attack", "stamina": 14, "effect": "Ranged 2d10 + corruption bonus damage", "corruption": 7 },
+      "Rift_Thread": { "type": "control", "stamina": 16, "effect": "Pull or push target 4m + entangle", "corruption": 9 },
+      "Rift_Tear": { "type": "ultimate", "uses_per_day": 1, "stamina": 40, "effect": "Massive area control & damage", "corruption": 15 },
+      "Echo_of_Eve": { "type": "reaction", "effect": "Once per scene, when you would take lethal damage, spend 20 stamina and 12 corruption to survive at 1 HP", "corruption": 12 },
+      "Veil_Apotheosis": { "type": "capstone", "effect": "Once per campaign, become one with the Veil for 3 rounds — godlike power, but permanent +30 corruption at the end", "corruption": 30 }
+    },
+    "flaws": {
+      "Fragile": { "type": "physical", "melee_damage_taken": "+30%" },
+      "Veil_Scars": { "type": "physical", "max_hp": "-8" },
+      "Addiction_to_Power": { "type": "mental", "must_cast_every_3_rounds_or_suffer_fear": true },
+      "Hollowing_Begins": { "type": "progressive", "description": "The Veil slowly takes the wheel. You become a passenger in your own body." },
+      "Hollowed": { "type": "terminal", "description": "The character is no longer fully yours. GM may take control at any time." }
+    }
+  }
 }

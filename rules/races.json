@@ -44,6 +44,10 @@
     "equipment": {
       "allowed_weapons": ["sword", "dagger", "spear", "bow", "crossbow", "flintlock", "hammer", "axe"],
       "allowed_armor": ["light", "medium", "heavy"]
+    },
+    "mount_restrictions": {
+      "allowed": true,
+      "reason": "Humans use mounts freely for travel and combat."
     }
   },
   "Elf": {
@@ -73,50 +77,66 @@
       "forbidden_weapons": ["hammer", "axe", "crossbow", "flintlock"],
       "allowed_armor": ["light", "medium"],
       "armor_preference": "mystical"
-    }
-  },
-"Dwarf": {
-  "description": "Dense, resilient sons of Adam, forged in high-gravity holds, wielding axes and gunpowder.",
-  "lore": "Dwarves craft rune-forged relics and reject elven blades; their females carve sacred runes in stone cities, but dwarves wield no active Breath.",
-  "mass": 100,
-  "stats": {
-    "hp_bonus": 20,
-    "stamina_bonus": 15,
-    "strength_modifier": 5,
-    "agility_modifier": -2,
-    "intelligence_modifier": 0,
-    "charisma_modifier": -2
-  },
-  "abilities": [
-    {
-      "name": "Stone Resilience",
-      "description": "Reduce blunt/slash damage by 10%. +10 Veil resistance."
     },
-    {
-      "name": "Dark Adaptation",
-      "description": "+10 perception in low light. Torches extend vision 20% farther."
+    "mount_restrictions": {
+      "allowed": true,
+      "reason": "Elves ride mounts like horses or exclusive beasts for combat and travel."
     }
-  ],
-  "magic": {
-    "type": "rune",
-    "restrictions": { "gender": "Female", "passive_only": true }
   },
-  "equipment": {
-    "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
-    "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
-    "allowed_armor": ["medium", "heavy"],
-    "armor_preference": "forged"
+  "Dwarf": {
+    "description": "Dense, resilient sons of Adam, forged in high-gravity holds, wielding axes and gunpowder.",
+    "lore": "Dwarves craft rune-forged relics and reject elven blades; their females carve sacred runes in stone cities, but dwarves wield no active Breath.",
+    "mass": 100,
+    "stats": {
+      "hp_bonus": 20,
+      "stamina_bonus": 15,
+      "strength_modifier": 5,
+      "agility_modifier": -2,
+      "intelligence_modifier": 0,
+      "charisma_modifier": -2
+    },
+    "abilities": [
+      {
+        "name": "Stone Resilience",
+        "description": "Reduce blunt/slash damage by 10%. +10 Veil resistance."
+      },
+      {
+        "name": "Dark Adaptation",
+        "description": "+10 perception in low light. Torches extend vision 20% farther."
+      }
+    ],
+    "magic": {
+      "type": "rune",
+      "restrictions": { "gender": "Female", "passive_only": true }
+    },
+    "equipment": {
+      "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
+      "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
+      "allowed_armor": ["medium", "heavy"],
+      "armor_preference": "forged"
+    },
+    "playable_genders": ["Male"],
+    "notes": {
+      "origin": "Kha'inic line (Qayin) - earth-bound, marked, barred from Breath.",
+      "aging": "Ageless (do not senesce). Deepcall draws elders into the strata over centuries.",
+      "caps_reminder": "See rules/stats.json Dwarf_Male for species caps (STR 60 / TGH 60 / END 60)."
+    },
+    "mount_restrictions": {
+      "allowed": false,
+      "reason": "Dwarves refuse mounts due to cultural taboo against riding animals."
+    },
+    "deepcall": {
+      "description": "Sacred final rite for elder Stonewardens and runesmiths. When age or wounds grow too heavy, the dwarf descends into the living strata, carves his name into the stone, and lets the mountain claim him. The body becomes part of the hold’s foundation; the soul fuels the next generation of rune-forged relics.",
+      "mechanics": {
+        "trigger": "age > 400 or permanent hp loss > 50%",
+        "effect": "Permanent +10 to all allied Dwarf construction/repair checks within 50 km for 100 years. The elder’s name is sung in every Stonewarden oath.",
+        "cost": "Character is retired from play. Cannot be resurrected."
+      }
+    }
   },
-  "playable_genders": ["Male"],
-  "notes": {
-    "origin": "Kha'inic line (Qayin) - earth-bound, marked, barred from Breath.",
-    "aging": "Ageless (do not senesce). Deepcall draws elders into the strata over centuries.",
-    "caps_reminder": "See rules/stats.json Dwarf_Male for species caps (STR 60 / TGH 60 / END 60)."
-  }
-},
   "Ogre": {
     "description": "Manufactured giants, twisted from boys into 600 kg brutes with childlike minds, built for war and logistics.",
-    "lore": "Ogres wield improvised weapons, crushing foes with bear-like mass. Designed for war’s burdens—carrying supplies, enduring slaughter—their childlike minds shrug off trauma but crave open spaces. In Cursed Swamps, they consume tainted meat (+corruption); Dark Elves exploit their hunger. Claustrophobia keeps them from cities, favoring open battlefields or gate entries.",
+    "lore": "Ogres were engineered in the forges of the Fall as living siege engines and supply carriers. Their 600 kg frames make them unmatched haulers and shock troops, yet their minds remain those of 6-8 year-old children—innocent, playful, and immune to war trauma. They crave open skies and hate tight spaces. In battle they shrug off horror, but hunger (6000+ calories daily) can turn them feral. Dark Elves exploit their endless appetite; humans fear their raw power. Ogres have no concept of honour or glory—only simple loyalty to whoever feeds them.",
     "mass": 600,
     "stats": {
       "hp_bonus": 100,
@@ -166,6 +186,11 @@
     },
     "equipment": {
       "restrictions": { "improvised_only": true }
+    },
+    "playable_genders": ["Male"],
+    "mount_restrictions": {
+      "allowed": false,
+      "reason": "600 kg mass crushes any standard mount. Ogres cannot ride horses, wolves, or war-beasts. They are the mount."
     }
   }
 }

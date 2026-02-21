@@ -1,0 +1,30 @@
+{
+  "name": "ClassName",
+  "race_lock": ["Human"],         
+  "gender_lock": ["Male"],         
+  "allowed_genders": ["Male","Female"],
+  "description": "One-line flavour.",
+  "lore": "Full background paragraph(s).",
+  "starting_stats": {
+    "strength": 35,
+    "agility": 30,
+    "weapon_skill": 30,
+    "virtue": 50,
+    "corruption_resist": 0
+  },
+  "hp_bonus": 0,
+  "stamina_bonus": 0,
+  "unique_abilities": [
+    {
+      "name": "AbilityName",
+      "description": "Full mechanical + flavour text.",
+      "requirements": { "virtue_min": 70, "vs_abominations_only": true }
+    }
+  ],
+  "restrictions": {
+    "weapons": ["greatsword", "mace"],
+    "armor": ["heavy"],
+    "mounts": true
+  },
+  "tags": ["breath_bound", "faith_knight"]
+}
