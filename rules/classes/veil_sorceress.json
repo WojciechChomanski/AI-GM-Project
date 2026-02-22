@@ -1,11 +1,11 @@
 {
   "meta": {
-    "id": "class_veil_sorceress_v1_0",
+    "id": "class_veil_sorceress_v1_2",
     "kind": "class",
     "name": "Veil_Sorceress",
     "label": "Veil Sorceress",
-    "version": "1.0",
-    "updated": "2026-02-20"
+    "version": "1.2",
+    "updated": "2026-02-21"
   },
   "Veil_Sorceress": {
     "description": "A fragile yet terrifying female caster who tears raw, chaotic power directly from the Veil. Only human and elven women can wield active Veil magic. The power is immense — the price is always higher than you think.",
@@ -63,6 +63,7 @@
         "tier": 2,
         "name": "Whisperer",
         "requirements": { "spells_cast": 20 },
+        "skill_tree_choice": ["Necromantic", "Shadow", "Prophetic", "Bloodweaver", "Riftcaller"],
         "abilities_gain": ["Whisper_of_Fear", "Blood_Pact", "Shroud_Slip"],
         "flaws_gain": ["Veil_Scars"],
         "gear_hint": ["rune-etched_staff"]
@@ -71,7 +72,13 @@
         "tier": 3,
         "name": "Shroudweaver",
         "requirements": { "corruption_reached": 30 },
-        "abilities_gain": ["Shrouds_Embrace", "Veil_Lash", "Rift_Thread"],
+        "abilities_gain_by_path": {
+          "Necromantic": ["Decay_Touch", "Soul_Leech"],
+          "Shadow": ["Shadow_Bind", "Shrouds_Embrace"],
+          "Prophetic": ["Fate_Whisper", "Veil_Echo"],
+          "Bloodweaver": ["Blood_Lash", "Crimson_Rite"],
+          "Riftcaller": ["Rift_Thread", "Echo_of_the_Void"]
+        },
         "flaws_gain": ["Addiction_to_Power"],
         "gear_hint": ["veilweave_cloak"]
       },
@@ -92,10 +99,17 @@
         "special": "At this point the GM may begin secretly rolling for loss of control."
       }
     ],
+    "skill_trees": {
+      "Necromantic": { "focus": "life drain & decay", "mastery_bonus": "corruption_cost -1 on blood spells" },
+      "Shadow": { "focus": "control & evasion", "mastery_bonus": "fade_step corruption -1" },
+      "Prophetic": { "focus": "fear & foresight", "mastery_bonus": "whisper_of_fear range +4" },
+      "Bloodweaver": { "focus": "self-sacrifice & burst", "mastery_bonus": "blood_pact hp_cost -2" },
+      "Riftcaller": { "focus": "rift manipulation", "mastery_bonus": "rift_tear corruption -3" }
+    },
     "abilities": {
       "Veils_Whisper": { "type": "passive", "effect": "+10 perception & initiative in shadow/dim light" },
-      "Fade_Step": { "type": "mobility", "stamina": 8, "effect": "Teleport 6m into shadow/mist", "corruption": 2, "mastery_note": "Repeated use reduces corruption to 1 at 100 uses" },
-      "Veil_Fog": { "type": "aoe_debuff", "stamina": 12, "effect": "8m fog: -15 accuracy & fear checks", "corruption": 4, "mastery_note": "At 200 uses: +2m radius" },
+      "Fade_Step": { "type": "mobility", "stamina": 8, "effect": "Teleport 6m into shadow/mist", "corruption": 2 },
+      "Veil_Fog": { "type": "aoe_debuff", "stamina": 12, "effect": "8m fog: -15 accuracy & fear checks", "corruption": 4 },
       "Whisper_of_Fear": { "type": "single_target", "stamina": 10, "effect": "Willpower check or flee 2 rounds", "corruption": 5 },
       "Blood_Pact": { "type": "self_buff", "effect": "Sacrifice 8 HP for +20% spell power 3 rounds", "corruption": 6 },
       "Shroud_Slip": { "type": "mobility", "stamina": 9, "effect": "Become nearly invisible for 1 round while moving", "corruption": 4 },

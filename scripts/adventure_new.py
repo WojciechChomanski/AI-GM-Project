@@ -8,8 +8,7 @@ Grimdark Village Rescue – battle loop with:
 - Critical hits and critical misses -> riposte
 - Stamina regen/costs + durability + 2H+shield enforcement (from combat_engine_ext)
 - Sorceress spell system (from sorcery_ext) including veil aura, fog/fear, shroud, melee vuln, Veil’s Grace
-
-Drop-in: replace your existing scripts/adventure_new.py with this file.
+- GLOBAL ORGANIC PROGRESSION SYSTEM (use-based stat growth)
 """
 
 from __future__ import annotations
@@ -23,6 +22,41 @@ import json
 import logging
 import random
 from pathlib import Path
+from collections import defaultdict
+
+# ====================== GLOBAL ORGANIC PROGRESSION SYSTEM ======================
+# Stats grow slowly through repeated meaningful use.
+# No visible bar. Player only feels the improvement when it happens.
+
+class GlobalProgression:
+    def __init__(self):
+        self.use_counters = defaultdict(int)
+
+    def record_action(self, character, stat_name: str, intensity: int = 1):
+        """Record meaningful use of a stat (call after attacks, spells, carrying, etc.)."""
+        self.use_counters[stat_name] += intensity
+
+    def check_for_growth(self, character):
+        """Check for stat growth after combat or major scenes. Returns messages to print."""
+        messages = []
+        key = f"{character.race}_{character.gender}"
+        stats_data = load_stats(character.race, character.gender)
+        max_stats = stats_data.get("max_stats", {})
+        for stat, uses in list(self.use_counters.items()):
+            current = getattr(character, stat, 30)
+            cap = max_stats.get(stat, 50)
+            if current >= cap:
+                continue
+            threshold = 40 + (current - 30) * 15
+            if uses >= threshold:
+                new_value = current + 1
+                setattr(character, stat, new_value)
+                self.use_counters[stat] = 0
+                messages.append(f"✨ {character.name}'s {stat.replace('_', ' ')} improved to {new_value}!")
+        return messages
+
+global_progress = GlobalProgression()
+# ====================== END GLOBAL PROGRESSION ======================
 
 # ---- Extensions / rules loader ----
 from AI_GM_Project.scripts.combat_engine import (
@@ -42,16 +76,17 @@ CHAR_DIR = (RULES_DIR / "characters").resolve()
 ARMORS_JSON = (RULES_DIR / "armors.json").resolve()
 WEAPONS_JSON = (RULES_DIR / "weapons.json").resolve()
 COMBAT_RULES_JSON = (RULES_DIR / "combat_rules.json").resolve()
+STATS_JSON = (RULES_DIR / "stats.json").resolve()
 
 # ========= Load rules once =========
 rules = load_rules(str(COMBAT_RULES_JSON))
-override_from_rules(rules)   # <-- allows combat_rules.json to override spell costs/cooldowns
+override_from_rules(rules)
 eng = CombatEngine(rules)
 
 # ========= Safe I/O =========
 def safe_load_json(path: Path):
     try:
-        with open(path, "r", encoding="utf-8-sig") as f: # was 'utf-8'
+        with open(path, "r", encoding="utf-8-sig") as f:
             data = json.load(f)
             logging.debug(f"File content for {path}: {json.dumps(data, ensure_ascii=False, indent=2)[:2000]}")
             return data
@@ -61,6 +96,12 @@ def safe_load_json(path: Path):
     except Exception as e:
         logging.exception(f"Failed to load JSON {path}: {e}")
         return None
+
+# ========= Load Stats (fixed) =========
+def load_stats(race, gender):
+    data = safe_load_json(STATS_JSON)
+    key = f"{race}_{gender}"
+    return data.get(key, {"starting_stats": {}, "max_stats": {}})
 
 # ========= Input helpers =========
 def ask(prompt, default=None):
@@ -88,7 +129,6 @@ def ask_int(prompt, lo=None, hi=None, default=None):
 ARMORS_RAW = safe_load_json(ARMORS_JSON) or {}
 WEAPONS_RAW = safe_load_json(WEAPONS_JSON) or {}
 
-# Base damages if weapons.json misses something
 WEAPON_DAMAGE = {
     "greatsword": 14, "longsword": 10, "dagger": 6, "improvised_club": 12, "ceremonial blade": 7,
 }
@@ -125,10 +165,6 @@ DEFAULT_ARMORS = {
 }
 
 def resolve_armor(category_key: str):
-    """
-    Resolve an armor category (e.g. 'Medium_Heavy') to a concrete piece using armors.json variants.
-    Returns dict with: name, weight, mobility_penalty, stamina_penalty, category, variant_key, coverage(list)
-    """
     cat = str(category_key or "").strip()
     node = ARMORS_RAW.get(cat)
 
@@ -192,7 +228,7 @@ def equip_armor(character):
         "stamina_increase": ar["stamina_penalty"],
         "category": ar["category"],
         "variant": ar["variant_key"],
-        "coverage": ar["coverage"],  # coverage list (e.g., ["chest"])
+        "coverage": ar["coverage"],
     }
 
     if ar["weight"] <= 5:
@@ -202,7 +238,6 @@ def equip_armor(character):
     print(f"🛡️ {character['name']} equips {ar['name']}")
     logging.debug(f"Equipped {ar['name']} to {character['name']} (category={ar['category']}, variant={ar['variant_key']})")
 
-    # Enforce 2H + shield rule and PRINT the result
     weapon_key = None
     if isinstance(character.get("weapon"), dict):
         weapon_key = character["weapon"].get("type") or character["weapon"].get("name")
@@ -344,7 +379,6 @@ def choose_target_zone():
     return AIM_ZONES[0]
 
 def coverage_keys_for_zone(zone: str):
-    """Return coverage keys that should count as protection for a given hit zone."""
     z = zone.lower()
     if z in ("head","skull","face"):
         return ["head","skull","face","eyes","neck"]
@@ -356,8 +390,6 @@ def coverage_keys_for_zone(zone: str):
         return ["stomach","abdomen","belly","torso"]
     if z in ("groin","hip","hips"):
         return ["groin","hips","pelvis","torso"]
-
-    # Arms
     if "arm" in z:
         keys = [z, "arm", "arms", "shoulder", "upper_arm", "forearm"]
         if "left" in z:
@@ -365,11 +397,8 @@ def coverage_keys_for_zone(zone: str):
         if "right" in z:
             keys += ["right_arm","right_upper_arm","right_forearm"]
         return keys
-
     if "hand" in z:
         return [z, "hand", "hands", "gauntlet", "arms"]
-
-    # Legs
     if any(part in z for part in ("leg","thigh","calf","shin")):
         keys = [z, "leg", "legs", "thigh", "calf", "shin"]
         if "left" in z:
@@ -377,10 +406,8 @@ def coverage_keys_for_zone(zone: str):
         if "right" in z:
             keys += ["right_leg","right_thigh","right_calf","right_shin"]
         return keys
-
     if any(part in z for part in ("foot","feet")):
         return [z, "foot", "feet", "boots", "shoes", "legs"]
-
     return [z, "torso"]
 
 def is_zone_covered(target, zone):
@@ -399,7 +426,7 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
     dex_mod = dex // 10
 
     aimed_pen_rules = aimed_attack_penalty(attacker, rules) if str(attack_type).lower().startswith("aim") else 0
-    total_aimed_pen = aimed_pen_rules  # flat penalty (no per-zone extra)
+    total_aimed_pen = aimed_pen_rules
 
     stress_mod = -int(attacker.get("stress_level", 0))
     pain_pct = 0
@@ -409,7 +436,6 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
     ambush_mod = 0
     weapon_skill = 0
 
-    # Status penalties on the ATTACKER (fog, fear, veil aura)
     status_pen = 0
     fog_pen = int(attacker.get("_fog_atk_penalty", 0)) if int(attacker.get("_fogged_rounds", 0)) > 0 else 0
     if fog_pen:
@@ -439,7 +465,7 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
         "pain_mod": pain_mod,
         "ambush_mod": ambush_mod,
         "aimed_pen": total_aimed_pen,
-        "status_pen": status_pen,   # for optional logging
+        "status_pen": status_pen,
         "hit": attack_total > defense_total
     }
 
@@ -448,14 +474,12 @@ def apply_damage(attacker, target, raw_damage, round_log, zone=None, is_crit=Fal
     global rules
     dmg = max(0, int(raw_damage))
 
-    # Armor mitigation if zone is covered; "zone=None" bypasses armor (e.g., Veil damages)
     covered = False
     if zone and is_zone_covered(target, zone):
         covered = True
         dmg = max(0, int(round(dmg * 0.75)))
         round_log.append(f"🛡️ Armor absorbs part of the blow to {zone}!")
 
-    # Unhelmeted headshot multiplier (only if not covered)
     if zone and zone.lower() in ("head","skull","face") and not covered:
         mult = float((rules.get("helmet_rules") or {}).get("unhelmeted_headshot_mult", 1.0))
         if mult > 1.0:
@@ -570,7 +594,6 @@ def run_combat(player, enemies, label):
     watch = StalemateWatch(threshold=6)
     rnd = 0
 
-    # thresholds from rules
     crit_hi = int(rules.get("critical_hit_threshold", 95))
     crit_lo = int(rules.get("critical_miss_threshold", 5))
     crit_mult = float((rules.get("critical_multipliers") or {}).get("default", 1.5))
@@ -581,12 +604,10 @@ def run_combat(player, enemies, label):
         print("\n🎛️⚔️ New Round ⚔️🎛️")
         round_log = []
 
-        # --- decay temporary statuses (fog/fear/root/aura) at round start
         on_new_round_tick(player, enemies, round_log)
 
         did_damage = False
 
-        # filter alive
         enemies = [e for e in enemies if e.get("alive", True)]
         if not enemies:
             print("🎉 The bandits are defeated! Onward to the leader's camp...")
@@ -598,20 +619,17 @@ def run_combat(player, enemies, label):
         # =========================
         p_stance = choose_stance()
 
-        # regen at start of your turn
         regen_stamina(player, p_stance, rules, round_log)
 
-        # If rooted by Shroud, you lose this action (both sides get rooted when cast)
         if int(player.get("_rooted_rounds", 0)) > 0:
             round_log.append(f"⛓️ {player['name']} is trapped by the rift and cannot act this turn.")
-            player["_rooted_rounds"] = 0  # consumed
+            player["_rooted_rounds"] = 0
         else:
             did_cast = False
             if is_sorceress(player):
                 did_cast = cast_spell(player, enemies, apply_damage, round_log)
 
             if not is_sorceress(player) or not did_cast:
-                # ----- normal melee flow -----
                 a_type = choose_attack_type()
                 aimed_zone = choose_target_zone() if a_type == "aimed" else None
                 ability = choose_ability(player)
@@ -642,10 +660,13 @@ def run_combat(player, enemies, label):
                     apply_damage(player, target, final_damage, round_log, zone=aimed_zone, is_crit=is_crit)
                     did_damage = True
                     apply_durability_tick(player, round_log)
+
+                    # === GLOBAL PROGRESSION RECORDING ===
+                    global_progress.record_action(player, "strength", intensity=2)
+                    global_progress.record_action(player, "weapon_skill", intensity=1)
                 else:
                     print("❌ Attack misses or is defended!")
                     spend_stamina(target, "parry", "neutral", None, rules, round_log)
-                    # critical miss -> enemy riposte
                     if calc["atk_roll"] <= crit_lo:
                         round_log.append("⚡ Riposte! Your blunder opens you up!")
                         e_stance_r = "offensive"
@@ -656,7 +677,6 @@ def run_combat(player, enemies, label):
                         if calc_r["hit"]:
                             is_crit_r = calc_r["atk_roll"] >= crit_hi
                             final_r = int(round(e_base * (crit_mult if is_crit_r else 1.0)))
-                            # Veil’s Grace check on lethal
                             if is_sorceress(player) and player.get("current_hp", 0) - final_r <= 0:
                                 if random.randint(1, 100) <= 20:
                                     round_log.append("🪽 Veil’s Grace triggers: death averted as she slips through the Veil!")
@@ -670,7 +690,6 @@ def run_combat(player, enemies, label):
                                         did_damage = True
                                 apply_durability_tick(target, round_log)
                             else:
-                                # Fade Step auto-evade? If not, apply melee vuln
                                 if not consume_evade_on_melee_if_any(player, round_log):
                                     final_r = apply_melee_vulnerability(player, final_r, is_melee=True)
                                     apply_damage(target, player, final_r, round_log, zone=None, is_crit=is_crit_r)
@@ -691,8 +710,6 @@ def run_combat(player, enemies, label):
         for e in list(enemies):
             if not player.get("alive", True):
                 break
-
-            # skip their action if dazed/rooted
             if int(e.get("_dazed_rounds", 0)) > 0:
                 round_log.append(f"💫 {e['name']} is staggered and loses their action.")
                 e["_dazed_rounds"] = 0
@@ -719,13 +736,10 @@ def run_combat(player, enemies, label):
             if calc_e["hit"]:
                 is_crit_e = calc_e["atk_roll"] >= crit_hi
                 final_e = int(round(e_base * (crit_mult if is_crit_e else 1.0)))
-
-                # Veil's Grace: if this hit would kill a Sorceress, 20% avoid; else halve the killing blow
                 if is_sorceress(player) and player.get("current_hp", 0) - final_e <= 0:
                     if random.randint(1, 100) <= 20:
                         round_log.append("🪽 Veil’s Grace triggers: death averted as she slips through the Veil!")
                         player["_evade_next_melee"] = True
-                        # skip applying this lethal hit
                     else:
                         final_e = (final_e + 1) // 2
                         round_log.append("🩶 Veil’s Grace falters—fatal blow reduced by half.")
@@ -735,7 +749,6 @@ def run_combat(player, enemies, label):
                             did_damage = True
                         apply_durability_tick(e, round_log)
                 else:
-                    # Fade Step auto-negate? If not, apply melee vulnerability (sorceress takes +50% from melee)
                     if not consume_evade_on_melee_if_any(player, round_log):
                         final_e = apply_melee_vulnerability(player, final_e, is_melee=True)
                         apply_damage(e, player, final_e, round_log, zone=None, is_crit=is_crit_e)
@@ -744,7 +757,6 @@ def run_combat(player, enemies, label):
             else:
                 print("❌ Enemy attack misses or is defended!")
                 spend_stamina(player, "parry", "neutral", None, rules, round_log)
-                # enemy crit-miss -> your riposte
                 if calc_e["atk_roll"] <= crit_lo:
                     round_log.append("⚡ Riposte! You punish their mistake!")
                     p_stance_r = "offensive"
@@ -766,9 +778,13 @@ def run_combat(player, enemies, label):
             print("💀 You have been defeated...")
             return False
 
-        # Stalemate breaker
         if watch.note(did_damage, round_log):
             apply_fatigue_to_all([player] + enemies, round_log)
+
+        # === GLOBAL PROGRESSION CHECK AFTER FULL ROUND ===
+        growth_msgs = global_progress.check_for_growth(player)
+        for m in growth_msgs:
+            print(m)
 
         safe_print_log(round_log)
 
@@ -781,21 +797,18 @@ def choose_player():
     print("Choose your character (torvald, lyssa, ada, brock, rock, isolde): ", end="")
     who = ask("", default="torvald").lower()
     player = load_character_file(who)
-    # Allow 'isolde' alias to load Isolde.json
     if not player and who == "isolde":
         player = load_character_file("Isolde")
     if not player:
         print("Unknown choice, defaulting to Torvald.")
         player = load_character_file("torvald")
 
-    # Enforce female-only for Sorceress
     if player and is_sorceress(player) and str(player.get("gender","")).lower() != "female":
         print("⚠️ Only women can wield Veil sorcery. Loading Isolde instead.")
         iso = load_character_file("Isolde")
         if iso:
             player = iso
     return player
-
 
 def equip_starters(characters):
     for c in characters:
@@ -836,7 +849,6 @@ def make_bandit_leader():
     equip_armor(base)
     return base
 
-# ========= Main =========
 def main():
     print("⚔️ Welcome to the Grimdark Village Rescue ⚔️")
     player = choose_player()
@@ -854,14 +866,12 @@ def main():
     if choice != 1:
         print("Only the combat path is implemented in this build. Proceeding to fight…")
 
-    # Encounter 1: two bandits
     enemies = make_bandits(2)
     ok = run_combat(player, enemies, "You confront Bandit!")
     if not ok:
         print("The attempt failed.")
         return
 
-    # Encounter 2: leader
     leader = make_bandit_leader()
     _ = run_combat(player, [leader], "You confront Bandit Leader!")
 

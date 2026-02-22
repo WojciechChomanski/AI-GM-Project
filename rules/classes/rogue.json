@@ -1,23 +1,78 @@
 {
-      "Rogue":  {
-                  "description":  "A shadow in the empire, striking unseen.",
-                  "lore":  "Rogues navigate Beastmen territories, using agility to evade Veil-tainted traps.",
-                  "stats":  {
-                                "agility_modifier":  2,
-                                "dodge_bonus":  5
-                            },
-                  "progression":  {
-                                      "xp_requirements":  {
-                                                              "level_1":  0,
-                                                              "level_2":  100,
-                                                              "level_3":  300,
-                                                              "level_4":  600,
-                                                              "level_5":  1000
-                                                          },
-                                      "unlocks":  {
-                                                      "level_2":  "Shadow Strike (+10 ambush damage)",
-                                                      "level_3":  "Eagle Eye (+15 perception)"
-                                                  }
-                                  }
-              }
+  "meta": {
+    "id": "class_rogue_v1_0",
+    "kind": "class",
+    "name": "Rogue",
+    "label": "Rogue",
+    "version": "1.0",
+    "updated": "2026-02-22"
+  },
+  "Rogue": {
+    "description": "Cunning survivor who thrives in shadows, streets and back alleys. Master of stealth, deception and precise strikes.",
+    "lore": "In a world that rewards the strong and the holy, the Rogue survives by being the one no one sees coming. Some are cutthroats and thieves, others silver-tongued spies or charming seducers. They are the knife in the dark, the whispered secret, the smile that hides the dagger.",
+    "allowed_races": ["Human", "Elf", "Dwarf"],
+    "allowed_genders": ["Male", "Female"],
+    "power_source": "Martial + Cunning",
+    "role_tags": ["striker", "scout", "deceiver", "high_mobility"],
+    "progression": [
+      {
+        "tier": 1,
+        "name": "Street Rat",
+        "requirements": { "age_min": 14 },
+        "abilities_gain": ["Backstab", "Stealth", "Quick_Hands"],
+        "flaws_gain": ["Wanted"]
+      },
+      {
+        "tier": 2,
+        "name": "Shadow",
+        "skill_tree_choice": ["Assassin", "Thief", "Charmer", "Duelist", "Infiltrator"],
+        "abilities_gain": ["Evasion", "Poison_Use"]
+      },
+      {
+        "tier": 3,
+        "name": "Phantom",
+        "abilities_gain_by_path": {
+          "Assassin": ["Silent_Kill", "Death_Mark"],
+          "Thief": ["Master_Pickpocket", "Trap_Disarm"],
+          "Charmer": ["Seductive_Gaze", "Silver_Tongue"],
+          "Duelist": ["Twin_Blade_Dance", "Riposte"],
+          "Infiltrator": ["Disguise", "Shadow_Step"]
+        }
+      },
+      {
+        "tier": 4,
+        "name": "Legend",
+        "abilities_gain": ["Ghost_in_the_Night"]
+      }
+    ],
+    "skill_trees": {
+      "Assassin": { "focus": "silent death & precision", "mastery_bonus": "backstab damage +3" },
+      "Thief": { "focus": "agility, locks & loot", "mastery_bonus": "pickpocket success +15%" },
+      "Charmer": { "focus": "deception, seduction & social manipulation", "mastery_bonus": "charisma checks +10 when female" },
+      "Duelist": { "focus": "dual-wielding & flashy combat", "mastery_bonus": "dual wield stamina cost -1" },
+      "Infiltrator": { "focus": "disguise, stealth & espionage", "mastery_bonus": "stealth in crowds +20%" }
+    },
+    "abilities": {
+      "Backstab": { "type": "attack", "stamina": 8, "effect": "If hidden or behind target: +50% damage" },
+      "Stealth": { "type": "passive", "effect": "+15 to hide in shadows or crowds" },
+      "Quick_Hands": { "type": "passive", "effect": "+20 to pickpocket and lockpicking" },
+      "Evasion": { "type": "reaction", "stamina": 6, "effect": "Once per round, reroll a failed dodge" },
+      "Poison_Use": { "type": "passive", "effect": "Apply poison to weapons without risk" },
+      "Silent_Kill": { "type": "attack", "stamina": 12, "effect": "Backstab that can instantly kill low-HP targets" },
+      "Death_Mark": { "type": "mark", "stamina": 10, "effect": "Next attack on marked target is automatic crit" },
+      "Master_Pickpocket": { "type": "passive", "effect": "Steal equipped items in combat" },
+      "Trap_Disarm": { "type": "utility", "effect": "Disarm mechanical or magical traps safely" },
+      "Seductive_Gaze": { "type": "social", "effect": "Charm or distract target (stronger on males)" },
+      "Silver_Tongue": { "type": "social", "effect": "+25 to persuasion, bluff and intimidation" },
+      "Twin_Blade_Dance": { "type": "attack", "stamina": 14, "effect": "Two attacks in one turn with dual wield" },
+      "Riposte": { "type": "reaction", "effect": "Counter-attack when successfully parried" },
+      "Disguise": { "type": "utility", "effect": "Impersonate NPCs for extended periods" },
+      "Shadow_Step": { "type": "mobility", "stamina": 9, "effect": "Teleport short distance while hidden" },
+      "Ghost_in_the_Night": { "type": "ultimate", "uses_per_day": 1, "effect": "Become invisible and silent for 3 rounds" }
+    },
+    "flaws": {
+      "Wanted": { "type": "social", "effect": "Higher chance of being recognized in cities" },
+      "Fragile_Ego": { "type": "mental", "effect": "Easier to provoke or manipulate" }
+    }
+  }
 }
