@@ -6,9 +6,11 @@ Grimdark Village Rescue – battle loop with:
 - Aimed strikes to body parts (zones) with number OR name entry
 - Flat aimed penalty (rules-driven) with DEX relief (no per-zone extra)
 - Critical hits and critical misses -> riposte
-- Stamina regen/costs + durability + 2H+shield enforcement (from combat_engine_ext)
-- Sorceress spell system (from sorcery_ext) including veil aura, fog/fear, shroud, melee vuln, Veil’s Grace
-- GLOBAL ORGANIC PROGRESSION SYSTEM (use-based stat growth)
+- Stamina regen/costs + durability + 2H+shield enforcement
+- Sorceress spell system
+- GLOBAL ORGANIC PROGRESSION SYSTEM (ALL stats)
+- FULL STEALTH MECHANICS (universal + Rogue advantage)
+- DIRECTIONAL ARMOR (Front / Back zones) – partial armor now possible
 """
 
 from __future__ import annotations
@@ -25,28 +27,21 @@ from pathlib import Path
 from collections import defaultdict
 
 # ====================== GLOBAL ORGANIC PROGRESSION SYSTEM ======================
-# Stats grow slowly through repeated meaningful use.
-# No visible bar. Player only feels the improvement when it happens.
-
 class GlobalProgression:
     def __init__(self):
         self.use_counters = defaultdict(int)
 
     def record_action(self, character, stat_name: str, intensity: int = 1):
-        """Record meaningful use of a stat (call after attacks, spells, carrying, etc.)."""
         self.use_counters[stat_name] += intensity
 
     def check_for_growth(self, character):
-        """Check for stat growth after combat or major scenes. Returns messages to print."""
         messages = []
-        key = f"{character.race}_{character.gender}"
         stats_data = load_stats(character.race, character.gender)
         max_stats = stats_data.get("max_stats", {})
         for stat, uses in list(self.use_counters.items()):
             current = getattr(character, stat, 30)
             cap = max_stats.get(stat, 50)
-            if current >= cap:
-                continue
+            if current >= cap: continue
             threshold = 40 + (current - 30) * 15
             if uses >= threshold:
                 new_value = current + 1
@@ -81,23 +76,15 @@ STATS_JSON = (RULES_DIR / "stats.json").resolve()
 # ========= Load rules once =========
 rules = load_rules(str(COMBAT_RULES_JSON))
 override_from_rules(rules)
-eng = CombatEngine(rules)
 
 # ========= Safe I/O =========
 def safe_load_json(path: Path):
     try:
         with open(path, "r", encoding="utf-8-sig") as f:
-            data = json.load(f)
-            logging.debug(f"File content for {path}: {json.dumps(data, ensure_ascii=False, indent=2)[:2000]}")
-            return data
-    except FileNotFoundError:
-        logging.warning(f"Missing file: {path}")
-        return None
-    except Exception as e:
-        logging.exception(f"Failed to load JSON {path}: {e}")
-        return None
+            return json.load(f)
+    except Exception:
+        return {}
 
-# ========= Load Stats (fixed) =========
 def load_stats(race, gender):
     data = safe_load_json(STATS_JSON)
     key = f"{race}_{gender}"
@@ -119,10 +106,8 @@ def ask_int(prompt, lo=None, hi=None, default=None):
         val = int(s)
     except Exception:
         return int(default) if default is not None else 0
-    if lo is not None and val < lo:
-        return lo
-    if hi is not None and val > hi:
-        return hi
+    if lo is not None and val < lo: return lo
+    if hi is not None and val > hi: return hi
     return val
 
 # ========= Data: armors & weapons =========
@@ -138,22 +123,16 @@ DEFAULT_DURABILITY = {
 
 def overlay_weapons_from_json():
     data = WEAPONS_RAW
-    if not data:
-        return
+    if not data: return
     for key, w in data.items():
         key_l = str(key).lower()
         if isinstance(w, dict):
             if "base_damage" in w:
-                try:
-                    WEAPON_DAMAGE[key_l] = int(w["base_damage"])
-                except Exception:
-                    pass
+                try: WEAPON_DAMAGE[key_l] = int(w["base_damage"])
+                except: pass
             if "durability" in w:
-                try:
-                    DEFAULT_DURABILITY[key_l] = int(w["durability"])
-                except Exception:
-                    pass
-
+                try: DEFAULT_DURABILITY[key_l] = int(w["durability"])
+                except: pass
 overlay_weapons_from_json()
 
 # ========= Armor resolver =========
@@ -213,7 +192,7 @@ def resolve_armor(category_key: str):
     name, w = DEFAULT_ARMORS.get(cat, (cat, 10))
     return pack(name, w, "fallback", coverage=[])
 
-# ========= Characters / equipment =========
+# ========= Characters / equipment - DIRECTIONAL ARMOR =========
 def equip_armor(character):
     if isinstance(character.get("armor"), list) and character["armor"]:
         cat = character["armor"][0]
@@ -234,9 +213,42 @@ def equip_armor(character):
     if ar["weight"] <= 5:
         print(f"🛡️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) has minimal impact on mobility and stamina.")
     else:
-        print(f"⚠️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) reduces mobility by {ar['mobility_penalty']}% and increases stamina costs by {ar['stamina_penalty']}!")
+        print(f"⚠️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) reduces mobility by {ar['mobility_penalty']}% and increases stamina costs by {ar['stamina_penalty']}%!")
     print(f"🛡️ {character['name']} equips {ar['name']}")
     logging.debug(f"Equipped {ar['name']} to {character['name']} (category={ar['category']}, variant={ar['variant_key']})")
+
+    # NEW: Optimized directional armor UI with presets
+    character["_armor_coverage"] = {}
+    zones = ["head", "throat", "chest", "stomach", "groin",
+             "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm",
+             "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"]
+
+    print(f"\n🛡️ Equipping {ar['name']} – choose armor style:")
+    print("[1] Full Plate (max protection)")
+    print("[2] Front-Only Plate (lighter, back exposed)")
+    print("[3] Rogue Scout (minimal, stealthy)")
+    print("[4] Custom per zone")
+    preset = ask_int("Choice (1-4): ", lo=1, hi=4, default=4)
+
+    if preset == 1:  # Full
+        for z in zones:
+            character["_armor_coverage"][z] = {"front": True, "back": True}
+    elif preset == 2:  # Front only
+        for z in zones:
+            character["_armor_coverage"][z] = {"front": True, "back": False}
+    elif preset == 3:  # Rogue Scout
+        for z in zones:
+            character["_armor_coverage"][z] = {"front": False, "back": False}
+    else:  # Custom
+        groups = [("Torso", ["chest","stomach","groin"]), ("Legs", ["left_upper_leg","right_upper_leg","left_lower_leg","right_lower_leg"]),
+                  ("Arms", ["left_upper_arm","right_upper_arm","left_lower_arm","right_lower_arm"]), ("Head/Neck", ["head","throat"])]
+        for gname, gzones in groups:
+            print(f"\n{gname}: [1] Front only [2] Back only [3] Full [4] None")
+            ch = ask_int("Choice: ", lo=1, hi=4, default=3)
+            front = ch in (1,3)
+            back = ch in (2,3)
+            for z in gzones:
+                character["_armor_coverage"][z] = {"front": front, "back": back}
 
     weapon_key = None
     if isinstance(character.get("weapon"), dict):
@@ -333,8 +345,7 @@ def weapon_label_for_log(wpn):
 
 def apply_durability_tick(attacker, round_log):
     w = attacker.get("_weapon_type")
-    if not w:
-        return
+    if not w: return
     attacker["_weapon_durability"] = max(0, int(attacker.get("_weapon_durability", DEFAULT_DURABILITY.get(w, 50))) - 1)
     label = weapon_label_for_log(w)
     round_log.append(f"⚔️ {attacker['name']}'s {label} durability: {attacker['_weapon_durability']}")
@@ -371,8 +382,7 @@ def choose_target_zone():
         idx = len(AIM_ZONES) if idx > len(AIM_ZONES) else idx
         return AIM_ZONES[idx - 1]
     key = raw.replace(" ", "_")
-    if key in AIM_ZONES:
-        return key
+    if key in AIM_ZONES: return key
     for z in AIM_ZONES:
         if z.endswith(key) or key in z:
             return z
@@ -380,43 +390,30 @@ def choose_target_zone():
 
 def coverage_keys_for_zone(zone: str):
     z = zone.lower()
-    if z in ("head","skull","face"):
-        return ["head","skull","face","eyes","neck"]
-    if z in ("neck",):
-        return ["neck","gorget","collar","torso"]
-    if z in ("chest","heart","rib","ribs"):
-        return ["chest","torso","breast","cuirass"]
-    if z in ("stomach","belly","abdomen","gut"):
-        return ["stomach","abdomen","belly","torso"]
-    if z in ("groin","hip","hips"):
-        return ["groin","hips","pelvis","torso"]
+    if z in ("head","skull","face"): return ["head","skull","face","eyes","neck"]
+    if z in ("neck",): return ["neck","gorget","collar","torso"]
+    if z in ("chest","heart","rib","ribs"): return ["chest","torso","breast","cuirass"]
+    if z in ("stomach","belly","abdomen","gut"): return ["stomach","abdomen","belly","torso"]
+    if z in ("groin","hip","hips"): return ["groin","hips","pelvis","torso"]
     if "arm" in z:
         keys = [z, "arm", "arms", "shoulder", "upper_arm", "forearm"]
-        if "left" in z:
-            keys += ["left_arm","left_upper_arm","left_forearm"]
-        if "right" in z:
-            keys += ["right_arm","right_upper_arm","right_forearm"]
+        if "left" in z: keys += ["left_arm","left_upper_arm","left_forearm"]
+        if "right" in z: keys += ["right_arm","right_upper_arm","right_forearm"]
         return keys
-    if "hand" in z:
-        return [z, "hand", "hands", "gauntlet", "arms"]
+    if "hand" in z: return [z, "hand", "hands", "gauntlet", "arms"]
     if any(part in z for part in ("leg","thigh","calf","shin")):
         keys = [z, "leg", "legs", "thigh", "calf", "shin"]
-        if "left" in z:
-            keys += ["left_leg","left_thigh","left_calf","left_shin"]
-        if "right" in z:
-            keys += ["right_leg","right_thigh","right_calf","right_shin"]
+        if "left" in z: keys += ["left_leg","left_thigh","left_calf","left_shin"]
+        if "right" in z: keys += ["right_leg","right_thigh","right_calf","right_shin"]
         return keys
-    if any(part in z for part in ("foot","feet")):
-        return [z, "foot", "feet", "boots", "shoes", "legs"]
+    if any(part in z for part in ("foot","feet")): return [z, "foot", "feet", "boots", "shoes", "legs"]
     return [z, "torso"]
 
-def is_zone_covered(target, zone):
-    cov = (target.get("_equipped_armor") or {}).get("coverage") or []
-    if not cov:
+def is_zone_covered(target, zone, side="front"):
+    cov = target.get("_armor_coverage", {})
+    if zone not in cov:
         return False
-    ck = coverage_keys_for_zone(zone)
-    cov_low = [c.lower() for c in cov]
-    return any(c in cov_low for c in ck)
+    return cov[zone].get(side, False)
 
 def attack_roll(attacker, attack_stance, target, target_stance, attack_type="normal", aimed_zone=None):
     atk_stance_mod, _ = stance_mods(attack_stance)
@@ -438,12 +435,9 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
 
     status_pen = 0
     fog_pen = int(attacker.get("_fog_atk_penalty", 0)) if int(attacker.get("_fogged_rounds", 0)) > 0 else 0
-    if fog_pen:
-        status_pen -= fog_pen
-    if int(attacker.get("_feared_rounds", 0)) > 0:
-        status_pen -= 10
-    if int(attacker.get("_veil_aura_rounds", 0)) > 0:
-        status_pen -= int(attacker.get("_veil_aura_penalty", 10) or 10)
+    if fog_pen: status_pen -= fog_pen
+    if int(attacker.get("_feared_rounds", 0)) > 0: status_pen -= 10
+    if int(attacker.get("_veil_aura_rounds", 0)) > 0: status_pen -= int(attacker.get("_veil_aura_penalty", 10) or 10)
 
     atk_roll = random.randint(1, 100)
     def_roll = random.randint(1, 100)
@@ -469,16 +463,52 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
         "hit": attack_total > defense_total
     }
 
-# ========= Damage application =========
-def apply_damage(attacker, target, raw_damage, round_log, zone=None, is_crit=False):
+# ========= FULL STEALTH MECHANICS (universal + Rogue advantage) =========
+def calculate_stealth_modifier(character, environment="normal", speed="normal"):
+    mod = 0
+    mod += character.get("agility", 30) // 3
+    mod += character.get("perception", 25) // 4
+
+    if character.get("race") == "Ogre": mod -= 45
+    elif character.get("race") == "Dwarf": mod -= 12
+
+    armor_w = character.get("armor_weight", 0)
+    inv_w = character.get("inventory_weight", 0)
+    mod -= (armor_w + inv_w) // 4
+
+    if speed == "full": mod -= 35
+    elif speed == "normal": mod -= 18
+
+    if environment in ["shadows", "dark", "night"]: mod += 30
+    elif environment == "crowd": mod += 22
+
+    if character.get("class_name") == "Rogue":
+        mod += 25
+        if character.get("skill_tree") == "Infiltrator":
+            mod += 35
+
+    return mod
+
+def attempt_stealth(character, environment="normal", speed="normal"):
+    roll = random.randint(1, 100)
+    mod = calculate_stealth_modifier(character, environment, speed)
+    total = roll + mod
+    success = total >= 55
+    return success, total, roll, mod
+
+# ========= Damage application with side (unprotected = full damage, no +40%) =========
+def apply_damage(attacker, target, raw_damage, round_log, zone=None, side="front", is_crit=False):
     global rules
     dmg = max(0, int(raw_damage))
 
-    covered = False
-    if zone and is_zone_covered(target, zone):
-        covered = True
+    protected = is_zone_covered(target, zone, side) if zone else False
+    if zone and not protected:
+        round_log.append(f"💥 Unprotected {side} side on {zone}! Full damage goes through.")
+
+    covered = protected
+    if covered:
         dmg = max(0, int(round(dmg * 0.75)))
-        round_log.append(f"🛡️ Armor absorbs part of the blow to {zone}!")
+        round_log.append(f"🛡️ Armor absorbs part of the blow to {zone} ({side})!")
 
     if zone and zone.lower() in ("head","skull","face") and not covered:
         mult = float((rules.get("helmet_rules") or {}).get("unhelmeted_headshot_mult", 1.0))
@@ -494,15 +524,9 @@ def apply_damage(attacker, target, raw_damage, round_log, zone=None, is_crit=Fal
 
     if after <= 0 and target.get("alive", True):
         target["alive"] = False
-        if zone:
-            round_log.append("🏴 " + f"{target['name']} falls! (hit to {zone}){crit_tag}")
-        else:
-            round_log.append("🏴 " + f"{target['name']} falls!{crit_tag}")
+        round_log.append("🏴 " + f"{target['name']} falls! (hit to {zone} {side}){crit_tag}")
     else:
-        if zone:
-            round_log.append("💥 " + f"{target['name']} takes {dmg} damage to {zone}! ➜ HP: {after}/{target.get('total_hp', after)}{crit_tag}")
-        else:
-            round_log.append("💥 " + f"{target['name']} takes {dmg} damage! ➜ HP: {after}/{target.get('total_hp', after)}{crit_tag}")
+        round_log.append("💥 " + f"{target['name']} takes {dmg} damage to {zone} ({side})! ➜ HP: {after}/{target.get('total_hp', after)}{crit_tag}")
 
 def cleanup_dead(units, round_log):
     return [u for u in units if u.get("alive", True)]
@@ -547,23 +571,19 @@ def list_active_abilities(unit):
 
 def choose_ability(unit):
     names = list_active_abilities(unit)
-    if not names:
-        return None
+    if not names: return None
     listed = ", ".join(f"[{i+1}] {n}" for i, n in enumerate(names))
     print(f"Available active abilities: {listed}")
     raw = ask("Use ability? (number, name, or none): ", default="none").strip().lower()
-    if raw in ("", "none", "0"):
-        return None
+    if raw in ("", "none", "0"): return None
     if raw.isdigit():
         i = int(raw) - 1
-        if 0 <= i < len(names):
-            return names[i]
+        if 0 <= i < len(names): return names[i]
         return None
     return raw if raw in names else None
 
 def ability_damage_bonus(unit, ability_name):
-    if not ability_name:
-        return 0
+    if not ability_name: return 0
     ab = unit.get("abilities", {}).get(ability_name, {})
     return int(ab.get("damage_bonus", 0))
 
@@ -617,6 +637,25 @@ def run_combat(player, enemies, label):
         # =========================
         # PLAYER TURN
         # =========================
+        print("Choose action: [1] Attack, [2] Stealth/Hide")
+        action_choice = ask_int("Enter action (1-2): ", lo=1, hi=2, default=1)
+
+        if action_choice == 2:  # STEALTH
+            env = ask("Environment (normal/shadows/dark/crowd): ", default="normal")
+            speed = ask("Speed (full/normal/slow): ", default="slow")
+            success, total, roll, mod = attempt_stealth(player, env, speed)
+            if success:
+                print(f"🕵️ {player['name']} hides successfully! (roll {roll} + {mod} = {total})")
+                player["_hidden"] = True
+                global_progress.record_action(player, "agility", intensity=2)
+                global_progress.record_action(player, "perception", intensity=2)
+                if player.get("class_name") == "Rogue":
+                    global_progress.record_action(player, "dexterity", intensity=1)
+            else:
+                print(f"❌ {player['name']} fails to hide (roll {roll} + {mod} = {total})")
+                player["_hidden"] = False
+            continue
+
         p_stance = choose_stance()
 
         regen_stamina(player, p_stance, rules, round_log)
@@ -636,13 +675,19 @@ def run_combat(player, enemies, label):
 
                 spend_stamina(player, "attack", p_stance, ability, rules, round_log)
 
+                # Determine side (flanking)
+                side = "front"
+                if player.get("_hidden", False):
+                    side_choice = ask("Attack from Front or Back? (f/b, default back): ", default="b").lower()
+                    side = "back" if side_choice.startswith("b") else "front"
+
                 calc = attack_roll(player, p_stance, target, "neutral", a_type, aimed_zone=aimed_zone)
                 base = base_damage_for(player)
                 bonus = ability_damage_bonus(player, ability)
                 raw_damage = base + bonus
 
                 if a_type == "aimed" and aimed_zone:
-                    print(f"🎯 Target zone: {aimed_zone} (aimed penalty {calc['aimed_pen']})")
+                    print(f"🎯 Target zone: {aimed_zone} ({side} side) (aimed penalty {calc['aimed_pen']})")
 
                 print(f"⚔️ {player['name']} is in {p_stance.upper()} stance")
                 print(f"🛡️ {target['name']} is in NEUTRAL stance")
@@ -657,13 +702,21 @@ def run_combat(player, enemies, label):
                     if is_crit and aimed_zone and aimed_zone.lower() == "head":
                         raw_damage = int(round(raw_damage * (1 + head_bonus_pct / 100.0)))
                     final_damage = int(round(raw_damage * (crit_mult if is_crit else 1.0)))
-                    apply_damage(player, target, final_damage, round_log, zone=aimed_zone, is_crit=is_crit)
+                    apply_damage(player, target, final_damage, round_log, zone=aimed_zone, side=side, is_crit=is_crit)
                     did_damage = True
                     apply_durability_tick(player, round_log)
 
-                    # === GLOBAL PROGRESSION RECORDING ===
                     global_progress.record_action(player, "strength", intensity=2)
-                    global_progress.record_action(player, "weapon_skill", intensity=1)
+                    global_progress.record_action(player, "dexterity", intensity=1)
+                    global_progress.record_action(player, "agility", intensity=1)
+                    global_progress.record_action(player, "endurance", intensity=1)
+                    global_progress.record_action(player, "weapon_skill", intensity=2)
+                    global_progress.record_action(player, "willpower", intensity=1)
+                    global_progress.record_action(player, "intelligence", intensity=1)
+                    global_progress.record_action(player, "perception", intensity=1)
+                    global_progress.record_action(player, "charisma", intensity=1)
+                    if is_sorceress(player):
+                        global_progress.record_action(player, "corruption_level", intensity=1)
                 else:
                     print("❌ Attack misses or is defended!")
                     spend_stamina(target, "parry", "neutral", None, rules, round_log)
@@ -686,13 +739,13 @@ def run_combat(player, enemies, label):
                                     round_log.append("🩶 Veil’s Grace falters—fatal blow reduced by half.")
                                     if not consume_evade_on_melee_if_any(player, round_log):
                                         final_r = apply_melee_vulnerability(player, final_r, is_melee=True)
-                                        apply_damage(target, player, final_r, round_log, zone=None, is_crit=is_crit_r)
+                                        apply_damage(target, player, final_r, round_log, zone=None, side="front", is_crit=is_crit_r)
                                         did_damage = True
                                 apply_durability_tick(target, round_log)
                             else:
                                 if not consume_evade_on_melee_if_any(player, round_log):
                                     final_r = apply_melee_vulnerability(player, final_r, is_melee=True)
-                                    apply_damage(target, player, final_r, round_log, zone=None, is_crit=is_crit_r)
+                                    apply_damage(target, player, final_r, round_log, zone=None, side="front", is_crit=is_crit_r)
                                     did_damage = True
                                 apply_durability_tick(target, round_log)
                         else:
@@ -745,13 +798,13 @@ def run_combat(player, enemies, label):
                         round_log.append("🩶 Veil’s Grace falters—fatal blow reduced by half.")
                         if not consume_evade_on_melee_if_any(player, round_log):
                             final_e = apply_melee_vulnerability(player, final_e, is_melee=True)
-                            apply_damage(e, player, final_e, round_log, zone=None, is_crit=is_crit_e)
+                            apply_damage(e, player, final_e, round_log, zone=None, side="front", is_crit=is_crit_e)
                             did_damage = True
                         apply_durability_tick(e, round_log)
                 else:
                     if not consume_evade_on_melee_if_any(player, round_log):
                         final_e = apply_melee_vulnerability(player, final_e, is_melee=True)
-                        apply_damage(e, player, final_e, round_log, zone=None, is_crit=is_crit_e)
+                        apply_damage(e, player, final_e, round_log, zone=None, side="front", is_crit=is_crit_e)
                         did_damage = True
                     apply_durability_tick(e, round_log)
             else:
@@ -767,7 +820,7 @@ def run_combat(player, enemies, label):
                     if calc_r2["hit"]:
                         is_crit_r2 = calc_r2["atk_roll"] >= crit_hi
                         final_r2 = int(round(p_base * (crit_mult if is_crit_r2 else 1.0)))
-                        apply_damage(player, e, final_r2, round_log, zone=None, is_crit=is_crit_r2)
+                        apply_damage(player, e, final_r2, round_log, zone=None, side="front", is_crit=is_crit_r2)
                         did_damage = True
                         apply_durability_tick(player, round_log)
                     else:
@@ -781,7 +834,6 @@ def run_combat(player, enemies, label):
         if watch.note(did_damage, round_log):
             apply_fatigue_to_all([player] + enemies, round_log)
 
-        # === GLOBAL PROGRESSION CHECK AFTER FULL ROUND ===
         growth_msgs = global_progress.check_for_growth(player)
         for m in growth_msgs:
             print(m)
@@ -790,7 +842,6 @@ def run_combat(player, enemies, label):
 
     print("⏱️ Combat auto-ended (max rounds reached).")
     return False
-
 
 # ========= Scenario helpers =========
 def choose_player():
@@ -878,8 +929,6 @@ def main():
 if __name__ == "__main__":
     random.seed()
     main()
-
-
 
 
 
