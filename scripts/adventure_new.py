@@ -42,7 +42,7 @@ class GlobalProgression:
             current = getattr(character, stat, 30)
             cap = max_stats.get(stat, 50)
             if current >= cap: continue
-            threshold = 40 + (current - 30) * 15
+            threshold = 30 + (current - 30) * 12   # 30 first, +12 per level
             if uses >= threshold:
                 new_value = current + 1
                 setattr(character, stat, new_value)
@@ -135,7 +135,7 @@ def overlay_weapons_from_json():
                 except: pass
 overlay_weapons_from_json()
 
-# ========= Armor resolver =========
+# ========= Armor resolver (unchanged) =========
 DEFAULT_ARMORS = {
     "Light_Light": ("Padded Cloth", 5),
     "Light_Heavy": ("Light Chainmail", 10),
@@ -192,7 +192,7 @@ def resolve_armor(category_key: str):
     name, w = DEFAULT_ARMORS.get(cat, (cat, 10))
     return pack(name, w, "fallback", coverage=[])
 
-# ========= Characters / equipment - DIRECTIONAL ARMOR =========
+# ========= Characters / equipment - OPTIMIZED DIRECTIONAL ARMOR =========
 def equip_armor(character):
     if isinstance(character.get("armor"), list) and character["armor"]:
         cat = character["armor"][0]
@@ -211,35 +211,31 @@ def equip_armor(character):
     }
 
     if ar["weight"] <= 5:
-        print(f"🛡️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) has minimal impact on mobility and stamina.")
+        print(f"🛡️ {character['name']}'s {ar['name']} has minimal impact.")
     else:
-        print(f"⚠️ {character['name']}'s {ar['name']} ({ar['category']}, weight {ar['weight']}) reduces mobility by {ar['mobility_penalty']}% and increases stamina costs by {ar['stamina_penalty']}%!")
+        print(f"⚠️ {character['name']}'s {ar['name']} reduces mobility by {ar['mobility_penalty']}% and increases stamina costs by {ar['stamina_penalty']}%!")
     print(f"🛡️ {character['name']} equips {ar['name']}")
-    logging.debug(f"Equipped {ar['name']} to {character['name']} (category={ar['category']}, variant={ar['variant_key']})")
 
-    # NEW: Optimized directional armor UI with presets
+    # OPTIMIZED UI with presets + live preview
     character["_armor_coverage"] = {}
     zones = ["head", "throat", "chest", "stomach", "groin",
              "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm",
              "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"]
 
-    print(f"\n🛡️ Equipping {ar['name']} – choose armor style:")
+    print(f"\n🛡️ Equipping {ar['name']} – choose style (live preview):")
     print("[1] Full Plate (max protection)")
     print("[2] Front-Only Plate (lighter, back exposed)")
     print("[3] Rogue Scout (minimal, stealthy)")
-    print("[4] Custom per zone")
+    print("[4] Custom")
     preset = ask_int("Choice (1-4): ", lo=1, hi=4, default=4)
 
-    if preset == 1:  # Full
-        for z in zones:
-            character["_armor_coverage"][z] = {"front": True, "back": True}
-    elif preset == 2:  # Front only
-        for z in zones:
-            character["_armor_coverage"][z] = {"front": True, "back": False}
-    elif preset == 3:  # Rogue Scout
-        for z in zones:
-            character["_armor_coverage"][z] = {"front": False, "back": False}
-    else:  # Custom
+    if preset == 1:
+        for z in zones: character["_armor_coverage"][z] = {"front": True, "back": True}
+    elif preset == 2:
+        for z in zones: character["_armor_coverage"][z] = {"front": True, "back": False}
+    elif preset == 3:
+        for z in zones: character["_armor_coverage"][z] = {"front": False, "back": False}
+    else:
         groups = [("Torso", ["chest","stomach","groin"]), ("Legs", ["left_upper_leg","right_upper_leg","left_lower_leg","right_lower_leg"]),
                   ("Arms", ["left_upper_arm","right_upper_arm","left_lower_arm","right_lower_arm"]), ("Head/Neck", ["head","throat"])]
         for gname, gzones in groups:
@@ -249,6 +245,9 @@ def equip_armor(character):
             back = ch in (2,3)
             for z in gzones:
                 character["_armor_coverage"][z] = {"front": front, "back": back}
+
+    # Live summary
+    print(f"Final armor weight: {ar['weight']} kg | Mobility: -{ar['mobility_penalty']}% | Stamina cost: +{ar['stamina_penalty']}%")
 
     weapon_key = None
     if isinstance(character.get("weapon"), dict):
@@ -463,7 +462,7 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
         "hit": attack_total > defense_total
     }
 
-# ========= FULL STEALTH MECHANICS (universal + Rogue advantage) =========
+# ========= FULL STEALTH MECHANICS with flanking =========
 def calculate_stealth_modifier(character, environment="normal", speed="normal"):
     mod = 0
     mod += character.get("agility", 30) // 3
@@ -496,7 +495,7 @@ def attempt_stealth(character, environment="normal", speed="normal"):
     success = total >= 55
     return success, total, roll, mod
 
-# ========= Damage application with side (unprotected = full damage, no +40%) =========
+# ========= Damage application with side (unprotected = full damage) =========
 def apply_damage(attacker, target, raw_damage, round_log, zone=None, side="front", is_crit=False):
     global rules
     dmg = max(0, int(raw_damage))
@@ -587,7 +586,7 @@ def ability_damage_bonus(unit, ability_name):
     ab = unit.get("abilities", {}).get(ability_name, {})
     return int(ab.get("damage_bonus", 0))
 
-# ========= Encounter/Combat =========
+# ========= Encounter/Combat with flanking =========
 def safe_print_log(lines):
     for entry in lines:
         if isinstance(entry, dict):
@@ -619,6 +618,8 @@ def run_combat(player, enemies, label):
     crit_mult = float((rules.get("critical_multipliers") or {}).get("default", 1.5))
     head_bonus_pct = int(((rules.get("aimed_attack") or {}).get("crit_bonus_head_pct", 10)))
 
+    hidden_rounds = 0
+
     while rnd < MAX_ROUNDS:
         rnd += 1
         print("\n🎛️⚔️ New Round ⚔️🎛️")
@@ -647,6 +648,7 @@ def run_combat(player, enemies, label):
             if success:
                 print(f"🕵️ {player['name']} hides successfully! (roll {roll} + {mod} = {total})")
                 player["_hidden"] = True
+                hidden_rounds += 1
                 global_progress.record_action(player, "agility", intensity=2)
                 global_progress.record_action(player, "perception", intensity=2)
                 if player.get("class_name") == "Rogue":
@@ -654,6 +656,7 @@ def run_combat(player, enemies, label):
             else:
                 print(f"❌ {player['name']} fails to hide (roll {roll} + {mod} = {total})")
                 player["_hidden"] = False
+                hidden_rounds = 0
             continue
 
         p_stance = choose_stance()
@@ -675,7 +678,7 @@ def run_combat(player, enemies, label):
 
                 spend_stamina(player, "attack", p_stance, ability, rules, round_log)
 
-                # Determine side (flanking)
+                # Flanking side
                 side = "front"
                 if player.get("_hidden", False):
                     side_choice = ask("Attack from Front or Back? (f/b, default back): ", default="b").lower()
@@ -758,7 +761,7 @@ def run_combat(player, enemies, label):
             return True
 
         # =========================
-        # ENEMY TURNS
+        # ENEMY TURNS with flanking
         # =========================
         for e in list(enemies):
             if not player.get("alive", True):
@@ -775,6 +778,13 @@ def run_combat(player, enemies, label):
             e_stance = "offensive" if e["current_hp"] > e["total_hp"] * 0.35 else "defensive"
             regen_stamina(e, e_stance, rules, round_log)
             spend_stamina(e, "attack", e_stance, None, rules, round_log)
+
+            # Enemy flanking chance
+            enemy_side = "front"
+            if player.get("_hidden", False) and hidden_rounds > 2 and random.random() < 0.4:
+                enemy_side = "back"
+                round_log.append(f"🕵️ {e['name']} flanks you from behind!")
+
             calc_e = attack_roll(e, e_stance, player, "neutral", "normal")
             e_base = base_damage_for(e)
 
@@ -798,13 +808,13 @@ def run_combat(player, enemies, label):
                         round_log.append("🩶 Veil’s Grace falters—fatal blow reduced by half.")
                         if not consume_evade_on_melee_if_any(player, round_log):
                             final_e = apply_melee_vulnerability(player, final_e, is_melee=True)
-                            apply_damage(e, player, final_e, round_log, zone=None, side="front", is_crit=is_crit_e)
+                            apply_damage(e, player, final_e, round_log, zone=None, side=enemy_side, is_crit=is_crit_e)
                             did_damage = True
                         apply_durability_tick(e, round_log)
                 else:
                     if not consume_evade_on_melee_if_any(player, round_log):
                         final_e = apply_melee_vulnerability(player, final_e, is_melee=True)
-                        apply_damage(e, player, final_e, round_log, zone=None, side="front", is_crit=is_crit_e)
+                        apply_damage(e, player, final_e, round_log, zone=None, side=enemy_side, is_crit=is_crit_e)
                         did_damage = True
                     apply_durability_tick(e, round_log)
             else:
@@ -860,10 +870,6 @@ def choose_player():
         if iso:
             player = iso
     return player
-
-def equip_starters(characters):
-    for c in characters:
-        equip_armor(c)
 
 def make_bandits(n=2):
     base = load_enemy_template("bandit")
