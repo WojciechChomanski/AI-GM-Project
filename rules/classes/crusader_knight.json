@@ -302,13 +302,42 @@
                     "Exhausted_2r"
                 ]
             },
-            "Holy_Fury": { "type": "passive", "effect": "On kill of enemy of faith: stack +1 damage, +5% crit (max 5 stacks)" },
-            "Crusader_Charge": { "type": "attack", "stamina": 12, "bonus_damage": 15, "knockdown": true },
-            "Discern_Sin": { "type": "utility", "stamina": 8, "piety_cost": 5, "effect": "Piety vs Willpower – detects major sin only" },
-            "Final_Verdict": { "type": "execution", "uses_per_day": 1, "effect": "Instant kill on confirmed guilty low-HP target; massive damage + fear on high-HP" },
-            "Cleansing_Ritual": { "type": "utility", "stamina": 15, "effect": "Remove corruption/curse from target or area" },
-            "Breath_Blessing": { "type": "buff", "stamina": 12, "effect": "Allies gain +15% damage vs Veilspawn for 3 rounds" },
-            "Purge_Corruption": { "type": "attack_holy", "stamina": 18, "effect": "Heavy damage to corrupted targets + cleanse" }
+            "Holy_Fury": { 
+                "type": "passive", 
+                "effect": "On kill of enemy of faith: stack +1 damage, +5% crit (max 5 stacks)" 
+            },
+            "Crusader_Charge": { 
+                "type": "attack", 
+                "stamina": 12, 
+                "bonus_damage": 15, 
+                "knockdown": true 
+            },
+            "Discern_Sin": { 
+                "type": "utility", 
+                "stamina": 8, 
+                "piety_cost": 5, 
+                "effect": "Piety vs Willpower – detects major sin only" 
+            },
+            "Final_Verdict": { 
+                "type": "execution", 
+                "uses_per_day": 1, 
+                "effect": "Instant kill on confirmed guilty low-HP target; massive damage + fear on high-HP" 
+            },
+            "Cleansing_Ritual": { 
+                "type": "utility", 
+                "stamina": 15, 
+                "effect": "Remove corruption/curse from target or area" 
+            },
+            "Breath_Blessing": { 
+                "type": "buff", 
+                "stamina": 12, 
+                "effect": "Allies gain +15% damage vs Veilspawn for 3 rounds" 
+            },
+            "Purge_Corruption": { 
+                "type": "attack_holy", 
+                "stamina": 18, 
+                "effect": "Heavy damage to corrupted targets + cleanse" 
+            }
         },
         "flaws": {
             "Low_Morale": {
@@ -333,56 +362,5 @@
         "api": {
             "rules_path": "rules/classes/crusader_knight.json"
         }
-    },
-    "Veil_Sorceress": {
-        "description": "A fragile but terrifying caster who draws on the Veil. Only human and elven women can wield this active magic. Power always exacts a cost: stamina, blood, or sanity (corruption).",
-        "role": "Caster",
-        "allowed_races": [
-            "Human",
-            "Elf"
-        ],
-        "allowed_genders": [
-            "Female"
-        ],
-        "base_stats": {
-            "max_hp": 45,
-            "max_stamina": 50
-        },
-        "stat_bonuses": {
-            "intelligence": 5,
-            "willpower": 5,
-            "agility": -5
-        },
-        "equipment_rules": {
-            "armor_allowed": [
-                "None",
-                "Light_Light"
-            ],
-            "shields_allowed": false,
-            "weapons_allowed": [
-                "dagger",
-                "staff"
-            ]
-        },
-        "class_flags": {
-            "melee_vulnerability_pct": 50,
-            "active_magic_user": true
-        },
-        "hidden_stats": {
-            "corruption": {
-                "start": 0,
-                "max": 100
-            }
-        },
-        "passives": [
-            "veils_whisper"
-        ],
-        "spells": [
-            "veil_fog",
-            "blood_pact",
-            "whisper_of_fear",
-            "fade_step",
-            "shrouds_embrace"
-        ]
     }
 }
