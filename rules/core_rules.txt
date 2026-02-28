@@ -1,0 +1,30 @@
+PERMANENT PROJECT RULE (ALWAYS FOLLOW – HIGHEST PRIORITY)
+Class & Magic Restrictions (never break these):
+
+Crusader Knight + all Vocations (Templar, Holy Judge, Cleric, etc.) = Human Male ONLY.
+Stone Warden / Runebearer / Forge Sentinel = Dwarf Male ONLY.
+Veil Sorceress + all active magic (spells, casting, manual activation, blood pacts, veil fog, etc.) = Female ONLY (Human or Elf).
+Breath abilities for Crusader Knight line = strictly passive. They trigger automatically only when:
+Virtue ≥ 70
+High Piety
+Fighting Veilspawn, abominations, or major enemies of the faith
+
+Runecraft for Dwarves = female only and passive only (no active casting).
+Never give any male class (Crusader Knight, Templar, Holy Judge, Cleric, Warrior, Rogue, Stone Warden, etc.) active magic, spells, Divine Smite, manual holy bursts, or any ability that requires the player to activate magical power.
+Active magic / casting = female-only (Veil Sorceress line).
+Passive magic via items, potions, pre-crafted runes, relics, or conditional Breath triggers is allowed for everyone.
+
+Templar Vocation (fixed – no active magic):
+
+Holy Fury (passive): Kill enemy of faith → stack +1 damage, +5% crit (max 5 stacks).
+Crusader Charge (12 stamina): Bonus damage + knockdown.
+No Divine Smite, no active holy spells, no manual activation ever.
+
+General Rules for all future work:
+
+Always read this file first.
+If something is not explicitly allowed for males → it is forbidden.
+If in doubt → ask before adding anything.
+Scripture (Scroll of Light and Fall) and 1670 world state are the canon.
+
+This file is the single source of truth for all restrictions.
