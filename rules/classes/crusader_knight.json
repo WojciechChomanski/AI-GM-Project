@@ -1,11 +1,11 @@
 {
     "meta": {
-        "id": "class_crusader_knight_v0_6b",
+        "id": "class_crusader_knight_v1_0",
         "kind": "class",
         "name": "Crusader_Knight",
         "label": "Crusader Knight",
-        "version": "0.6b",
-        "updated": "2025-10-14"
+        "version": "1.0",
+        "updated": "2026-02-28"
     },
     "Crusader_Knight": {
         "description": "Male human-only heavy cavalry/infantry sanctified by the Breath. Bursting power, iron defense, long-term wear.",
@@ -209,8 +209,36 @@
                         ]
                     }
                 }
+            },
+            {
+                "tier": 5,
+                "name": "Order_Vocation",
+                "requirements": { "level": 10 },
+                "vocation_choice": ["Templar", "Holy_Judge", "Cleric"],
+                "abilities_gain_by_vocation": {
+                    "Templar": ["Holy_Fury", "Crusader_Charge"],
+                    "Holy_Judge": ["Discern_Sin", "Final_Verdict"],
+                    "Cleric": ["Cleansing_Ritual", "Breath_Blessing", "Purge_Corruption"]
+                }
             }
         ],
+        "piety_system": {
+            "start": 30,
+            "max": 100,
+            "discern_sin": {
+                "cost_stamina": 8,
+                "cost_piety": 5,
+                "roll": "Piety + d100 vs Target Willpower + d100",
+                "success": "Detects major sin only (demon pacts, dark magic, betrayal, murder of innocents)",
+                "failure": "Nothing detected"
+            },
+            "final_verdict": {
+                "uses_per_day": 1,
+                "requires": "confirmed major sin",
+                "effect": "Instant kill on confirmed guilty low-HP target; massive holy damage + fear on high-HP",
+                "risk": "Wrong execution on innocent = heavy piety loss + Order punishment"
+            }
+        },
         "abilities": {
             "Basic_Strike": {
                 "type": "attack",
@@ -273,7 +301,14 @@
                 "tags_apply_after": [
                     "Exhausted_2r"
                 ]
-            }
+            },
+            "Holy_Fury": { "type": "passive", "effect": "On kill of enemy of faith: stack +1 damage, +5% crit (max 5 stacks)" },
+            "Crusader_Charge": { "type": "attack", "stamina": 12, "bonus_damage": 15, "knockdown": true },
+            "Discern_Sin": { "type": "utility", "stamina": 8, "piety_cost": 5, "effect": "Piety vs Willpower – detects major sin only" },
+            "Final_Verdict": { "type": "execution", "uses_per_day": 1, "effect": "Instant kill on confirmed guilty low-HP target; massive damage + fear on high-HP" },
+            "Cleansing_Ritual": { "type": "utility", "stamina": 15, "effect": "Remove corruption/curse from target or area" },
+            "Breath_Blessing": { "type": "buff", "stamina": 12, "effect": "Allies gain +15% damage vs Veilspawn for 3 rounds" },
+            "Purge_Corruption": { "type": "attack_holy", "stamina": 18, "effect": "Heavy damage to corrupted targets + cleanse" }
         },
         "flaws": {
             "Low_Morale": {
