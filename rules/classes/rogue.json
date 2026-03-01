@@ -1,19 +1,32 @@
 {
   "meta": {
-    "id": "class_rogue_v1_0",
+    "id": "class_rogue_v1_3",
     "kind": "class",
     "name": "Rogue",
     "label": "Rogue",
-    "version": "1.0",
-    "updated": "2026-02-22"
+    "version": "1.3",
+    "updated": "2026-02-23"
   },
   "Rogue": {
-    "description": "Cunning survivor who thrives in shadows, streets and back alleys. Master of stealth, deception and precise strikes.",
-    "lore": "In a world that rewards the strong and the holy, the Rogue survives by being the one no one sees coming. Some are cutthroats and thieves, others silver-tongued spies or charming seducers. They are the knife in the dark, the whispered secret, the smile that hides the dagger.",
+    "description": "Cunning survivor of the shadows. Master of stealth, deception, precise strikes and survival in the underbelly of the world.",
+    "lore": "In a world ruled by steel and faith, the Rogue survives by never being seen until it is too late. Some are cutthroats and thieves, others silver-tongued spies or charming seducers. They are the knife in the dark, the whispered secret, the smile that hides the dagger.",
     "allowed_races": ["Human", "Elf", "Dwarf"],
     "allowed_genders": ["Male", "Female"],
     "power_source": "Martial + Cunning",
     "role_tags": ["striker", "scout", "deceiver", "high_mobility"],
+    "stat_modifiers": {
+      "agility": 12,
+      "dexterity": 10,
+      "perception": 8,
+      "strength": -4,
+      "toughness": -6
+    },
+    "base_stats": { "max_hp": 55, "max_stamina": 70 },
+    "proficiencies": {
+      "weapons": ["dagger", "shortsword", "throwing_knife", "light_crossbow"],
+      "armor_tiers": ["none", "light_light"],
+      "shields": false
+    },
     "progression": [
       {
         "tier": 1,
@@ -26,49 +39,54 @@
         "tier": 2,
         "name": "Shadow",
         "skill_tree_choice": ["Assassin", "Thief", "Charmer", "Duelist", "Infiltrator"],
-        "abilities_gain": ["Evasion", "Poison_Use"]
+        "abilities_gain": ["Evasion", "Poison_Use", "Silent_Movement"]
       },
       {
         "tier": 3,
         "name": "Phantom",
         "abilities_gain_by_path": {
-          "Assassin": ["Silent_Kill", "Death_Mark"],
-          "Thief": ["Master_Pickpocket", "Trap_Disarm"],
-          "Charmer": ["Seductive_Gaze", "Silver_Tongue"],
-          "Duelist": ["Twin_Blade_Dance", "Riposte"],
-          "Infiltrator": ["Disguise", "Shadow_Step"]
+          "Assassin": ["Silent_Kill", "Death_Mark", "Assassins_Strike"],
+          "Thief": ["Master_Pickpocket", "Trap_Disarm", "Shadow_Vault"],
+          "Charmer": ["Seductive_Gaze", "Silver_Tongue", "Distraction"],
+          "Duelist": ["Twin_Blade_Dance", "Silent_Riposte"],
+          "Infiltrator": ["Disguise", "Quiet_Vault", "Environment_Mastery"]
         }
       },
       {
         "tier": 4,
         "name": "Legend",
-        "abilities_gain": ["Ghost_in_the_Night"]
+        "abilities_gain": ["Master_of_Shadows"]
       }
     ],
     "skill_trees": {
-      "Assassin": { "focus": "silent death & precision", "mastery_bonus": "backstab damage +3" },
-      "Thief": { "focus": "agility, locks & loot", "mastery_bonus": "pickpocket success +15%" },
-      "Charmer": { "focus": "deception, seduction & social manipulation", "mastery_bonus": "charisma checks +10 when female" },
-      "Duelist": { "focus": "dual-wielding & flashy combat", "mastery_bonus": "dual wield stamina cost -1" },
-      "Infiltrator": { "focus": "disguise, stealth & espionage", "mastery_bonus": "stealth in crowds +20%" }
+      "Assassin": { "focus": "silent death & precision", "mastery_bonus": "backstab damage +3, stealth attack crit chance +15%" },
+      "Thief": { "focus": "agility, locks & loot", "mastery_bonus": "pickpocket success +15%, lockpicking time -30%" },
+      "Charmer": { "focus": "deception, seduction & social manipulation", "mastery_bonus": "charisma checks +10 (female +15), distraction success +20%" },
+      "Duelist": { "focus": "dual-wielding & flashy combat", "mastery_bonus": "dual wield stamina cost -1, riposte damage +4" },
+      "Infiltrator": { "focus": "disguise, stealth & espionage", "mastery_bonus": "stealth in crowds +20%, disguise duration +50%, detection chance -25%" }
     },
     "abilities": {
-      "Backstab": { "type": "attack", "stamina": 8, "effect": "If hidden or behind target: +50% damage" },
-      "Stealth": { "type": "passive", "effect": "+15 to hide in shadows or crowds" },
+      "Backstab": { "type": "attack", "stamina": 8, "effect": "If hidden or behind target: +50% damage (stealth bonus +30% in Infiltrator path)" },
+      "Stealth": { "type": "passive", "effect": "+15 to hide in shadows or crowds (Infiltrator: +25)" },
       "Quick_Hands": { "type": "passive", "effect": "+20 to pickpocket and lockpicking" },
-      "Evasion": { "type": "reaction", "stamina": 6, "effect": "Once per round, reroll a failed dodge" },
-      "Poison_Use": { "type": "passive", "effect": "Apply poison to weapons without risk" },
-      "Silent_Kill": { "type": "attack", "stamina": 12, "effect": "Backstab that can instantly kill low-HP targets" },
+      "Silent_Movement": { "type": "passive", "effect": "No sound while moving at half speed" },
+      "Evasion": { "type": "reaction", "stamina": 6, "effect": "Once per round, reroll a failed dodge or stealth check" },
+      "Poison_Use": { "type": "passive", "effect": "Apply poison without risk of self-poison" },
+      "Silent_Kill": { "type": "attack", "stamina": 12, "effect": "Backstab that can instantly kill low-HP targets if undetected" },
       "Death_Mark": { "type": "mark", "stamina": 10, "effect": "Next attack on marked target is automatic crit" },
-      "Master_Pickpocket": { "type": "passive", "effect": "Steal equipped items in combat" },
+      "Master_Pickpocket": { "type": "passive", "effect": "Steal equipped items in combat (Infiltrator: +25% success)" },
       "Trap_Disarm": { "type": "utility", "effect": "Disarm mechanical or magical traps safely" },
-      "Seductive_Gaze": { "type": "social", "effect": "Charm or distract target (stronger on males)" },
+      "Seductive_Gaze": { "type": "social", "effect": "Charm or distract target (female bonus: +20% success vs males)" },
       "Silver_Tongue": { "type": "social", "effect": "+25 to persuasion, bluff and intimidation" },
       "Twin_Blade_Dance": { "type": "attack", "stamina": 14, "effect": "Two attacks in one turn with dual wield" },
       "Riposte": { "type": "reaction", "effect": "Counter-attack when successfully parried" },
-      "Disguise": { "type": "utility", "effect": "Impersonate NPCs for extended periods" },
-      "Shadow_Step": { "type": "mobility", "stamina": 9, "effect": "Teleport short distance while hidden" },
-      "Ghost_in_the_Night": { "type": "ultimate", "uses_per_day": 1, "effect": "Become invisible and silent for 3 rounds" }
+      "Disguise": { "type": "utility", "effect": "Impersonate NPCs for extended periods (Infiltrator: +40% duration)" },
+      "Quiet_Vault": { "type": "mobility", "stamina": 9, "effect": "Vault over obstacles while remaining hidden" },
+      "Assassins_Strike": { "type": "attack", "stamina": 15, "effect": "Stealth attack deals +80% damage and ignores 50% armor" },
+      "Distraction": { "type": "social", "stamina": 8, "effect": "Create a distraction to lower enemy detection by 30%" },
+      "Silent_Riposte": { "type": "reaction", "effect": "Counter-attack from stealth deals +50% damage" },
+      "Environment_Mastery": { "type": "passive", "effect": "All environment bonuses doubled (Infiltrator only)" },
+      "Master_of_Shadows": { "type": "capstone", "effect": "Stealth checks automatically succeed in good conditions (shadows, crowds, night)" }
     },
     "flaws": {
       "Wanted": { "type": "social", "effect": "Higher chance of being recognized in cities" },
