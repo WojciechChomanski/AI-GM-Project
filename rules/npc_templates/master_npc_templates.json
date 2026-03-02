@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "id": "npc_template_v1_0",
+    "version": "1.0",
+    "last_updated": "2026-03-01"
+  },
+  "npc": {
+    "id": "elara_voss",
+    "name": "Elara Voss",
+    "race": "Human",
+    "gender": "Female",
+    "age": 27,
+    "class": "Courtesan-Operative",
+    "role": "Power Broker • Spy Handler • Social Controller",
+    "faction": "Velvet Gallows (covert Reclaimers ties)",
+    "alive": true,
+    "location": "Cinderhold",
+    "background_short": "...",
+    "personality": {
+      "big_five": { "openness": 78, "conscientiousness": 62, "extraversion": 85, "agreeableness": 55, "neuroticism": 40 },
+      "dark_triad": { "psychopathy": 30, "machiavellianism": 82, "narcissism": 68 },
+      "motivations": ["..."],
+      "fears": ["..."],
+      "speech_style": { "formality": "...", "tone": "...", "quirks": ["..."] }
+    },
+    "relationship_system": {
+      "axes": { "trust": 0, "respect": 0, "desire": 0, "leverage": 0 },
+      "memory_tags": [],
+      "thresholds": [ ... ],
+      "decay_rules": { ... }
+    },
+    "mental_state": {
+      "corruption": 28,
+      "stress": 12,
+      "active_traumas": [ ... ],
+      "resilience": 60
+    },
+    "long_term_goals": [ ... ],
+    "known_allies": [ ... ],
+    "known_rivals": [ ... ],
+    "secret_traumas": [ ... ],
+    "abilities": [ ... ],
+    "scene_hooks": [ ... ]
+  }
+}
