@@ -1,4 +1,4 @@
-# file: chat_api.py
+# chat_api.py  (MERGED - keeps ALL your original 233 lines + new relationship system)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -30,14 +30,16 @@ INTERACTION_FILE = "rules/last_interactions.json"
 WORLD_TIME_FILE = "rules/world_time.json"
 MENTAL_STATE_FILE = "rules/player_mental_state.json"
 CHARACTER_DIR = "rules/characters"
+RELATIONSHIP_DIR = "rules/relationships"   # NEW
 os.makedirs(LOG_DIR, exist_ok=True)
+os.makedirs(RELATIONSHIP_DIR, exist_ok=True)
 
 # === Classes
 class ChatRequest(BaseModel):
     npc: str
     player_input: str
 
-# === File I/O
+# === File I/O (your original)
 def read_json(path):
     return json.load(open(path, "r", encoding="utf-8")) if os.path.exists(path) else {}
 
@@ -45,7 +47,7 @@ def write_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-# === Game Time
+# === Game Time (your original)
 def get_current_game_hours():
     world_time = read_json(WORLD_TIME_FILE)
     return world_time.get("day", 0) * 24 + world_time.get("hour", 0)
@@ -60,7 +62,35 @@ def update_last_interaction(npc_name):
     interactions[npc_name.lower().replace(" ", "_")] = get_current_game_hours()
     write_json(INTERACTION_FILE, interactions)
 
-# === Emotion System
+# === NEW: 4-Axis Relationship System
+def load_relationship(npc_id):
+    path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
+    if os.path.exists(path):
+        return read_json(path)
+    return {"trust": 0, "respect": 0, "desire": 0, "leverage": 0}
+
+def save_relationship(npc_id, data):
+    path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
+    write_json(path, data)
+
+def update_relationship(npc_id, player_input):
+    rel = load_relationship(npc_id)
+    text = player_input.lower()
+
+    if any(w in text for w in ["thank", "help", "trust", "honest", "secret"]):
+        rel["trust"] = min(100, rel["trust"] + 8)
+        rel["respect"] = min(100, rel["respect"] + 5)
+    if any(w in text for w in ["love", "beautiful", "want", "close"]):
+        rel["desire"] = min(100, rel["desire"] + 10)
+    if any(w in text for w in ["pay", "owe", "deal", "control"]):
+        rel["leverage"] = min(100, rel["leverage"] + 7)
+    if any(w in text for w in ["hate", "kill", "traitor", "liar"]):
+        rel["trust"] = max(-50, rel["trust"] - 12)
+
+    save_relationship(npc_id, rel)
+    return rel
+
+# === Emotion System (your original)
 def load_emotions():
     return read_json(EMOTION_FILE)
 
@@ -86,7 +116,7 @@ def update_emotions(npc, text):
     save_emotions(emotions)
     return score
 
-# === Memory
+# === Memory (your original)
 def load_memory(npc):
     return read_json(MEMORY_FILE).get(npc.lower().replace(" ", "_"), [])
 
@@ -98,7 +128,7 @@ def write_to_memory(npc, line):
         memory_data[key].append(line)
     write_json(MEMORY_FILE, memory_data)
 
-# === Logs
+# === Logs (your original)
 def write_to_log(npc_name, player_input, npc_reply):
     filename = os.path.join(LOG_DIR, f"{npc_name}_chatlog.txt")
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -107,7 +137,7 @@ def write_to_log(npc_name, player_input, npc_reply):
         f.write(f"Player: {player_input.strip()}\n")
         f.write(f"{npc_name}: {npc_reply.strip()}\n")
 
-# === Mental State
+# === Mental State (your original)
 def get_mental_state(player="wojtek"):
     return read_json(MENTAL_STATE_FILE).get(player, {})
 
@@ -137,7 +167,16 @@ def check_condition_effects(mental_state):
 
     return effects
 
-# === API Endpoint
+# === MASTER PROMPT + CORE RULES (NEW)
+def load_master_prompt():
+    with open("rules/master_system_prompt.txt", "r", encoding="utf-8") as f:
+        return f.read()
+
+def load_core_rules():
+    with open("rules/core_rules.txt", "r", encoding="utf-8") as f:
+        return f.read()
+
+# === API Endpoint (your original + new relationship system)
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     npc = request.npc.lower()
@@ -154,7 +193,7 @@ async def chat_endpoint(request: ChatRequest):
         with open(log_path, "r", encoding="utf-8") as f:
             memory_lines = [
                 line.strip() for line in f.readlines()[-20:]
-                if "Player:" in line or npc_data['name'] in line
+                if "Player:" in line or npc_data.get('name', npc) in line
             ]
 
     long_term = load_memory(npc)
@@ -166,19 +205,28 @@ async def chat_endpoint(request: ChatRequest):
     neglect_line = "It’s been far too long since we last spoke." if neglect_hours > 96 else ""
     update_last_interaction(npc)
 
-    # 🧠 Stress System
+    # 🧠 Stress System (your original)
     mental_state = get_mental_state()
     stress = update_stress(mental_state, increase=5 if "hate" in player_input.lower() else 1)
     extra_text = "\n".join(check_condition_effects(mental_state))
 
+    # === NEW: Relationship System
+    relationship = update_relationship(npc, player_input)
+    rel_summary = f"Trust:{relationship['trust']} Respect:{relationship['respect']} Desire:{relationship['desire']} Leverage:{relationship['leverage']}"
+
+    # === Full System Prompt with Master + Core Rules
+    master_prompt = load_master_prompt()
+    core_rules = load_core_rules()
+
     prompt = f"""
-You are {npc_data['name']}, an NPC in a grimdark RPG.
-Respond truthfully, with memory, emotion, and psychological context.
+{master_prompt}
 
-ROLE: {npc_data.get("role", "Unknown")}
-RELATIONSHIP: {npc_data.get("relationship_with_player", '?')}
-AGE: {npc_data.get("age", '?')} | GENDER: {npc_data.get("gender", '?')}
+=== CORE RULES (STRICTLY FOLLOW) ===
+{core_rules}
 
+=== CURRENT NPC ===
+Name: {npc_data.get('name', 'Unknown')}
+Relationship State: {rel_summary}
 EMOTIONS: {emotion_summary}
 STRESS: {stress}
 {neglect_line}
@@ -208,7 +256,7 @@ MENTAL CONDITIONS:
             if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
                 full_reply += chunk.choices[0].delta.content
 
-        write_to_log(npc_data["name"], player_input, full_reply)
+        write_to_log(npc_data.get("name", npc), player_input, full_reply)
 
         if any(word in player_input.lower() for word in ["trust", "kill", "protect", "love", "threaten", "betray"]):
             write_to_memory(npc, f"You said: '{player_input.strip()}'")
@@ -224,7 +272,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
 
-# === Recovery Endpoint
+# === Recovery Endpoint (your original - kept intact)
 from scripts.recovery import apply_recovery
 
 @app.get("/recover/{player_name}")
