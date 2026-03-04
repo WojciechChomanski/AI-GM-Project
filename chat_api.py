@@ -1,4 +1,4 @@
-# chat_api.py  (MERGED - keeps ALL your original 233 lines + new relationship system)
+# chat_api.py - Grok API version (xAI)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,10 +9,13 @@ import os
 import json
 from datetime import datetime
 
-# === App Setup
+# === App Setup - GROK API
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=OPENAI_API_KEY)
+XAI_API_KEY = os.getenv("XAI_API_KEY")
+client = OpenAI(
+    api_key=XAI_API_KEY,
+    base_url="https://api.x.ai/v1"
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -30,7 +33,7 @@ INTERACTION_FILE = "rules/last_interactions.json"
 WORLD_TIME_FILE = "rules/world_time.json"
 MENTAL_STATE_FILE = "rules/player_mental_state.json"
 CHARACTER_DIR = "rules/characters"
-RELATIONSHIP_DIR = "rules/relationships"   # NEW
+RELATIONSHIP_DIR = "rules/relationships"
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(RELATIONSHIP_DIR, exist_ok=True)
 
@@ -39,7 +42,7 @@ class ChatRequest(BaseModel):
     npc: str
     player_input: str
 
-# === File I/O (your original)
+# === File I/O
 def read_json(path):
     return json.load(open(path, "r", encoding="utf-8")) if os.path.exists(path) else {}
 
@@ -62,7 +65,7 @@ def update_last_interaction(npc_name):
     interactions[npc_name.lower().replace(" ", "_")] = get_current_game_hours()
     write_json(INTERACTION_FILE, interactions)
 
-# === NEW: 4-Axis Relationship System
+# === 4-Axis Relationship System
 def load_relationship(npc_id):
     path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
     if os.path.exists(path):
@@ -90,7 +93,7 @@ def update_relationship(npc_id, player_input):
     save_relationship(npc_id, rel)
     return rel
 
-# === Emotion System (your original)
+# === Your original systems (Emotion, Memory, Logs, Mental State, etc.) remain unchanged
 def load_emotions():
     return read_json(EMOTION_FILE)
 
@@ -116,7 +119,6 @@ def update_emotions(npc, text):
     save_emotions(emotions)
     return score
 
-# === Memory (your original)
 def load_memory(npc):
     return read_json(MEMORY_FILE).get(npc.lower().replace(" ", "_"), [])
 
@@ -128,7 +130,6 @@ def write_to_memory(npc, line):
         memory_data[key].append(line)
     write_json(MEMORY_FILE, memory_data)
 
-# === Logs (your original)
 def write_to_log(npc_name, player_input, npc_reply):
     filename = os.path.join(LOG_DIR, f"{npc_name}_chatlog.txt")
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -137,7 +138,6 @@ def write_to_log(npc_name, player_input, npc_reply):
         f.write(f"Player: {player_input.strip()}\n")
         f.write(f"{npc_name}: {npc_reply.strip()}\n")
 
-# === Mental State (your original)
 def get_mental_state(player="wojtek"):
     return read_json(MENTAL_STATE_FILE).get(player, {})
 
@@ -167,7 +167,7 @@ def check_condition_effects(mental_state):
 
     return effects
 
-# === MASTER PROMPT + CORE RULES (NEW)
+# === Master Prompt + Core Rules
 def load_master_prompt():
     with open("rules/master_system_prompt.txt", "r", encoding="utf-8") as f:
         return f.read()
@@ -176,7 +176,7 @@ def load_core_rules():
     with open("rules/core_rules.txt", "r", encoding="utf-8") as f:
         return f.read()
 
-# === API Endpoint (your original + new relationship system)
+# === API Endpoint
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     npc = request.npc.lower()
@@ -187,14 +187,16 @@ async def chat_endpoint(request: ChatRequest):
     except:
         return {"reply": f"[ERROR] NPC '{npc}' not found."}
 
+    # Relationship update
+    relationship = update_relationship(npc, player_input)
+    rel_summary = f"Trust:{relationship['trust']} Respect:{relationship['respect']} Desire:{relationship['desire']} Leverage:{relationship['leverage']}"
+
+    # Your original systems
     log_path = os.path.join(LOG_DIR, f"{npc}_chatlog.txt")
     memory_lines = []
     if os.path.exists(log_path):
         with open(log_path, "r", encoding="utf-8") as f:
-            memory_lines = [
-                line.strip() for line in f.readlines()[-20:]
-                if "Player:" in line or npc_data.get('name', npc) in line
-            ]
+            memory_lines = [line.strip() for line in f.readlines()[-20:] if "Player:" in line or npc_data.get('name', npc) in line]
 
     long_term = load_memory(npc)
     emotion_scores = update_emotions(npc, player_input)
@@ -205,16 +207,11 @@ async def chat_endpoint(request: ChatRequest):
     neglect_line = "It’s been far too long since we last spoke." if neglect_hours > 96 else ""
     update_last_interaction(npc)
 
-    # 🧠 Stress System (your original)
     mental_state = get_mental_state()
     stress = update_stress(mental_state, increase=5 if "hate" in player_input.lower() else 1)
     extra_text = "\n".join(check_condition_effects(mental_state))
 
-    # === NEW: Relationship System
-    relationship = update_relationship(npc, player_input)
-    rel_summary = f"Trust:{relationship['trust']} Respect:{relationship['respect']} Desire:{relationship['desire']} Leverage:{relationship['leverage']}"
-
-    # === Full System Prompt with Master + Core Rules
+    # Full prompt with Grok + Master + Core Rules
     master_prompt = load_master_prompt()
     core_rules = load_core_rules()
 
@@ -243,7 +240,7 @@ MENTAL CONDITIONS:
 
     try:
         stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="grok-beta",          # ← Grok model
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": player_input}
@@ -264,7 +261,7 @@ MENTAL CONDITIONS:
         return {"reply": full_reply}
 
     except Exception as e:
-        return {"reply": f"[OpenAI ERROR] {str(e)}"}
+        return {"reply": f"[Grok API ERROR] {str(e)}"}
 
 
 # === Dev Only
@@ -272,7 +269,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
 
-# === Recovery Endpoint (your original - kept intact)
+# === Recovery Endpoint (kept from your original)
 from scripts.recovery import apply_recovery
 
 @app.get("/recover/{player_name}")
