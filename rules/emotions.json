@@ -16,5 +16,17 @@
     "hostility": 150,
     "romance": 0,
     "fear": 100
+  },
+  "string": {
+    "trust": 150,
+    "hostility": 150,
+    "romance": 0,
+    "fear": 100
+  },
+  "elara_voss": {
+    "trust": 150,
+    "hostility": 190,
+    "romance": 45,
+    "fear": 100
   }
 }
