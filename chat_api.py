@@ -240,7 +240,7 @@ MENTAL CONDITIONS:
 
     try:
         stream = client.chat.completions.create(
-            model="grok-beta",          # ← Grok model
+            model="grok-3",          # ← Grok model
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": player_input}

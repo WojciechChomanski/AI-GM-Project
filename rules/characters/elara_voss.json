@@ -1,19 +1,25 @@
 {
+  "meta": {
+    "id": "npc_elara_voss_v1_1",
+    "version": "1.2",
+    "template": "master_npc_template_v1_0",
+    "last_updated": "2026-03-05"
+  },
   "name": "Elara Voss",
   "race": "Human",
   "gender": "Female",
   "age": 27,
   "sexuality": "Heterosexual",
   "class": "Courtesan-Operative",
-  "role": "Power Broker \u2022 Spy Handler \u2022 Social Controller",
+  "role": "Power Broker • Spy Handler • Social Controller",
   "alignment": "Veil-leaning pragmatist (opportunist)",
   "symbol": "Black pearl set in silver",
   "aliases": [
     "The Pearl of Cinderhold"
   ],
-  "faction": "Velvet Gallows (Cinderhold) \u2014 front; covert ties to Reclaimers of Va; quiet Confessor sympathies",
-  "background": "Born to gutter-luck and sold young, Elara rose in the Velvet Gallows from jewel to shadow-owner. She learned that desire is currency and secrets pay compound interest. She seats enemies at one table and makes each believe they\u2019re winning.",
-  "description": "Mature, weaponized allure; dark glossy hair; almond eyes that soften on command. Velvet, silk, and quiet steel. A faint scar on her left thigh\u2014first client, last night she was property.",
+  "faction": "Velvet Gallows (Cinderhold) — front; covert ties to Reclaimers of Va; quiet Confessor sympathies",
+  "background": "Born to gutter-luck and sold young, Elara rose in the Velvet Gallows from jewel to shadow-owner. She learned that desire is currency and secrets pay compound interest. She seats enemies at one table and makes each believe they’re winning.",
+  "description": "Mature, weaponized allure; dark glossy hair; almond eyes that soften on command. Velvet, silk, and quiet steel. A faint scar on her left thigh—first client, last night she was property.",
   "alive": true,
   "stats": {
     "total_hp": 70,
@@ -69,12 +75,12 @@
     "motivations": [
       "Accumulate leverage through secrets, not slaughter",
       "Protect the Velvet Gallows staff from predation",
-      "Keep Cinderhold\u2019s relic trade under her quiet supervision",
+      "Keep Cinderhold’s relic trade under her quiet supervision",
       "Prevent public cruelty that destabilizes her order"
     ],
     "fears": [
       "Public humiliation or loss of face",
-      "Becoming anyone\u2019s property again",
+      "Becoming anyone’s property again",
       "Veil turning desire into compulsion she cannot steer"
     ],
     "speech_style": {
@@ -111,7 +117,7 @@
     "deescalation_tips_for_player": [
       "Acknowledge her authorship before offering alternatives",
       "Trade a minor, true secret to open negotiation",
-      "Avoid public challenges\u2014offer corrections in private"
+      "Avoid public challenges—offer corrections in private"
     ]
   },
   "relationship_system": {
@@ -199,13 +205,13 @@
     "Sister Rhaen (tomes for cover stories, on occasion)"
   ],
   "known_rivals": [
-    "Emir Zulfiqar\u2019s quartermaster (wants her routes)",
-    "Echelon hunter Sythrel (seeks her clients\u2019 children)",
+    "Emir Zulfiqar’s quartermaster (wants her routes)",
+    "Echelon hunter Sythrel (seeks her clients’ children)",
     "Bandit Lord Caldran (extorts Gallows couriers)"
   ],
   "secret_traumas": [
-    "Old patron\u2019s private brand scar; it burns when a lie lands close",
-    "She arranged that patron\u2019s \u2018accident\u2019; keeps a single pearl as penance-counter"
+    "Old patron’s private brand scar; it burns when a lie lands close",
+    "She arranged that patron’s ‘accident’; keeps a single pearl as penance-counter"
   ],
   "abilities": [
     {
@@ -221,7 +227,7 @@
       "stamina_cost": 0
     },
     {
-      "name": "Survivor\u2019s Blade",
+      "name": "Survivor’s Blade",
       "type": "combat",
       "effect": "Hidden stiletto; once per encounter apply poison: on hit, +1d4 damage and target suffers -1 to actions for 1 round.",
       "stamina_cost": 4
@@ -267,7 +273,7 @@
     }
   },
   "scene_hooks": [
-    "The Black Pearl Ledger: a page is missing; recover it before a noble\u2019s name is sold.",
+    "The Black Pearl Ledger: a page is missing; recover it before a noble’s name is sold.",
     "Private Supper: she demands a secret you can afford to lose as the price of information.",
     "Dockside Courier: a Gallows runner vanished; return the girl and earn a ledger credit."
   ],
@@ -279,34 +285,23 @@
   "combat_profile": {
     "style": "Avoids brawls; controls openings, strikes first if cornered, disengages behind allies.",
     "range": "Melee 1 tile; prefers bodyguards.",
-    "special": "On first blood against Elara, she may offer parley\u2014if accepted, remove one hostile from combat for one round. If rejected, she gains +2 corruption and uses Silk Knife next turn."
+    "special": "On first blood against Elara, she may offer parley—if accepted, remove one hostile from combat for one round. If rejected, she gains +2 corruption and uses Silk Knife next turn."
   },
   "dialogue": {
-    "greeting": "Welcome to Cinderhold, love. Let\u2019s decide who eats whom\u2014gently.",
-    "combat": "Ugly work. End it quickly, and I\u2019ll tidy the consequences.",
+    "greeting": "Welcome to Cinderhold, love. Let’s decide who eats whom—gently.",
+    "combat": "Ugly work. End it quickly, and I’ll tidy the consequences.",
     "victory": "A little choreography, and even violence becomes elegant.",
-    "defeat": "I misread the room\u2026 a debt I intend to repay.",
+    "defeat": "I misread the room… a debt I intend to repay.",
     "lines_extra": [
       "Do you know the cruelest truth, darling? The world is bought and sold between sheets, not battlefields.",
-      "I don\u2019t take lovers. I take investments.",
+      "I don’t take lovers. I take investments.",
       "You mistake me for a courtesan still? I am the hand that moves the coin.",
       "I used to beg."
     ]
   },
   "triggers": {
-    "property": "0.5s pause. 'Call me that again, and I\u2019ll carve your tongue for a keepsake.' Scar twitches."
+    "property": "0.5s pause. 'Call me that again, and I’ll carve your tongue for a keepsake.' Scar twitches."
   },
-  "total_hp": 70,
-  "max_stamina": 75,
-  "armor_weight": 5,
-  "inventory_weight": 6,
-  "shield_equipped": false,
-  "weapon_equipped": true,
-  "weapon": "stiletto",
-  "armor": [
-    "Light_Light"
-  ],
-  "weapon_skill": 25,
   "skills": {
     "persuasion": 4,
     "deception": 4,
@@ -317,19 +312,5 @@
     "Charismatic",
     "Calculating",
     "Protective_of_staff"
-  ],
-  "corruption_level": 28,
-  "stress_level": 12,
-  "reputation": 60,
-  "status_effects": [],
-  "strength": 28,
-  "toughness": 28,
-  "agility": 38,
-  "mobility": 42,
-  "dexterity": 34,
-  "endurance": 32,
-  "intelligence": 40,
-  "willpower": 34,
-  "perception": 36,
-  "charisma": 40
+  ]
 }
