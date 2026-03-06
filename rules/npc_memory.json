@@ -1,7 +1,65 @@
 {
-  "elara_voss": [
-    "You said: 'I need your help with something delicate. If I tell you, can I trust that it stays between us?'",
-    "You said: 'My lady, who am I to disagree with you or with that dangerously accurate opinion of me? But bolts maybe I just call it honest. I don't know what tomorrow holds and I couldn't care less. All I care about is what brought me to you today if I may ask, not demand, but simply ask. Straight truth? I'm no card player... especially not with a woman like you. But I would love to share every minute of this day with you. To enjoy your company, that intoxicating hint of jasmine and ink on your skin, and maybe... dessert. I wouldn't mind working for it at all. Afterwards I'll tell you exactly what I'm running toward. And if you ask what brought me to your door with this appetite... I'll look you in the eyes and say: destiny. I lock eyes with her, hold the contact, and smile - slow, warm, and very, very charming.'",
-    "You said: 'My lady, we both know that telling you exactly what will happen if we spend the night together would ruin the fun. We both know this moment is already becoming part of the memory we are about to create. So let us not ruin it before it begins. Let tonight be raw, painful, exhausting and breathtaking. Full of passion \u2014 maybe even hate for tomorrow \u2014 but full of joy and passionate lovemaking today. A memory that will belong only to the two of us, no matter what tomorrow, next week or next month brings. Tonight will be ours. I will make sure you hate me with the kind of passion only true lovers can share... because you will fall for me, but only if you allow yourself to break your own rules. Just once. Only for tonight. So tell me, my lady... will you be my lover for this night?'"
-  ]
+  "meta": {
+    "version": "2.0",
+    "last_updated": "2026-03-06",
+    "time_reference": "world_time.json"
+  },
+  "npcs": {
+    "elara_voss": {
+      "memories": [
+        {
+          "id": "mem_001",
+          "event": "player_protected_gallows_staff",
+          "timestamp": "1670-03-05 14:30",
+          "strength": 82,
+          "decay_rate": 1.5,
+          "emotional_context": ["grateful", "protective", "slightly_aroused"],
+          "tags": ["saved_gallows_staff", "showed_honor"],
+          "last_referenced": "1670-03-06",
+          "cross_npc_shared_with": ["grey_friar_mikel", "sister_rhaen"],
+          "permanent": false
+        },
+        {
+          "id": "mem_002",
+          "event": "player_attempted_betrayal",
+          "timestamp": "1670-02-28",
+          "strength": 65,
+          "decay_rate": 0.8,
+          "emotional_context": ["angry", "hurt", "cautious"],
+          "tags": ["betrayed_in_public"],
+          "last_referenced": "1670-03-01",
+          "cross_npc_shared_with": ["bandit_lord_caldran"],
+          "permanent": false
+        },
+        {
+          "id": "mem_life_debt",
+          "event": "player_risked_life_to_save_elara",
+          "timestamp": "1670-03-04",
+          "strength": 95,
+          "decay_rate": 0.2,
+          "emotional_context": ["eternal_gratitude", "deep_trust", "romantic_interest"],
+          "tags": ["life_debt"],
+          "last_referenced": "1670-03-06",
+          "cross_npc_shared_with": [],
+          "permanent": true
+        }
+      ],
+      "racial_baseline": {
+        "warf_elf": -25,
+        "human_crusader": 0
+      },
+      "current_relationship_summary": {
+        "trust": 45,
+        "respect": 60,
+        "desire": 30,
+        "leverage": 15
+      }
+    }
+  },
+  "global_settings": {
+    "default_decay_per_week": 8,
+    "time_ratio": "1_real_hour = 6_in_game_hours",
+    "max_memories_per_npc": 50,
+    "gossip_spread_chance": 35
+  }
 }
