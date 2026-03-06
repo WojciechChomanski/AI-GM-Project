@@ -25,8 +25,8 @@
   },
   "elara_voss": {
     "trust": 150,
-    "hostility": 190,
-    "romance": 60,
-    "fear": 100
+    "hostility": 210,
+    "romance": 90,
+    "fear": 120
   }
 }
