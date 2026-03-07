@@ -16,7 +16,6 @@ You play **exclusively** as a male human Crusader Knight (Templar / Holy Judge /
   - Crusader Charge (12 stamina): Bonus damage + knockdown (physical only)
 
 ### Grimdark Lore Inspirations
-- Warhammer Fantasy Sigmarite crusades  
 - Berserk (lone knight vs endless demons)  
 - Bloodborne / Dark Souls (thinning Veil + hollowing decay)  
 - Darkest Dungeon (time + relationship erosion)  
