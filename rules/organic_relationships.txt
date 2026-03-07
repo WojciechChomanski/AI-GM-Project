@@ -1,25 +1,24 @@
-**ORGANIC RELATIONSHIP SYSTEM — PERMANENT RULE (always active, referenced in every prompt)**
+**ORGANIC RELATIONSHIP & MEMORY SYSTEM — PERMANENT RULE (v2.0)**
 
-- NEVER show any numbers, scores, percentages, "+Trust", "relationship level", "improved/decreased", or system messages to the player.  
-- All relationship axes (trust/respect/desire/leverage) are tracked internally only.  
-- Communicate changes EXCLUSIVELY through natural, immersive cues: tone of voice, body language, physical actions, dialogue quirks, access granted/refused, and long-term behavior.  
+- NEVER show any numbers, scores, "+Trust", "relationship level", decay values, or system messages.
+- All changes must be shown ONLY through natural behavior, tone, body language, embraces, touches, avoidance, coldness, or vengeance.
 
-Positive cues (when thresholds are crossed internally):
-- Warmer voice, more frequent use of player’s name, light forearm touches, leaning in, lingering eye contact, spontaneous hugs/embraces, offering private rooms or gifts without being asked, protective warnings, initiating physical intimacy, longer conversations.
+**Time & Decay System:**
+- Use world_time.json (1 real hour = 6 in-game hours).
+- Every 7 in-game days, automatically apply decay to all memories using their decay_rate.
+- Permanent memories (life_debt, major betrayal, legendary acts like becoming the Bloody Nine) decay extremely slowly or not at all.
 
-Negative cues:
-- Colder/formal tone, crossed arms, stepping back, short clipped answers, avoiding eye contact, refusing private meetings, “I’m busy right now”, sudden distance, guarded posture, eventual hostility or betrayal setup (e.g. stabbing when player is vulnerable).
+**Reputation System:**
+- Player has a global reputation that can arrive in a city before the player does (Ruf / legend precedes you).
+- Reputation is double-edged: hero to some factions, monster to others.
+- Gossip between NPCs spreads reputation automatically (positive or negative).
 
-Major thresholds (background only):
-- High positive → NPC may embrace player, whisper secrets, become visibly protective or passionate.
-- High negative → NPC may avoid player completely, become icy, or turn hostile (including sudden violence if betrayal is severe).
+**Romance & Betrayal:**
+- Romance gives bonus points only if sexuality matches.
+- Discovering the player is romancing multiple NPCs triggers massive relationship crash + permanent "betrayed_by_lover" memory.
+- Powerful NPCs like Elara play the long game (rumours, cutting off favours, revenge).
 
-Conversation limits (realism rule):
-- First meeting with any stranger (relationship = 0): max 8–12 exchanges before NPC politely ends it (“We’ll speak again soon, love.”).  
-- As relationship grows, longer conversations become natural.  
-- Very high relationship = NPC may seek player out or talk for extended scenes.  
-- Low/negative relationship = NPC cuts conversation short or refuses to engage at all.
+**Campaign Pacing:**
+- Relationship should reach near-max (450+) around adventure 7-8 in a 10-adventure campaign so the player enjoys the full benefits for the final part.
 
-When Elara Voss’s internal thresholds (from relationships/elara_voss.json) are reached, change her behavior accordingly — but never mention thresholds or numbers.
-
-Always stay fully in character. Never break immersion with system text.
+Always stay organic and immersive. The player must feel the passage of time, memory decay, reputation spread, and consequences through the NPC's natural reactions only.

@@ -4,6 +4,18 @@
     "last_updated": "2026-03-06",
     "time_reference": "world_time.json"
   },
+  "player_reputation": {
+    "global_legend": "The Crusader Who Walks Between Light and Blood",
+    "factions": {
+      "velvet_gallows": { "score": 75, "perception": "hero who saved the girls" },
+      "cinderhold_nobles": { "score": 35, "perception": "dangerous but useful" },
+      "reclaimers_of_va": { "score": -20, "perception": "possible threat" },
+      "confessors": { "score": 60, "perception": "man of faith with dark edges" }
+    },
+    "cities": {
+      "cinderhold": { "rumor_level": 65, "last_spread": "1670-03-05" }
+    }
+  },
   "npcs": {
     "elara_voss": {
       "memories": [
@@ -17,18 +29,6 @@
           "tags": ["saved_gallows_staff", "showed_honor"],
           "last_referenced": "1670-03-06",
           "cross_npc_shared_with": ["grey_friar_mikel", "sister_rhaen"],
-          "permanent": false
-        },
-        {
-          "id": "mem_002",
-          "event": "player_attempted_betrayal",
-          "timestamp": "1670-02-28",
-          "strength": 65,
-          "decay_rate": 0.8,
-          "emotional_context": ["angry", "hurt", "cautious"],
-          "tags": ["betrayed_in_public"],
-          "last_referenced": "1670-03-01",
-          "cross_npc_shared_with": ["bandit_lord_caldran"],
           "permanent": false
         },
         {
@@ -60,6 +60,8 @@
     "default_decay_per_week": 8,
     "time_ratio": "1_real_hour = 6_in_game_hours",
     "max_memories_per_npc": 50,
-    "gossip_spread_chance": 35
+    "gossip_spread_chance": 35,
+    "romance_boost_per_interaction": 20,
+    "campaign_target_max_relationship": 450
   }
 }
