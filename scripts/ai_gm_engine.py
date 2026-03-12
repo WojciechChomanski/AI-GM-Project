@@ -1,12 +1,10 @@
 # scripts/ai_gm_engine.py
-# Core simulation layer — time decay, relationships, Templar passive rules
-# Import into main.py or gm_console.py: from scripts.ai_gm_engine import GameState
+# Updated to match Scroll of Light and Fall canon (year 1670) - Breath passive only
 
 from dataclasses import dataclass, field
 import random
-from datetime import datetime
-import json
 from pathlib import Path
+import json
 
 @dataclass
 class Relationship:
@@ -20,12 +18,11 @@ class Relationship:
 class GameState:
     def __init__(self):
         self.current_day: int = 1
-        self.hour: int = 8  # 24h format
+        self.hour: int = 8
         self.piety: int = 50
-        self.holy_fury_stacks: int = 0  # Templar passive only
-        self.player_vocation: str = "Templar"  # Enforced by core_rules.txt
+        self.holy_fury_stacks: int = 0   # Passive example of the Breath (canon)
         self.relationships: dict[str, Relationship] = {}
-        self.save_path = Path("npc_memory.json")  # works with your existing system
+        self.save_path = Path("rules/npc_memory.json")
 
     def load_from_json(self):
         if self.save_path.exists():
@@ -33,7 +30,6 @@ class GameState:
             self.current_day = data.get("current_day", 1)
             self.piety = data.get("piety", 50)
             self.holy_fury_stacks = data.get("holy_fury_stacks", 0)
-            # load relationships via your relationship_manager.py if preferred
 
     def save_to_json(self):
         data = {
@@ -45,12 +41,11 @@ class GameState:
         self.save_path.write_text(json.dumps(data, indent=2))
 
     def advance_time(self, days: float = 1.0, hours: int = 0):
-        """Mandatory time-passing + decay (called after every player action/rest/travel)"""
         total_days = days + hours / 24.0
         self.current_day += int(total_days)
         self.hour = (self.hour + int(hours)) % 24
 
-        # Relationship decay (organic_relationships.txt rules)
+        # Relationship decay (organic_relationships.txt)
         for rel in self.relationships.values():
             absent_days = self.current_day - rel.last_interaction_day
             decay_factor = 1.2 * total_days * (1 + (absent_days // 7) * 0.5)
@@ -59,20 +54,18 @@ class GameState:
             rel.intimacy = max(0, int(rel.intimacy - decay_factor * 1.2))
             rel.loyalty = max(0, int(rel.loyalty - decay_factor * 0.6))
 
-        # Piety & Holy Fury passive decay (Templar rules only)
+        # Piety decay
         if random.random() < 0.35:
             self.piety = max(10, self.piety - int(4 * total_days))
-        self.holy_fury_stacks = max(0, self.holy_fury_stacks - int(total_days * 0.6))
 
-        # Passive Breath trigger check (high piety + Veilspawn fight only)
-        if self.piety >= 75 and self.holy_fury_stacks >= 3:
-            print(">>> [PASSIVE] A Breath of the Veil stirs within you... (high piety + fury)")
+        # Breath passive trigger (core_rules.txt + canon) - strictly passive
+        if self.piety >= 70:
+            print(">>> [THE BREATH] stirs within you... (high piety)")
 
         self.save_to_json()
-        return f"[Time advanced → Day {self.current_day} | Hour {self.hour:02d} | Piety {self.piety} | Holy Fury stacks {self.holy_fury_stacks}]"
+        return f"[Day {self.current_day} | Hour {self.hour:02d} | Piety {self.piety} | Breath stacks {self.holy_fury_stacks}]"
 
     def interact(self, npc_name: str, affinity_gain: int = 0, trust_gain: int = 0):
-        """Reset decay timer + apply growth"""
         if npc_name not in self.relationships:
             self.relationships[npc_name] = Relationship()
         rel = self.relationships[npc_name]
@@ -81,6 +74,6 @@ class GameState:
         rel.trust = min(100, rel.trust + trust_gain)
         self.save_to_json()
 
-    def add_holy_fury(self, kills: int = 1):
-        """Templar passive ONLY — called after killing enemy of faith"""
+    def add_breath_stack(self, kills: int = 1):
+        """Holy Fury - passive example of the Breath (only triggered by faith-kills)"""
         self.holy_fury_stacks = min(5, self.holy_fury_stacks + kills)

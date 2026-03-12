@@ -1,4 +1,4 @@
-# chat_api.py - Grok API version (xAI)
+# chat_api.py - Grok API version (xAI) with Header only + language auto-match
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +8,9 @@ from openai import OpenAI
 import os
 import json
 from datetime import datetime
+
+# === ai_gm_engine integration for Header only ===
+from scripts.ai_gm_engine import GameState
 
 # === App Setup - GROK API
 load_dotenv()
@@ -42,7 +45,7 @@ class ChatRequest(BaseModel):
     npc: str
     player_input: str
 
-# === File I/O
+# === File I/O (unchanged)
 def read_json(path):
     return json.load(open(path, "r", encoding="utf-8")) if os.path.exists(path) else {}
 
@@ -50,7 +53,7 @@ def write_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-# === Game Time (your original)
+# === Game Time (unchanged)
 def get_current_game_hours():
     world_time = read_json(WORLD_TIME_FILE)
     return world_time.get("day", 0) * 24 + world_time.get("hour", 0)
@@ -65,7 +68,7 @@ def update_last_interaction(npc_name):
     interactions[npc_name.lower().replace(" ", "_")] = get_current_game_hours()
     write_json(INTERACTION_FILE, interactions)
 
-# === 4-Axis Relationship System
+# === 4-Axis Relationship System (unchanged)
 def load_relationship(npc_id):
     path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
     if os.path.exists(path):
@@ -79,7 +82,6 @@ def save_relationship(npc_id, data):
 def update_relationship(npc_id, player_input):
     rel = load_relationship(npc_id)
     text = player_input.lower()
-
     if any(w in text for w in ["thank", "help", "trust", "honest", "secret"]):
         rel["trust"] = min(100, rel["trust"] + 8)
         rel["respect"] = min(100, rel["respect"] + 5)
@@ -89,7 +91,6 @@ def update_relationship(npc_id, player_input):
         rel["leverage"] = min(100, rel["leverage"] + 7)
     if any(w in text for w in ["hate", "kill", "traitor", "liar"]):
         rel["trust"] = max(-50, rel["trust"] - 12)
-
     save_relationship(npc_id, rel)
     return rel
 
@@ -106,7 +107,6 @@ def update_emotions(npc, text):
     emotions.setdefault(npc_key, {"trust": 150, "hostility": 150, "romance": 0, "fear": 100})
     score = emotions[npc_key]
     text = text.lower()
-
     if "thank" in text or "respect" in text:
         score["trust"] = min(300, score["trust"] + 10)
     if "love" in text or "miss" in text or "care" in text:
@@ -115,7 +115,6 @@ def update_emotions(npc, text):
         score["hostility"] = min(300, score["hostility"] + 20)
     if "afraid" in text or "run" in text or "monster" in text:
         score["fear"] = min(300, score["fear"] + 10)
-
     save_emotions(emotions)
     return score
 
@@ -151,7 +150,6 @@ def check_condition_effects(mental_state):
     effects = []
     conditions = mental_state.get("conditions", {})
     stress = mental_state.get("stress", 0)
-
     if conditions.get("paranoia", 0) > 70:
         effects.append("Why are you asking that again? Are you hiding something?")
     if conditions.get("emotional_numbness", 0) > 60:
@@ -164,7 +162,6 @@ def check_condition_effects(mental_state):
         effects.append("[SYSTEM]: You feel a rising panic. You can't hold it back.")
     elif stress >= 70:
         effects.append("[SYSTEM]: Your hands tremble. Everything feels too loud.")
-
     return effects
 
 # === Master Prompt + Core Rules
@@ -187,11 +184,10 @@ async def chat_endpoint(request: ChatRequest):
     except:
         return {"reply": f"[ERROR] NPC '{npc}' not found."}
 
-    # Relationship update
     relationship = update_relationship(npc, player_input)
     rel_summary = f"Trust:{relationship['trust']} Respect:{relationship['respect']} Desire:{relationship['desire']} Leverage:{relationship['leverage']}"
 
-    # Your original systems
+    # Your original systems (unchanged)
     log_path = os.path.join(LOG_DIR, f"{npc}_chatlog.txt")
     memory_lines = []
     if os.path.exists(log_path):
@@ -211,7 +207,6 @@ async def chat_endpoint(request: ChatRequest):
     stress = update_stress(mental_state, increase=5 if "hate" in player_input.lower() else 1)
     extra_text = "\n".join(check_condition_effects(mental_state))
 
-    # Full prompt with Grok + Master + Core Rules
     master_prompt = load_master_prompt()
     core_rules = load_core_rules()
 
@@ -236,11 +231,14 @@ LONG-TERM MEMORY:
 
 MENTAL CONDITIONS:
 {extra_text}
+
+=== LANGUAGE RULE ===
+Always reply in the EXACT same language the player used in their message. If the player writes in German, reply in German. If English, reply in English.
 """.strip()
 
     try:
         stream = client.chat.completions.create(
-            model="grok-3",          # ← Grok model
+            model="grok-3",
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": player_input}
@@ -254,9 +252,16 @@ MENTAL CONDITIONS:
                 full_reply += chunk.choices[0].delta.content
 
         write_to_log(npc_data.get("name", npc), player_input, full_reply)
-
         if any(word in player_input.lower() for word in ["trust", "kill", "protect", "love", "threaten", "betray"]):
             write_to_memory(npc, f"You said: '{player_input.strip()}'")
+
+        # === CLEAN HEADER ONLY (no Breath stacks ever) ===
+        game = GameState()
+        game.load_from_json()
+        game.interact(npc, affinity_gain=2, trust_gain=3)
+        header = game.advance_time(hours=1).replace(" | Breath stacks 0", "")
+        full_reply = f"{header}\n\n{full_reply}"
+        # === END CLEAN HEADER ===
 
         return {"reply": full_reply}
 
@@ -269,7 +274,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
 
-# === Recovery Endpoint (kept from your original)
+# === Recovery Endpoint
 from scripts.recovery import apply_recovery
 
 @app.get("/recover/{player_name}")

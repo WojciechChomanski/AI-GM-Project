@@ -1,67 +1,15 @@
 {
-  "meta": {
-    "version": "2.0",
-    "last_updated": "2026-03-06",
-    "time_reference": "world_time.json"
-  },
-  "player_reputation": {
-    "global_legend": "The Crusader Who Walks Between Light and Blood",
-    "factions": {
-      "velvet_gallows": { "score": 75, "perception": "hero who saved the girls" },
-      "cinderhold_nobles": { "score": 35, "perception": "dangerous but useful" },
-      "reclaimers_of_va": { "score": -20, "perception": "possible threat" },
-      "confessors": { "score": 60, "perception": "man of faith with dark edges" }
-    },
-    "cities": {
-      "cinderhold": { "rumor_level": 65, "last_spread": "1670-03-05" }
-    }
-  },
-  "npcs": {
+  "current_day": 15,
+  "piety": 30,
+  "holy_fury_stacks": 0,
+  "relationships": {
     "elara_voss": {
-      "memories": [
-        {
-          "id": "mem_001",
-          "event": "player_protected_gallows_staff",
-          "timestamp": "1670-03-05 14:30",
-          "strength": 82,
-          "decay_rate": 1.5,
-          "emotional_context": ["grateful", "protective", "slightly_aroused"],
-          "tags": ["saved_gallows_staff", "showed_honor"],
-          "last_referenced": "1670-03-06",
-          "cross_npc_shared_with": ["grey_friar_mikel", "sister_rhaen"],
-          "permanent": false
-        },
-        {
-          "id": "mem_life_debt",
-          "event": "player_risked_life_to_save_elara",
-          "timestamp": "1670-03-04",
-          "strength": 95,
-          "decay_rate": 0.2,
-          "emotional_context": ["eternal_gratitude", "deep_trust", "romantic_interest"],
-          "tags": ["life_debt"],
-          "last_referenced": "1670-03-06",
-          "cross_npc_shared_with": [],
-          "permanent": true
-        }
-      ],
-      "racial_baseline": {
-        "warf_elf": -25,
-        "human_crusader": 0
-      },
-      "current_relationship_summary": {
-        "trust": 45,
-        "respect": 60,
-        "desire": 30,
-        "leverage": 15
-      }
+      "affinity": 51,
+      "trust": 51,
+      "intimacy": 28,
+      "loyalty": 39,
+      "last_interaction_day": 14,
+      "notes": []
     }
-  },
-  "global_settings": {
-    "default_decay_per_week": 8,
-    "time_ratio": "1_real_hour = 6_in_game_hours",
-    "max_memories_per_npc": 50,
-    "gossip_spread_chance": 35,
-    "romance_boost_per_interaction": 20,
-    "campaign_target_max_relationship": 450
   }
 }
