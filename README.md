@@ -6,34 +6,19 @@ The Veil thins. Veilspawn claw through the cracks. Faith is the only shield — 
 
 You play **exclusively** as a male human Crusader Knight (Templar / Holy Judge / Cleric vocation only). No exceptions. Ever.
 
-### PERMANENT CORE RULES (rules/core_rules.txt — immutable)
-- Player = always male human Crusader Knight + vocation  
-- Breath abilities = **strictly passive** (triggered only by high piety + fighting Veilspawn/major enemies)  
-- **No active magic, no spells, no Divine Smite** for any male class — ever  
-- Active magic = female-only (Veil Sorceress exclusive)  
-- Templar Vocation fixed:  
-  - Holy Fury (passive): Kill enemy of faith → +1 damage stack, +5% crit (max 5)  
-  - Crusader Charge (12 stamina): Bonus damage + knockdown (physical only)
+### PERMANENT CORE RULES + CANON (Scroll of Light and Fall — year 1670)
+- Single source of truth: the Scroll of Light and Fall  
+- **The Breath** (male only, strictly passive): Crusader Knight line, triggers on Virtue ≥70 / high piety / fighting Veilspawn/major enemies  
+  - Examples: Holy Fury (passive stacks from killing enemies of faith) + Crusader Charge (stamina-based knockdown)  
+- **The Veil** (female only, active magic): Veil Sorceress class (human or elf)  
+- No active magic, spells or Divine Smite for any male class — ever  
 
-### Grimdark Lore Inspirations
-- Warhammer Fantasy Sigmarite crusades  
-- Berserk (lone knight vs endless demons)  
-- Bloodborne / Dark Souls (thinning Veil + hollowing decay)  
-- Darkest Dungeon (time + relationship erosion)  
+### Core Engine
+- `scripts/ai_gm_engine.py` — time-passing, piety decay, Breath passive check, relationship decay  
+- `rules/organic_relationships.txt` + `rules/npc_memory.json` — living memory system  
 
-The world does not want you to win. It wants to watch you break.
+### How to Run (Console/API testing)
+1. Run your console (`python gm_console.py` or `python main.py`)  
+2. Chat with Elara Voss using clean wording only
 
-### Core Engine (now fully live)
-- `scripts/ai_gm_engine.py` — mandatory time-passing, piety decay, Holy Fury stacks, relationship decay  
-- `rules/master_system_prompt.txt` — AI-GM instructions (references core_rules.txt on every load)  
-- `rules/organic_relationships.txt` — affinity/trust/intimacy/loyalty with natural time decay  
-- `rules/npc_memory.json` — persistent memory  
-
-### How to Run
-1. Open terminal in project root  
-2. Run your console (`python main.py` or `gm_console.py`)  
-3. Type **`start session`**  
-4. Game begins in strict 2nd-person narrative with header:  
-   **[Day X | Hour XX | Piety XX | Holy Fury stacks XX]**
-
-*The Veil thins, Crusader… Play wisely. Or don’t. The world doesn’t care.*
+*The Veil thins, Crusader…*
