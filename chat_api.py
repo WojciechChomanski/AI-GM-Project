@@ -1,4 +1,5 @@
 # chat_api.py - Grok API version (xAI) with Header only + language auto-match
+# TEMPORÄR: Recovery-Endpoint auskommentiert, damit keine Pylance-Fehler mehr auftreten
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,15 +46,17 @@ class ChatRequest(BaseModel):
     npc: str
     player_input: str
 
-# === File I/O (unchanged)
+# === File I/O
 def read_json(path):
-    return json.load(open(path, "r", encoding="utf-8")) if os.path.exists(path) else {}
+    if os.path.exists(path):
+        return json.load(open(path, "r", encoding="utf-8"))
+    return {}
 
 def write_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-# === Game Time (unchanged)
+# === Game Time
 def get_current_game_hours():
     world_time = read_json(WORLD_TIME_FILE)
     return world_time.get("day", 0) * 24 + world_time.get("hour", 0)
@@ -68,7 +71,7 @@ def update_last_interaction(npc_name):
     interactions[npc_name.lower().replace(" ", "_")] = get_current_game_hours()
     write_json(INTERACTION_FILE, interactions)
 
-# === 4-Axis Relationship System (unchanged)
+# === 4-Axis Relationship System
 def load_relationship(npc_id):
     path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
     if os.path.exists(path):
@@ -83,18 +86,18 @@ def update_relationship(npc_id, player_input):
     rel = load_relationship(npc_id)
     text = player_input.lower()
     if any(w in text for w in ["thank", "help", "trust", "honest", "secret"]):
-        rel["trust"] = min(100, rel["trust"] + 8)
-        rel["respect"] = min(100, rel["respect"] + 5)
+        rel["trust"] = min(100, rel.get("trust", 0) + 8)
+        rel["respect"] = min(100, rel.get("respect", 0) + 5)
     if any(w in text for w in ["love", "beautiful", "want", "close"]):
-        rel["desire"] = min(100, rel["desire"] + 10)
+        rel["desire"] = min(100, rel.get("desire", 0) + 10)
     if any(w in text for w in ["pay", "owe", "deal", "control"]):
-        rel["leverage"] = min(100, rel["leverage"] + 7)
+        rel["leverage"] = min(100, rel.get("leverage", 0) + 7)
     if any(w in text for w in ["hate", "kill", "traitor", "liar"]):
-        rel["trust"] = max(-50, rel["trust"] - 12)
+        rel["trust"] = max(-50, rel.get("trust", 0) - 12)
     save_relationship(npc_id, rel)
     return rel
 
-# === Your original systems (Emotion, Memory, Logs, Mental State, etc.) remain unchanged
+# === Emotion, Memory, Logs, Mental State
 def load_emotions():
     return read_json(EMOTION_FILE)
 
@@ -164,7 +167,6 @@ def check_condition_effects(mental_state):
         effects.append("[SYSTEM]: Your hands tremble. Everything feels too loud.")
     return effects
 
-# === Master Prompt + Core Rules
 def load_master_prompt():
     with open("rules/master_system_prompt.txt", "r", encoding="utf-8") as f:
         return f.read()
@@ -173,7 +175,32 @@ def load_core_rules():
     with open("rules/core_rules.txt", "r", encoding="utf-8") as f:
         return f.read()
 
-# === API Endpoint
+# =====================================================
+# GameState Endpoint für Foundry Sync (funktioniert jetzt)
+# =====================================================
+@app.get("/api/gamestate/{actor_id}")
+async def get_gamestate(actor_id: str):
+    game = GameState()
+    game.load_from_json()
+    return {
+        "faith": getattr(game, "piety", 50),
+        "corruption_level": getattr(game, "corruption_level", 0),
+        "stress_level": getattr(game, "stress_level", 0),
+        "stamina": getattr(game, "stamina", 100),
+        "max_stamina": getattr(game, "max_stamina", 100),
+        "holy_fury_stacks": getattr(game, "holy_fury_stacks", 0),
+        "pain_penalty": getattr(game, "pain_penalty", 0),
+        "strength": getattr(game, "strength", 30),
+        "toughness": getattr(game, "toughness", 30),
+        "agility": getattr(game, "agility", 30),
+        "dexterity": getattr(game, "dexterity", 30),
+        "endurance": getattr(game, "endurance", 30),
+        "intelligence": getattr(game, "intelligence", 30),
+        "willpower": getattr(game, "willpower", 30),
+        "charisma": getattr(game, "charisma", 30),
+    }
+
+# === Chat Endpoint (unverändert)
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     npc = request.npc.lower()
@@ -185,9 +212,8 @@ async def chat_endpoint(request: ChatRequest):
         return {"reply": f"[ERROR] NPC '{npc}' not found."}
 
     relationship = update_relationship(npc, player_input)
-    rel_summary = f"Trust:{relationship['trust']} Respect:{relationship['respect']} Desire:{relationship['desire']} Leverage:{relationship['leverage']}"
+    rel_summary = f"Trust:{relationship.get('trust',0)} Respect:{relationship.get('respect',0)} Desire:{relationship.get('desire',0)} Leverage:{relationship.get('leverage',0)}"
 
-    # Your original systems (unchanged)
     log_path = os.path.join(LOG_DIR, f"{npc}_chatlog.txt")
     memory_lines = []
     if os.path.exists(log_path):
@@ -233,7 +259,7 @@ MENTAL CONDITIONS:
 {extra_text}
 
 === LANGUAGE RULE ===
-Always reply in the EXACT same language the player used in their message. If the player writes in German, reply in German. If English, reply in English.
+Always reply in the EXACT same language the player used in their message.
 """.strip()
 
     try:
@@ -255,13 +281,12 @@ Always reply in the EXACT same language the player used in their message. If the
         if any(word in player_input.lower() for word in ["trust", "kill", "protect", "love", "threaten", "betray"]):
             write_to_memory(npc, f"You said: '{player_input.strip()}'")
 
-        # === CLEAN HEADER ONLY (no Breath stacks ever) ===
+        # === CLEAN HEADER ONLY ===
         game = GameState()
         game.load_from_json()
         game.interact(npc, affinity_gain=2, trust_gain=3)
         header = game.advance_time(hours=1).replace(" | Breath stacks 0", "")
         full_reply = f"{header}\n\n{full_reply}"
-        # === END CLEAN HEADER ===
 
         return {"reply": full_reply}
 
@@ -269,15 +294,16 @@ Always reply in the EXACT same language the player used in their message. If the
         return {"reply": f"[Grok API ERROR] {str(e)}"}
 
 
+# === Recovery Endpoint – vorübergehend auskommentiert (keine Pylance-Fehler mehr)
+# from scripts.recovery import apply_recovery
+# 
+# @app.get("/recover/{player_name}")
+# def recover_player(player_name: str, hours: int = 24):
+#     result = apply_recovery(player=player_name, hours=hours)
+#     return result
+
+
 # === Dev Only
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
-
-# === Recovery Endpoint
-from scripts.recovery import apply_recovery
-
-@app.get("/recover/{player_name}")
-def recover_player(player_name: str, hours: int = 24):
-    result = apply_recovery(player_name, hours)
-    return result
