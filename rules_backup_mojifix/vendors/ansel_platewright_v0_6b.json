@@ -1,0 +1,72 @@
+{
+  "id": "vendor_ansel_platewright_v0_6b",
+  "name": "Ansel, the Platewright",
+  "location": "Blackhall – Lower Foundry Row",
+  "faction": "Guild of Platewrights",
+  "services": {
+    "repair_plate": {
+      "desc": "Repair dents, reseat rivets, straighten edges.",
+      "time_minutes_per_dur": 5,
+      "cost_silver_per_dur": 1
+    },
+    "seat_keystone": {
+      "desc": "Bench seat a pre-inscribed keystone or mesh plate.",
+      "time_minutes": 15,
+      "cost_silver": 8
+    },
+    "rivet_reseal": {
+      "desc": "Rivet reseal for hybrid plates / armor collars.",
+      "time_minutes": 20,
+      "cost_silver": 10
+    }
+  },
+  "inventory_rules": {
+    "bias_for_class": "Stonewarden",
+    "restock_daily": {
+      "time_local": "08:00",
+      "slots": 6,
+      "rarity_weights": { "common": 6, "uncommon": 3, "rare": 1 }
+    },
+    "restock_weekly": {
+      "dow": "Mo",
+      "slots": 2,
+      "rarity_weights": { "rare": 2, "very_rare": 1 }
+    }
+  },
+  "inventory": [
+    { "item_id": "plate_anvil_mk1", "qty": { "min": 1, "max": 2 }, "rarity": "uncommon", "price_override_silver": 95 },
+    { "item_id": "plate_mesh_mk1", "qty": { "min": 1, "max": 3 }, "rarity": "common", "price_override_silver": 70 },
+    { "item_id": "plate_hybrid_mk1", "qty": { "min": 0, "max": 1 }, "rarity": "rare", "price_override_silver": 140 },
+    { "item_id": "charge_breach_mk1", "qty": { "min": 1, "max": 3 }, "rarity": "uncommon" },
+    { "item_id": "charge_shaped_mk1", "qty": { "min": 0, "max": 2 }, "rarity": "rare" },
+    { "item_id": "fuse_runic_set", "qty": { "min": 1, "max": 2 }, "rarity": "uncommon" },
+    { "item_id": "coil_wire_bundle_std", "qty": { "min": 2, "max": 5 }, "rarity": "common" },
+    { "item_id": "tangle_line_pack", "qty": { "min": 1, "max": 3 }, "rarity": "common" },
+    { "item_id": "repeater_arbalest_mk1", "qty": { "min": 0, "max": 1 }, "rarity": "rare", "price_override_silver": 220 },
+    { "item_id": "repeater_mag_std_10", "qty": { "min": 3, "max": 8 }, "rarity": "common" },
+    { "item_id": "repeater_mag_pen_8", "qty": { "min": 1, "max": 3 }, "rarity": "uncommon" },
+    { "item_id": "repeater_mag_scatter_6", "qty": { "min": 1, "max": 2 }, "rarity": "uncommon" },
+    { "item_id": "face_shield_split_visor", "qty": { "min": 1, "max": 2 }, "rarity": "common" },
+    { "item_id": "gloves_plate_fit", "qty": { "min": 1, "max": 2 }, "rarity": "common" },
+    { "item_id": "tool_ankle_winch", "qty": { "min": 1, "max": 1 }, "rarity": "uncommon" },
+    { "item_id": "breach_rammer", "qty": { "min": 1, "max": 1 }, "rarity": "uncommon" }
+  ],
+  "price_modifiers": {
+    "class_bonus": { "class": "Stonewarden", "discount_pct": 10 },
+    "reputation": [
+      { "min_rep": 20, "discount_pct": 5 },
+      { "min_rep": 50, "discount_pct": 10 }
+    ],
+    "heat_penalty": [
+      { "min_heat": 1, "surcharge_pct": 5 }
+    ]
+  },
+  "version": "0.6b",
+  "xref": {
+    "items_from": [
+      "rules/items/items_runesmith_goods_v0_6b.json",
+      "rules/items/stonewarden_siege_kit_v0_6a.json",
+      "rules/items/stonewarden_kits_v0_6b.json"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "id": "elara_visit_resolution",
+  "title": "Pearl and Breath — Elara’s Visit Resolved",
+  "actors": [
+    "Elara Voss",
+    "Sister Asha",
+    "Sister Mira Vey",
+    "Quartermaster (Theron’s widow)"
+  ],
+  "triggers": [
+    "possess_miras_pearl",
+    "possess_miras_breath_vial"
+  ],
+  "branches": [
+    {
+      "choice_id": "deliver_breath_to_elara",
+      "label": "Deliver Mira’s breath to Elara",
+      "resolution": "gm_picks_by_elara_state_or_morale",
+      "outcomes": [
+        {
+          "id": "submission_route",
+          "label": "She smiles and claims you",
+          "effects": {
+            "corruption": "+15",
+            "flags": [
+              "elaras_favorite_pet"
+            ],
+            "faction_rep": {
+              "Velvet Gallows": "+1d6"
+            }
+          }
+        },
+        {
+          "id": "fracture_route",
+          "label": "She breaks and attacks",
+          "effects": {
+            "faction_rep": {
+              "Velvet Gallows": "-2d10"
+            },
+            "alerts": [
+              "quartermaster_informed"
+            ],
+            "combat": true,
+            "on_victory": {
+              "gain_items": [
+                "Confessor Seal"
+              ],
+              "trade": [
+                {
+                  "give": "Mira’s Breath",
+                  "receive": "Mira’s Pearl"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "choice_id": "return_breath_to_asha",
+      "label": "Return Mira’s breath to Asha",
+      "effects": {
+        "eden_clue": "eden_clue_2",
+        "narration": "You just saved a ghost.",
+        "flags": [
+          "asha_trust_up"
+        ]
+      }
+    },
+    {
+      "choice_id": "present_pearl_to_confessors",
+      "label": "Present the pearl to Confessors",
+      "effects": {
+        "spawn_writ": "retrieve_asha_or_absolve",
+        "faction_heat": {
+          "Velvet Gallows": "+2"
+        }
+      },
+      "notes": "Creates a Confessor vs Gallows arc; may end Asha peacefully or violently."
+    },
+    {
+      "choice_id": "leverage_quartermaster",
+      "label": "Leverage the Quartermaster with the pearl",
+      "effects": {
+        "favors": [
+          "fund_raids_on_elara",
+          "safe_conduct"
+        ],
+        "risk": {
+          "assassination": "medium"
+        }
+      }
+    }
+  ]
+}

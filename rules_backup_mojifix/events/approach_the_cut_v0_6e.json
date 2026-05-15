@@ -1,0 +1,64 @@
+{
+  "version": "0.6e",
+  "id": "approach_the_cut",
+  "name": "Approach the Cut",
+  "scene_type": "setup",
+  "entry": {
+    "recommended_party": ["Stonewarden", "companion_1", "companion_2"],
+    "preconditions": [
+      "Stonewarden present (recommended)",
+      "Basic plates or mesh available"
+    ]
+  },
+  "beats": [
+    {
+      "id": "sighting",
+      "box_text": [
+        "A sawtooth gulley. Smoke sits low. The Cut is ahead—two cart-widths, sandbagged, pitted by shrapnel.",
+        "Dwarven chalk marks dot the stone: two clean, one smudged. Recent movement."
+      ],
+      "checks": [
+        {
+          "type": "perception",
+          "tn": 12,
+          "on_success": {
+            "notes": "You spot a safe lane for laying mesh early.",
+            "grants": [{ "flag": "mesh_lane_found", "value": true }]
+          },
+          "on_fail": {
+            "notes": "You miss it; approach will be hurried."
+          }
+        }
+      ]
+    },
+    {
+      "id": "kit_check",
+      "prompt": "Quick kit audit: plates seated? powder dry? repeater mags latched?",
+      "options": [
+        "If carrying `plate_mesh_mk1` and `coil_wire_bundle_std`, you may pre-string one tile.",
+        "If low on powder, mark `powder_stressed` (roleplay consequence only unless GM rules otherwise)."
+      ]
+    }
+  ],
+  "effects_on_next_scene": {
+    "hold_the_cut_v0_6b": {
+      "if_flags": [
+        {
+          "has": "mesh_lane_found",
+          "apply": [
+            { "grant": "prelaid_mesh_tiles", "value": 1 },
+            { "grant": "reroll_token_scene", "value": 1 }
+          ],
+          "gm_note": "Treat as advantage-like. Use once during Hold the Cut."
+        }
+      ],
+      "else_apply": [
+        { "grant": "winded_opening", "value": true, "gm_note": "First 2 rounds: +1 TN to movement-related tests." }
+      ]
+    }
+  },
+  "end": {
+    "transition": "Move directly into `hold_the_cut_v0_6b.json`.",
+    "fail_forward": "Even if all checks fail, continue; just apply the winded penalty."
+  }
+}

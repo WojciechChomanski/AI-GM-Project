@@ -1,0 +1,51 @@
+{
+  "version": "0.6d",
+  "base_price_field": "price_cp",
+
+  "migration_hints": {
+    "fallback_fields": ["cost_silver", "price_silver", "cost"],
+    "silver_to_cp_multiplier": 100,
+    "rules": "If price_cp exists, use it. Else if cost_silver exists, price_cp = cost_silver * 100."
+  },
+
+  "quality_price_mult": {
+    "junk":        0.60,
+    "poor":        0.80,
+    "standard":    1.00,
+    "fine":        1.30,
+    "excellent":   1.60,
+    "masterwork":  2.20,
+    "legendary":   3.00
+  },
+
+  "craft_price_mult": {
+    "human":   1.00,
+    "dwarven": 1.15,
+    "elven":   1.20,
+    "ogre":    0.90
+  },
+
+  "vendor_modifiers": {
+    "scarcity_pct": { "min": 0, "max": 30 },
+    "reputation_pct": { "min": -20, "max": 20 },
+    "class_affinity_pct": { "Stonewarden": -10 },
+    "restock_variance_pct": 10,
+    "final_price_clamp_pct": { "min": 60, "max": 200 },
+    "round_to_nearest_cp": 10
+  },
+
+  "services": {
+    "labor_rates": {
+      "shop_cp_per_min": 5,
+      "field_rate_multiplier": 1.5
+    },
+    "parts_catalog_notes": "Rivets, gaskets, binding resin, mesh segments priced in cp in items files.",
+    "formulas": {
+      "repair_dent": "cp = round((minutes_per_dent * rate * rate_mode) + parts_cp)",
+      "reseat": "cp = round((minutes_per_piece * rate * rate_mode) + parts_cp)",
+      "overhaul_bundle": "cp = round((bundle_minutes * rate * rate_mode) + parts_cp)"
+    },
+    "durability_refs": "Use timings from rules/system/durability_v0_6c.json (shop_minutes_per_dent, reseat mins, etc.)"
+  }
+}
+

@@ -1,0 +1,22 @@
+{
+  "name": "Brock",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Mercenary",
+  "background": "Hunter",
+  "total_hp": 75,
+  "max_stamina": 65,
+  "strength": 35,
+  "toughness": 30,
+  "agility": 30,
+  "mobility": 35,
+  "dexterity": 30,
+  "endurance": 35,
+  "intelligence": 25,
+  "willpower": 25,
+  "perception": 35,
+  "charisma": 20,
+  "corruption_level": 0,
+  "stress_level": 0,
+  "reputation": 0
+}

@@ -1,0 +1,47 @@
+{
+  "version": "0.6e",
+  "party": [
+    {
+      "id": "pc_stonewarden",
+      "name": "Stonewarden (PC)",
+      "class": "Stonewarden",
+      "race": "Dwarf",
+      "kit_ref": "stonewarden_kit_anvil",
+      "wallet": { "gp": 0, "sp": 5, "cp": 0 },
+      "notes": "Front-line, platework + repeater. Uses Anvil stance and Mesh."
+    },
+    {
+      "id": "ally_outlaw",
+      "name": "Outlaw Mercenary",
+      "class": "Outlaw_Mercenary_Warrior",
+      "race": "Human",
+      "kit_ref": null,
+      "starter_items_hint": [
+        "sword_2h or greatsword",
+        "basic cloak or padded cloth",
+        "powder pouch (if any thrown tools)"
+      ],
+      "wallet": { "gp": 0, "sp": 2, "cp": 50 },
+      "notes": "Bruiser / intimidation. Helps anchor the flank."
+    },
+    {
+      "id": "ally_sorceress",
+      "name": "Veil Sorceress",
+      "class": "Veil_Sorceress",
+      "race": "Elf",
+      "kit_ref": null,
+      "starter_items_hint": [
+        "dagger",
+        "Veil wraps",
+        "one ritual focus (flavor only if rules not needed here)"
+      ],
+      "wallet": { "gp": 0, "sp": 3, "cp": 0 },
+      "notes": "Control / soft support; stay behind the line."
+    }
+  ],
+  "compat": {
+    "kits_file": "rules/items/stonewarden_kits_v0_6b.json",
+    "items_prices": "rules/items/stonewarden_kits_prices_v0_6d.json",
+    "currency": "rules/system/currency_v0_6d.json"
+  }
+}

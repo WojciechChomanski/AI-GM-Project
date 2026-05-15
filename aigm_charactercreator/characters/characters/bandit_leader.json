@@ -1,0 +1,22 @@
+{
+  "name": "Bandit Leader",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Raider Captain",
+  "background": "Outlaw",
+  "total_hp": 75,
+  "max_stamina": 60,
+  "strength": 35,
+  "toughness": 30,
+  "agility": 30,
+  "mobility": 30,
+  "dexterity": 30,
+  "endurance": 30,
+  "intelligence": 25,
+  "willpower": 25,
+  "perception": 25,
+  "charisma": 25,
+  "corruption_level": 35,
+  "stress_level": 5,
+  "reputation": -40
+}

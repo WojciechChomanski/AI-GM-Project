@@ -1,0 +1,37 @@
+{
+  "version": "0.6d",
+  "character_wallet_field": {
+    "path": "character.wallet",
+    "schema": {
+      "gp": { "type": "integer", "min": 0, "default": 0 },
+      "sp": { "type": "integer", "min": 0, "default": 0 },
+      "cp": { "type": "integer", "min": 0, "default": 0 }
+    },
+    "derived": {
+      "total_cp": "gp*10000 + sp*100 + cp",
+      "coin_count": "gp + sp + cp",
+      "coin_weight_kg": "ceil( max(0, coin_count - (min(coin_count, pouch_capacity_coins) * pouch_encumbrance_reduction_pct/100)) / coins_per_kg )",
+      "notes": "Denomination values & pouch settings come from rules/system/currency_v0_6d.json."
+    },
+    "rules": {
+      "can_go_negative": false,
+      "overflow_to_lower": true,
+      "format_preference": "gp_sp_cp"
+    }
+  },
+  "transactions": {
+    "purchase": {
+      "debit": "price_cp",
+      "fail_if_insufficient_funds": true
+    },
+    "sale": {
+      "credit": "floor(price_cp * resale_factor)",
+      "resale_factor_default": 0.5
+    }
+  },
+  "integration": {
+    "currency_spec": "rules/system/currency_v0_6d.json",
+    "base_unit": "cp"
+  }
+}
+

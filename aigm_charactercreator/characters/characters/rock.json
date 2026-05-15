@@ -1,0 +1,22 @@
+{
+  "name": "Rock",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Knight",
+  "background": "Lumberjack",
+  "total_hp": 85,
+  "max_stamina": 60,
+  "strength": 40,
+  "toughness": 40,
+  "agility": 25,
+  "mobility": 30,
+  "dexterity": 25,
+  "endurance": 35,
+  "intelligence": 20,
+  "willpower": 30,
+  "perception": 25,
+  "charisma": 15,
+  "corruption_level": 5,
+  "stress_level": 0,
+  "reputation": 0
+}

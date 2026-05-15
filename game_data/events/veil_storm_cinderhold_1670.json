@@ -1,0 +1,38 @@
+{
+  "name": "The Cinderhold Veil-Storm",
+  "date": "1670-09-21",
+  "region": "Cinderhold",
+  "summary": "A black squall forms over the docks as hidden Va-Pylons reach phase-two resonance. Breathbound radicals prepare a forbidden mass sacrifice to ‘seal’ the storm; Reclaimers seek to open it.",
+  "triggers": [
+    "Veil Pressure ≥ 3 in Cinderhold",
+    "At least one Va-Pylon activated within 20 leagues",
+    "Relic market completes a Shard-set sale"
+  ],
+  "stakes": [
+    "Open aperture: rift cascade, rare loot, permanent taint on district",
+    "Sealed by sacrifice: storm ends, but mass guilt flags disable Breath boons for locals",
+    "Sealed by rite of mercy: difficult multi-step Breath ritual; no sacrifice; storm ends clean"
+  ],
+  "hooks": [
+    "Rescue a Breath-touched child marked for the altar",
+    "Sabotage a hidden Va-Pylon under the fish market",
+    "Broker a truce between Crusaders and Confessors during landfall"
+  ],
+  "mechanics": {
+    "storm_clock_segments": 6,
+    "per_segment_effects": [
+      "−10% visibility; matchlocks misfire +10%",
+      "+1 corruption on Veil casts; +1 fatigue on melee",
+      "riftling spawns (2d4) near lightning strikes"
+    ],
+    "closure_checks": {
+      "sacrifice": "auto succeeds; applies ‘Blood Guilt’ to city (−Breath favor for 1 year)",
+      "mercy_rite": "3 sequential Willpower+Faith DC checks at escalating DC 40/55/70; failure spawns a betyl warden"
+    }
+  },
+  "aftermath": [
+    "If aperture opened: permanent Veil Pressure floor = 2 in Cinderhold",
+    "If mercy_rite: Confessor influence +2; Crusader influence −1",
+    "If sacrifice: radicalization +2 across Orders; rumor tables unlocked"
+  ]
+}

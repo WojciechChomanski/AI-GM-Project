@@ -1,0 +1,20 @@
+{
+  "wojtek": {
+    "phobias": ["fire", "confinement", "claustrophobia"],
+    "neurosis": ["hypervigilance"],
+    "conditions": {
+      "paranoia": 40,
+      "nightmares": 15,
+      "panic_disorder": 0,
+      "emotional_numbness": 5
+    },
+    "resilience": 60,
+    "stress": 23,
+    "trauma_score": 45,
+    "trauma_history": [
+      "Burned in the Collapse of Emberwatch",
+      "Left a companion behind",
+      "developed claustrophobia after extended isolation"
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnc1vm4ojuef"]
+
+[ext_resource type="Script" uid="uid://xtlttxx814ku" path="res://scripts/main_menu.gd" id="1_yqorp"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_yqorp")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 2.0
+offset_right = 1153.0
+offset_bottom = 517.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Grimdark Character Creator"
+
+[node name="NameRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="NameLabel" type="Label" parent="CenterContainer/VBoxContainer/NameRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Name:"
+
+[node name="NameInput" type="LineEdit" parent="CenterContainer/VBoxContainer/NameRow"]
+layout_mode = 2
+
+[node name="GenderRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="GenderLabel" type="Label" parent="CenterContainer/VBoxContainer/GenderRow"]
+layout_mode = 2
+text = "Gender:"
+
+[node name="GenderSelect" type="OptionButton" parent="CenterContainer/VBoxContainer/GenderRow"]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Male"
+popup/item_0/id = 0
+popup/item_1/text = "Female"
+popup/item_1/id = 1
+
+[node name="RaceRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/RaceRow"]
+layout_mode = 2
+text = "Race:"
+
+[node name="RaceSelect" type="OptionButton" parent="CenterContainer/VBoxContainer/RaceRow"]
+layout_mode = 2
+item_count = 4
+popup/item_0/text = "Human"
+popup/item_0/id = 0
+popup/item_1/text = "Elf"
+popup/item_1/id = 1
+popup/item_2/text = "Dwarf"
+popup/item_2/id = 2
+popup/item_3/text = "Ogre"
+popup/item_3/id = 3
+
+[node name="BackgroundRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="BackgroundLabel" type="Label" parent="CenterContainer/VBoxContainer/BackgroundRow"]
+layout_mode = 2
+text = "Background:"
+
+[node name="BackgroundSelect" type="OptionButton" parent="CenterContainer/VBoxContainer/BackgroundRow"]
+layout_mode = 2
+item_count = 5
+popup/item_0/text = "Hunter"
+popup/item_0/id = 0
+popup/item_1/text = "Lumberjack"
+popup/item_1/id = 1
+popup/item_2/text = "Prostitute"
+popup/item_2/id = 2
+popup/item_3/text = "Noble"
+popup/item_3/id = 3
+popup/item_4/text = "Bounty Hunter"
+popup/item_4/id = 4
+
+[node name="ClassRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ClassLabel" type="Label" parent="CenterContainer/VBoxContainer/ClassRow"]
+layout_mode = 2
+text = "Class:"
+
+[node name="ClassSelect" type="OptionButton" parent="CenterContainer/VBoxContainer/ClassRow"]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Mercenary"
+popup/item_0/id = 0
+popup/item_1/text = "Knight"
+popup/item_1/id = 1
+
+[node name="ConfirmButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Create Character"
+
+[node name="LoadButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Load Character"
+
+[node name="LoadDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+root_subfolder = "res://characters"
+filters = PackedStringArray("*.json")

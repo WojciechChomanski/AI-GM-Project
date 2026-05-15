@@ -1,0 +1,109 @@
+{
+  "race": "Dwarf",
+  "version": "0.5",
+  "notes": "Age-bands and slow scaling for Kha'in-line dwarves. Elders (300+) are NPC-only.",
+  "constants": {
+    "veil_resistance_bonus": 10,
+    "bleed_hardening_per_tick": 1,
+    "heavy_worlder": {
+      "carry_capacity_multiplier": 1.5,
+      "advantage_vs_shove_knockdown": true,
+      "swim_sprint_fastclimb_penalty": 10
+    }
+  },
+  "scaling": {
+    "every_years": 200,
+    "pick_one_attribute": ["strength", "toughness", "endurance"],
+    "amount": 2,
+    "respect_species_caps": true,
+    "caps_reference": "rules/stats.json::Dwarf_Male.max_stats"
+  },
+  "age_bands": [
+    {
+      "id": "young_hammer",
+      "label": "Young Hammer",
+      "min_age": 40,
+      "max_age": 120,
+      "pc_eligible": true,
+      "auto_effects": []
+    },
+    {
+      "id": "seasoned_anvil",
+      "label": "Seasoned Anvil",
+      "min_age": 120,
+      "max_age": 300,
+      "pc_eligible": true,
+      "choice_sets": [
+        {
+          "id": "stone_gift",
+          "label": "Stone Gift (choose 1)",
+          "choose": 1,
+          "options": [
+            {
+              "id": "bone_iron",
+              "label": "Bone-Iron",
+              "effects": [{ "type": "wound_threshold_bonus", "value": 1 }],
+              "rules_text": "+1 Wound Threshold."
+            },
+            {
+              "id": "anvil_stance",
+              "label": "Anvil Stance",
+              "effects": [
+                { "type": "bonus", "target": "check", "tags": ["resist_shove", "resist_knockdown"], "value": 10 },
+                { "type": "advantage", "target": "defense", "tags": ["grapple_resist"], "value": true }
+              ],
+              "rules_text": "+10 vs shove/knockdown; advantage vs being grappled."
+            },
+            {
+              "id": "rune_sense",
+              "label": "Rune-Sense",
+              "effects": [{ "type": "bonus", "target": "skill", "tags": ["detect_rune", "identify_keystone"], "value": 10 }],
+              "rules_text": "+10 to detect/interpret active runes and keystones."
+            }
+          ]
+        },
+        {
+          "id": "stone_cost",
+          "label": "Stone Cost (choose 1)",
+          "choose": 1,
+          "options": [
+            {
+              "id": "stiff_joints",
+              "label": "Stiff Joints",
+              "effects": [{ "type": "attribute_mod", "attribute": "mobility", "value": -5 }],
+              "rules_text": "−5 Mobility."
+            },
+            {
+              "id": "gravel_voice",
+              "label": "Gravel Voice",
+              "effects": [{ "type": "bonus", "target": "social_first_impression", "value": -5, "scope": "non_dwarf" }],
+              "rules_text": "−5 to first-impression social checks outside dwarf culture."
+            },
+            {
+              "id": "deepcall_dreams",
+              "label": "Deepcall Dreams",
+              "effects": [{ "type": "rest_risk", "chance_percent": 10, "condition": "not_sleeping_on_stone", "applies": "fatigued_on_wake" }],
+              "rules_text": "Each rest: 10% chance to wake Fatigued unless sleeping touching stone."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "granite_elder",
+      "label": "Granite Elder",
+      "min_age": 300,
+      "max_age": 9999,
+      "pc_eligible": false,
+      "npc_guidance": {
+        "notes": "NPC-only. Extremely tough, slow, doctrinally rigid; rarely leave the Deep.",
+        "suggested_mods": [
+          { "type": "wound_threshold_bonus", "value": 2 },
+          { "type": "bonus", "target": "attribute", "attribute": "willpower", "value": 15 },
+          { "type": "attribute_mod", "attribute": "mobility", "value": -15 },
+          { "type": "restriction", "tag": "no_sprint", "value": true }
+        ]
+      }
+    }
+  ]
+}

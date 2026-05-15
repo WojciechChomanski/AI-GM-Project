@@ -1,0 +1,14 @@
+{
+  "breath": {
+    "vs_abomination": true,
+    "sanctified_steel_damage_pct": 15,
+    "sanctified_steel_armor_pen": 10,
+    "aegis_veil_reduction_pct": 20,
+    "ward_of_courage_fear_resist_pct": 10,
+    "smite_base": 10,
+    "smite_scale_wil_div": 2,
+    "smite_scale_virtue_div": 10,
+    "smite_demon_undead_multiplier": 2
+  }
+}
+

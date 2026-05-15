@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "rules.addon_index",
+    "version": "0.6b",
+    "title": "Addon Registry",
+    "last_updated_utc": "2025-10-14T00:00:00Z"
+  },
+  "lore": [
+    "rules/lore/dwarves.json"
+  ],
+  "relics": [
+    "rules/relics/ulf_kins_maul.json"
+  ]
+}

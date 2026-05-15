@@ -1,0 +1,78 @@
+{
+  "version": "0.4",
+  "creatures": [
+    {
+      "id": "echo_leech",
+      "name": "Echo-Leech",
+      "tags": ["echo", "veil", "swarmling"],
+      "stats": {
+        "hp": 12,
+        "armor": 0,
+        "move": 6,
+        "will_resist": 20
+      },
+      "attacks": [
+        { "name": "Latch & Siphon", "to_hit": 50, "damage": "1d6", "special": "On hit: target makes Breath/Willpower check TN 50 or loses 1 Stamina per round (stacking to 3)." }
+      ],
+      "behaviors": [
+        "Seeks breath/noise sources first.",
+        "Sunlight or Ward-Mesh reduces aggression (-10 to hit)."
+      ],
+      "weaknesses": [
+        "Counter-Cant: ELI stuns for 1 round (no action).",
+        "Fire deals +1 damage per die."
+      ],
+      "loot": []
+    },
+    {
+      "id": "echo_brute",
+      "name": "Echo-Brute",
+      "tags": ["echo", "veil", "brute"],
+      "stats": {
+        "hp": 35,
+        "armor": 2,
+        "move": 5,
+        "will_resist": 35
+      },
+      "attacks": [
+        { "name": "Smash", "to_hit": 55, "damage": "2d6", "special": "On hit: test Knockdown TN 50 or fall prone." }
+      ],
+      "behaviors": [
+        "Prioritizes lanterns and doors; attempts to darken the area.",
+        "Ignores prone targets if another light source is within 6m."
+      ],
+      "weaknesses": [
+        "Counter-Cant: ELI reduces damage by 1 die for 2 rounds.",
+        "Angel-Bound Nail pins it in place for 1 round (no move)."
+      ],
+      "loot": []
+    },
+    {
+      "id": "chorus_node",
+      "name": "Chorus Node",
+      "tags": ["echo", "veil", "anchor"],
+      "stats": {
+        "hp": 22,
+        "armor": 1,
+        "move": 0,
+        "will_resist": 45
+      },
+      "aura": {
+        "radius_m": 10,
+        "effects": [
+          "All echo entities within radius gain +10 to hit.",
+          "Fear checks within radius are at -5."
+        ]
+      },
+      "interactions": [
+        "Mass of Repose (success) silences aura for 1 minute.",
+        "Counter-Cant: ELI cancels the aura for 2 rounds on success."
+      ],
+      "weaknesses": [
+        "Ward-Mesh Lantern within 3m halves the aura bonuses.",
+        "If destroyed, remaining echoes make morale check TN 50 or scatter."
+      ],
+      "loot": []
+    }
+  ]
+}

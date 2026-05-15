@@ -1,0 +1,20 @@
+{
+  "version": "0.6b",
+  "events": [
+    "rules/events/hold_the_cut.json",
+    "rules/events/door_to_breach.json"
+  ],
+  "lore": [
+    "rules/lore/dwarves.json"
+  ],
+  "relics": [
+    "rules/relics/ulf_kins_maul.json"
+  ],
+  "vendors": [
+    "rules/vendors/ansel_platewright.json"
+  ],
+  "classes": [
+    "rules/classes/crusader_knight.json"
+  ]
+}
+

@@ -1,0 +1,98 @@
+{
+  "Noble": {
+    "description": "Born into wealth and influence, navigating courts with ease.",
+    "stats": {
+      "charisma_bonus": 10,
+      "intelligence_modifier": 1
+    },
+    "abilities": [
+      {
+        "name": "Courtly Grace",
+        "description": "+10 to persuasion with nobles and officials."
+      }
+    ]
+  },
+  "Hunter": {
+    "description": "A tracker of beasts and men, at home in the wilds.",
+    "stats": {
+      "agility_modifier": 2,
+      "perception_bonus": 5
+    },
+    "abilities": [
+      {
+        "name": "Tracker’s Instinct",
+        "description": "+10 to tracking and survival checks."
+      }
+    ]
+  },
+  "Scholar": {
+    "description": "A seeker of forbidden knowledge, versed in ancient lore.",
+    "stats": {
+      "intelligence_modifier": 2,
+      "charisma_bonus": 5
+    },
+    "abilities": [
+      {
+        "name": "Arcane Insight",
+        "description": "+10 to lore and magic identification checks."
+      }
+    ]
+  },
+  "Outlaw": {
+    "description": "A fugitive thriving in the empire’s shadows.",
+    "stats": {
+      "agility_modifier": 1,
+      "strength_modifier": 1
+    },
+    "abilities": [
+      {
+        "name": "Underworld Ties",
+        "description": "+10 to dealings with criminals and black markets."
+      }
+    ]
+  },
+  "Street_Whore": {
+    "description": "A survivor of the empire’s underbelly, trading intimacy for survival among thieves and guards.",
+    "restrictions": {
+      "gender": "Female",
+      "race": "Human"
+    },
+    "stats": {
+      "charisma_bonus": 10,
+      "agility_modifier": 1,
+      "stamina_bonus": 5
+    },
+    "abilities": [
+      {
+        "name": "Streetwise Charm",
+        "description": "+15 to persuasion or deception with city guards, thieves, or informants."
+      },
+      {
+        "name": "Underworld Contacts",
+        "description": "Access low-tier informants or enforcers once per session."
+      }
+    ]
+  },
+  "High_End_Escort": {
+    "description": "A courtesan of elite circles, wielding charm and secrets among nobles.",
+    "restrictions": {
+      "gender": "Female",
+      "race": "Human"
+    },
+    "stats": {
+      "charisma_bonus": 15,
+      "intelligence_modifier": 1,
+      "stamina_bonus": 0
+    },
+    "abilities": [
+      {
+        "name": "Courtly Influence",
+        "description": "+20 to persuasion with aristocrats or officials."
+      },
+      {
+        "name": "Elite Connections",
+        "description": "Call upon a high-ranking ally for favors once per arc."
+      }
+    ]
+  }
+}

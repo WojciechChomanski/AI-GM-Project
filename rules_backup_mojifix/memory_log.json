@@ -1,0 +1,23 @@
+{
+  "npc_id": "wojtek",
+  "player_id": "player_001",
+  "interactions": [
+    {
+      "timestamp": "2025-04-20T17:44:00Z",
+      "player_input": "Do you believe the world can still be saved?",
+      "npc_response": "Hope is the final lie we tell ourselves before the end. Ask me something real.",
+      "emotional_tone": "dismissive",
+      "reaction_to_player": "guarded"
+    },
+    {
+      "timestamp": "2025-04-25T13:02:00Z",
+      "player_input": "You used to fight for something. What happened?",
+      "npc_response": "I woke up. The banners I once followed now hang from gallows. Perhaps you’ll join them.",
+      "emotional_tone": "cold",
+      "reaction_to_player": "provocative"
+    }
+  ],
+  "trust_level": -2,
+  "respect_level": 1,
+  "hostility_level": 3
+}

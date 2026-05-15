@@ -1,0 +1,34 @@
+{
+  "id": "echo_swarm_outbreak_v0_4",
+  "title": "Echo-Swarm Outbreak in the Upper Mines",
+  "triggers": ["dwarven_bricking_ritual_v0_4.botch_outbreak", "dwarven_bricking_ritual_v0_4.do_nothing_auto"],
+  "location": "Cinderhold — Upper Mines and adjacent workers’ quarter",
+  "encounter": {
+    "waves": 3,
+    "wave_profile": [
+      {"count": "1d4+1", "type": "echo_leech", "notes": "seek breath noise"},
+      {"count": "1d3", "type": "echo_brute", "notes": "smashes lanterns, doors"},
+      {"count": "1", "type": "chorus_node", "notes": "anchors the swarm; target for counter-cant"}
+    ],
+    "special_rules": [
+      "If a character sings Asha’s Chain-Song correctly, reduce wave by 1 unit.",
+      "Mass of Repose ritual can end the third wave on success (TN 55)."
+    ]
+  },
+  "resolutions": [
+    {
+      "key": "purge",
+      "result": {
+        "world": ["echo_pressure=-2 (local, 14 days)"],
+        "rewards": ["guild_scrip=50", "confessor_thanks=minor"]
+      }
+    },
+    {
+      "key": "contain_only",
+      "result": {
+        "world": ["echo_pressure=-1 (local, 7 days)"],
+        "costs": ["injuries", "lost_tools"]
+      }
+    }
+  ]
+}

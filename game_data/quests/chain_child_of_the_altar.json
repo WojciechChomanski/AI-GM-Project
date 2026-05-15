@@ -1,0 +1,47 @@
+{
+  "id": "QST_CHILD_ALTAR_1670",
+  "title": "Child of the Altar",
+  "era": "1670",
+  "region": "Cinderhold",
+  "acts": [
+    {
+      "act": 1,
+      "name": "The Mark",
+      "beats": [
+        "Witness a Breath-touched child seized by radicals",
+        "Discover a hidden Va-Pylon beneath the fish market",
+        "Choose an ally: Crusader captain or Confessor abbot"
+      ],
+      "outcomes": ["Gain Pylon Keys (1/3)", "Crusader favor +1 or Confessor favor +1"]
+    },
+    {
+      "act": 2,
+      "name": "Three Altars",
+      "beats": [
+        "Locate two more sacrifice sites in the slums",
+        "Decide: sabotage, save, or subvert the rites",
+        "Face an Echelon scout ring stealing children"
+      ],
+      "outcomes": ["Save ≥2 children → unlock Mercy Rite; else radicals escalate"]
+    },
+    {
+      "act": 3,
+      "name": "The Storm Breaks",
+      "beats": [
+        "Veil-Storm clock hits 6; riftlings pour in",
+        "Perform Mercy Rite (3-step DC) or stop the sacrifice",
+        "Optional: retune pylons to reveal an Eldran vault"
+      ],
+      "endings": [
+        "Mercy: storm ends; city spared blood-guilt",
+        "Sacrifice: storm ends; permanent stigma; Breath boons weaken locally",
+        "Aperture: storm births a gate; rare loot; lasting taint"
+      ]
+    }
+  ],
+  "rewards": [
+    "Relic: Tear of Abel (one-use Breath purge)",
+    "Contact: Confessor archivist",
+    "Map Fragment: Eldran vault entrance (if retuned)"
+  ]
+}

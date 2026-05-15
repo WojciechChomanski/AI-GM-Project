@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "id": "vendor.ansel_platewright",
+    "version": "0.6b",
+    "title": "Ansel Platewright — Rivets, Seams & Keystone Seats",
+    "author": "project",
+    "last_updated_utc": "2025-10-14T00:00:00Z"
+  },
+  "vendor": {
+    "name": "Ansel Platewright",
+    "faction": "Stonewrights' Guild",
+    "location": "Blackhall Ward, Lower Forge-Row",
+    "services": [
+      {
+        "id": "repair_plates",
+        "name": "Plate Repair & Reseal",
+        "description": "Hammer out dents, replace rivets, reseal seams with resin ash.",
+        "cost_formula": "5 silver + 1 silver per 10 missing durability",
+        "effects": { "restore_durability_percent": 75 }
+      },
+      {
+        "id": "seat_keystone",
+        "name": "Seat Keystone",
+        "description": "Mount a keyed stone shard to anchor runes or coils.",
+        "cost_formula": "12 silver + shard",
+        "effects": { "slot_keystone": true }
+      },
+      {
+        "id": "rivet_reseal",
+        "name": "Rivet Reseal",
+        "description": "Prevent seam weep under pressure.",
+        "cost_formula": "3 silver per piece",
+        "effects": { "reduce_armor_noise": 2 }
+      }
+    ],
+    "inventory": [
+      {
+        "id": "plate_light_segment",
+        "name": "Light Plate Segment",
+        "type": "armor_component",
+        "weight": 4,
+        "stock": 6,
+        "price_silver": 9,
+        "effects": { "armor_rating": { "slashing": 2, "piercing": 1, "blunt": 1 } }
+      },
+      {
+        "id": "coil_holdfast",
+        "name": "Holdfast Coil",
+        "type": "deployable",
+        "weight": 2,
+        "stock": 4,
+        "price_silver": 7,
+        "effects": { "control_zone_radius_m": 2, "trip_dc": 45 }
+      },
+      {
+        "id": "breach_charge_mk1",
+        "name": "Breach Charge Mk.I",
+        "type": "charge",
+        "weight": 3,
+        "stock": 3,
+        "price_silver": 15,
+        "effects": { "door_breach_bonus": 25, "misfire_chance_percent": 10 }
+      },
+      {
+        "id": "repeater_plate",
+        "name": "Repeater Plate",
+        "type": "rune_medium",
+        "weight": 1,
+        "stock": 2,
+        "price_silver": 18,
+        "effects": { "stores_echoes": 3 }
+      }
+    ],
+    "discounts": [
+      {
+        "who": "Stonewarden Class",
+        "condition": { "class_tag": "Stonewarden" },
+        "percent_off": 10
+      }
+    ],
+    "barks": [
+      "My sons died for those seams. Don’t waste them.",
+      "You want it quiet or you want it cheap? Pick one.",
+      "Keystone sits crooked, you’ll hear it in the bones."
+    ]
+  },
+  "integration": {
+    "category": "vendor",
+    "tags": ["dwarf", "stonewarden", "plates", "breach"],
+    "related_files": [
+      "rules/lore/dwarves.json",
+      "rules/relics/ulf_kins_maul.json"
+    ]
+  }
+}

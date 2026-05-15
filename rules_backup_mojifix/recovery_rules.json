@@ -1,0 +1,46 @@
+{
+  "rest": {
+    "stress_reduction_per_hour": 2,
+    "trauma_decay_per_day": 1,
+    "neurosis_reduction": {
+      "paranoia": 1,
+      "nightmares": 1,
+      "panic_disorder": 0.5,
+      "emotional_numbness": 0.25
+    }
+  },
+  "resilience_effect": {
+    "threshold": 60,
+    "bonus_decay": 1.5
+  },
+  "max_limits": {
+    "stress": 100,
+    "trauma_score": 100
+  },
+  "talk_to_trusted_npc": {
+    "stress_reduction": 10,
+    "conditions": {
+      "emotional_numbness": -5
+    }
+  },
+  "use_item_poultice": {
+    "stress_reduction": 8
+  },
+  "use_item_liquor": {
+    "stress_reduction": 5,
+    "conditions": {
+      "paranoia": -2
+    }
+  },
+  "pray": {
+    "stress_reduction": 6,
+    "conditions": {
+      "nightmares": -3,
+      "panic_disorder": -2
+    }
+  },
+  "complete_trauma_quest": {
+    "trauma_score_reduction": 15,
+    "stress_reduction": 20
+  }
+}

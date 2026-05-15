@@ -1,0 +1,301 @@
+{
+    "meta":  {
+                 "id":  "class_crusader_knight_v0_6b",
+                 "kind":  "class",
+                 "name":  "Crusader_Knight",
+                 "label":  "Crusader Knight",
+                 "version":  "0.6b"
+             },
+    "class":  {
+                  "description":  "Male human-only heavy cavalry/infantry sanctified by the Breath. Bursting power, iron defense, long-term wear.",
+                  "lore":  "Crusader Knights charge into Cursed Swamps, purging Veilspawn with divine fury, their oaths unbreakable.",
+                  "race_lock":  [
+                                    "Human"
+                                ],
+                  "gender_lock":  [
+                                      "Male"
+                                  ],
+                  "power_source":  "Breath",
+                  "role_tags":  [
+                                    "tank",
+                                    "striker",
+                                    "mounted"
+                                ],
+                  "stat_modifiers":  {
+                                         "strength":  12,
+                                         "toughness":  10,
+                                         "agility":  5,
+                                         "willpower":  8,
+                                         "stamina_max_flat":  10,
+                                         "hp_percent":  15
+                                     },
+                  "stats":  {
+                                "strength_modifier":  12,
+                                "toughness_modifier":  10,
+                                "agility_modifier":  5,
+                                "willpower_modifier":  8,
+                                "stamina_max_bonus":  10,
+                                "hp_percent_bonus":  15
+                            },
+                  "proficiencies":  {
+                                        "weapons":  [
+                                                        "sword_1h",
+                                                        "sword_2h",
+                                                        "mace",
+                                                        "lance"
+                                                    ],
+                                        "shields":  [
+                                                        "heater",
+                                                        "kite"
+                                                    ],
+                                        "armor_tiers":  [
+                                                            "medium-light",
+                                                            "medium-medium",
+                                                            "medium-heavy",
+                                                            "heavy-light",
+                                                            "heavy-medium",
+                                                            "heavy-heavy"
+                                                        ],
+                                        "mounts":  [
+                                                       "warhorse"
+                                                   ]
+                                    },
+                  "progression":  [
+                                      {
+                                          "tier":  1,
+                                          "name":  "Militia",
+                                          "requirements":  {
+                                                               "age_min":  14
+                                                           },
+                                          "abilities_gain":  [
+                                                                 "Basic_Strike",
+                                                                 "Shield_Bash",
+                                                                 "Rally_Cry"
+                                                             ],
+                                          "flaws_gain":  [
+                                                             "Low_Morale"
+                                                         ]
+                                      },
+                                      {
+                                          "tier":  2,
+                                          "name":  "Squire_Sergeant",
+                                          "requirements":  {
+                                                               "battles_survived":  3,
+                                                               "led_victory":  1
+                                                           },
+                                          "abilities_gain":  [
+                                                                 "Precision_Thrust",
+                                                                 "Stand_Fast"
+                                                             ],
+                                          "gear_hint":  [
+                                                            "chainmail",
+                                                            "short_sword"
+                                                        ],
+                                          "flaws_gain":  [
+                                                             "Old_Scars"
+                                                         ]
+                                      },
+                                      {
+                                          "tier":  3,
+                                          "name":  "Landsknecht",
+                                          "requirements":  {
+                                                               "named_enemy_slain":  1
+                                                           },
+                                          "abilities_gain":  [
+                                                                 "Cleave",
+                                                                 "Mounted_Charge"
+                                                             ],
+                                          "gear_hint":  [
+                                                            "plate_partial",
+                                                            "claymore"
+                                                        ],
+                                          "flaws_gain":  [
+                                                             "Hubris"
+                                                         ]
+                                      },
+                                      {
+                                          "tier":  4,
+                                          "name":  "Knight",
+                                          "requirements":  {
+                                                               "noble_title":  true
+                                                           },
+                                          "abilities_gain":  [
+                                                                 "Divine_Surge",
+                                                                 "Lance_Thrust",
+                                                                 "Smite"
+                                                             ],
+                                          "gear_hint":  [
+                                                            "full_plate",
+                                                            "warhorse"
+                                                        ],
+                                          "flaws_gain":  [
+                                                             "Mortal_Coil"
+                                                         ]
+                                      },
+                                      {
+                                          "tier":  5,
+                                          "name":  "Templar Ascendant",
+                                          "requirements":  {
+                                                               "battles_survived":  10,
+                                                               "noble_title":  true,
+                                                               "vow_oath":  "No Retreat"
+                                                           },
+                                          "abilities_gain":  [
+
+                                                             ],
+                                          "vow":  {
+                                                      "name":  "No Retreat",
+                                                      "trigger":  {
+                                                                      "when":  "hp_below_pct",
+                                                                      "value":  30,
+                                                                      "and_enemy_alive":  true
+                                                                  },
+                                                      "state":  "locked_in",
+                                                      "effects":  {
+                                                                      "damage_taken_multiplier":  2.0,
+                                                                      "sanity_per_round":  5,
+                                                                      "ally_auras":  {
+                                                                                         "willpower_bonus":  2,
+                                                                                         "endurance_bonus":  1,
+                                                                                         "radius_m":  6
+                                                                                     },
+                                                                      "duration_rounds_max":  3
+                                                                  },
+                                                      "reward_on_fulfill":  {
+                                                                                "condition":  "survive_full_duration_without_flee",
+                                                                                "miracle":  {
+                                                                                                "choose_one_random":  [
+                                                                                                                          {
+                                                                                                                              "id":  "miracle_heal_small",
+                                                                                                                              "label":  "Heal 1d8"
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                              "id":  "miracle_breath_burst",
+                                                                                                                              "label":  "Breath Burst (AOE 1.5m, 2d6)"
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                              "id":  "miracle_veil_ward",
+                                                                                                                              "label":  "Veil Ward (immune to curses 1 round)"
+                                                                                                                          }
+                                                                                                                      ],
+                                                                                                "uses":  1
+                                                                                            },
+                                                                                "flavor":  "Stone remembers. Faith answers. The Veil recoils."
+                                                                            },
+                                                      "break_vow":  {
+                                                                        "costs":  {
+                                                                                      "sanity_delta":  -2,
+                                                                                      "traits_add":  [
+                                                                                                         "Coward"
+                                                                                                     ],
+                                                                                      "reputation_delta":  {
+                                                                                                               "faction":  "Crusader_Order",
+                                                                                                               "amount":  -10
+                                                                                                           },
+                                                                                      "tests_modifier":  {
+                                                                                                             "vs_fear_willpower":  -5
+                                                                                                         }
+                                                                                  },
+                                                                        "lore":  "You ran. The Veil remembers."
+                                                                    }
+                                                  },
+                                          "integration":  {
+                                                              "engine_hooks":  {
+                                                                                   "on_round_start":  "check_vow_trigger",
+                                                                                   "on_round_end":  "apply_vow_tick_and_miracle",
+                                                                                   "flags":  [
+                                                                                                 "nonblocking_if_engine_has_no_support"
+                                                                                             ]
+                                                                               }
+                                                          }
+                                      }
+                                  ],
+                  "abilities":  {
+                                    "Basic_Strike":  {
+                                                         "type":  "attack",
+                                                         "stamina":  6,
+                                                         "weapon":  "any_melee"
+                                                     },
+                                    "Shield_Bash":  {
+                                                        "type":  "control",
+                                                        "stamina":  8,
+                                                        "stun_pct":  20,
+                                                        "requires":  "shield"
+                                                    },
+                                    "Rally_Cry":  {
+                                                      "type":  "buff_team",
+                                                      "stamina":  10,
+                                                      "morale_pct":  15,
+                                                      "cooldown_rounds":  5
+                                                  },
+                                    "Precision_Thrust":  {
+                                                             "type":  "attack",
+                                                             "stamina":  10,
+                                                             "armor_pierce_pct":  10,
+                                                             "aimed":  true
+                                                         },
+                                    "Stand_Fast":  {
+                                                       "type":  "stance",
+                                                       "defense_pct":  10,
+                                                       "stamina_regen_pct":  -10
+                                                   },
+                                    "Cleave":  {
+                                                   "type":  "attack_aoe",
+                                                   "stamina":  14,
+                                                   "targets":  2,
+                                                   "bonus_damage":  8
+                                               },
+                                    "Mounted_Charge":  {
+                                                           "type":  "charge",
+                                                           "stamina":  18,
+                                                           "requires":  "mount",
+                                                           "bonus_damage":  12,
+                                                           "knockdown_pct":  30
+                                                       },
+                                    "Smite":  {
+                                                  "type":  "attack_holy",
+                                                  "stamina":  16,
+                                                  "holy_damage":  15,
+                                                  "vs_veilspawn_bonus_pct":  25
+                                              },
+                                    "Lance_Thrust":  {
+                                                         "type":  "attack_pierce",
+                                                         "stamina":  16,
+                                                         "requires":  "mount",
+                                                         "bonus_damage":  18
+                                                     },
+                                    "Divine_Surge":  {
+                                                         "type":  "ultimate_burst",
+                                                         "uses_per_day":  1,
+                                                         "stamina":  50,
+                                                         "bonus_damage":  20,
+                                                         "tags_apply_after":  [
+                                                                                  "Exhausted_2r"
+                                                                              ]
+                                                     }
+                                },
+                  "flaws":  {
+                                "Low_Morale":  {
+                                                   "type":  "mental",
+                                                   "damage_pct_if_outnumbered":  -10
+                                               },
+                                "Old_Scars":  {
+                                                  "type":  "fatigue",
+                                                  "stamina_start_combat":  -5
+                                              },
+                                "Hubris":  {
+                                               "type":  "tactical",
+                                               "overcommit_pct":  10
+                                           },
+                                "Mortal_Coil":  {
+                                                    "type":  "attrition",
+                                                    "hp_max_permanent_per_10_battles":  -10
+                                                }
+                            }
+              },
+    "integration":  {
+                        "api":  {
+                                    "rules_path":  "rules/classes/crusader_knight.json"
+                                }
+                    }
+}

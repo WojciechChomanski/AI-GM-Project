@@ -1,0 +1,47 @@
+{
+  "version": "0.4",
+  "items": [
+    {
+      "id": "ward_mesh_lantern",
+      "name": "Ward-Mesh Lantern",
+      "rarity": "uncommon",
+      "effects": [
+        "Suppress whisper auras in 3m radius",
+        "-10 TN to stealth/sabotage vs active runes"
+      ],
+      "charges": 3,
+      "misfire": "On a roll of 95+, emits a wail audible 30m; next stealth at -10."
+    },
+    {
+      "id": "keystone_chalk",
+      "name": "Keystone Chalk",
+      "rarity": "common",
+      "effects": ["Draw EL-I glyphs; +5 to runecraft when inscribing a keystone"],
+      "uses": 5
+    },
+    {
+      "id": "chain_sigil_iron",
+      "name": "Chain Sigil (Wrought Iron)",
+      "rarity": "common",
+      "effects": ["Completes the EL-I seal circle; required for the Bricking Rite"]
+    },
+    {
+      "id": "hammer_three_knocks",
+      "name": "Hammer of the Three Knocks",
+      "rarity": "rare",
+      "effects": [
+        "+5 to ritual: bricking_rite",
+        "When used to strike a keystone, echoes quiet for 1 round"
+      ]
+    },
+    {
+      "id": "angel_bound_nail",
+      "name": "Angel-Bound Nail",
+      "rarity": "very_rare",
+      "effects": [
+        "Once per scene: pin a whisper to the wall (mute one rune node for 1 minute)"
+      ],
+      "costs": ["If used by non-human Breath-bound: corruption check TN 50"]
+    }
+  ]
+}

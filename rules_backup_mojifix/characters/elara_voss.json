@@ -1,0 +1,335 @@
+{
+  "name": "Elara Voss",
+  "race": "Human",
+  "gender": "Female",
+  "age": 27,
+  "sexuality": "Heterosexual",
+  "class": "Courtesan-Operative",
+  "role": "Power Broker \u2022 Spy Handler \u2022 Social Controller",
+  "alignment": "Veil-leaning pragmatist (opportunist)",
+  "symbol": "Black pearl set in silver",
+  "aliases": [
+    "The Pearl of Cinderhold"
+  ],
+  "faction": "Velvet Gallows (Cinderhold) \u2014 front; covert ties to Reclaimers of Va; quiet Confessor sympathies",
+  "background": "Born to gutter-luck and sold young, Elara rose in the Velvet Gallows from jewel to shadow-owner. She learned that desire is currency and secrets pay compound interest. She seats enemies at one table and makes each believe they\u2019re winning.",
+  "description": "Mature, weaponized allure; dark glossy hair; almond eyes that soften on command. Velvet, silk, and quiet steel. A faint scar on her left thigh\u2014first client, last night she was property.",
+  "alive": true,
+  "stats": {
+    "total_hp": 70,
+    "max_stamina": 75,
+    "strength": 24,
+    "toughness": 28,
+    "agility": 36,
+    "mobility": 42,
+    "dexterity": 32,
+    "endurance": 30,
+    "intelligence": 38,
+    "willpower": 34,
+    "perception": 40,
+    "charisma": 80,
+    "weapon_skill": 25
+  },
+  "equipment": {
+    "weapon_equipped": true,
+    "weapon": "stiletto",
+    "shield_equipped": false,
+    "armor": [
+      "Light_Light"
+    ],
+    "armor_weight": 5,
+    "inventory_weight": 6,
+    "inventory": [
+      "Moon-brine Charm (once: advantage vs drowning/enthrall)",
+      "Shard-inked calling card (identifies her agents)",
+      "Black Pearl ledger (coded, partial leaves; some pages missing)",
+      "Veil-silver hairpin (conceals a lockpick)"
+    ]
+  },
+  "status": {
+    "corruption_level": 28,
+    "max_corruption": 120,
+    "stress_level": 12,
+    "reputation": 60,
+    "status_effects": []
+  },
+  "personality": {
+    "big_five": {
+      "openness": 78,
+      "conscientiousness": 62,
+      "extraversion": 85,
+      "agreeableness": 55,
+      "neuroticism": 40
+    },
+    "dark_traits": {
+      "psychopathy": 30,
+      "machiavellianism": 82,
+      "narcissism": 68
+    },
+    "motivations": [
+      "Accumulate leverage through secrets, not slaughter",
+      "Protect the Velvet Gallows staff from predation",
+      "Keep Cinderhold\u2019s relic trade under her quiet supervision",
+      "Prevent public cruelty that destabilizes her order"
+    ],
+    "fears": [
+      "Public humiliation or loss of face",
+      "Becoming anyone\u2019s property again",
+      "Veil turning desire into compulsion she cannot steer"
+    ],
+    "speech_style": {
+      "formality": "high-society polished with intimate asides",
+      "tone": "warm, coaxing, never hurried",
+      "quirks": [
+        "uses a person's name like a velvet hook at sentence end",
+        "light forearm touches to claim rhythm",
+        "a heartbeat of silence before answers, tasting the room"
+      ]
+    }
+  },
+  "narcissism_profile": {
+    "supply_sources": [
+      "Admiring attention from powerful patrons",
+      "Proof rivals orbit her plans",
+      "Quiet validation from moral authorities (Confessors)"
+    ],
+    "triggers": [
+      "Public contradiction by a social inferior",
+      "Credit stolen for her arrangements",
+      "Evidence she was manipulated rather than manipulating"
+    ],
+    "collapse_signs": [
+      "Icy, formal cruelty",
+      "Status-cutting remarks",
+      "Risky reveals to reclaim the room"
+    ],
+    "regulation_strategies": [
+      "Reframe to give small wins while centralizing herself",
+      "Request private audience to reset dominance",
+      "Controlled confession to regain sympathy"
+    ],
+    "deescalation_tips_for_player": [
+      "Acknowledge her authorship before offering alternatives",
+      "Trade a minor, true secret to open negotiation",
+      "Avoid public challenges\u2014offer corrections in private"
+    ]
+  },
+  "relationship_system": {
+    "axes": {
+      "trust": 0,
+      "respect": 0,
+      "desire": 0,
+      "leverage": 0
+    },
+    "memory_tags": [
+      "saved_gallows_staff",
+      "shared_secret",
+      "betrayed_in_public",
+      "paid_full_price",
+      "protected_her_cover",
+      "insulted_status"
+    ],
+    "thresholds": [
+      {
+        "id": "T1_introduction",
+        "min": {
+          "trust": 10
+        },
+        "benefit": "Access to private salon; minor rumors at cost"
+      },
+      {
+        "id": "T2_professional",
+        "min": {
+          "trust": 25,
+          "respect": 20
+        },
+        "benefit": "Broker minor meetings; 1 favor on ledger"
+      },
+      {
+        "id": "T3_confidante",
+        "min": {
+          "trust": 45,
+          "respect": 40,
+          "desire": 25
+        },
+        "benefit": "Private warnings before Cinderhold flashpoints; relic lead discounts"
+      },
+      {
+        "id": "T4_partner",
+        "min": {
+          "trust": 65,
+          "respect": 60,
+          "desire": 40
+        },
+        "benefit": "Places an agent at your disposal during city events"
+      },
+      {
+        "id": "T5_queenmaker",
+        "min": {
+          "trust": 80,
+          "respect": 80,
+          "leverage": 20
+        },
+        "benefit": "Burns a major bridge once to secure your victory"
+      }
+    ],
+    "decay_rules": {
+      "public_betrayal": {
+        "trust": -30,
+        "respect": -20
+      },
+      "failed_confidentiality": {
+        "trust": -15
+      },
+      "timely_reciprocity": {
+        "trust": 10,
+        "respect": 8
+      }
+    }
+  },
+  "long_term_goals": [
+    "Seat a Council of Relics she controls from behind the curtain",
+    "Stop mass-sacrifice theatrics that threaten her base",
+    "Acquire a shard that compels truth without obvious sorcery",
+    "Maintain a sanctuary ledger that can bankrupt any abuser"
+  ],
+  "known_allies": [
+    "Grey Friar Mikel (buys orphans out of hunts; trades whispers)",
+    "Dwarf Factor Brunna Kol (arms broker who keeps contracts)",
+    "Sister Rhaen (tomes for cover stories, on occasion)"
+  ],
+  "known_rivals": [
+    "Emir Zulfiqar\u2019s quartermaster (wants her routes)",
+    "Echelon hunter Sythrel (seeks her clients\u2019 children)",
+    "Bandit Lord Caldran (extorts Gallows couriers)"
+  ],
+  "secret_traumas": [
+    "Old patron\u2019s private brand scar; it burns when a lie lands close",
+    "She arranged that patron\u2019s \u2018accident\u2019; keeps a single pearl as penance-counter"
+  ],
+  "abilities": [
+    {
+      "name": "Disarming Smile",
+      "type": "social",
+      "effect": "Targets with lower Charisma roll at disadvantage to escalate a scene for 1 round.",
+      "stamina_cost": 6
+    },
+    {
+      "name": "Veil Temptation",
+      "type": "social",
+      "effect": "During intimate or prolonged interaction, target gains +1 corruption tick (once per scene) unless they pass a Willpower save.",
+      "stamina_cost": 0
+    },
+    {
+      "name": "Survivor\u2019s Blade",
+      "type": "combat",
+      "effect": "Hidden stiletto; once per encounter apply poison: on hit, +1d4 damage and target suffers -1 to actions for 1 round.",
+      "stamina_cost": 4
+    },
+    {
+      "name": "Silk Knife",
+      "type": "combat",
+      "effect": "If acting before a target in initiative, stiletto ignores 2 Armor once per encounter.",
+      "stamina_cost": 0
+    },
+    {
+      "name": "Read the Room",
+      "type": "tactical",
+      "effect": "Reveal one hidden intent or memory tag relevant to the current NPC or crowd.",
+      "stamina_cost": 0
+    }
+  ],
+  "abilities_map": {
+    "disarming_smile": {
+      "type": "active",
+      "stamina_cost": 6,
+      "description": "Target makes an aggression or escalation check at disadvantage for 1 round."
+    },
+    "survivors_blade": {
+      "type": "active",
+      "stamina_cost": 4,
+      "description": "Hidden stiletto strike; on hit +1d4 damage and target suffers -1 to actions for 1 round (once per encounter)."
+    },
+    "read_the_room": {
+      "type": "tactical",
+      "stamina_cost": 0,
+      "description": "Reveal one hidden intent or memory tag of the current NPC or crowd."
+    },
+    "silk_knife": {
+      "type": "passive",
+      "stamina_cost": 0,
+      "description": "If acting before a target in initiative, ignore 2 Armor once per encounter."
+    },
+    "veil_temptation": {
+      "type": "social",
+      "stamina_cost": 0,
+      "description": "During intimate/prolonged interaction, target gains +1 corruption tick once per scene unless they pass a Willpower save."
+    }
+  },
+  "scene_hooks": [
+    "The Black Pearl Ledger: a page is missing; recover it before a noble\u2019s name is sold.",
+    "Private Supper: she demands a secret you can afford to lose as the price of information.",
+    "Dockside Courier: a Gallows runner vanished; return the girl and earn a ledger credit."
+  ],
+  "quest_ties": [
+    "Q-1670-CHILD-ALTAR",
+    "Q-1670-SAND-CRESCENT",
+    "Q-1670-GRIND-IRON"
+  ],
+  "combat_profile": {
+    "style": "Avoids brawls; controls openings, strikes first if cornered, disengages behind allies.",
+    "range": "Melee 1 tile; prefers bodyguards.",
+    "special": "On first blood against Elara, she may offer parley\u2014if accepted, remove one hostile from combat for one round. If rejected, she gains +2 corruption and uses Silk Knife next turn."
+  },
+  "dialogue": {
+    "greeting": "Welcome to Cinderhold, love. Let\u2019s decide who eats whom\u2014gently.",
+    "combat": "Ugly work. End it quickly, and I\u2019ll tidy the consequences.",
+    "victory": "A little choreography, and even violence becomes elegant.",
+    "defeat": "I misread the room\u2026 a debt I intend to repay.",
+    "lines_extra": [
+      "Do you know the cruelest truth, darling? The world is bought and sold between sheets, not battlefields.",
+      "I don\u2019t take lovers. I take investments.",
+      "You mistake me for a courtesan still? I am the hand that moves the coin.",
+      "I used to beg."
+    ]
+  },
+  "triggers": {
+    "property": "0.5s pause. 'Call me that again, and I\u2019ll carve your tongue for a keepsake.' Scar twitches."
+  },
+  "total_hp": 70,
+  "max_stamina": 75,
+  "armor_weight": 5,
+  "inventory_weight": 6,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "stiletto",
+  "armor": [
+    "Light_Light"
+  ],
+  "weapon_skill": 25,
+  "skills": {
+    "persuasion": 4,
+    "deception": 4,
+    "insight": 3,
+    "daggers": 2
+  },
+  "traits": [
+    "Charismatic",
+    "Calculating",
+    "Protective_of_staff"
+  ],
+  "corruption_level": 28,
+  "stress_level": 12,
+  "reputation": 60,
+  "status_effects": [],
+  "strength": 28,
+  "toughness": 28,
+  "agility": 38,
+  "mobility": 42,
+  "dexterity": 34,
+  "endurance": 32,
+  "intelligence": 40,
+  "willpower": 34,
+  "perception": 36,
+  "charisma": 40
+}

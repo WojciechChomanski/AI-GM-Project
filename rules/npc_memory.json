@@ -1,14 +1,14 @@
 {
-  "current_day": 64,
+  "current_day": 71,
   "piety": 10,
   "holy_fury_stacks": 0,
   "relationships": {
-    "npc_sergeant_torvax_ironjaw_v1_0": {
+    "npc_cult_magus_father_v1_0": {
       "affinity": 51,
       "trust": 51,
       "intimacy": 28,
       "loyalty": 39,
-      "last_interaction_day": 63,
+      "last_interaction_day": 70,
       "notes": []
     }
   }

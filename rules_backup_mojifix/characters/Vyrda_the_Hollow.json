@@ -1,0 +1,70 @@
+{
+  "name": "Vyrda the Hollow",
+  "race": "Human",
+  "gender": "Female",
+  "age": 31,
+  "sexuality": "Hetrosexual",
+  "total_hp": 90,
+  "max_stamina": 80,
+  "armor_weight": 8,
+  "inventory_weight": 5,
+  "shield_equipped": false,
+  "weapon_equipped": true,
+  "weapon": "dagger",
+  "role": "Blood Seer",
+  "faction": "Hollow Kin",
+  "background": "Once a noble daughter. Burned alive and returned with the gift of sight.",
+  "relationship_with_player": "Unknown",
+  "charisma": 50,
+  "alive": true,
+
+  "personality": {
+    "big_five": {
+      "openness": 95,
+      "conscientiousness": 30,
+      "extraversion": 10,
+      "agreeableness": 25,
+      "neuroticism": 85
+    },
+    "dark_traits": {
+      "psychopathy": 30,
+      "machiavellianism": 70,
+      "narcissism": 20
+    },
+    "motivations": [
+      "Unravel the fate web",
+      "Manipulate future events",
+      "Test those who seek truth"
+    ],
+    "fears": [
+      "Losing her visions",
+      "Being forgotten"
+    ],
+    "speech_style": {
+      "formality": "ritualistic and cryptic",
+      "tone": "haunting and slow",
+      "quirks": [
+        "answers questions with questions",
+        "whispers names of the dead mid-sentence"
+      ]
+    }
+  },
+
+  "long_term_goals": [
+    "Unlock the full web of prophecy through ritual blood rites",
+    "Replace the current Hollow Kin leader with a seer of her own choosing",
+    "Manipulate key figures into fulfilling fragments of a long-lost fate"
+  ],
+  "known_allies": [
+    "The Hollow Kin elders",
+    "An unnamed spirit that whispers during visions"
+  ],
+  "known_rivals": [
+    "Archon Threll (opposes prophetic destabilization)",
+    "Any cleric of the Sun-Order Church"
+  ],
+  "secret_traumas": [
+    "Still hears her own screams from the fire that took her body",
+    "Fears her visions are seeded lies planted by something inhuman"
+  ]
+}

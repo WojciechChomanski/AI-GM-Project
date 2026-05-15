@@ -1,0 +1,18 @@
+{
+  "name": "torvald",
+  "race": "Human",
+  "gender": "Male",
+  "class": "Warrior",
+  "background": "Outlaw",
+  "total_hp": 120,
+  "max_stamina": 110,
+  "armor_weight": 15,
+  "inventory_weight": 5,
+  "shield_equipped": true,
+  "weapon_equipped": true,
+  "weapon": "greatsword",
+  "armor": [
+    "Medium_Heavy"
+  ],
+  "role": "Mercenary"
+}

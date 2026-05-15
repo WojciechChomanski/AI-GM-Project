@@ -1,0 +1,199 @@
+{
+  "critical_hit_threshold": 95,
+  "critical_miss_threshold": 5,
+
+  "bleed_thresholds": {
+    "light": [1, 3],
+    "moderate": [4, 6],
+    "heavy": [7, 9]
+  },
+
+  "pain_penalties": {
+    "partial": 5,
+    "crippled": 10,
+    "stacking": true
+  },
+
+  "stamina_regeneration": {
+    "base": 3,
+    "resting": 15
+  },
+
+  "stamina_regen": { "offensive": 2, "neutral": 3, "defensive": 4 },
+
+  "stamina_costs": {
+    "attack_base": 2,
+    "parry": 1,
+    "block": 2,
+    "dodge": 3,
+    "stance": {
+      "offensive": 1,
+      "neutral": 0,
+      "defensive": -1
+    }
+  },
+
+  "two_handed_and_shields": {
+    "allow": false,
+    "two_handed_types": [
+      "2H",
+      "2H_sword",
+      "2H_axe",
+      "2H_hammer",
+      "polearm",
+      "greatsword",
+      "zweihander",
+      "montante"
+    ]
+  },
+
+  "fear_system": {
+    "enabled": false,
+    "on_ally_down_morale_drop": 15,
+    "heavy_hit_morale_drop": 10,
+    "headshot_morale_drop": 20,
+    "rout_threshold": 20,
+    "min_morale": 0
+  },
+
+  "dodge_penalty_from_armor": true,
+  "mobility_to_dodge_bonus_ratio": 0.2,
+
+  "armor_energy_cost": {
+    "mail_light": { "walk_mult": 1.25, "run_mult": 1.35 },
+    "mail_heavy": { "walk_mult": 1.35, "run_mult": 1.5 },
+    "plate_partial": { "walk_mult": 1.7, "run_mult": 1.6 },
+    "plate_full":    { "walk_mult": 2.2, "run_mult": 1.9 }
+  },
+
+  "heat_stress": {
+    "enabled": true,
+    "climates": {
+      "temperate": { "stamina_mult": 1.0 },
+      "hot":       { "stamina_mult": 1.15 },
+      "desert":    { "stamina_mult": 1.25 }
+    },
+    "armor_heat_bonus": {
+      "mail": 0.05,
+      "plate": 0.10
+    }
+  },
+
+  "formation": {
+    "cohesion_scale_0_100": true,
+    "harassment_damage_reduction_per_10": 0.06,
+    "charge_break_threshold": 40,
+    "rout_risk_if_broken": 0.15
+  },
+
+  "mounted_charge": {
+    "requires": ["mount", "lance"],
+    "speed_window_mps": [7.0, 11.0],
+    "arret_bonus_mult": 1.25,
+    "damage_formula": "base + (horse_mass * speed^2 * 0.0025) * cohesion_mult",
+    "knockdown_pct_base": 30,
+    "cohesion_mult_table": { "0-39": 0.7, "40-69": 1.0, "70-100": 1.2 }
+  },
+
+  "helmet_rules": {
+    "unhelmeted_headshot_mult": 2.0,
+    "ai_head_target_bias_unhelmeted": 0.25,
+    "execution_on_rout": { "enabled": true, "chance": 0.2 }
+  },
+
+  "logistics": {
+    "coastal_supply": { "stamina_regen_bonus": 2, "ammo_replenish_pct": 0.1 },
+    "out_of_supply_penalties": { "stamina_regen": -2, "morale": -5 }
+  },
+
+  "carry_capacity": {
+    "formula": "base_kg = 20 + strength * 1.5",
+    "male_multiplier": 1.15,
+    "female_multiplier": 1.0
+  },
+
+  "load_bands": [
+    { "name": "light",  "threshold_pct": 0.2, "female_stamina_regen_pct": 20, "male_stamina_regen_pct": 0 },
+    { "name": "medium", "threshold_pct": 0.5, "female_stamina_drain_pct": 0,  "male_stamina_drain_pct": 0 },
+    { "name": "heavy",  "threshold_pct": 1.0, "female_stamina_drain_pct": 30, "female_dex_aim_penalty": -10, "male_stamina_drain_pct": 15, "male_agility_penalty": -5 }
+  ],
+
+  "sex_action_costs": {
+    "upper_body_actions": { "female_stamina_cost_pct": 15, "male_stamina_cost_pct": 0 },
+    "lower_body_actions": { "female_stamina_cost_pct": -10, "male_stamina_cost_pct": 0 }
+  },
+
+  "injury_bias": {
+    "male":   { "heal_speed_pct": 10,  "fracture_risk_pct": 10 },
+    "female": { "pain_penalty_pct": -10, "scar_persistence_pct": 10 }
+  },
+
+  "armor_tiers_to_dr": {
+    "light-light": 0.05, "light-medium": 0.10, "light-heavy": 0.15,
+    "medium-light": 0.18, "medium-medium": 0.23, "medium-heavy": 0.28,
+    "heavy-light": 0.32,  "heavy-medium": 0.36, "heavy-heavy": 0.40
+  },
+
+  "stance_synergies": {
+    "offensive": { "stamina_drain_pct": 10, "attack_bonus_pct": 10 },
+    "neutral":   { "balanced": true },
+    "defensive": { "stamina_regen_pct": 10, "block_parry_bonus_pct": 10 }
+  },
+
+  "aimed_attack": {
+    "base_penalty": 30,
+    "dex_bonus_ratio": 0.10,
+    "zones": ["head", "arms", "legs", "chest", "stomach"],
+    "crit_bonus_head_pct": 10,
+    "cripple_rules": {
+      "arm": { "on_disable": ["no_two_handed", "-20% parry"] },
+      "leg": { "on_disable": ["-50% mobility", "no_charge"] }
+    }
+  },
+
+  "aimed_penalties": {
+    "default": 25,
+    "head": 40, "throat": 35, "neck": 32,
+    "chest": 20, "stomach": 22, "groin": 30,
+    "left_upper_arm": 18, "left_lower_arm": 20, "right_upper_arm": 18, "right_lower_arm": 20,
+    "left_upper_leg": 16, "left_lower_leg": 18, "right_upper_leg": 16, "right_lower_leg": 18
+  },
+
+  "bleed_pips_by_zone": { "arm": 2, "leg": 2, "chest": 5, "stomach": 5 },
+
+  "shield_system": {
+    "coverage_cone_deg": 60,
+    "zone_coverage": { "head": 0.4, "chest": 0.7, "stomach": 0.6, "arm": 0.5, "leg": 0.3 },
+    "durability_loss": { "on_block": 1, "on_crit_block": 2 }
+  },
+
+  "weapon_durability": {
+    "loss_per_attack": 0.5,
+    "loss_on_parry": 1.0,
+    "break_threshold": 0
+  },
+
+  "stalemate_prevention": {
+    "rounds_without_progress": 4,
+    "fatigue_damage_per_round": 2,
+    "max_stacks": 5
+  },
+
+  "critical_multipliers": { "default": 1.5 },
+
+  "ogre_grab_rip": {
+    "rounds_to_execute": 2,
+    "resist_check": "vs_strength",
+    "disables_heavy_weapons": true
+  },
+
+  "veil_fog":  { "stamina_cost": 5,  "tags": ["debuff","veil"], "log": "Veil Fog shrouds the field." },
+  "blood_pact": { "stamina_cost": 15, "hp_cost_percent": 10, "damage_bonus": 12, "tags": ["self_hp_cost","blast"] },
+  "whisper_of_fear": { "stamina_cost": 10, "tags": ["fear","control"], "log": "Whispers claw at the mind." },
+  "fade_step": { "stamina_cost": 10, "tags": ["evade","movement"], "log": "She slips between moments." },
+  "shrouds_embrace": { "stamina_cost": 30, "cooldown": 15, "tags": ["ultimate","aoe","veil"], "log": "The Shroud opens and hungers." }
+}
+
+
+
+

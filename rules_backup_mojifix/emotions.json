@@ -1,0 +1,20 @@
+{
+  "wojtek": {
+    "trust": 150,
+    "hostility": 150,
+    "romance": 0,
+    "fear": 100
+  },
+  "vyrda_the_hollow": {
+    "trust": 150,
+    "hostility": 150,
+    "romance": 30,
+    "fear": 100
+  },
+  "ser_caldran_vael": {
+    "trust": 150,
+    "hostility": 150,
+    "romance": 0,
+    "fear": 100
+  }
+}

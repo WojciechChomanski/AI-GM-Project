@@ -1,0 +1,30 @@
+{
+  "overdraw": {
+    "encounter_hp_cost_pct_threshold": 0.30,
+    "on_cross_threshold": { "max_hp_reduction_pct": 10, "duration": "until_long_rest" },
+    "repeat_penalty_stack_pct": 5,
+    "hard_cap_pct_per_encounter": 60
+  },
+  "corruption": {
+    "stages": [
+      { "threshold": 0, "label": "untainted", "effects": [] },
+      { "threshold": 10, "label": "bruised", "effects": ["-1 charisma"] },
+      { "threshold": 25, "label": "whispered", "effects": ["-1 willpower", "+1 fear_aura_lvl1"] },
+      { "threshold": 50, "label": "marked", "effects": ["random_mutation_minor"] },
+      { "threshold": 75, "label": "veiled", "effects": ["random_mutation_major", "-2 humanity"] },
+      { "threshold": 100, "label": "lost", "effects": ["npc_hostile_flag", "pc_control_loss"] }
+    ],
+    "purge_methods": {
+      "breath_ritual": { "willpower_check": 40, "hp_cost": 10, "reduce_corruption": 10 },
+      "saint_relic": { "charges": 1, "reduce_corruption": 25 }
+    }
+  },
+  "casting": {
+    "skill_name": "spellcraft",
+    "critical_hit_threshold": 95,
+    "critical_miss_threshold": 5,
+    "rolls": "d100",
+    "success_bands": { "crit": 95, "full": 50, "glancing": 20 },
+    "fail_bands": { "minor": -10, "major": -25 }
+  }
+}

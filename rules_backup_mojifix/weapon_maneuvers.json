@@ -1,0 +1,249 @@
+{
+"2H_sword": [
+{
+"name": "Zwerchhau",
+"stance_required": "vom_tag",
+"trigger": "always",
+"description": "A powerful horizontal cut meant to interrupt an opponent’s attack and counter simultaneously.",
+"effects": {
+"attack_bonus": 5,
+"defense_bonus": 0,
+"stamina_cost_modifier": 1,
+"notes": "Increased chance to counter on successful hit."
+}
+},
+{
+"name": "Absetzen",
+"stance_required": "half_sword",
+"trigger": "after_parry",
+"description": "Deflect and immediately thrust into the opponent’s opening.",
+"effects": {
+"attack_bonus": 8,
+"defense_bonus": 2,
+"stamina_cost_modifier": 2,
+"notes": "Effective against armored opponents."
+}
+},
+{
+"name": "Durchwechseln",
+"stance_required": "wrath_guard",
+"trigger": "after_block",
+"description": "Change through under the opponent’s guard to reposition and strike.",
+"effects": {
+"attack_bonus": 3,
+"defense_bonus": 3,
+"stamina_cost_modifier": 0,
+"notes": "Reduces opponent’s initiative next round."
+}
+},
+{
+"name": "Half-Sword Thrust",
+"stance_required": "half_sword",
+"trigger": "in_critical_hit",
+"description": "Grip the blade and thrust with precision into weak armor points.",
+"effects": {
+"attack_bonus": 10,
+"defense_bonus": 0,
+"stamina_cost_modifier": 3,
+"notes": "Bypasses 50% of armor protection."
+}
+},
+{
+"name": "Mordhau",
+"stance_required": "vom_tag",
+"trigger": "after_block",
+"description": "Grip the blade and use the pommel or crossguard to bludgeon.",
+"effects": {
+"attack_bonus": 7,
+"defense_bonus": -2,
+"stamina_cost_modifier": 2,
+"notes": "Deals blunt damage with a slashing weapon."
+}
+},
+{
+"name": "Aimed Leg Strike",
+"stance_required": "wrath_guard",
+"trigger": "always",
+"aimed_zone": ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg"],
+"description": "Target the opponent’s legs to cripple mobility.",
+"effects": {
+"attack_bonus": 0,
+"defense_bonus": -5,
+"stamina_cost_modifier": 2,
+"notes": "Deals full damage to unarmored legs, -30 penalty."
+}
+},
+{
+"name": "Krumphau",
+"stance_required": "vom_tag",
+"trigger": "always",
+"description": "Crooked strike to the side, aiming at hands or arms.",
+"effects": {
+"attack_bonus": 6,
+"defense_bonus": 1,
+"stamina_cost_modifier": 2,
+"notes": "Effective against undercuts, incapacitates limbs."
+}
+},
+{
+"name": "Scheitelhau",
+"stance_required": "ochs",
+"trigger": "after_parry",
+"description": "Parting strike to the head, quick vertical cut.",
+"effects": {
+"attack_bonus": 7,
+"defense_bonus": -1,
+"stamina_cost_modifier": 1,
+"notes": "High chance for head wound, vulnerable to counters."
+}
+},
+{
+"name": "Schielhau",
+"stance_required": "pflug",
+"trigger": "always",
+"description": "Squinting strike, feint and invert blade to thrust.",
+"effects": {
+"attack_bonus": 5,
+"defense_bonus": 2,
+"stamina_cost_modifier": 2,
+"notes": "Deals with extended blades, targets throat."
+}
+},
+{
+"name": "Exchange Thrust",
+"stance_required": "posta_di_fenestra",
+"trigger": "after_block",
+"description": "Exchange thrusts by covering and counter-thrusting quickly.",
+"effects": {
+"attack_bonus": 4,
+"defense_bonus": 3,
+"stamina_cost_modifier": 1,
+"notes": "Breaks opponent’s thrust, enters close play."
+}
+},
+{
+"name": "Break Thrust",
+"stance_required": "porta_di_ferro",
+"trigger": "after_parry",
+"description": "Beat opponent’s thrust to the ground and follow up.",
+"effects": {
+"attack_bonus": 3,
+"defense_bonus": 4,
+"stamina_cost_modifier": 2,
+"notes": "Strong defense, disarms or disbalances foe."
+}
+},
+{
+"name": "Underhand Thrust",
+"stance_required": "dente_di_zenghiaro",
+"trigger": "always",
+"description": "Powerful upward thrust mimicking boar’s tusk.",
+"effects": {
+"attack_bonus": 6,
+"defense_bonus": 0,
+"stamina_cost_modifier": 3,
+"notes": "Targets face or torso, follows with downward strike."
+},
+"exclusive_to": "ogre"
+}
+],
+"1H_sword": [
+{
+"name": "Thrust",
+"stance_required": "vom_tag",
+"trigger": "always",
+"description": "A quick thrust aimed at the opponent's torso or face.",
+"effects": {
+"attack_bonus": 3,
+"defense_bonus": 0,
+"stamina_cost_modifier": 1,
+"notes": "Effective against lightly armored opponents."
+}
+},
+{
+"name": "Parry and Riposte",
+"stance_required": "wrath_guard",
+"trigger": "after_parry",
+"description": "Deflect an attack and immediately counter with a slash.",
+"effects": {
+"attack_bonus": 5,
+"defense_bonus": 2,
+"stamina_cost_modifier": 2,
+"notes": "Increases chance of critical hit."
+}
+},
+{
+"name": "Pommel Strike",
+"stance_required": "half_sword",
+"trigger": "after_block",
+"description": "Use the pommel to strike the opponent, stunning them briefly.",
+"effects": {
+"attack_bonus": 4,
+"defense_bonus": -1,
+"stamina_cost_modifier": 1,
+"notes": "Can disrupt opponent's next action."
+}
+},
+{
+"name": "Disarm Attempt",
+"stance_required": ["vom_tag", "wrath_guard"],
+"trigger": ["after_block", "after_parry"],
+"description": "Attempt to knock the opponent's weapon from their hand.",
+"effects": {
+"attack_bonus": -2,
+"defense_bonus": 3,
+"stamina_cost_modifier": 3,
+"notes": "+10% chance to disarm if successful."
+}
+},
+{
+"name": "Aimed Head Strike",
+"stance_required": ["vom_tag", "half_sword"],
+"trigger": ["always", "in_critical_hit"],
+"aimed_zone": ["head"],
+"description": "Target the head for a potentially devastating blow.",
+"effects": {
+"attack_bonus": 8,
+"defense_bonus": -5,
+"stamina_cost_modifier": 2,
+"notes": "+20% chance of critical hit, but -30 penalty against helmets."
+}
+},
+{
+"name": "Oberhau",
+"stance_required": "guardia_alta",
+"trigger": "always",
+"description": "Downward diagonal cut from high guard.",
+"effects": {
+"attack_bonus": 4,
+"defense_bonus": 1,
+"stamina_cost_modifier": 2,
+"notes": "Powerful against unarmored foes."
+}
+},
+{
+"name": "Unterhau",
+"stance_required": "porta_di_ferro",
+"trigger": "after_parry",
+"description": "Upward diagonal cut from low guard.",
+"effects": {
+"attack_bonus": 5,
+"defense_bonus": 0,
+"stamina_cost_modifier": 1,
+"notes": "Targets legs or underarms."
+}
+},
+{
+"name": "Mittelhau",
+"stance_required": "guardia_di_testa",
+"trigger": "always",
+"description": "Horizontal middle cut protecting the head.",
+"effects": {
+"attack_bonus": 3,
+"defense_bonus": 3,
+"stamina_cost_modifier": 2,
+"notes": "Versatile for defense and offense."
+}
+}
+]
+}

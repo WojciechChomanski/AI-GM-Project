@@ -1,0 +1,45 @@
+{
+  "meta": { "damage_types": ["chaos","psychic","cold","shadow"], "surge_threshold": 80, "surge_chance_pct": 20 },
+  "passives": {
+    "veils_whisper": {
+      "trigger": "on_cast",
+      "effect": { "apply_status_radius": { "status": "dread", "radius_units": 10, "duration_rounds": 1, "magnitude_pct": 10, "to": "enemies" } }
+    }
+  },
+  "spells": {
+    "veil_fog": {
+      "name": "Veil Fog", "type": "aoe_debuff",
+      "stamina_cost": 5, "corruption_gain": 5,
+      "range_units": 12, "radius_units": 8, "cooldown_rounds": 0,
+      "effects": {
+        "apply_status": { "status": "blurred", "duration_rounds": 2, "magnitude_pct": 20, "to": "enemies_in_radius" },
+        "conditional_bonus_vs_feared": { "damage_bonus_pct": 5 }
+      }
+    },
+    "blood_pact": {
+      "name": "Blood Pact", "type": "cone_blast",
+      "stamina_cost": 15, "hp_cost_pct_max": 10, "corruption_gain": 10,
+      "range_units": 10, "angle_degrees": 60, "base_damage": 25, "damage_type": "chaos", "cooldown_rounds": 1,
+      "effects": { "self_status": { "status": "dazed", "duration_rounds": 1 } }
+    },
+    "whisper_of_fear": {
+      "name": "Whisper of Fear", "type": "single_target_control",
+      "stamina_cost": 10, "corruption_gain": 5, "range_units": 14, "cooldown_rounds": 1,
+      "resolve": {
+        "freeze_chance_pct": 25, "turn_on_allies_chance_pct": 15, "backlash_fail_chance_pct": 20,
+        "backlash_damage": 5, "status_durations": { "frozen": 1, "confused": 1 }
+      }
+    },
+    "fade_step": {
+      "name": "Fade Step", "type": "teleport_evasion",
+      "stamina_cost": 10, "corruption_gain": 3, "range_units": 6, "cooldown_rounds": 2,
+      "effects": { "self_status": { "status": "phased", "duration_rounds": 1 } }
+    },
+    "shrouds_embrace": {
+      "name": "Shroud's Embrace", "type": "ultimate_zone",
+      "stamina_cost": 30, "corruption_gain": 15,
+      "range_units": 8, "radius_units": 5, "base_damage": 30, "damage_type": "chaos", "cooldown_rounds": 4,
+      "effects": { "trap_all_for_rounds": 1, "self_heal_pct_max": 10 }
+    }
+  }
+}

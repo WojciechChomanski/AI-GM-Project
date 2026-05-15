@@ -1,0 +1,75 @@
+{
+  "vendor_id": "runesmith_blackhall_v0_6b",
+  "name": "Blackhall Runesmith Consortium — Plate & Powder",
+  "faction": "Dwarves",
+  "location": "Cinderhold / Blackhall stair-market",
+  "currency": "silver",
+  "hours": "dawn-dusk",
+  "buyback_pct": 35,
+  "restock": { "days": 3, "chance_pct": 60 },
+
+  "notes": "Sells platework, charges, repeater gear. Assumes runecraft tools from v0.5 exist (e.g., tangle_line, anchor_pins, keystone_chalk, binding_resin).",
+
+  "stock": [
+    { "item_id": "plate_blank_small",        "qty": 8,  "price_silver": 6 },
+    { "item_id": "plate_blank_medium",       "qty": 6,  "price_silver": 10 },
+    { "item_id": "plate_blank_large",        "qty": 4,  "price_silver": 18 },
+
+    { "item_id": "ward_mesh_plate",          "qty": 3,  "price_silver": 25 },
+    { "item_id": "knot_stone_plate",         "qty": 3,  "price_silver": 28 },
+    { "item_id": "bind_light_plate",         "qty": 5,  "price_silver": 12 },
+
+    { "item_id": "breach_charge_mk1",        "qty": 4,  "price_silver": 25 },
+    { "item_id": "satchel_charge_mk1",       "qty": 2,  "price_silver": 40 },
+    { "item_id": "blasting_cap_mk1",         "qty": 12, "price_silver": 2 },
+    { "item_id": "charge_link_cord",         "qty": 10, "price_silver": 1 },
+
+    { "item_id": "repeater_arbalest",        "qty": 2,  "price_silver": 85 },
+    { "item_id": "repeater_bolts_box",       "qty": 10, "price_silver": 8 },
+    { "item_id": "arbalest_spring_kit",      "qty": 4,  "price_silver": 6 },
+
+    { "item_id": "blast_shield_foldable",    "qty": 2,  "price_silver": 30 },
+    { "item_id": "dust_mask_mk1",            "qty": 6,  "price_silver": 3 },
+    { "item_id": "ear_baffles",              "qty": 6,  "price_silver": 2 },
+
+    { "item_id": "tangle_line",              "qty": 8,  "price_silver": 5 },
+    { "item_id": "anchor_pins",              "qty": 12, "price_silver": 4 }
+  ],
+
+  "services": {
+    "installations": [
+      {
+        "name": "Seat & Rivet Plate",
+        "targets": ["plate_blank_small","plate_blank_medium","plate_blank_large","ward_mesh_plate","knot_stone_plate","bind_light_plate"],
+        "price_silver": 3,
+        "time_minutes": 5,
+        "checks": { "Seat_Keystone_TN": 45, "Seal_Rivet_TN": 50 }
+      }
+    ],
+    "repairs": [
+      {
+        "name": "Platework Field Repair",
+        "applies_to_tags": ["platework","shielding"],
+        "price_silver": 2,
+        "durability_restore_pct": 30,
+        "time_minutes": 5
+      },
+      {
+        "name": "Repeater Tune-Up",
+        "targets": ["repeater_arbalest"],
+        "price_silver": 4,
+        "effect": { "jam_track_reset": true, "jam_pct_bonus_until_rest": -5 },
+        "time_minutes": 10
+      }
+    ],
+    "charge_prep": [
+      {
+        "name": "Breach Setup (Mk.1)",
+        "requires": ["breach_charge_mk1","blasting_cap_mk1"],
+        "price_silver": 2,
+        "effect": { "safe_arm": true, "misfire_range_shrink": 2 },
+        "time_minutes": 3
+      }
+    ]
+  }
+}

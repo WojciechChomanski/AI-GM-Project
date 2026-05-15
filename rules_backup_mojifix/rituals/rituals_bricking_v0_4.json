@@ -1,0 +1,41 @@
+{
+  "version": "0.4",
+  "rituals": [
+    {
+      "id": "bricking_rite",
+      "name": "The Bricking Rite",
+      "tags": ["dwarf","ward","seal"],
+      "time_minutes": 10,
+      "components": ["keystone_chalk","chain_sigil_iron","ward_mesh_lantern"],
+      "tests": [
+        {"type": "ritual", "tn": 55, "assist": ["ward_tender:+5","bricking_team:+5"]}
+      ],
+      "success": "Seals a whispering breach; suppresses echo emergence for 30 days.",
+      "failure": "Unstable bind; on 95+ critical, triggers echo_swarm_outbreak_v0_4."
+    },
+    {
+      "id": "counter_cant_eli",
+      "name": "Counter-Cant: ELI",
+      "tags": ["cant","veil","mute"],
+      "time_rounds": 2,
+      "components": ["voice","memory_of_the_three_knocks"],
+      "tests": [
+        {"type": "willpower", "tn": 55, "modifiers": ["dwarf:+5 (Stone Vow)","ward_mesh_lantern:+5"]}
+      ],
+      "success": "Mutes active screaming runes for 2 minutes.",
+      "failure": "Rebound: each singer tests stress TN 45 or gains Fatigued."
+    },
+    {
+      "id": "mass_of_repose",
+      "name": "Mass of Repose",
+      "tags": ["confessor","calm","echo"],
+      "time_minutes": 5,
+      "components": ["scripture","sanctified_oil"],
+      "tests": [
+        {"type": "faith", "tn": 55, "modifiers": ["breath_bound:+5","virtue_70_plus:+5"]}
+      ],
+      "success": "Quiets restless breaths; removes one wave from an echo outbreak.",
+      "failure": "Whispers intensify; next fear check -5."
+    }
+  ]
+}
