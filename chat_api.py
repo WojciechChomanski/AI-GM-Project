@@ -1,6 +1,4 @@
-# chat_api.py - Grok API version (xAI) with Header only + language auto-match
-# TEMPORÄR: Recovery-Endpoint auskommentiert, damit keine Pylance-Fehler mehr auftreten
-
+﻿# chat_api.py - Wrath & Glory NPC Chat API (minimal & clean)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,264 +8,106 @@ import os
 import json
 from datetime import datetime
 
-# === ai_gm_engine integration for Header only ===
-from scripts.ai_gm_engine import GameState
-
-# === App Setup - GROK API
 load_dotenv()
 XAI_API_KEY = os.getenv("XAI_API_KEY")
-client = OpenAI(
-    api_key=XAI_API_KEY,
-    base_url="https://api.x.ai/v1"
-)
+client = OpenAI(api_key=XAI_API_KEY, base_url="https://api.x.ai/v1")
 
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-# === Paths & Constants
+CHARACTER_DIR = "npcs/wrath-and-glory"
+MEMORY_DIR = "memory"
 LOG_DIR = "chat_logs"
-MEMORY_FILE = "rules/npc_memory.json"
-EMOTION_FILE = "rules/emotions.json"
-INTERACTION_FILE = "rules/last_interactions.json"
-WORLD_TIME_FILE = "rules/world_time.json"
-MENTAL_STATE_FILE = "rules/player_mental_state.json"
-CHARACTER_DIR = "rules/characters"
-RELATIONSHIP_DIR = "rules/relationships"
 os.makedirs(LOG_DIR, exist_ok=True)
-os.makedirs(RELATIONSHIP_DIR, exist_ok=True)
 
-# === Classes
+# Mapping von npc_id zu kurzem Dateinamen
+NPC_SHORT_NAME = {
+    "npc_sister_superior_veridya_v1_5": "veridya",
+    "npc_sister_hospitaller_lirien_v1_3": "lirien",
+    "npc_sergeant_torvax_ironjaw_v1_3": "torvax",
+    "npc_interrogator_veyra_kane_v1_3": "kane",
+    "npc_the_silent_one_k17_v1_3": "k17",
+    "npc_cult_magus_father_v1_2": "father"
+}
+
 class ChatRequest(BaseModel):
     npc: str
     player_input: str
 
-# === File I/O
-def read_json(path):
-    if os.path.exists(path):
-        return json.load(open(path, "r", encoding="utf-8"))
-    return {}
+def load_npc(npc_id: str):
+    path = os.path.join(CHARACTER_DIR, f"{npc_id}.json")
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-def write_json(path, data):
+def get_short_name(npc_id: str):
+    return NPC_SHORT_NAME.get(npc_id, npc_id.split("_")[-2] if "_" in npc_id else npc_id)
+
+def load_memory(npc_id: str):
+    short = get_short_name(npc_id)
+    path = os.path.join(MEMORY_DIR, f"{short}.json")
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"impressions": [], "current_attitude": "neutral", "key_events": []}
+
+def save_memory(npc_id: str, memory_data):
+    short = get_short_name(npc_id)
+    path = os.path.join(MEMORY_DIR, f"{short}.json")
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+        json.dump(memory_data, f, indent=2, ensure_ascii=False)
 
-# === Game Time
-def get_current_game_hours():
-    world_time = read_json(WORLD_TIME_FILE)
-    return world_time.get("day", 0) * 24 + world_time.get("hour", 0)
-
-def hours_since_last(npc_name):
-    interactions = read_json(INTERACTION_FILE)
-    last = interactions.get(npc_name.lower().replace(" ", "_"), 0)
-    return get_current_game_hours() - last
-
-def update_last_interaction(npc_name):
-    interactions = read_json(INTERACTION_FILE)
-    interactions[npc_name.lower().replace(" ", "_")] = get_current_game_hours()
-    write_json(INTERACTION_FILE, interactions)
-
-# === 4-Axis Relationship System
-def load_relationship(npc_id):
-    path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
-    if os.path.exists(path):
-        return read_json(path)
-    return {"trust": 0, "respect": 0, "desire": 0, "leverage": 0}
-
-def save_relationship(npc_id, data):
-    path = f"{RELATIONSHIP_DIR}/{npc_id.lower()}.json"
-    write_json(path, data)
-
-def update_relationship(npc_id, player_input):
-    rel = load_relationship(npc_id)
-    text = player_input.lower()
-    if any(w in text for w in ["thank", "help", "trust", "honest", "secret"]):
-        rel["trust"] = min(100, rel.get("trust", 0) + 8)
-        rel["respect"] = min(100, rel.get("respect", 0) + 5)
-    if any(w in text for w in ["love", "beautiful", "want", "close"]):
-        rel["desire"] = min(100, rel.get("desire", 0) + 10)
-    if any(w in text for w in ["pay", "owe", "deal", "control"]):
-        rel["leverage"] = min(100, rel.get("leverage", 0) + 7)
-    if any(w in text for w in ["hate", "kill", "traitor", "liar"]):
-        rel["trust"] = max(-50, rel.get("trust", 0) - 12)
-    save_relationship(npc_id, rel)
-    return rel
-
-# === Emotion, Memory, Logs, Mental State
-def load_emotions():
-    return read_json(EMOTION_FILE)
-
-def save_emotions(data):
-    write_json(EMOTION_FILE, data)
-
-def update_emotions(npc, text):
-    emotions = load_emotions()
-    npc_key = npc.lower().replace(" ", "_")
-    emotions.setdefault(npc_key, {"trust": 150, "hostility": 150, "romance": 0, "fear": 100})
-    score = emotions[npc_key]
-    text = text.lower()
-    if "thank" in text or "respect" in text:
-        score["trust"] = min(300, score["trust"] + 10)
-    if "love" in text or "miss" in text or "care" in text:
-        score["romance"] = min(300, score["romance"] + 15)
-    if "hate" in text or "traitor" in text or "kill" in text:
-        score["hostility"] = min(300, score["hostility"] + 20)
-    if "afraid" in text or "run" in text or "monster" in text:
-        score["fear"] = min(300, score["fear"] + 10)
-    save_emotions(emotions)
-    return score
-
-def load_memory(npc):
-    return read_json(MEMORY_FILE).get(npc.lower().replace(" ", "_"), [])
-
-def write_to_memory(npc, line):
-    memory_data = read_json(MEMORY_FILE)
-    key = npc.lower().replace(" ", "_")
-    memory_data.setdefault(key, [])
-    if line not in memory_data[key]:
-        memory_data[key].append(line)
-    write_json(MEMORY_FILE, memory_data)
-
-def write_to_log(npc_name, player_input, npc_reply):
-    filename = os.path.join(LOG_DIR, f"{npc_name}_chatlog.txt")
+def write_log(npc_name, player_input, reply):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open(filename, "a", encoding="utf-8") as f:
-        f.write(f"\n{'='*40}\n[{timestamp}]\n")
-        f.write(f"Player: {player_input.strip()}\n")
-        f.write(f"{npc_name}: {npc_reply.strip()}\n")
+    log_path = os.path.join(LOG_DIR, f"{npc_name.replace(' ', '_')}.txt")
+    with open(log_path, "a", encoding="utf-8") as f:
+        f.write(f"\n[{timestamp}]\nPLAYER: {player_input}\nNPC: {reply}\n{'-'*60}\n")
 
-def get_mental_state(player="wojtek"):
-    return read_json(MENTAL_STATE_FILE).get(player, {})
-
-def update_stress(mental_state, increase=0, decay=0):
-    current = mental_state.get("stress", 0)
-    current = max(0, min(300, current + increase - decay))
-    mental_state["stress"] = current
-    return current
-
-def check_condition_effects(mental_state):
-    effects = []
-    conditions = mental_state.get("conditions", {})
-    stress = mental_state.get("stress", 0)
-    if conditions.get("paranoia", 0) > 70:
-        effects.append("Why are you asking that again? Are you hiding something?")
-    if conditions.get("emotional_numbness", 0) > 60:
-        effects.append("Does it even matter anymore?")
-    if conditions.get("nightmares", 0) > 30 and stress > 80:
-        effects.append("Was this real... or another dream?")
-    if stress >= 100:
-        effects.append("[SYSTEM]: Your mind splinters. You freeze. (Mental Collapse)")
-    elif stress >= 90:
-        effects.append("[SYSTEM]: You feel a rising panic. You can't hold it back.")
-    elif stress >= 70:
-        effects.append("[SYSTEM]: Your hands tremble. Everything feels too loud.")
-    return effects
-
-def load_master_prompt():
-    with open("rules/master_system_prompt.txt", "r", encoding="utf-8") as f:
-        return f.read()
-
-def load_core_rules():
-    with open("rules/core_rules.txt", "r", encoding="utf-8") as f:
-        return f.read()
-
-# =====================================================
-# GameState Endpoint für Foundry Sync (funktioniert jetzt)
-# =====================================================
-@app.get("/api/gamestate/{actor_id}")
-async def get_gamestate(actor_id: str):
-    game = GameState()
-    game.load_from_json()
-    return {
-        "faith": getattr(game, "piety", 50),
-        "corruption_level": getattr(game, "corruption_level", 0),
-        "stress_level": getattr(game, "stress_level", 0),
-        "stamina": getattr(game, "stamina", 100),
-        "max_stamina": getattr(game, "max_stamina", 100),
-        "holy_fury_stacks": getattr(game, "holy_fury_stacks", 0),
-        "pain_penalty": getattr(game, "pain_penalty", 0),
-        "strength": getattr(game, "strength", 30),
-        "toughness": getattr(game, "toughness", 30),
-        "agility": getattr(game, "agility", 30),
-        "dexterity": getattr(game, "dexterity", 30),
-        "endurance": getattr(game, "endurance", 30),
-        "intelligence": getattr(game, "intelligence", 30),
-        "willpower": getattr(game, "willpower", 30),
-        "charisma": getattr(game, "charisma", 30),
-    }
-
-# === Chat Endpoint (unverändert)
 @app.post("/chat")
-async def chat_endpoint(request: ChatRequest):
-    npc = request.npc.lower()
-    player_input = request.player_input
+async def chat(request: ChatRequest):
+    npc_data = load_npc(request.npc)
+    if not npc_data:
+        return {"reply": f"[ERROR] NPC '{request.npc}' not found in npcs/wrath-and-glory/"}
 
-    try:
-        npc_data = read_json(os.path.join(CHARACTER_DIR, f"{npc}.json"))
-    except:
-        return {"reply": f"[ERROR] NPC '{npc}' not found."}
+    memory = load_memory(request.npc)
 
-    relationship = update_relationship(npc, player_input)
-    rel_summary = f"Trust:{relationship.get('trust',0)} Respect:{relationship.get('respect',0)} Desire:{relationship.get('desire',0)} Leverage:{relationship.get('leverage',0)}"
+    core = npc_data.get("guard_rails", {}).get("core_instruction", "")
+    tone = npc_data.get("guard_rails", {}).get("tone_rule", "")
+    lore = npc_data.get("guard_rails", {}).get("lore_rule", "")
+    hierarchy = npc_data.get("hierarchy_position", "")
+    relationships = npc_data.get("relationships", {})
 
-    log_path = os.path.join(LOG_DIR, f"{npc}_chatlog.txt")
-    memory_lines = []
-    if os.path.exists(log_path):
-        with open(log_path, "r", encoding="utf-8") as f:
-            memory_lines = [line.strip() for line in f.readlines()[-20:] if "Player:" in line or npc_data.get('name', npc) in line]
+    rel_text = "\n".join([f"- {k}: {v}" for k, v in relationships.items()])
 
-    long_term = load_memory(npc)
-    emotion_scores = update_emotions(npc, player_input)
-    emotion_summary = ", ".join([f"{k}: {v}" for k, v in emotion_scores.items()])
-    long_summary = "\n".join(f"- {m}" for m in long_term) or "None yet."
+    system_prompt = f"""{core}
 
-    neglect_hours = hours_since_last(npc)
-    neglect_line = "It’s been far too long since we last spoke." if neglect_hours > 96 else ""
-    update_last_interaction(npc)
+{tone}
 
-    mental_state = get_mental_state()
-    stress = update_stress(mental_state, increase=5 if "hate" in player_input.lower() else 1)
-    extra_text = "\n".join(check_condition_effects(mental_state))
+{lore}
 
-    master_prompt = load_master_prompt()
-    core_rules = load_core_rules()
+=== HIERARCHY & POSITION ===
+{hierarchy}
 
-    prompt = f"""
-{master_prompt}
+=== RELATIONSHIPS TO OTHER NPCs ===
+{rel_text}
 
-=== CORE RULES (STRICTLY FOLLOW) ===
-{core_rules}
+=== CURRENT MEMORY / IMPRESSIONS ===
+{json.dumps(memory, indent=2, ensure_ascii=False)}
 
-=== CURRENT NPC ===
-Name: {npc_data.get('name', 'Unknown')}
-Relationship State: {rel_summary}
-EMOTIONS: {emotion_summary}
-STRESS: {stress}
-{neglect_line}
-
-RECENT DIALOGUE:
-{chr(10).join(memory_lines)}
-
-LONG-TERM MEMORY:
-{long_summary}
-
-MENTAL CONDITIONS:
-{extra_text}
-
-=== LANGUAGE RULE ===
-Always reply in the EXACT same language the player used in their message.
-""".strip()
+=== IMPORTANT RULES ===
+- NEVER output meta information like [Day XX | Hour XX | Piety XX]
+- NEVER break character
+- ALWAYS reply in the exact same language the player used
+- If the player mentions something important, remember it in your next responses
+"""
 
     try:
         stream = client.chat.completions.create(
             model="grok-3",
             messages=[
-                {"role": "system", "content": prompt},
-                {"role": "user", "content": player_input}
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": request.player_input}
             ],
             stream=True
         )
@@ -277,33 +117,19 @@ Always reply in the EXACT same language the player used in their message.
             if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
                 full_reply += chunk.choices[0].delta.content
 
-        write_to_log(npc_data.get("name", npc), player_input, full_reply)
-        if any(word in player_input.lower() for word in ["trust", "kill", "protect", "love", "threaten", "betray"]):
-            write_to_memory(npc, f"You said: '{player_input.strip()}'")
+        # Memory aktualisieren
+        memory["impressions"].append(request.player_input[:200])
+        if len(memory["impressions"]) > 8:
+            memory["impressions"] = memory["impressions"][-8:]
+        memory["last_interaction"] = datetime.now().isoformat()
+        save_memory(request.npc, memory)
 
-        # === CLEAN HEADER ONLY ===
-        game = GameState()
-        game.load_from_json()
-        game.interact(npc, affinity_gain=2, trust_gain=3)
-        header = game.advance_time(hours=1).replace(" | Breath stacks 0", "")
-        full_reply = f"{header}\n\n{full_reply}"
-
+        write_log(npc_data.get("name", request.npc), request.player_input, full_reply)
         return {"reply": full_reply}
 
     except Exception as e:
-        return {"reply": f"[Grok API ERROR] {str(e)}"}
+        return {"reply": f"[ERROR] {str(e)}"}
 
-
-# === Recovery Endpoint – vorübergehend auskommentiert (keine Pylance-Fehler mehr)
-# from scripts.recovery import apply_recovery
-# 
-# @app.get("/recover/{player_name}")
-# def recover_player(player_name: str, hours: int = 24):
-#     result = apply_recovery(player=player_name, hours=hours)
-#     return result
-
-
-# === Dev Only
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
