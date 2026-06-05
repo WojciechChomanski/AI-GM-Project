@@ -1,15 +1,15 @@
 {
   "impressions": [
-    "„Sergeant, warum stehst du gegen die Schwestern? Sie sagen doch, sie würden den Planeten von Ketzern befreien.“",
     "„Du redest viel über das Waisenprogramm der Schwestern. Was genau stört dich daran so sehr?“",
     "„Du hast schon einmal ein ganzes Regiment an einen Genestealer-Kult verloren. Glaubst du wirklich, dass hier etwas Ähnliches passiert?“",
     "„Wenn du so sicher bist, dass hier etwas faul ist – warum gehst du dann nicht direkt gegen die Schwestern vor?“",
-    "„Sergeant, warum stehst du gegen die Schwestern? Sie sagen doch, sie würden den Planeten von Ketzern befreien.“",
-    "„Du redest viel über das Waisenprogramm der Schwestern. Was genau stört dich daran so sehr?“",
-    "„Du hast schon einmal ein ganzes Regiment an einen Genestealer-Kult verloren. Glaubst du wirklich, dass hier etwas Ähnliches passiert?“",
-    "„Wenn du so sicher bist, dass hier etwas faul ist – warum gehst du dann nicht direkt gegen die Schwestern vor?“"
+    "„Sergeant, du misstraust den Sisters stark. Warum genau? Was hast du schon gesehen oder gehört?“",
+    "„Was genau stört dich so sehr an diesem Orphan-Programm der Sisters? Du wirkst, als hättest du schon mal so etwas erlebt.“",
+    "„Du weißt, dass es gefährlich ist, die Adepta Sororitas offen anzuklagen. Warum wagst du es trotzdem?“",
+    "(Wenn der Spieler ein Space Marine ist): „Astartes… sag mir ehrlich – würdest du diesen Nonnen trauen, wenn sie so viele Zivilisten töten?“",
+    "„Du hast schon mal ein ganzes Regiment verloren. Willst du wirklich riskieren, dass es wieder passiert – diesmal weil du zu lange gewartet hast?“"
   ],
   "current_attitude": "neutral",
   "key_events": [],
-  "last_interaction": "2026-06-02T23:20:29.311025"
+  "last_interaction": "2026-06-05T22:36:01.918940"
 }
