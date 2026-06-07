@@ -1,4 +1,4 @@
-﻿# chat_api_wng.py - Wrath & Glory One-Shot (mit Charakter-Erkennung Stufe 1)
+﻿# chat_api_wng.py - Wrath & Glory One-Shot (Clean & Robust Version)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -6,10 +6,22 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import os
 import json
+import re
 from datetime import datetime
 
 load_dotenv()
 XAI_API_KEY = os.getenv("XAI_API_KEY")
+
+# ============================================================
+# MODEL CONFIGURATION
+# ============================================================
+# Empfohlene Modelle für NPC-Rollenspiel:
+# "grok-4"        → Beste Qualität + beste Einhaltung der Guard Rails (empfohlen)
+# "grok-4-turbo"  → Sehr gute Qualität + schneller
+# "grok-3"        → Stabil, aber schwächer bei Nuancen
+MODEL_NAME = "grok-4"
+# ============================================================
+
 client = OpenAI(api_key=XAI_API_KEY, base_url="https://api.x.ai/v1")
 
 app = FastAPI()
@@ -20,53 +32,96 @@ MEMORY_DIR = "memory"
 LOG_DIR = "chat_logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 
-# === EXAKTE Zuordnung: Foundry-ID → echter Dateiname ===
+# ============================================================
+# NPC FILE MAP - Nur die wichtigsten / stabilsten IDs
+# ============================================================
 NPC_FILE_MAP = {
-    "npc_sister_superior_veridya_v1_5": "Sister_superior_Veridya.json",
+    # Sister Superior Veridya
+    "npc_sister_superior_veridya": "Sister_superior_Veridya.json",
     "sister_superior_veridya": "Sister_superior_Veridya.json",
-    "npc_sister_hospitaller_lirien_v1_3": "Sister_hospitaller_Lirien.json",
+
+    # Sister Hospitaller Lirien
     "npc_sister_hospitaller_lirien": "Sister_hospitaller_Lirien.json",
-    "npc_sergeant_torvax_ironjaw_v1_3": "Sergeant_Torvax_Ironjaw.json",
-    "npc_sergeant_torvax_ironjaw_v1_0": "Sergeant_Torvax_Ironjaw.json",
-    "npc_interrogator_veyra_kane_v1_3": "Interrogator_Veyra_Kane.json",
-    "npc_interrogator_veyra_kane_v1_0": "Interrogator_Veyra_Kane.json",
-    "npc_the_silent_one_k17_v1_3": "The_Silent_One_K-17.json",
-    "npc_the_silent_one_k17_v1_0": "The_Silent_One_K-17.json",
-    "npc_cult_magus_father_v1_2": "Cult_Magus_Father.json",
-    "npc_cult_magus_father_v1_0": "Cult_Magus_Father.json",
+    "sister_hospitaller_lirien": "Sister_hospitaller_Lirien.json",
+
+    # Sergeant Torvax Ironjaw
+    "npc_sergeant_torvax_ironjaw": "Sergeant_Torvax_Ironjaw.json",
+    "sergeant_torvax_ironjaw": "Sergeant_Torvax_Ironjaw.json",
+
+    # Interrogator Veyra Kane
+    "npc_interrogator_veyra_kane": "Interrogator_Veyra_Kane.json",
+    "interrogator_veyra_kane": "Interrogator_Veyra_Kane.json",
+
+    # The Silent One (K-17)
+    "npc_the_silent_one_k17": "The_Silent_One_K-17.json",
+    "the_silent_one_k17": "The_Silent_One_K-17.json",
+
+    # Cult Magus Father
+    "npc_cult_magus_father": "Cult_Magus_Father.json",
+    "cult_magus_father": "Cult_Magus_Father.json",
 }
 
-class ChatRequest(BaseModel):
-    npc: str
-    player_input: str
-    # Neue Felder für Charakter-Erkennung (Stufe 1)
-    player_race: str = "Human"           # z.B. "Human", "Space Marine", "Ogryn", "Psyker"
-    player_gender: str = "male"          # "male", "female", "non-binary"
-    player_role: str = "Imperial Guard"  # z.B. "Imperial Guard", "Inquisitor", "Civilian", "Tempestus Scion"
+
+def normalize_id(npc_id: str) -> str:
+    """Entfernt Versionsnummern und macht die ID vergleichbar"""
+    return re.sub(r'_v\d+(_\d+)?$', '', npc_id.lower())
+
 
 def load_npc(npc_id: str):
-    filename = NPC_FILE_MAP.get(npc_id)
-    if not filename:
-        return None
-    path = os.path.join(CHARACTER_DIR, filename)
-    if not os.path.exists(path):
-        return None
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    print(f"🔍 Foundry sendet ID: {npc_id}")
+
+    # 1. Direkter Lookup in der Map
+    if npc_id in NPC_FILE_MAP:
+        filename = NPC_FILE_MAP[npc_id]
+        path = os.path.join(CHARACTER_DIR, filename)
+        if os.path.exists(path):
+            print(f"✅ Geladen (direkt): {filename}")
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+
+    # 2. Normalisierte ID versuchen (ohne Versionsnummer)
+    normalized = normalize_id(npc_id)
+    if normalized in NPC_FILE_MAP:
+        filename = NPC_FILE_MAP[normalized]
+        path = os.path.join(CHARACTER_DIR, filename)
+        if os.path.exists(path):
+            print(f"✅ Geladen (normalisiert): {filename}")
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+
+    # 3. Fallback: Versuche Datei über partiellen Namen zu finden
+    for key, filename in NPC_FILE_MAP.items():
+        if normalized in key.lower() or key.lower() in normalized:
+            path = os.path.join(CHARACTER_DIR, filename)
+            if os.path.exists(path):
+                print(f"✅ Geladen (Fallback): {filename}")
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+    print(f"❌ Keine passende Datei gefunden für: {npc_id}")
+    return None
+
 
 def load_memory(npc_id: str):
-    short = NPC_FILE_MAP.get(npc_id, npc_id).replace(".json", "").lower()
+    short = normalize_id(npc_id)
     path = os.path.join(MEMORY_DIR, f"{short}.json")
     if not os.path.exists(path):
         return {"impressions": [], "current_attitude": "neutral", "key_events": [], "last_interaction": None}
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+
 def save_memory(npc_id: str, memory: dict):
-    short = NPC_FILE_MAP.get(npc_id, npc_id).replace(".json", "").lower()
+    short = normalize_id(npc_id)
     path = os.path.join(MEMORY_DIR, f"{short}.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(memory, f, ensure_ascii=False, indent=2)
+
+
+class ChatRequest(BaseModel):
+    npc: str
+    player_input: str
+
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
@@ -76,17 +131,10 @@ async def chat(request: ChatRequest):
 
     memory = load_memory(request.npc)
 
-    # === NEU: Charakter-Informationen in den Prompt einbauen ===
-    character_info = f"""Der Spieler, mit dem du sprichst, ist ein {request.player_race} ({request.player_gender}).
-Seine Rolle / Position: {request.player_role}.
-Passe deine Antwort und dein Verhalten entsprechend an."""
-
     system_prompt = f"""Du bist {npc_data.get('name', request.npc)}. 
 Du existierst nur im grimdark Universum von Warhammer 40.000.
 NEVER break character. NEVER output meta info wie [Day] oder Piety.
 Du antwortest immer auf Deutsch, wenn der Spieler auf Deutsch fragt.
-
-{character_info}
 
 Aktuelles Memory:
 {json.dumps(memory, indent=2, ensure_ascii=False)}
@@ -98,7 +146,7 @@ Aktuelles Memory:
 
     try:
         stream = client.chat.completions.create(
-            model="grok-3",
+            model=MODEL_NAME,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": request.player_input}
@@ -121,6 +169,7 @@ Aktuelles Memory:
 
     except Exception as e:
         return {"reply": f"[ERROR] {str(e)}"}
+
 
 if __name__ == "__main__":
     import uvicorn
