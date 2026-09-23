@@ -1,24 +1,23 @@
-# Grimdark AI-GM Project
+# AI-GM Project — Operation Black Veil (dev)
 
-**You are the last crusader in a world the gods have already abandoned.**
+This branch is **Wrath & Glory** only: one-shot Operation Black Veil.
 
-The Veil thins. Veilspawn claw through the cracks. Faith is the only shield — and even faith decays.
+Breath and the Veil lives on **main**. Do not mix them.
 
-You play **exclusively** as a male human Crusader Knight (Templar / Holy Judge / Cleric vocation only). No exceptions. Ever.
+## Table
+Foundry VTT + official Wrath & Glory system.  
+Chat: `chat_api_wng.py` (Grok). Public title for the priest is **Father**, never Cult Magus.
 
-### PERMANENT CORE RULES + CANON (Scroll of Light and Fall — year 1670)
-- Single source of truth: the Scroll of Light and Fall  
-- **The Breath** (male only, strictly passive): Crusader Knight line, triggers on Virtue ≥70 / high piety / fighting Veilspawn/major enemies  
-  - Examples: Holy Fury (passive stacks from killing enemies of faith) + Crusader Charge (stamina-based knockdown)  
-- **The Veil** (female only, active magic): Veil Sorceress class (human or elf)  
-- No active magic, spells or Divine Smite for any male class — ever  
+## Six NPCs
+Veridya, Lirien, Torvax Ironjaw, Veyra Kane, The Silent One K-17, Father  
+JSON: `npcs/wrath-and-glory/`  
+Live memory: `memory/` (wipe test impressions before a real session)
 
-### Core Engine
-- `scripts/ai_gm_engine.py` — time-passing, piety decay, Breath passive check, relationship decay  
-- `rules/organic_relationships.txt` + `rules/npc_memory.json` — living memory system  
+## Scene 1
+1a = named NPCs on the drop pad (talk).  
+1b = same map, mobs only.  
+Play Scene 1 before building Scene 2–3.
 
-### How to Run (Console/API testing)
-1. Run your console (`python gm_console.py` or `python main.py`)  
-2. Chat with Elara Voss using clean wording only
-
-*The Veil thins, Crusader…*
+## Safety
+- No Bot or assistant changes this branch without Wojciech’s OK.
+- Freeze backups: `backup/dev-pre-isolation-20260916`
