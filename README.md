@@ -1,24 +1,29 @@
-# Grimdark AI-GM Project
+# AI-GM Project — Breath and the Veil (main)
 
-**You are the last crusader in a world the gods have already abandoned.**
+This branch is **Breath and the Veil** only.
 
-The Veil thins. Veilspawn claw through the cracks. Faith is the only shield — and even faith decays.
+Wrath & Glory / Operation Black Veil lives on the **dev** branch. Do not mix them.
 
-You play **exclusively** as a male human Crusader Knight (Templar / Holy Judge / Cleric vocation only). No exceptions. Ever.
+## Permanent rules
+- Crusader Knight + vocations (Templar, Holy Judge, Cleric) = male human only.
+- Breath abilities = strictly passive (high piety + Veilspawn / major enemies).
+- No active magic, spells, or Divine Smite on male classes.
+- Active magic = Veil Sorceress only.
 
-### PERMANENT CORE RULES + CANON (Scroll of Light and Fall — year 1670)
-- Single source of truth: the Scroll of Light and Fall  
-- **The Breath** (male only, strictly passive): Crusader Knight line, triggers on Virtue ≥70 / high piety / fighting Veilspawn/major enemies  
-  - Examples: Holy Fury (passive stacks from killing enemies of faith) + Crusader Charge (stamina-based knockdown)  
-- **The Veil** (female only, active magic): Veil Sorceress class (human or elf)  
-- No active magic, spells or Divine Smite for any male class — ever  
+See `rules/core_rules.txt`.
 
-### Core Engine
-- `scripts/ai_gm_engine.py` — time-passing, piety decay, Breath passive check, relationship decay  
-- `rules/organic_relationships.txt` + `rules/npc_memory.json` — living memory system  
+## What this branch is
+- Rules and classes in `rules/`
+- Elara and Breath NPCs in `rules/characters/`
+- Talk engine: `scripts/ai_gm_engine.py`, `chat_api.py`
 
-### How to Run (Console/API testing)
-1. Run your console (`python gm_console.py` or `python main.py`)  
-2. Chat with Elara Voss using clean wording only
+## Table
+Foundry VTT. Use **Custom System Builder** (or Simple Worldbuilding).  
+No Godot. No custom coded sheet. Godot and the old `frontend/` site are abandoned.
 
-*The Veil thins, Crusader…*
+## Safety
+Backup branches from 2026-09-16:
+- `backup/main-pre-isolation-20260916`
+- `backup/dev-pre-isolation-20260916`
+
+Do not delete those.
