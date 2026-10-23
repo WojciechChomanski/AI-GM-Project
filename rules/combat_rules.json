@@ -151,7 +151,18 @@
     }
   },
 
+  "zone_hp": {
+    "_note": "Total HP = sum of zones. Base sums to 100; race hp_bonus and class hp_percent scale all zones (leftovers to chest). Code: scripts/zone_hp.py. Docs: docs/ZONE_DAMAGE.md",
+    "base": { "chest": 20, "left_upper_leg": 13, "right_upper_leg": 13, "stomach": 11, "head": 7,
+              "left_upper_arm": 6, "right_upper_arm": 6, "left_lower_leg": 6, "right_lower_leg": 6,
+              "left_lower_arm": 3, "right_lower_arm": 3, "throat": 3, "groin": 3 },
+    "vital_zones": ["head", "throat", "chest"],
+    "normal_hit": "spread over all living zones, proportional to zone max, zones floor at 0",
+    "aimed_hit": "flat -30 to hit (aimed_attack.base_penalty); full damage to one zone; a miss does no damage"
+  },
+
   "aimed_penalties": {
+    "_note": "UNUSED for now: aimed strikes use the flat aimed_attack.base_penalty (30). Kept as data for a possible later per-zone tweak (e.g. head).",
     "default": 25,
     "head": 40, "throat": 35, "neck": 32,
     "chest": 20, "stomach": 22, "groin": 30,

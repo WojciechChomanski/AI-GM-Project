@@ -1,7 +1,17 @@
 import json
+from zone_hp import scaled_zones, hp_multiplier, total_hp as zones_total
 import os
 from character import Character
 from armors import Armor
+
+def _find_hp_percent(class_data):
+    """Class HP bonus in percent (e.g. Crusader Knight 15)."""
+    for block, key in (("stat_modifiers", "hp_percent"), ("stats", "hp_percent_bonus")):
+        val = (class_data.get(block) or {}).get(key)
+        if val:
+            return val
+    return class_data.get("hp_percent", 0) or 0
+
 
 class CharacterLoader:
     def __init__(self, base_dir="res://characters/characters"):
@@ -107,22 +117,12 @@ class CharacterLoader:
         character.gender = data.get('gender', 'Male')
         character.class_name = data.get('class', '')
         character.background = data.get('background', '')
-        character.total_hp = data.get('total_hp', 100)
         character.max_stamina = data.get('max_stamina', 100)
         character.stamina = character.max_stamina
         character.armor_weight = data.get('armor_weight', 0)
         character.inventory_weight = data.get('inventory_weight', 0)
         character.shield_equipped = data.get('shield_equipped', False)
         character.weapon_equipped = data.get('weapon_equipped', True)
-
-        if 'body_parts' not in data:
-            character.body_parts = {
-                "left_lower_leg": 10, "right_lower_leg": 10, "left_upper_leg": 15, "right_upper_leg": 15,
-                "stomach": 20, "chest": 25, "left_lower_arm": 5, "right_lower_arm": 5,
-                "left_upper_arm": 10, "right_upper_arm": 10, "head": 10, "throat": 5, "groin": 5
-            }
-        else:
-            character.body_parts = data['body_parts']
 
         stats = self.load_stats(character.race, character.gender)
         for stat in ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'faith', 'reputation']:
@@ -183,6 +183,22 @@ class CharacterLoader:
                 armor_piece = self.load_armor_piece(armor_name, character.armor_preference)
                 character.armor.append(armor_piece)
                 character.armor_weight += armor_piece.weight
+
+        # Zone HP: base 100 scaled by race hp_bonus and class hp_percent (see docs/ZONE_DAMAGE.md).
+        # Priority: explicit body_parts > legacy file total_hp (spread over zones) > race/class.
+        if 'body_parts' in data:
+            character.body_parts = dict(data['body_parts'])
+        elif data.get('total_hp'):
+            character.body_parts = scaled_zones(data['total_hp'] / 100.0)
+        else:
+            race_bonus = getattr(character, 'hp_bonus', 0) or 0
+            class_pct = 0
+            if class_data:
+                class_pct = _find_hp_percent(class_data)
+            character.body_parts = scaled_zones(hp_multiplier(race_bonus, class_pct))
+        character.max_body_parts = dict(character.body_parts)
+        character.total_hp = zones_total(character.body_parts)
+        character.health = character.total_hp
 
         character.apply_armor_penalties()
         return character

@@ -2,6 +2,7 @@
 import random
 import logging
 from damage_consequences import DamageConsequences
+from zone_hp import spread_damage, total_hp, VITAL_ZONES
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -158,54 +159,6 @@ class CombatHealthManager:
             }
         }
 
-    def distribute_damage(self, base_damage, damage_type, critical=False):
-        if not self.character.alive:
-            return
-        valid_parts = {k: v for k, v in self.health.items() if v > 0}
-        if not valid_parts:
-            self.character.die()
-            return
-        damage_per_part = max(1, base_damage // max(1, len(valid_parts) // 2))
-        hit_parts = random.sample(list(valid_parts.keys()), min(len(valid_parts), 2))
-        for part in hit_parts:
-            damage = int(damage_per_part * (1.2 if critical else 1.0))
-            overflow = max(0, damage - self.health[part])
-            self.health[part] -= damage
-            self.total_hp -= damage
-            if self.health[part] <= 0:
-                self.health[part] = 0
-                self.consequences.apply_consequence(self.character, part, damage_type, overflow)
-                self.apply_critical_wound(part, damage_type, overflow)
-            else:
-                self.apply_partial_damage(part)
-            severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
-            self.add_bleeding_wound(severity, critical and part in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
-        if self.total_hp <= 0:
-            self.character.die()
-        logging.debug(f"Distributed {base_damage} {damage_type} damage to {self.character.name}")
-
-    def take_damage_to_zone(self, zone, damage, damage_type, critical=False):
-        if not self.character.alive:
-            return
-        if zone in self.health:
-            damage = int(damage * (1.2 if critical else 1.0))
-            overflow = max(0, damage - self.health[zone])
-            self.health[zone] -= damage
-            self.total_hp -= damage
-            if self.health[zone] <= 0:
-                self.health[zone] = 0
-                self.consequences.apply_consequence(self.character, zone, damage_type, overflow)
-                self.apply_critical_wound(zone, damage_type, overflow)
-            else:
-                self.apply_partial_damage(zone)
-            severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
-            self.add_bleeding_wound(severity, critical and zone in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
-            if self.total_hp <= 0:
-                self.character.die()
-            logging.debug(f"{self.character.name} took {damage} {damage_type} damage to {zone}")
-        else:
-            print(f"❌ Invalid zone: {zone}")
-
     def apply_bleeding(self):
         if not self.bleeding_wounds:
             return
@@ -213,10 +166,14 @@ class CombatHealthManager:
         for wound in self.bleeding_wounds[:]:
             wound_damage = int(wound["amount"])
             total_bleeding_damage += wound_damage
-            self.character.receive_damage(wound_damage)
+            # Blood loss is spread over the body like a normal hit (no new wounds)
+            for part, dmg in spread_damage(self.health, self.initial_health, wound_damage).items():
+                self.health[part] -= dmg
+                self._zone_hit(part, dmg, "bleeding", 0)
             wound["duration"] -= 1
             if wound["duration"] <= 0:
                 self.bleeding_wounds.remove(wound)
+        self._sync_total()
         if total_bleeding_damage > 0:
             print(f"🩸 {self.character.name} suffers {total_bleeding_damage} bleeding damage!")
         self.check_blood_loss_collapse()
@@ -271,52 +228,71 @@ class CombatHealthManager:
                 return True
         return False
 
-    def distribute_damage(self, base_damage, damage_type, critical=False):
-        if not self.character.alive:
-            return
-        valid_parts = {k: v for k, v in self.health.items() if v > 0}
-        parts = list(valid_parts.keys())
-        if not parts:
-            self.character.die()
-            return
-        damage_per_part = max(1, base_damage // max(1, len(parts) // 2))
-        hit_parts = random.sample(parts, min(len(parts), 2))
-        for part in hit_parts:
-            overflow = max(0, damage_per_part - self.health[part])
-            self.health[part] -= damage_per_part
-            if self.health[part] <= 0:
-                self.health[part] = 0
-                self.consequences.apply_consequence(self.character, part, damage_type, overflow)
-                self.apply_critical_wound(part, damage_type, overflow)
-            else:
-                self.apply_partial_damage(part)  # New partial effects
-            severity = "light" if damage_per_part <= 5 else "medium" if damage_per_part <= 10 else "heavy"
-            self.add_bleeding_wound(severity, is_critical=critical and part in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
-        self.total_hp = sum(self.health.values())
-        if self.total_hp <= 0:
-            self.character.alive = False
-            print(f"💀 {self.character.name} has fallen!")
+    # ---- Zone damage (see docs/ZONE_DAMAGE.md) ----
+    def _sync_total(self):
+        self.total_hp = total_hp(self.health)
+        self.character.total_hp = self.total_hp
+        self.character.body_parts = dict(self.health)
 
-    def take_damage_to_zone(self, zone, damage, damage_type, critical=False):
-        if not self.character.alive:
-            return
-        if zone in self.health:
-            overflow = max(0, damage - self.health[zone])
-            self.health[zone] -= damage
-            self.total_hp -= damage
-            if self.health[zone] <= 0:
-                self.health[zone] = 0
+    def _zone_hit(self, zone, damage, damage_type, overflow=0):
+        """Common after-effects for a zone that just lost `damage` points."""
+        if self.health[zone] <= 0:
+            self.health[zone] = 0
+            if damage_type in ("blunt", "slashing", "piercing"):
                 self.consequences.apply_consequence(self.character, zone, damage_type, overflow)
                 self.apply_critical_wound(zone, damage_type, overflow)
-            else:
-                self.apply_partial_damage(zone)  # New partial effects
-            severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
-            self.add_bleeding_wound(severity, is_critical=critical and zone in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
-            if self.total_hp <= 0:
+            if zone in VITAL_ZONES and self.character.alive:
+                print(f"💀 {self.character.name}'s {zone.replace('_', ' ')} is destroyed!")
                 self.character.die()
-            logging.debug(f"{self.character.name} took {damage} {damage_type} damage to {zone}")
+            elif hasattr(self.character, "on_part_crippled") and zone not in getattr(self.character, "compromised_limbs", []):
+                self.character.on_part_crippled(zone)
         else:
+            self.apply_partial_damage(zone)
+
+    def distribute_damage(self, base_damage, damage_type, critical=False):
+        """Normal hit: spread damage over the whole body, weighted by zone size."""
+        if not self.character.alive:
+            return {}
+        damage = int(base_damage * (1.2 if critical else 1.0))
+        split = spread_damage(self.health, self.initial_health, damage)
+        for part, dmg in split.items():
+            self.health[part] -= dmg
+            self._zone_hit(part, dmg, damage_type, 0)
+        if damage > 0:
+            severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
+            self.add_bleeding_wound(severity, is_critical=critical)
+        self._sync_total()
+        if self.total_hp <= 0 and self.character.alive:
+            self.character.die()
+        logging.debug(f"Spread {damage} {damage_type} damage on {self.character.name}: {split}")
+        return split
+
+    def take_damage_to_zone(self, zone, damage, damage_type, critical=False):
+        """Aimed hit that landed: full damage to one zone (floored at 0)."""
+        if not self.character.alive:
+            return 0
+        if zone not in self.health:
             print(f"❌ Invalid zone: {zone}")
+            return 0
+        damage = int(damage * (1.2 if critical else 1.0))
+        overflow = max(0, damage - self.health[zone])
+        self.health[zone] = max(0, self.health[zone] - damage)
+        self._zone_hit(zone, damage, damage_type, overflow)
+        severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
+        self.add_bleeding_wound(severity, is_critical=critical and zone in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
+        self._sync_total()
+        if self.total_hp <= 0 and self.character.alive:
+            self.character.die()
+        logging.debug(f"{self.character.name} took {damage} {damage_type} damage to {zone}")
+        return damage
+
+    def resolve_aimed_strike(self, hit, zone, damage, damage_type, critical=False):
+        """Aimed strike (flat -30 to hit, applied by the attack roll).
+        A miss does NO damage and never falls back to a normal hit."""
+        if not hit:
+            return 0
+        return self.take_damage_to_zone(zone, damage, damage_type, critical)
+
 
     def apply_partial_damage(self, zone):
         initial = self.initial_health.get(zone, 1)
