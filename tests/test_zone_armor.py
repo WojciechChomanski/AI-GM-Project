@@ -120,11 +120,11 @@ def test_aimed_uses_hit_zone_armour_only():
 
 def test_aimed_vs_normal_same_hit():
     random.seed(6)
-    # Breastplate (slashing 9, chest/stomach/upper arms only). 12 damage:
+    # Breastplate (slashing 8, chest/stomach/upper arms only). 12 damage:
     c, a = fighter("Medium_Heavy"); a.take_damage_to_zone("chest", 12, "slashing")
     c, n = fighter("Medium_Heavy"); n.distribute_damage(12, "slashing")
-    assert 100 - a.total_hp == 3             # chest: 12 - 9
-    assert round_protection(4.12) == 4 and 100 - n.total_hp == 8   # 12 - 4 spread over the body
+    assert 100 - a.total_hp == 4             # chest: 12 - 8
+    assert round_protection(3.66) == 4 and 100 - n.total_hp == 8   # 12 - 4 spread over the body
 
 
 def test_condition_lowers_protection():
@@ -211,7 +211,7 @@ def test_no_stacking_best_piece_per_zone():
     # plate (10) over cloth (2) on the chest: only the best counts, NOT 12
     assert zone_protection([plate, cloth], "chest", "slashing") == 10
     assert zone_protection([cloth, plate], "chest", "slashing") == 10
-    # gauntlets over a breastplate do not add on the lower arm: best of 9 and 10
+    # gauntlets over a breastplate do not add on the lower arm: best of 8 and 10
     bp = piece("Medium_Heavy")
     gaunt = ArmorPiece("Plate Gauntlets", ["left_lower_arm", "right_lower_arm"], {"slashing": 10}, 0, 44, 1.9)
     assert zone_protection([bp, gaunt], "left_lower_arm", "slashing") == 10
@@ -284,14 +284,14 @@ def test_breastplate_and_half_plate_coverage():
     for var, a in ARMORS["Heavy_Light"].items():
         assert set(a["coverage"]) == hp and len(a["coverage"]) == 6, var
     b, h = piece("Medium_Heavy"), piece("Heavy_Light")
-    assert round(average_protection([b], "slashing"), 2) == 4.12
-    assert round(average_protection([h], "slashing"), 2) == 5.87
+    assert round(average_protection([b], "slashing"), 2) == 3.66
+    assert round(average_protection([h], "slashing"), 2) == 6.61
     # bare lower arm / lower leg under a Breastplate / Half Plate: aimed strike goes in fully
     c, hm = fighter("Medium_Heavy")
     assert hm.take_damage_to_zone("left_lower_arm", 2, "slashing") == 2
     c, hm = fighter("Heavy_Light")
     assert hm.take_damage_to_zone("left_lower_leg", 4, "slashing") == 4
-    assert hm.take_damage_to_zone("left_upper_leg", 4, "slashing") == 0     # 8 absorbs it
+    assert hm.take_damage_to_zone("left_upper_leg", 4, "slashing") == 0     # 9 absorbs it
 
 
 def test_half_plate_ranks_above_breastplate():
@@ -306,6 +306,14 @@ def test_half_plate_ranks_above_breastplate():
         hi = ArmorPiece(*[ARMORS["Heavy_Light"][var][k] for k in ("name", "coverage", "armor_rating", "stamina_penalty", "max_durability", "weight")])
         assert len(hi.coverage) > len(lo.coverage)
         assert average_protection([hi], "slashing") > average_protection([lo], "slashing")
+        # per-piece rating: Half Plate strictly above Breastplate on every damage type
+        for dt in ("slashing", "piercing", "blunt"):
+            assert ARMORS["Heavy_Light"][var]["armor_rating"][dt] > ARMORS["Medium_Heavy"][var]["armor_rating"][dt], (var, dt)
+    # whole ladder per variant: Scale < Breastplate < Half Plate < Full Plate on every damage type
+    for var in ("standard", "dwarven"):
+        for dt in ("slashing", "piercing", "blunt"):
+            r = [ARMORS[t][var]["armor_rating"][dt] for t in ("Medium_Medium", "Medium_Heavy", "Heavy_Light", "Heavy_Medium")]
+            assert r == sorted(set(r)), (var, dt, r)
     # every armour tier named by a character kit exists in armors.json; the old Half Plate kits point at Heavy_Light
     import glob, json as _j
     for f in glob.glob(os.path.join(os.path.dirname(__file__), "..", "rules", "characters", "*.json")):
