@@ -141,9 +141,12 @@ class ArmorPiece:
             mx = max(1, self.per_zone_max.get(zone, 1))
             return label(cur / mx)
 
-        # overall (mean)
+        # overall (mean). A piece that covers nothing (e.g. Unarmored) has no
+        # durability to lose, so it is not "Broken".
+        if not self.coverage:
+            return "None"
         total_cur = sum(self.current_durability.values()) or 0
-        total_max = sum(self.per_zone_max.values()) or 1
+        total_max = max(1, sum(self.per_zone_max.values()))
         return label(total_cur / total_max)
 
     def repair(self, skill_level: int, zone: Optional[str] = None) -> None:
@@ -259,7 +262,7 @@ class ArmorSystem:
 # No new armour stats are used. Armour never makes the wearer immune: what it
 # does not absorb is real damage.
 # ---------------------------------------------------------------------------
-from zone_hp import BASE_ZONES, spread_damage  # noqa: E402
+from zone_hp import BASE_ZONES, SPREAD_EXCLUDED, spread_damage  # noqa: E402
 
 ARMOR_WEAR_FRACTION = 0.20  # durability lost = max(1, 20% of damage/absorbed)
 
@@ -298,12 +301,19 @@ def zone_protection(pieces, zone: str, damage_type: str) -> float:
     return sum(piece_zone_protection(p, zone, damage_type) for p in pieces)
 
 
+# Zones a normal (spread) hit can actually hit, with their weights (base zone HP).
+# Throat and groin are excluded (SPREAD_EXCLUDED); the 11 weights sum to 94.
+SPREAD_WEIGHTS = {z: w for z, w in BASE_ZONES.items() if z not in SPREAD_EXCLUDED}
+SPREAD_WEIGHT_TOTAL = sum(SPREAD_WEIGHTS.values())
+
+
 def average_protection(pieces, damage_type: str) -> float:
-    """Zone-size-weighted average protection over all 13 zones.
-    Weights = base zone HP (chest 20, upper legs 13, ... sum 100); an
-    unarmoured zone counts 0."""
-    total_w = sum(BASE_ZONES.values())
-    return sum(zone_protection(pieces, z, damage_type) * w for z, w in BASE_ZONES.items()) / total_w
+    """Zone-size-weighted average protection over the 11 zones a normal hit can
+    hit (throat and groin excluded). Weights = base zone HP (chest 20, upper legs
+    13, stomach 11, head 7, ...), normalised by their sum (94). An unarmoured zone
+    counts 0. Aimed strikes do not use this (they use the hit zone only)."""
+    return sum(zone_protection(pieces, z, damage_type) * w
+               for z, w in SPREAD_WEIGHTS.items()) / SPREAD_WEIGHT_TOTAL
 
 
 def round_protection(value: float) -> int:
@@ -337,7 +347,7 @@ def armor_vs_aimed(pieces, zone: str, damage: int, damage_type: str) -> dict:
 
 def armor_vs_spread(pieces, damage: int, damage_type: str) -> dict:
     """NORMAL (spread) hit: damage is reduced by the weighted average armour over
-    all 13 zones (rounded half up, never below 0, never more than the damage).
+    the 11 hittable zones (rounded half up, never below 0, never more than the damage).
     The remainder is spread by the normal spread rule (done by the caller).
     Durability: only pieces that contributed wear. A piece that absorbed `a`
     loses max(1, 20% of a) in total, shared over the zones it covers in
@@ -349,14 +359,14 @@ def armor_vs_spread(pieces, damage: int, damage_type: str) -> dict:
     wear = {}
     if absorbed > 0 and avg > 0:
         for p in pieces:
-            contrib = sum(piece_zone_protection(p, z, damage_type) * BASE_ZONES[z]
-                          for z in p.coverage if z in BASE_ZONES) / sum(BASE_ZONES.values())
+            contrib = sum(piece_zone_protection(p, z, damage_type) * SPREAD_WEIGHTS[z]
+                          for z in p.coverage if z in SPREAD_WEIGHTS) / SPREAD_WEIGHT_TOTAL
             if contrib <= 0:
                 continue  # did not help -> no wear
             share = absorbed * contrib / avg
             loss = max(1, int(share * ARMOR_WEAR_FRACTION))
-            covered = {z: p.current_durability[z] for z in p.coverage if z in BASE_ZONES}
-            weights = {z: BASE_ZONES[z] for z in covered}
+            covered = {z: p.current_durability[z] for z in p.coverage if z in SPREAD_WEIGHTS}
+            weights = {z: SPREAD_WEIGHTS[z] for z in covered}
             taken = spread_damage(covered, weights, loss, excluded=(), floor={})
             for z, n in taken.items():
                 _wear(p, z, n)

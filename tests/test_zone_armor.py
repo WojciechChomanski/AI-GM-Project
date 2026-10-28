@@ -7,7 +7,7 @@ from zone_hp import BASE_ZONES, scaled_zones
 from character import Character
 from combat_health import CombatHealthManager
 from armor_system import (ArmorPiece, average_protection, zone_protection, armor_vs_aimed,
-                          armor_vs_spread, round_protection)
+                          armor_vs_spread, round_protection, SPREAD_WEIGHTS, SPREAD_WEIGHT_TOTAL)
 
 ARMORS = json.load(open(os.path.join(os.path.dirname(__file__), "..", "rules", "armors.json")))
 
@@ -31,16 +31,19 @@ def lost(h):
 
 
 def test_weighted_average_formula():
-    # chest only (weight 20) with slashing 2 -> 0.4 average
-    assert abs(average_protection([piece("Light_Light")], "slashing") - 0.4) < 1e-9
+    # weights = base HP of the 11 zones a normal hit can hit (no throat/groin), sum 94
+    assert SPREAD_WEIGHT_TOTAL == 94 and set(SPREAD_WEIGHTS) == set(BASE_ZONES) - {"throat", "groin"}
+    # chest only (weight 20) with slashing 2 -> 2*20/94
+    assert abs(average_protection([piece("Light_Light")], "slashing") - 40 / 94) < 1e-9
     # no armour at all -> 0
     assert average_protection([], "slashing") == 0
-    # full plate: 10 zones covered (no head/throat/groin), rating 10 -> 87% of 10
-    assert abs(average_protection([piece("Heavy_Medium")], "slashing") - 8.7) < 1e-9
+    # full plate today: covers 10 zones (no head/throat/groin); head (7) is the only
+    # hittable zone left bare -> 10 * 87/94
+    assert abs(average_protection([piece("Heavy_Medium")], "slashing") - 870 / 94) < 1e-9
 
 
 def test_rounding_half_up():
-    assert [round_protection(x) for x in (0.4, 0.5, 5.5, 6.49, 8.7)] == [0, 1, 6, 6, 9]
+    assert [round_protection(x) for x in (0.4, 0.5, 5.5, 6.49, 9.26)] == [0, 1, 6, 6, 9]
 
 
 def test_normal_hit_unarmoured_unchanged():
@@ -58,14 +61,14 @@ def test_normal_hit_full_plate_vs_none_vs_partial():
         h.distribute_damage(12, "slashing")
         res[name] = 100 - h.total_hp
     assert res["none"] == 12
-    assert res["partial"] == 12 - 2          # chainmail avg 2.15 -> 2 absorbed
-    assert res["full"] == 12 - 9             # full plate avg 8.7 -> 9 absorbed
+    assert res["partial"] == 12 - 2          # chainmail avg 2.29 -> 2 absorbed
+    assert res["full"] == 12 - 9             # full plate avg 9.26 -> 9 absorbed
     assert res["none"] > res["partial"] > res["full"]
 
 
 def test_armour_never_makes_wearer_immune():
     random.seed(3)
-    c, h = fighter("Heavy_Heavy")             # siege plate: slashing avg 9.57 -> 10
+    c, h = fighter("Heavy_Heavy")             # siege plate: slashing avg 10.18 -> 10
     h.distribute_damage(10, "slashing")
     assert h.total_hp == 100                  # fully absorbed at exactly the protection
     h.distribute_damage(11, "slashing")
@@ -114,7 +117,7 @@ def test_aimed_vs_normal_same_hit():
     c, a = fighter("Heavy_Light"); a.take_damage_to_zone("chest", 12, "slashing")
     c, n = fighter("Heavy_Light"); n.distribute_damage(12, "slashing")
     assert 100 - a.total_hp == 3             # chest: 12 - 9
-    assert round_protection(6.75) == 7 and 100 - n.total_hp == 5
+    assert round_protection(7.18) == 7 and 100 - n.total_hp == 5
 
 
 def test_condition_lowers_protection():
@@ -141,7 +144,7 @@ def test_normal_durability_only_pieces_that_helped():
     for z in broken.current_durability:
         broken.current_durability[z] = 0                          # broken piece contributes 0
     r = armor_vs_spread([plate, cloth, broken], 30, "slashing")
-    assert r["absorbed"] == 9 and r["remainder"] == 21
+    assert r["absorbed"] == 10 and r["remainder"] == 20   # 9.26 + 0.43 = 9.68 -> 10
     assert sum(plate.current_durability.values()) < 110
     assert sum(cloth.current_durability.values()) < 40
     assert sum(broken.current_durability.values()) == 0 and "Light Chainmail" not in r["wear"]
@@ -170,6 +173,50 @@ def test_character_receive_damage_uses_armour_when_type_given():
     c2, _ = fighter()
     c2.receive_damage(12)
     assert c2.total_hp == 88
+
+
+def test_throat_and_groin_do_not_count_for_normal_hits():
+    # A piece covering ALL 13 zones with rating 10 averages exactly 10 on a normal hit
+    # (before: 13-zone weights, 87% -> bare throat/groin lowered it for nothing).
+    everything = ArmorPiece("All13", list(BASE_ZONES), {"slashing": 10}, 0, 13 * 10, 1)
+    assert abs(average_protection([everything], "slashing") - 10.0) < 1e-9
+    # same piece minus throat+groin: identical normal-hit average
+    eleven = ArmorPiece("Eleven", [z for z in BASE_ZONES if z not in ("throat", "groin")],
+                        {"slashing": 10}, 0, 11 * 10, 1)
+    assert abs(average_protection([eleven], "slashing") - 10.0) < 1e-9
+    # a gorget / groin guard does nothing against a normal hit and does not wear
+    gorget = ArmorPiece("Gorget", ["throat", "groin"], {"slashing": 10}, 0, 20, 1)
+    assert average_protection([gorget], "slashing") == 0
+    before = dict(gorget.current_durability)
+    r = armor_vs_spread([everything, gorget], 30, "slashing")
+    assert r["absorbed"] == 10 and gorget.current_durability == before
+    assert "Gorget" not in r["wear"]
+    # ...but it still protects fully against an AIMED strike on its zone
+    assert armor_vs_aimed([gorget], "throat", 8, "slashing")["remainder"] == 0
+    # the normal-hit wear of a 13-zone piece never lands on throat/groin
+    assert everything.current_durability["throat"] == 10 and everything.current_durability["groin"] == 10
+    # weighted example: chest(20)+head(7) only, rating 9 -> 9*27/94
+    chest_head = ArmorPiece("CH", ["chest", "head"], {"slashing": 9}, 0, 20, 1)
+    assert abs(average_protection([chest_head], "slashing") - 243 / 94) < 1e-9
+
+
+def test_unarmored_is_not_broken():
+    u = ARMORS["Unarmored"]["standard"]
+    p = ArmorPiece(u["name"], u["coverage"], u["armor_rating"], u["stamina_penalty"],
+                   u["max_durability"], u["weight"])
+    assert p.coverage == [] and p.condition_status() == "None"
+    assert average_protection([p], "slashing") == 0
+    assert armor_vs_spread([p], 10, "slashing")["absorbed"] == 0
+    # real pieces still report normally, and a destroyed one is still Broken
+    full = piece("Heavy_Medium")
+    assert full.condition_status() == "Pristine"
+    for z in full.current_durability:
+        full.current_durability[z] = 0
+    assert full.condition_status() == "Broken"
+    # legacy armors.Armor with empty coverage must not divide by zero
+    from armors import Armor
+    a = Armor("Empty", [], {"slashing": 0}, 0, 0, 0, 0)
+    assert a.current_durability == {} and a.absorb_damage(5, "slashing", "chest") == 5
 
 
 if __name__ == "__main__":

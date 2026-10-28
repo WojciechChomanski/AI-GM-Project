@@ -47,13 +47,15 @@ Uses the existing armour data only (`armor_rating` per damage type, `coverage`, 
 **Aimed strike:** only the armour on the **hit zone** counts. `damage − protection` (min 0) goes **fully into that zone**. Every piece covering that zone loses `max(1, 20% of the incoming damage)` durability on it (as before).
 
 **Normal (spread) hit:**
-1. Work out the **zone-size-weighted average protection** over all 13 zones. Weights = base zone HP (chest 20, upper legs 13 each, stomach 11, head 7, upper arms/lower legs 6 each, lower arms/throat/groin 3 each; sum 100). A zone with no armour counts 0.
+1. Work out the **zone-size-weighted average protection over the 11 zones a normal hit can actually hit** (throat and groin are left out, because a normal hit never lands there). Weights = base zone HP: chest 20, upper legs 13 each, stomach 11, head 7, upper arms/lower legs 6 each, lower arms 3 each. They sum to 94, so the result is divided by 94. A zone with no armour counts 0. A piece that covers all 11 zones at rating 10 therefore averages exactly 10. Throat/groin armour (gorget, groin guard) does not help against normal hits and does not wear from them; it still protects fully against an aimed strike on its zone.
 2. Round half up (6.75 → 7, 0.4 → 0). Damage is reduced by that, never below 0.
 3. The remainder is spread with the normal spread rule (throat/groin excluded, head floor 1).
 4. Durability: only pieces that actually contributed wear. A piece that absorbed *a* loses `max(1, 20% of a)` in total, shared over the zones it covers in proportion to zone size.
 
 Example: 10 damage vs 6 average protection → 4 is spread over the body (chest takes 1–2). 
-Real numbers (rules/armors.json, slashing): Full Plate averages 8.7 (→ 9), Half Plate 7.0, Breastplate 6.75 (→ 7), Light Chainmail 2.15 (→ 2), Padded Cloth 0.4 (→ 0). No armour covers head, throat or groin, so even Full Plate is ~87% of its rating. Siege Plate (avg 9.57 → 10) means 10 damage or less does nothing, 11 still leaves 1.
+Real numbers (rules/armors.json, slashing, 11-zone average): Full Plate 9.26 (→ 9), Half Plate 7.40 (→ 7), Breastplate 7.18 (→ 7), Light Chainmail 2.29 (→ 2), Padded Cloth 0.43 (→ 0), Siege Plate 10.18 (→ 10). Today's data covers no head, throat or groin, so Full Plate misses only the head (7 of 94) on normal hits. Siege Plate (→ 10) means 10 damage or less does nothing, 11 still leaves 1.
+
+A piece with no coverage (`Unarmored`) is reported as condition "None", not "Broken".
 
 Critical hits (×1.2) are applied before armour. Bleeding is worked out from the damage that gets through (a hit fully absorbed causes no bleeding).
 Code: `armor_system.py` (`average_protection`, `armor_vs_spread`, `armor_vs_aimed`), used by `CombatHealthManager.distribute_damage` / `take_damage_to_zone` and `Character.receive_damage(damage, damage_type)`. Tests: `python tests/test_zone_armor.py`.
