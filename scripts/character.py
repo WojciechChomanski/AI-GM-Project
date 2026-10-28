@@ -5,7 +5,7 @@ import random
 import logging
 import os
 from armors import Armor
-from zone_hp import BASE_ZONES, spread_damage, total_hp as zones_total, VITAL_ZONES
+from zone_hp import BASE_ZONES, SPREAD_EXCLUDED, SPREAD_FLOOR, spread_damage, total_hp as zones_total, VITAL_ZONES
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -83,7 +83,7 @@ class Character:
 
     def distribute_damage(self, damage):
         maximum = getattr(self, "max_body_parts", None) or dict(BASE_ZONES)
-        for part, dmg in spread_damage(self.body_parts, maximum, damage).items():
+        for part, dmg in spread_damage(self.body_parts, maximum, damage, SPREAD_EXCLUDED, SPREAD_FLOOR).items():
             self.body_parts[part] -= dmg
             if self.body_parts[part] <= 0:
                 self._zone_destroyed(part)

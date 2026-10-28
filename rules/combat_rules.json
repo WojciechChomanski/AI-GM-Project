@@ -157,7 +157,14 @@
               "left_upper_arm": 6, "right_upper_arm": 6, "left_lower_leg": 6, "right_lower_leg": 6,
               "left_lower_arm": 3, "right_lower_arm": 3, "throat": 3, "groin": 3 },
     "vital_zones": ["head", "throat", "chest"],
-    "normal_hit": "spread over all living zones, proportional to zone max, zones floor at 0",
+    "normal_hit": "spread over the 11 eligible zones (not throat, not groin), proportional to zone max; head floors at 1 under spread, chest may reach 0 (= death); throat and groin are hit only by aimed strikes",
+    "spread_excluded": ["throat", "groin"],
+    "spread_floor": { "head": 1 },
+    "collapse": {
+      "zones_at_zero": 3,
+      "blood_loss_percent": null,
+      "_note": "Collapse = 3 or more zones at 0 HP. The old 33%-of-total-HP-lost collapse was removed (blood_loss_percent kept as null for reference only; unused)."
+    },
     "aimed_hit": "flat -30 to hit (aimed_attack.base_penalty); full damage to one zone; a miss does no damage"
   },
 

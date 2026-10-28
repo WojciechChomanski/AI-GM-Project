@@ -37,20 +37,37 @@ def total_hp(zones):
     return sum(max(0, v) for v in zones.values())
 
 
-def spread_damage(current, maximum, damage):
-    """Split a normal hit over all living zones, proportional to each zone's max
-    (largest-remainder rounding). Zones may reach 0 but never go below.
-    Damage a zone cannot absorb is re-spread over the remaining zones.
+# Normal (spread) hits never touch these zones - only aimed strikes can.
+SPREAD_EXCLUDED = frozenset({"throat", "groin"})
+# Spread damage can lower these zones only down to the given value (head never 0 via spread).
+SPREAD_FLOOR = {"head": 1}
+COLLAPSE_ZONES_AT_ZERO = 3  # this many zones at 0 HP = collapse
+
+
+def zones_at_zero(current):
+    return [z for z, v in current.items() if v <= 0]
+
+
+def spread_damage(current, maximum, damage, excluded=SPREAD_EXCLUDED, floor=SPREAD_FLOOR):
+    """Split a normal hit over the eligible zones, proportional to each zone's max
+    (largest-remainder rounding).
+    - `excluded` zones (throat, groin) take nothing from a spread hit.
+    - `floor` maps zone -> lowest value spread damage may leave it at (head: 1).
+      The chest has no floor, so it can reach 0 by spread (= death).
+    Damage a zone cannot absorb is re-spread over the remaining eligible zones.
     Returns {zone: damage_actually_taken}."""
+    excluded = excluded or ()
+    floor = floor or {}
     taken = {z: 0 for z in current}
     remaining = int(max(0, damage))
     while remaining > 0:
-        alive = [z for z in current if current[z] - taken[z] > 0]
+        alive = [z for z in current
+                 if z not in excluded and current[z] - taken[z] > floor.get(z, 0)]
         if not alive:
             break
         weight = sum(maximum.get(z, 1) for z in alive)
         shares = {z: remaining * maximum.get(z, 1) / weight for z in alive}
-        alloc = {z: int(s) for z, s in shares.items()}
+        alloc = {z: int(sh) for z, sh in shares.items()}
         leftover = remaining - sum(alloc.values())
         # largest remainder; ties -> bigger zone first, then fixed order
         order = sorted(alive, key=lambda z: (-(shares[z] - alloc[z]), -maximum.get(z, 1), list(current).index(z)))
@@ -58,7 +75,7 @@ def spread_damage(current, maximum, damage):
             alloc[z] += 1
         spent = 0
         for z in alive:
-            room = current[z] - taken[z]
+            room = current[z] - taken[z] - floor.get(z, 0)
             hit = min(room, alloc[z])
             taken[z] += hit
             spent += hit

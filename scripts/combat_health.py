@@ -2,7 +2,7 @@
 import random
 import logging
 from damage_consequences import DamageConsequences
-from zone_hp import spread_damage, total_hp, VITAL_ZONES
+from zone_hp import spread_damage, total_hp, VITAL_ZONES, SPREAD_EXCLUDED, SPREAD_FLOOR, COLLAPSE_ZONES_AT_ZERO, zones_at_zero
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -167,7 +167,7 @@ class CombatHealthManager:
             wound_damage = int(wound["amount"])
             total_bleeding_damage += wound_damage
             # Blood loss is spread over the body like a normal hit (no new wounds)
-            for part, dmg in spread_damage(self.health, self.initial_health, wound_damage).items():
+            for part, dmg in spread_damage(self.health, self.initial_health, wound_damage, SPREAD_EXCLUDED, SPREAD_FLOOR).items():
                 self.health[part] -= dmg
                 self._zone_hit(part, dmg, "bleeding", 0)
             wound["duration"] -= 1
@@ -176,7 +176,7 @@ class CombatHealthManager:
         self._sync_total()
         if total_bleeding_damage > 0:
             print(f"🩸 {self.character.name} suffers {total_bleeding_damage} bleeding damage!")
-        self.check_blood_loss_collapse()
+        self.check_zone_collapse()
 
     def add_bleeding_wound(self, severity, is_critical=False):
         if severity == "light":
@@ -196,24 +196,20 @@ class CombatHealthManager:
             print(f"⚠️ {self.character.name} is overwhelmed by pain penalties!")
             self.check_auto_collapse()
 
-    def check_blood_loss_collapse(self):
-        blood_loss = self.starting_hp - sum(max(hp, 0) for hp in self.health.values())
-        blood_loss_percent = (blood_loss / self.starting_hp) * 100
-        if blood_loss_percent >= 33 and self.character.alive:
-            print(f"💀 {self.character.name} collapses from massive blood loss and falls unconscious!")
-            self.character.alive = False
-            self.character.in_combat = False
-            self.character.exhausted = True
-            self.character.last_action = True
-
-    def check_auto_collapse(self):
-        crippled = [part for part, hp in self.health.items() if hp <= 0]
-        if len(crippled) >= 3:
+    def check_zone_collapse(self):
+        """Collapse when 3 or more body zones are at 0 HP. (The old '33% of total HP
+        lost' blood-loss collapse was removed - see docs/ZONE_DAMAGE.md.)"""
+        if len(zones_at_zero(self.health)) >= COLLAPSE_ZONES_AT_ZERO and self.character.alive:
             print(f"💀 {self.character.name} collapses from severe injuries!")
             self.character.alive = False
             self.character.in_combat = False
             self.character.exhausted = True
             self.character.last_action = True
+            return True
+        return False
+
+    def check_auto_collapse(self):
+        if self.check_zone_collapse():
             return True
         collapse_chance = self.character.pain_penalty - 30
         if collapse_chance > 0:
@@ -254,7 +250,7 @@ class CombatHealthManager:
         if not self.character.alive:
             return {}
         damage = int(base_damage * (1.2 if critical else 1.0))
-        split = spread_damage(self.health, self.initial_health, damage)
+        split = spread_damage(self.health, self.initial_health, damage, SPREAD_EXCLUDED, SPREAD_FLOOR)
         for part, dmg in split.items():
             self.health[part] -= dmg
             self._zone_hit(part, dmg, damage_type, 0)
@@ -262,6 +258,7 @@ class CombatHealthManager:
             severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
             self.add_bleeding_wound(severity, is_critical=critical)
         self._sync_total()
+        self.check_zone_collapse()
         if self.total_hp <= 0 and self.character.alive:
             self.character.die()
         logging.debug(f"Spread {damage} {damage_type} damage on {self.character.name}: {split}")
@@ -281,6 +278,7 @@ class CombatHealthManager:
         severity = "light" if damage <= 5 else "medium" if damage <= 10 else "heavy"
         self.add_bleeding_wound(severity, is_critical=critical and zone in ["chest", "stomach", "left_upper_leg", "right_upper_leg"])
         self._sync_total()
+        self.check_zone_collapse()
         if self.total_hp <= 0 and self.character.alive:
             self.character.die()
         logging.debug(f"{self.character.name} took {damage} {damage_type} damage to {zone}")
