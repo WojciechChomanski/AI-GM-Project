@@ -304,7 +304,7 @@ class CombatHealthManager:
         return damage
 
     def resolve_aimed_strike(self, hit, zone, damage, damage_type, critical=False):
-        """Aimed strike (flat -30 to hit, applied by the attack roll).
+        """Aimed strike (-30 to hit, -40 for head/throat/groin; applied by the attack roll).
         A miss does NO damage and never falls back to a normal hit."""
         if not hit:
             return 0

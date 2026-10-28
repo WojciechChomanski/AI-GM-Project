@@ -212,20 +212,20 @@
   "Heavy_Medium": {
     "standard": {
       "name": "Full Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg", "head", "throat", "groin"],
       "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
       "stamina_penalty": 10,
-      "max_durability": 110,
-      "weight": 28,
+      "max_durability": 143,
+      "weight": 32.2,
       "mobility_bonus": -6
     },
     "dwarven": {
       "name": "Forged Full Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg", "head", "throat", "groin"],
       "armor_rating": {"slashing": 11, "piercing": 10, "blunt": 9},
       "stamina_penalty": 11,
-      "max_durability": 120,
-      "weight": 32,
+      "max_durability": 156,
+      "weight": 36.8,
       "mobility_bonus": -8,
       "lore": "A fortress of steel, forged in high-gravity forges."
     }
@@ -233,20 +233,20 @@
   "Heavy_Heavy": {
     "standard": {
       "name": "Siege Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg", "head", "throat", "groin"],
       "armor_rating": {"slashing": 11, "piercing": 10, "blunt": 9},
       "stamina_penalty": 12,
-      "max_durability": 120,
-      "weight": 35,
+      "max_durability": 156,
+      "weight": 40.2,
       "mobility_bonus": -10
     },
     "dwarven": {
       "name": "Rune-Forged Siege Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg", "head", "throat", "groin"],
       "armor_rating": {"slashing": 12, "piercing": 11, "blunt": 10},
       "stamina_penalty": 13,
-      "max_durability": 130,
-      "weight": 40,
+      "max_durability": 169,
+      "weight": 46.0,
       "mobility_bonus": -12,
       "lore": "Imbued with female-carved runes, a dwarven masterpiece."
     }

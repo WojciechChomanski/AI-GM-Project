@@ -4,7 +4,7 @@
 """
 Grimdark Village Rescue – battle loop with:
 - Aimed strikes to body parts (zones) with number OR name entry
-- Flat aimed penalty (rules-driven) with DEX relief (no per-zone extra)
+- Aimed penalty (rules-driven, -30; -40 for head/throat/groin) with DEX relief
 - Critical hits and critical misses -> riposte
 - Stamina regen/costs + durability + 2H+shield enforcement
 - Sorceress spell system
@@ -59,6 +59,9 @@ from AI_GM_Project.scripts.combat_engine import (
     enforce_two_handed_and_shield, spend_stamina, regen_stamina,
     init_morale, morale_event, check_rout, aimed_attack_penalty
 )
+
+from zone_hp import aimed_penalty, AIMED_PENALTY_DEFAULT
+from durability import (Wear, WEAPON_LOSS_PER_ATTACK, WEAPON_LOSS_ON_PARRY, weapon_damage_after_wear)
 
 # ========= Logging setup =========
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -320,7 +323,9 @@ def init_weapon_state(unit):
         dur = unit["weapon"].get("durability")
     if dur is None:
         dur = DEFAULT_DURABILITY.get(wpn, 50)
-    unit["_weapon_durability"] = int(dur)
+    unit["_weapon_durability"] = float(dur)
+    # permanent wear: original max = the starting durability (see docs/DURABILITY.md)
+    unit["_weapon_wear"] = Wear(float(dur))
 
 def init_combatants(units):
     roster = list(units)
@@ -337,17 +342,50 @@ def base_damage_for(unit):
         else:
             w = unit.get("weapon")
     w = (str(w or "")).lower()
-    return WEAPON_DAMAGE.get(w, 8)
+    base = WEAPON_DAMAGE.get(w, 8)
+    wear = unit.get("_weapon_wear")
+    if wear is None:
+        return base
+    # worn weapons hit softer: -1 per 10 base damage per 10% of max durability lost (placeholder)
+    broken = float(unit.get("_weapon_durability", 1)) <= float((rules.get("weapon_durability") or {}).get("break_threshold", 0))
+    return weapon_damage_after_wear(base, wear.quality_steps(), destroyed=wear.destroyed or broken)
+
+def repair_weapon_durability(unit, points):
+    """Restore weapon durability, never above the CURRENT maximum (permanent wear, see
+    scripts/durability.py). A destroyed weapon (current max 0) cannot be repaired.
+    Returns the new durability."""
+    wear = unit.get("_weapon_wear")
+    if wear is None:
+        return unit.get("_weapon_durability", 0)
+    unit["_weapon_durability"] = wear.repair(float(unit.get("_weapon_durability", 0)), points)
+    return unit["_weapon_durability"]
 
 def weapon_label_for_log(wpn):
     return str(wpn or "weapon")
 
-def apply_durability_tick(attacker, round_log):
+def apply_durability_tick(attacker, round_log, kind="attack"):
+    """Weapon wear: 0.5 per attack, 1.0 per parry (combat_rules.json weapon_durability).
+    Every 30% of the CURRENT maximum worn away permanently lowers the maximum by 5% of the
+    original (scripts/durability.py). At current maximum 0 the weapon is destroyed."""
     w = attacker.get("_weapon_type")
     if not w: return
-    attacker["_weapon_durability"] = max(0, int(attacker.get("_weapon_durability", DEFAULT_DURABILITY.get(w, 50))) - 1)
+    wear = attacker.get("_weapon_wear")
+    if wear is None:
+        attacker["_weapon_wear"] = wear = Wear(float(attacker.get("_weapon_durability", DEFAULT_DURABILITY.get(w, 50))))
+    if wear.destroyed or float(attacker.get("_weapon_durability", 1)) <= 0: return
+    loss_cfg = (rules.get("weapon_durability") or {})
+    loss = float(loss_cfg.get("loss_on_parry", WEAPON_LOSS_ON_PARRY) if kind == "parry"
+                 else loss_cfg.get("loss_per_attack", WEAPON_LOSS_PER_ATTACK))
+    cur = float(attacker.get("_weapon_durability", wear.current_max))
+    new = max(0.0, cur - loss)
+    if wear.lose(cur - new):
+        new = wear.clamp(new)
+    attacker["_weapon_durability"] = new
     label = weapon_label_for_log(w)
-    round_log.append(f"⚔️ {attacker['name']}'s {label} durability: {attacker['_weapon_durability']}")
+    round_log.append(f"⚔️ {attacker['name']}'s {label} durability: {new:g}/{wear.current_max:g}")
+    if wear.destroyed or new <= 0:
+        round_log.append(f"💥 {attacker['name']}'s {label} is destroyed!" if wear.destroyed
+                         else f"⚠️ {attacker['name']}'s {label} is worn through (0 durability).")
 
 # ========= Stance / rolls =========
 def stance_mods(stance):
@@ -422,7 +460,13 @@ def attack_roll(attacker, attack_stance, target, target_stance, attack_type="nor
     dex_mod = dex // 10
 
     aimed_pen_rules = aimed_attack_penalty(attacker, rules) if str(attack_type).lower().startswith("aim") else 0
-    total_aimed_pen = aimed_pen_rules
+    # Narrow targets (head, throat, groin) are harder: -40 instead of the -30 base (zone_hp.aimed_penalty).
+    # The engine's aimed_attack_penalty gives the base (-30, with DEX relief); add only the zone's extra.
+    zone_extra = 0
+    if aimed_zone and str(attack_type).lower().startswith("aim"):
+        base_pen = int(((rules.get("aimed_attack") or {}).get("base_penalty", AIMED_PENALTY_DEFAULT)))
+        zone_extra = aimed_penalty(aimed_zone) - base_pen
+    total_aimed_pen = aimed_pen_rules + zone_extra
 
     stress_mod = -int(attacker.get("stress_level", 0))
     pain_pct = 0
@@ -723,6 +767,7 @@ def run_combat(player, enemies, label):
                 else:
                     print("❌ Attack misses or is defended!")
                     spend_stamina(target, "parry", "neutral", None, rules, round_log)
+                    apply_durability_tick(target, round_log, kind="parry")
                     if calc["atk_roll"] <= crit_lo:
                         round_log.append("⚡ Riposte! Your blunder opens you up!")
                         e_stance_r = "offensive"
@@ -820,6 +865,7 @@ def run_combat(player, enemies, label):
             else:
                 print("❌ Enemy attack misses or is defended!")
                 spend_stamina(player, "parry", "neutral", None, rules, round_log)
+                apply_durability_tick(player, round_log, kind="parry")
                 if calc_e["atk_roll"] <= crit_lo:
                     round_log.append("⚡ Riposte! You punish their mistake!")
                     p_stance_r = "offensive"

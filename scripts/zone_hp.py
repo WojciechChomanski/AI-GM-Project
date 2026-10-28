@@ -3,6 +3,7 @@
 
 Total HP is ALWAYS the sum of the 13 zones. See docs/ZONE_DAMAGE.md.
 """
+import math
 
 BASE_ZONES = {
     "chest": 20,
@@ -17,7 +18,18 @@ BASE_ZONES = {
 }  # sums to 100
 
 VITAL_ZONES = ("head", "throat", "chest")  # at 0 -> death / dying
-AIMED_PENALTY = 30  # flat -30 to hit for every aimed strike
+
+# Aimed strike penalty to hit (PLACEHOLDER numbers). Default -30; narrow targets
+# (head slit, throat, groin gaps) are harder: -40. Mirrored in
+# rules/combat_rules.json -> aimed_penalties (a test keeps them equal).
+AIMED_PENALTY_DEFAULT = 30
+AIMED_PENALTY_BY_ZONE = {"head": 40, "throat": 40, "groin": 40, "neck": 40}  # "neck" = alias of throat
+AIMED_PENALTY = AIMED_PENALTY_DEFAULT  # kept for old imports: the default (non-narrow) penalty
+
+
+def aimed_penalty(zone=None):
+    """Penalty (a positive number, subtracted from the attack roll) for an aimed strike on `zone`."""
+    return AIMED_PENALTY_BY_ZONE.get(str(zone).lower(), AIMED_PENALTY_DEFAULT) if zone else AIMED_PENALTY_DEFAULT
 
 
 def hp_multiplier(race_hp_bonus=0, class_hp_percent=0):
@@ -80,6 +92,7 @@ def spread_damage(current, maximum, damage, excluded=SPREAD_EXCLUDED, floor=SPRE
             taken[z] += hit
             spent += hit
         remaining -= spent
+        remaining = int(math.ceil(remaining - 1e-9))  # stays an int even if a zone had fractional room
         if spent == 0:
             break
     return {z: d for z, d in taken.items() if d > 0}

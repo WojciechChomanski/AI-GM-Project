@@ -2,7 +2,7 @@
 import os, sys, random
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from zone_hp import BASE_ZONES, scaled_zones, hp_multiplier, spread_damage, AIMED_PENALTY, VITAL_ZONES
+from zone_hp import BASE_ZONES, scaled_zones, hp_multiplier, spread_damage, AIMED_PENALTY, AIMED_PENALTY_BY_ZONE, aimed_penalty, VITAL_ZONES
 from character import Character
 from combat_health import CombatHealthManager
 
@@ -95,6 +95,24 @@ def test_spread_never_kills_via_head_or_throat():
             assert h.health["head"] >= 1 and h.health["throat"] == 3 and h.health["groin"] == 3
         assert not c.alive  # eventually dies, but via chest / collapse
         assert h.health["head"] >= 1 and h.health["throat"] == 3
+
+
+def test_aimed_penalty_is_40_for_narrow_zones_and_30_elsewhere():
+    for z in ("head", "throat", "groin"):
+        assert aimed_penalty(z) == 40
+    assert aimed_penalty("neck") == 40               # alias of throat
+    for z in BASE_ZONES:
+        if z not in ("head", "throat", "groin"):
+            assert aimed_penalty(z) == 30, z
+    assert aimed_penalty() == aimed_penalty("nonsense") == AIMED_PENALTY == 30
+    # rules/combat_rules.json mirrors the code (data and code must not drift apart)
+    import json
+    rules = json.load(open(os.path.join(os.path.dirname(__file__), "..", "rules", "combat_rules.json")))
+    table = rules["aimed_penalties"]
+    assert table["default"] == AIMED_PENALTY
+    assert {z: v for z, v in table.items() if not z.startswith("_") and z != "default"} == AIMED_PENALTY_BY_ZONE
+    assert rules["aimed_attack"]["base_penalty"] == 30 and rules["aimed_attack"]["narrow_zone_penalty"] == 40
+    assert sorted(rules["aimed_attack"]["narrow_zones"]) == ["groin", "head", "throat"]
 
 
 def test_head_hit_by_spread_still_wounded_not_dead():

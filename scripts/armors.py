@@ -8,6 +8,9 @@ class Armor:
         self.armor_rating = armor_rating
         self.max_durability = max_durability
         self.current_durability = {part: max_durability // max(1, len(coverage)) for part in coverage}
+        # CURRENT per-zone maximum (shrinks permanently with wear, see durability.py) and the original
+        self.per_zone_max = {part: max_durability // max(1, len(coverage)) for part in coverage}
+        self.original_zone_max = dict(self.per_zone_max)
         self.max_repairable_durability = {part: max_durability // max(1, len(coverage)) for part in coverage}
         self.weight = weight
         self.stamina_penalty = stamina_penalty
