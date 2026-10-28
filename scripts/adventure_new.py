@@ -142,7 +142,8 @@ overlay_weapons_from_json()
 DEFAULT_ARMORS = {
     "Light_Light": ("Padded Cloth", 5),
     "Light_Heavy": ("Light Chainmail", 10),
-    "Medium_Heavy": ("Half Plate", 20),
+    "Medium_Heavy": ("Breastplate", 13),
+    "Heavy_Light": ("Half Plate", 16),
     "Heavy_Heavy": ("Siege Plate", 35),
 }
 

@@ -157,7 +157,7 @@ def test_no_collapse_from_33_percent_loss_alone():
 
 def test_bleeding_respects_spread_rules():
     c, h = fresh()
-    h.bleeding_wounds.append({"amount": 500, "duration": 3})
+    h.bleeding_wounds.append({"zone": "throat", "kind": "artery", "rate": 5, "age": 0, "noclot": True})
     h.apply_bleeding()
     assert h.health["throat"] == 3 and h.health["groin"] == 3 and h.health["head"] >= 1
 

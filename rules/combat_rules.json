@@ -179,6 +179,22 @@
 
   "bleed_pips_by_zone": { "arm": 2, "leg": 2, "chest": 5, "stomach": 5 },
 
+  "bleeding": {
+    "_note": "PLACEHOLDER numbers. Mirrors scripts/bleeding.py (a test keeps them equal); the old bleed_thresholds / bleed_pips_by_zone above are no longer read by any code. See docs/BLEEDING.md.",
+    "cap_per_round": 5,
+    "cut_stops_after_rounds": 3,
+    "deep_loses_1_rate_every_rounds": 4,
+    "cut_max_damage_through_armour": 5,
+    "rates_per_round": {
+      "base (arms, lower legs, head, chest, stomach)": { "cut": 1, "deep": 2, "artery": 3 },
+      "thigh_groin (upper legs, groin)": { "cut": 2, "deep": 3, "artery": 4 },
+      "throat (never clots)": { "cut": 3, "deep": 4, "artery": 5 }
+    },
+    "bandage_stops_hp_per_round": { "basic_bandage": 3, "improved_bandage": 6, "herbal_poultice": 9 },
+    "bandage_dc": { "basic_bandage": 30, "improved_bandage": 35, "herbal_poultice": 40 }
+  },
+
+
   "shield_system": {
     "coverage_cone_deg": 60,
     "zone_coverage": { "head": 0.4, "chest": 0.7, "stomach": 0.6, "arm": 0.5, "leg": 0.3 },

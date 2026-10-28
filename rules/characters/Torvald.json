@@ -28,7 +28,7 @@
   "weapon_equipped": true,
   "weapon": "greatsword",
   "shield_equipped": true,
-  "armor": ["Medium_Heavy"],
+  "armor": ["Heavy_Light"],
 
   "abilities": {
     "brutal_strike": {

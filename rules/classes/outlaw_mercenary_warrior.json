@@ -15,7 +15,7 @@
                                      "starting_equipment":  {
                                                                 "weapon":  "greatsword",
                                                                 "shield":  true,
-                                                                "armor":  "Medium_Heavy"
+                                                                "armor":  "Heavy_Light"
                                                             },
                                      "stances":  {
                                                      "default":  "wrath_guard",

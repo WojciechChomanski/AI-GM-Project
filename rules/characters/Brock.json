@@ -11,7 +11,7 @@
   "shield_equipped": true,
   "weapon_equipped": true,
   "weapon": "longsword",
-  "armor": ["Medium_Heavy"],
+  "armor": ["Heavy_Light"],
   "role": "Knight",
   "strength_modifier": 2,
   "agility_modifier": 1

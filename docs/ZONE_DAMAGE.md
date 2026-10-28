@@ -24,7 +24,7 @@ Damage (after armour, see below) is spread over the **11 eligible zones** in pro
 - **The head floors at 1 under spread.** A normal hit can wound the head but never reduce it to 0. Damage the head can't absorb moves to the other eligible zones.
 - **The chest has no floor.** Enough normal hits can take it to 0, which is death (a real "worn down" death).
 - Other zones can reach 0 (destroyed) but never go below 0.
-- **Bleeding follows the same rule** (same excluded zones, same head floor).
+- **Bleeding follows the same spread rule** (throat/groin excluded), but is gentler: it never takes any zone below 1, so it can never destroy a limb or kill through a zone at 0. See `docs/BLEEDING.md`.
 - So a normal hit can never kill through the head or throat; that takes an aimed strike.
 
 ## Aimed strike
@@ -66,7 +66,7 @@ Real numbers (rules/armors.json, slashing, 11-zone average, best piece per zone)
 | Siege Plate | 11/10/9 | 40.2 (35) | 156 (120) | 12 |
 | Rune-Forged Siege Plate (dwarven) | 12/11/10 | 46.0 (40) | 169 (130) | 13 |
 
-Stamina penalty and mobility are unchanged. **Breastplate and Half Plate (owner decision):** Breastplate (`Heavy_Light`) = chest, stomach and both upper arms only. Half Plate (`Medium_Heavy`) = those plus both upper legs. Lower arms and lower legs are not covered by either; they need loose pieces (gauntlets, greaves). Variants (Forged Breastplate, Forged Half Plate) follow the same coverage. Ratings are unchanged. Same convention as the plate sets: per-zone durability **kept** (total = per zone × zone count) and weight scaled by the share of body zone HP covered (old/new: Breastplate 75→43, Half Plate 87→69 of 100):
+Stamina penalty and mobility are unchanged. **Breastplate and Half Plate (owner decision):** Breastplate (`Medium_Heavy`, tier 6) = chest, stomach and both upper arms only. Half Plate (`Heavy_Light`, tier 7 — **Half Plate is the higher tier**; the two slots were swapped, see "Tier slots" at the end of this file) = those plus both upper legs. Lower arms and lower legs are not covered by either; they need loose pieces (gauntlets, greaves). Variants (Forged Breastplate, Forged Half Plate) follow the same coverage. Ratings are unchanged. Same convention as the plate sets: per-zone durability **kept** (total = per zone × zone count) and weight scaled by the share of body zone HP covered (old/new: Breastplate 75→43, Half Plate 87→69 of 100):
 
 | Set | coverage | weight kg (was) | max_durability (was) | per zone |
 |---|---|---|---|---|
@@ -94,3 +94,5 @@ Crit tables, bleeding (now spread over the body like a normal hit, same eligibil
 
 ## Code
 `scripts/zone_hp.py` (zone table, scaling, spread), `scripts/combat_health.py` (`distribute_damage`, `take_damage_to_zone`, `resolve_aimed_strike`), `scripts/character.py`, `scripts/character_loader.py`. Tests: `python tests/test_zone_damage.py`, `python tests/test_zone_armor.py`.
+
+**Tier slots (owner decision "Half Plate above Breastplate"):** the tier of an armour is its key in `rules/armors.json` (order = rank; class files list allowed tiers such as `medium-heavy`). Slots swapped: `Medium_Heavy` (tier 6) now holds Breastplate / Forged Breastplate, `Heavy_Light` (tier 7) holds Half Plate / Forged Half Plate. Ratings, coverage, weights unchanged. Existing kits that wore Half Plate (wojtek, Torvald, Brock, Outlaw Mercenary Warrior, Holy Judge starting kit) were re-pointed from `Medium_Heavy` to `Heavy_Light` so they keep Half Plate.
