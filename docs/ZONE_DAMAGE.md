@@ -55,7 +55,7 @@ Uses the existing armour data only (`armor_rating` per damage type, `coverage`, 
 4. Durability: only pieces that actually counted wear, and only on the zones where they were the counted (best) piece. A piece that absorbed *a* loses `max(1, 20% of a)` in total, shared over those zones in proportion to zone size.
 
 Example: 10 damage vs 6 average protection → 4 is spread over the body (chest takes 1–2). 
-Real numbers (rules/armors.json, slashing, 11-zone average, best piece per zone): **Full Plate 10.00 (→ 10)** and **Siege Plate 11.00 (→ 11)** — both now cover **all 13 zones with the same rating on every zone**; Half Plate 7.40 (→ 7), Breastplate 7.18 (→ 7), Light Chainmail 2.29 (→ 2), Padded Cloth 0.43 (→ 0). With plate, a normal hit of 10 or less does nothing (Siege: 11 or less), 1 more still leaves 1. **All numbers are placeholders for testing** and need a balance pass against weapon damage.
+Real numbers (rules/armors.json, slashing, 11-zone average, best piece per zone): **Full Plate 10.00 (→ 10)** and **Siege Plate 11.00 (→ 11)** — both now cover **all 13 zones with the same rating on every zone**; Half Plate 5.87 (→ 6), Breastplate 4.12 (→ 4), Light Chainmail 2.29 (→ 2), Padded Cloth 0.43 (→ 0). With plate, a normal hit of 10 or less does nothing (Siege: 11 or less), 1 more still leaves 1. **All numbers are placeholders for testing** and need a balance pass against weapon damage.
 
 **Plate sets (tier 8 Full Plate, tier 9 Siege Plate; standard and dwarven):** coverage is all 13 zones (head, throat and groin included — a helm and gorget come with the top tiers). The rating is the same on every zone (the owner gave full plate "the benefit of the doubt"; can be tuned later, e.g. less at the head slit / groin joints). Siege Plate has slightly higher absorption, durability and weight than Full Plate. To keep the zone weight and wear balance, weight was scaled ×100/87 (the old 10-zone set was 87% of the body) and the per-zone durability was **kept** (so total durability = old per-zone × 13):
 
@@ -66,7 +66,18 @@ Real numbers (rules/armors.json, slashing, 11-zone average, best piece per zone)
 | Siege Plate | 11/10/9 | 40.2 (35) | 156 (120) | 12 |
 | Rune-Forged Siege Plate (dwarven) | 12/11/10 | 46.0 (40) | 169 (130) | 13 |
 
-Stamina penalty and mobility are unchanged. **Lower sets get no head/throat/groin cover by default** (chainmail, brigandine, scale, half plate, breastplate): those need loose pieces (helm, gorget, groin guard…). Loose pieces are only a draft so far and are not in `armors.json`. Armour objects keep weights and stamina penalties as floats (no `int()` casts).
+Stamina penalty and mobility are unchanged. **Breastplate and Half Plate (owner decision):** Breastplate (`Heavy_Light`) = chest, stomach and both upper arms only. Half Plate (`Medium_Heavy`) = those plus both upper legs. Lower arms and lower legs are not covered by either; they need loose pieces (gauntlets, greaves). Variants (Forged Breastplate, Forged Half Plate) follow the same coverage. Ratings are unchanged. Same convention as the plate sets: per-zone durability **kept** (total = per zone × zone count) and weight scaled by the share of body zone HP covered (old/new: Breastplate 75→43, Half Plate 87→69 of 100):
+
+| Set | coverage | weight kg (was) | max_durability (was) | per zone |
+|---|---|---|---|---|
+| Breastplate | 4 zones | 12.6 (22) | 48 (100) | 12 |
+| Forged Breastplate | 4 zones | 14.9 (26) | 52 (110) | 13 |
+| Half Plate | 6 zones | 15.9 (20) | 54 (90) | 9 |
+| Forged Half Plate | 6 zones | 19.0 (24) | 60 (100) | 10 |
+
+Normal-hit average (slashing, 11 zones): Breastplate 7.18 → 4.12, Forged Breastplate 7.98 → 4.57; Half Plate 7.40 → 5.87, Forged Half Plate 8.33 → 6.61. **Placeholders.**
+
+**Lower sets get no head/throat/groin cover by default** (chainmail, brigandine, scale, half plate, breastplate): those need loose pieces (helm, gorget, groin guard…). Loose pieces are only a draft so far and are not in `armors.json`. Armour objects keep weights and stamina penalties as floats (no `int()` casts).
 
 A piece with no coverage (`Unarmored`) is reported as condition "None", not "Broken".
 

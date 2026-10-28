@@ -120,11 +120,11 @@ def test_aimed_uses_hit_zone_armour_only():
 
 def test_aimed_vs_normal_same_hit():
     random.seed(6)
-    # Breastplate (slashing 9, chest/stomach/arms/upper legs). 12 damage:
+    # Breastplate (slashing 9, chest/stomach/upper arms only). 12 damage:
     c, a = fighter("Heavy_Light"); a.take_damage_to_zone("chest", 12, "slashing")
     c, n = fighter("Heavy_Light"); n.distribute_damage(12, "slashing")
     assert 100 - a.total_hp == 3             # chest: 12 - 9
-    assert round_protection(7.18) == 7 and 100 - n.total_hp == 5
+    assert round_protection(4.12) == 4 and 100 - n.total_hp == 8   # 12 - 4 spread over the body
 
 
 def test_condition_lowers_protection():
@@ -272,6 +272,26 @@ def test_lower_sets_get_no_head_throat_groin():
                  "Medium_Heavy", "Heavy_Light"):
         for var, a in ARMORS[tier].items():
             assert not {"head", "throat", "groin"} & set(a["coverage"]), (tier, var)
+
+
+def test_breastplate_and_half_plate_coverage():
+    # owner decision: Breastplate = chest, stomach, upper arms; Half Plate adds the upper legs.
+    # lower arms / lower legs always need loose pieces (gauntlets, greaves).
+    bp = {"chest", "stomach", "left_upper_arm", "right_upper_arm"}
+    hp = bp | {"left_upper_leg", "right_upper_leg"}
+    for var, a in ARMORS["Heavy_Light"].items():
+        assert set(a["coverage"]) == bp and len(a["coverage"]) == 4, var
+    for var, a in ARMORS["Medium_Heavy"].items():
+        assert set(a["coverage"]) == hp and len(a["coverage"]) == 6, var
+    b, h = piece("Heavy_Light"), piece("Medium_Heavy")
+    assert round(average_protection([b], "slashing"), 2) == 4.12
+    assert round(average_protection([h], "slashing"), 2) == 5.87
+    # bare lower arm / lower leg under a Breastplate / Half Plate: aimed strike goes in fully
+    c, hm = fighter("Heavy_Light")
+    assert hm.take_damage_to_zone("left_lower_arm", 2, "slashing") == 2
+    c, hm = fighter("Medium_Heavy")
+    assert hm.take_damage_to_zone("left_lower_leg", 4, "slashing") == 4
+    assert hm.take_damage_to_zone("left_upper_leg", 4, "slashing") == 0     # 8 absorbs it
 
 
 def test_wear_is_permanent_and_lowers_rating():

@@ -170,20 +170,20 @@
   "Medium_Heavy": {
     "standard": {
       "name": "Half Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach", "left_upper_leg", "right_upper_leg"],
       "armor_rating": {"slashing": 8, "piercing": 7, "blunt": 6},
       "stamina_penalty": 8,
-      "max_durability": 90,
-      "weight": 20,
+      "max_durability": 54,
+      "weight": 15.9,
       "mobility_bonus": -2
     },
     "dwarven": {
       "name": "Forged Half Plate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach", "left_upper_leg", "right_upper_leg"],
       "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
       "stamina_penalty": 9,
-      "max_durability": 100,
-      "weight": 24,
+      "max_durability": 60,
+      "weight": 19.0,
       "mobility_bonus": -4,
       "lore": "Thick steel plates, forged for dwarven resilience."
     }
@@ -191,20 +191,20 @@
   "Heavy_Light": {
     "standard": {
       "name": "Breastplate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
       "armor_rating": {"slashing": 9, "piercing": 8, "blunt": 7},
       "stamina_penalty": 9,
-      "max_durability": 100,
-      "weight": 22,
+      "max_durability": 48,
+      "weight": 12.6,
       "mobility_bonus": -4
     },
     "dwarven": {
       "name": "Forged Breastplate",
-      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm", "stomach", "left_upper_leg", "right_upper_leg"],
+      "coverage": ["chest", "left_upper_arm", "right_upper_arm", "stomach"],
       "armor_rating": {"slashing": 10, "piercing": 9, "blunt": 8},
       "stamina_penalty": 10,
-      "max_durability": 110,
-      "weight": 26,
+      "max_durability": 52,
+      "weight": 14.9,
       "mobility_bonus": -6,
       "lore": "Massive steel breastplate, built to withstand sieges."
     }
