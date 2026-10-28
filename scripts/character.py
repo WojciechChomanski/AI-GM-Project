@@ -75,10 +75,17 @@ class Character:
         self.rune_craft = 0  # For Iron Covenant
         self.brine_marks = 0  # For Daughters of the Drowned Moon
 
-    def receive_damage(self, damage):
-        """Normal (spread) hit. Toughness // 5 still reduces damage."""
+    def receive_damage(self, damage, damage_type=None):
+        """Normal (spread) hit. If a damage type is given and armour is worn, the
+        weighted-average armour reduces it first (docs/ZONE_DAMAGE.md); then
+        Toughness // 5 reduces it; the remainder is spread over the body."""
         if not self.alive:
             return
+        if damage_type:
+            from armor_system import worn_pieces, armor_vs_spread
+            pieces = worn_pieces(self)
+            if pieces:
+                damage = armor_vs_spread(pieces, damage, damage_type)["remainder"]
         self.distribute_damage(max(0, damage - (self.toughness // 5)))
 
     def distribute_damage(self, damage):

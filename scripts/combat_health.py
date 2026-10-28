@@ -2,6 +2,7 @@
 import random
 import logging
 from damage_consequences import DamageConsequences
+from armor_system import worn_pieces, armor_vs_aimed, armor_vs_spread
 from zone_hp import spread_damage, total_hp, VITAL_ZONES, SPREAD_EXCLUDED, SPREAD_FLOOR, COLLAPSE_ZONES_AT_ZERO, zones_at_zero
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -15,6 +16,7 @@ class CombatHealthManager:
         self.starting_hp = self.total_hp
         self.bleeding_wounds = []
         self.consequences = DamageConsequences()
+        self.last_armor_report = None  # what armour did on the most recent hit
         self.character.alive = True
         self.critical_wound_tables = {
             'arm': {
@@ -245,11 +247,19 @@ class CombatHealthManager:
         else:
             self.apply_partial_damage(zone)
 
-    def distribute_damage(self, base_damage, damage_type, critical=False):
-        """Normal hit: spread damage over the whole body, weighted by zone size."""
+    def distribute_damage(self, base_damage, damage_type, critical=False, use_armor=True):
+        """Normal hit: armour (weighted average over all zones) reduces the damage,
+        then the remainder is spread over the whole body, weighted by zone size."""
         if not self.character.alive:
             return {}
         damage = int(base_damage * (1.2 if critical else 1.0))
+        self.last_armor_report = None
+        pieces = worn_pieces(self.character) if use_armor else []
+        if pieces:
+            self.last_armor_report = armor_vs_spread(pieces, damage, damage_type)
+            damage = self.last_armor_report["remainder"]
+            print(f"🛡️ Armour absorbed {self.last_armor_report['absorbed']} "
+                  f"(average protection {self.last_armor_report['average']}); {damage} gets through.")
         split = spread_damage(self.health, self.initial_health, damage, SPREAD_EXCLUDED, SPREAD_FLOOR)
         for part, dmg in split.items():
             self.health[part] -= dmg
@@ -264,14 +274,23 @@ class CombatHealthManager:
         logging.debug(f"Spread {damage} {damage_type} damage on {self.character.name}: {split}")
         return split
 
-    def take_damage_to_zone(self, zone, damage, damage_type, critical=False):
-        """Aimed hit that landed: full damage to one zone (floored at 0)."""
+    def take_damage_to_zone(self, zone, damage, damage_type, critical=False, use_armor=True):
+        """Aimed hit that landed: the armour on that zone reduces the damage, the
+        remainder goes fully into that one zone (floored at 0)."""
         if not self.character.alive:
             return 0
         if zone not in self.health:
             print(f"❌ Invalid zone: {zone}")
             return 0
         damage = int(damage * (1.2 if critical else 1.0))
+        self.last_armor_report = None
+        pieces = worn_pieces(self.character) if use_armor else []
+        if pieces:
+            self.last_armor_report = armor_vs_aimed(pieces, zone, damage, damage_type)
+            damage = self.last_armor_report["remainder"]
+            print(f"🛡️ Armour on {zone.replace('_', ' ')} absorbed {self.last_armor_report['absorbed']}; {damage} gets through.")
+            if damage <= 0:
+                return 0
         overflow = max(0, damage - self.health[zone])
         self.health[zone] = max(0, self.health[zone] - damage)
         self._zone_hit(zone, damage, damage_type, overflow)

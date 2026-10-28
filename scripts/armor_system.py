@@ -249,3 +249,117 @@ class ArmorSystem:
         log.debug("Equipped %s to %s", armor.name, getattr(character, "name", "Unknown"))
         return armor
 
+
+
+# ---------------------------------------------------------------------------
+# Zone armour rules (see docs/ZONE_DAMAGE.md, "Armour").
+#
+# Works on ANY armour object that has `coverage`, `armor_rating` and a
+# per-zone `current_durability` dict (ArmorPiece here, and armors.Armor).
+# No new armour stats are used. Armour never makes the wearer immune: what it
+# does not absorb is real damage.
+# ---------------------------------------------------------------------------
+from zone_hp import BASE_ZONES, spread_damage  # noqa: E402
+
+ARMOR_WEAR_FRACTION = 0.20  # durability lost = max(1, 20% of damage/absorbed)
+
+
+def worn_pieces(character) -> list:
+    """Armour objects only (legacy string entries are ignored)."""
+    return [a for a in (getattr(character, "armor", None) or [])
+            if hasattr(a, "coverage") and hasattr(a, "armor_rating") and hasattr(a, "current_durability")]
+
+
+def _zone_max(piece, zone) -> int:
+    pzm = getattr(piece, "per_zone_max", None)
+    if pzm and zone in pzm:
+        return max(1, pzm[zone])
+    return max(1, int(getattr(piece, "max_durability", 1)) // max(1, len(piece.coverage)))
+
+
+def _condition(piece, zone) -> float:
+    """Same bands as ArmorPiece._condition_multiplier (>=75% full, >=50% 0.75, ...)."""
+    if hasattr(piece, "_condition_multiplier"):
+        return piece._condition_multiplier(zone)
+    pct = max(0, piece.current_durability.get(zone, 0)) / _zone_max(piece, zone)
+    return 1.0 if pct >= 0.75 else 0.75 if pct >= 0.50 else 0.50 if pct >= 0.25 else 0.25 if pct > 0 else 0.0
+
+
+def piece_zone_protection(piece, zone: str, damage_type: str) -> float:
+    """Protection one piece gives on one zone: armour rating x condition (0 if the
+    zone is not covered or that part is broken)."""
+    if zone not in piece.coverage or piece.current_durability.get(zone, 0) <= 0:
+        return 0.0
+    return float(piece.armor_rating.get(damage_type, 0)) * _condition(piece, zone)
+
+
+def zone_protection(pieces, zone: str, damage_type: str) -> float:
+    """Total protection on a zone (pieces layered on the same zone add up)."""
+    return sum(piece_zone_protection(p, zone, damage_type) for p in pieces)
+
+
+def average_protection(pieces, damage_type: str) -> float:
+    """Zone-size-weighted average protection over all 13 zones.
+    Weights = base zone HP (chest 20, upper legs 13, ... sum 100); an
+    unarmoured zone counts 0."""
+    total_w = sum(BASE_ZONES.values())
+    return sum(zone_protection(pieces, z, damage_type) * w for z, w in BASE_ZONES.items()) / total_w
+
+
+def round_protection(value: float) -> int:
+    """Round half up (not banker's rounding): 5.5 -> 6, 0.4 -> 0."""
+    return int(value + 0.5)
+
+
+def _wear(piece, zone, loss) -> int:
+    cur = piece.current_durability.get(zone, 0)
+    new = max(0, cur - loss)
+    piece.current_durability[zone] = new
+    return cur - new
+
+
+def armor_vs_aimed(pieces, zone: str, damage: int, damage_type: str) -> dict:
+    """AIMED strike: damage is reduced by the armour on the hit zone only
+    (rating x condition per piece). Every piece protecting that zone loses
+    max(1, 20% of the incoming damage) durability on that zone, as before."""
+    damage = max(0, int(damage))
+    contributing = [p for p in pieces if zone in p.coverage and p.current_durability.get(zone, 0) > 0]
+    protection = sum(round_protection(piece_zone_protection(p, zone, damage_type)) for p in contributing)
+    absorbed = min(damage, protection)
+    wear = {}
+    if contributing and damage > 0:
+        loss = max(1, int(damage * ARMOR_WEAR_FRACTION))
+        for p in contributing:
+            wear[p.name] = _wear(p, zone, loss)
+    return {"incoming": damage, "protection": protection, "absorbed": absorbed,
+            "remainder": damage - absorbed, "wear": wear}
+
+
+def armor_vs_spread(pieces, damage: int, damage_type: str) -> dict:
+    """NORMAL (spread) hit: damage is reduced by the weighted average armour over
+    all 13 zones (rounded half up, never below 0, never more than the damage).
+    The remainder is spread by the normal spread rule (done by the caller).
+    Durability: only pieces that contributed wear. A piece that absorbed `a`
+    loses max(1, 20% of a) in total, shared over the zones it covers in
+    proportion to zone size."""
+    damage = max(0, int(damage))
+    avg = average_protection(pieces, damage_type)
+    protection = round_protection(avg)
+    absorbed = min(damage, protection)
+    wear = {}
+    if absorbed > 0 and avg > 0:
+        for p in pieces:
+            contrib = sum(piece_zone_protection(p, z, damage_type) * BASE_ZONES[z]
+                          for z in p.coverage if z in BASE_ZONES) / sum(BASE_ZONES.values())
+            if contrib <= 0:
+                continue  # did not help -> no wear
+            share = absorbed * contrib / avg
+            loss = max(1, int(share * ARMOR_WEAR_FRACTION))
+            covered = {z: p.current_durability[z] for z in p.coverage if z in BASE_ZONES}
+            weights = {z: BASE_ZONES[z] for z in covered}
+            taken = spread_damage(covered, weights, loss, excluded=(), floor={})
+            for z, n in taken.items():
+                _wear(p, z, n)
+            wear[p.name] = sum(taken.values())
+    return {"incoming": damage, "protection": protection, "average": round(avg, 2),
+            "absorbed": absorbed, "remainder": damage - absorbed, "wear": wear}
