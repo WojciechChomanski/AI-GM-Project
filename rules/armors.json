@@ -250,5 +250,91 @@
       "mobility_bonus": -12,
       "lore": "Imbued with female-carved runes, a dwarven masterpiece."
     }
+  },
+
+  "Loose_Helm": {
+    "standard": {
+      "name": "Placeholder Helm",
+      "coverage": [
+        "head"
+      ],
+      "armor_rating": {
+        "slashing": 9,
+        "piercing": 8,
+        "blunt": 7
+      },
+      "stamina_penalty": 1,
+      "max_durability": 20,
+      "weight": 2.5,
+      "mobility_bonus": 0,
+      "slot": "loose",
+      "placeholder": true,
+      "lore": "PLACEHOLDER numbers. Open-faced steel helm, worn with any body armour."
+    }
+  },
+
+  "Loose_Gorget": {
+    "standard": {
+      "name": "Placeholder Gorget",
+      "coverage": [
+        "throat"
+      ],
+      "armor_rating": {
+        "slashing": 8,
+        "piercing": 7,
+        "blunt": 6
+      },
+      "stamina_penalty": 0,
+      "max_durability": 10,
+      "weight": 1.0,
+      "mobility_bonus": 0,
+      "slot": "loose",
+      "placeholder": true,
+      "lore": "PLACEHOLDER numbers. Steel collar for the throat."
+    }
+  },
+
+  "Loose_Gauntlets": {
+    "standard": {
+      "name": "Placeholder Gauntlets",
+      "coverage": [
+        "left_lower_arm",
+        "right_lower_arm"
+      ],
+      "armor_rating": {
+        "slashing": 7,
+        "piercing": 6,
+        "blunt": 5
+      },
+      "stamina_penalty": 0,
+      "max_durability": 16,
+      "weight": 1.5,
+      "mobility_bonus": 0,
+      "slot": "loose",
+      "placeholder": true,
+      "lore": "PLACEHOLDER numbers. Pair of plated gauntlets (forearms)."
+    }
+  },
+
+  "Loose_Greaves": {
+    "standard": {
+      "name": "Placeholder Greaves",
+      "coverage": [
+        "left_lower_leg",
+        "right_lower_leg"
+      ],
+      "armor_rating": {
+        "slashing": 8,
+        "piercing": 7,
+        "blunt": 6
+      },
+      "stamina_penalty": 1,
+      "max_durability": 20,
+      "weight": 3.0,
+      "mobility_bonus": 0,
+      "slot": "loose",
+      "placeholder": true,
+      "lore": "PLACEHOLDER numbers. Pair of steel greaves (shins)."
+    }
   }
 }
