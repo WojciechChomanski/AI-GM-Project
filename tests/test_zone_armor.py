@@ -363,6 +363,33 @@ def test_unarmored_is_not_broken():
     assert a.current_durability == {} and a.absorb_damage(5, "slashing", "chest") == 5
 
 
+def test_loose_placeholder_pieces():
+    # owner decision: placeholder helm, gorget, gauntlets, greaves; worn on top of a body set, no stacking
+    expect = {"Loose_Helm": ["head"], "Loose_Gorget": ["throat"],
+              "Loose_Gauntlets": ["left_lower_arm", "right_lower_arm"],
+              "Loose_Greaves": ["left_lower_leg", "right_lower_leg"]}
+    for key, cov in expect.items():
+        s = ARMORS[key]["standard"]
+        assert s["coverage"] == cov and s["slot"] == "loose" and s["placeholder"] is True
+        for k in ("armor_rating", "stamina_penalty", "max_durability", "weight", "mobility_bonus"):
+            assert k in s, (key, k)
+    # the body tiers keep their order: loose pieces come after Siege Plate
+    order = list(ARMORS)
+    assert order.index("Loose_Helm") > order.index("Heavy_Heavy")
+    # Half Plate + all four loose pieces: only the best piece per zone counts
+    pieces = [piece(k) for k in ("Heavy_Light", *expect)]
+    assert zone_protection(pieces, "head", "slashing") == 9
+    assert zone_protection(pieces, "chest", "slashing") == 9
+    assert zone_protection(pieces, "throat", "slashing") == 8
+    avg = average_protection(pieces, "slashing")
+    assert abs(avg - (9 * 69 + 9 * 7 + 7 * 6 + 8 * 12) / 94) < 1e-9
+    # aimed throat: gorget counts; legacy loader still loads every entry
+    assert armor_vs_aimed(pieces, "throat", 10, "slashing")["absorbed"] == 8
+    from armors import Armor
+    names = [a.name for a in Armor.load_armors()]
+    assert "Placeholder Helm" in names and "Half Plate" in names
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for f in fns:
