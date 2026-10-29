@@ -5,6 +5,7 @@ import random
 import logging
 import os
 from armors import Armor
+from zone_hp import BASE_ZONES, SPREAD_EXCLUDED, SPREAD_FLOOR, spread_damage, total_hp as zones_total, VITAL_ZONES
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -15,7 +16,7 @@ class Character:
         self.gender = ""
         self.class_name = ""
         self.background = ""
-        self.total_hp = 0
+        self.total_hp = 100  # derived: always sum(body_parts); kept for compatibility
         self.max_stamina = 0
         self.stamina = 0
         self.bleeding = 0
@@ -33,11 +34,8 @@ class Character:
         self.weapon = {}
         self.armor = []
         self.shield = None
-        self.body_parts = {
-            "left_lower_leg": 2, "right_lower_leg": 2, "left_upper_leg": 4, "right_upper_leg": 4,
-            "stomach": 3, "chest": 6, "left_lower_arm": 1, "right_lower_arm": 1,
-            "left_upper_arm": 2, "right_upper_arm": 2, "head": 2, "throat": 1, "groin": 1
-        }
+        self.body_parts = dict(BASE_ZONES)  # 13 zones, sum = total HP
+        self.max_body_parts = dict(BASE_ZONES)
         self.compromised_limbs = []
         self.pain_penalty = 0
         self.mobility_penalty = 0
@@ -77,36 +75,49 @@ class Character:
         self.rune_craft = 0  # For Iron Covenant
         self.brine_marks = 0  # For Daughters of the Drowned Moon
 
-    def receive_damage(self, damage):
+    def receive_damage(self, damage, damage_type=None):
+        """Normal (spread) hit. If a damage type is given and armour is worn, the
+        weighted-average armour reduces it first (docs/ZONE_DAMAGE.md); then
+        Toughness // 5 reduces it; the remainder is spread over the body."""
         if not self.alive:
             return
-        total_damage = max(0, damage - (self.toughness // 5))
-        if total_damage >= sum(hp for hp in self.body_parts.values() if hp > 0):
-            self.die()
-        else:
-            self.distribute_damage(total_damage)
+        if damage_type:
+            from armor_system import worn_pieces, armor_vs_spread
+            pieces = worn_pieces(self)
+            if pieces:
+                damage = armor_vs_spread(pieces, damage, damage_type)["remainder"]
+        self.distribute_damage(max(0, damage - (self.toughness // 5)))
 
     def distribute_damage(self, damage):
-        valid_parts = [part for part, hp in self.body_parts.items() if hp > 0]
-        if not valid_parts:
-            self.die()
-            return
-        damage_per_part = max(1, damage // max(1, len(valid_parts) // 2))
-        hit_parts = random.sample(valid_parts, min(len(valid_parts), 2))
-        for part in hit_parts:
-            self.body_parts[part] -= damage_per_part
+        maximum = getattr(self, "max_body_parts", None) or dict(BASE_ZONES)
+        for part, dmg in spread_damage(self.body_parts, maximum, damage, SPREAD_EXCLUDED, SPREAD_FLOOR).items():
+            self.body_parts[part] -= dmg
             if self.body_parts[part] <= 0:
-                self.body_parts[part] = 0
-                self.on_part_crippled(part)
+                self._zone_destroyed(part)
+        self._sync_hp()
 
     def take_damage_to_zone(self, zone, damage):
+        """Aimed hit that landed: full damage to one zone, floored at 0."""
         if zone in self.body_parts:
-            self.body_parts[zone] -= damage
-            if self.body_parts[zone] <= 0:
-                self.body_parts[zone] = 0
-                self.on_part_crippled(zone)
+            self.body_parts[zone] = max(0, self.body_parts[zone] - damage)
+            if self.body_parts[zone] == 0:
+                self._zone_destroyed(zone)
+            self._sync_hp()
         else:
             print(f"⚠️ Invalid zone: {zone}")
+
+    def _zone_destroyed(self, part):
+        self.body_parts[part] = 0
+        if part in VITAL_ZONES:
+            if self.alive:
+                self.die()
+        elif part not in self.compromised_limbs:
+            self.on_part_crippled(part)
+
+    def _sync_hp(self):
+        self.total_hp = zones_total(self.body_parts)
+        if self.total_hp <= 0 and self.alive:
+            self.die()
 
     def on_part_crippled(self, part):
         self.compromised_limbs.append(part)

@@ -142,6 +142,9 @@
 
   "aimed_attack": {
     "base_penalty": 30,
+    "narrow_zone_penalty": 40,
+    "narrow_zones": ["head", "throat", "groin"],
+    "_note": "PLACEHOLDER numbers. -30 to hit for every aimed strike, -40 for the narrow targets (head slit, throat, groin gaps). Per-zone map: aimed_penalties below; code: scripts/zone_hp.py (aimed_penalty).",
     "dex_bonus_ratio": 0.10,
     "zones": ["head", "arms", "legs", "chest", "stomach"],
     "crit_bonus_head_pct": 10,
@@ -151,15 +154,46 @@
     }
   },
 
+  "zone_hp": {
+    "_note": "Total HP = sum of zones. Base sums to 100; race hp_bonus and class hp_percent scale all zones (leftovers to chest). Code: scripts/zone_hp.py. Docs: docs/ZONE_DAMAGE.md",
+    "base": { "chest": 20, "left_upper_leg": 13, "right_upper_leg": 13, "stomach": 11, "head": 7,
+              "left_upper_arm": 6, "right_upper_arm": 6, "left_lower_leg": 6, "right_lower_leg": 6,
+              "left_lower_arm": 3, "right_lower_arm": 3, "throat": 3, "groin": 3 },
+    "vital_zones": ["head", "throat", "chest"],
+    "normal_hit": "spread over the 11 eligible zones (not throat, not groin), proportional to zone max; head floors at 1 under spread, chest may reach 0 (= death); throat and groin are hit only by aimed strikes",
+    "spread_excluded": ["throat", "groin"],
+    "spread_floor": { "head": 1 },
+    "collapse": {
+      "zones_at_zero": 3,
+      "blood_loss_percent": null,
+      "_note": "Collapse = 3 or more zones at 0 HP. The old 33%-of-total-HP-lost collapse was removed (blood_loss_percent kept as null for reference only; unused)."
+    },
+    "aimed_hit": "-30 to hit (aimed_attack.base_penalty), -40 for head, throat and groin (narrow targets; aimed_penalties); full damage to one zone; a miss does no damage"
+  },
+
   "aimed_penalties": {
-    "default": 25,
-    "head": 40, "throat": 35, "neck": 32,
-    "chest": 20, "stomach": 22, "groin": 30,
-    "left_upper_arm": 18, "left_lower_arm": 20, "right_upper_arm": 18, "right_lower_arm": 20,
-    "left_upper_leg": 16, "left_lower_leg": 18, "right_upper_leg": 16, "right_lower_leg": 18
+    "_note": "PLACEHOLDER numbers, subtracted from the attack roll for an aimed strike on that zone. Mirrors scripts/zone_hp.py AIMED_PENALTY_BY_ZONE (a test keeps them equal). Narrow targets (head, throat, groin) -40, every other zone -30. 'neck' is an alias of throat.",
+    "default": 30,
+    "head": 40, "throat": 40, "neck": 40, "groin": 40
   },
 
   "bleed_pips_by_zone": { "arm": 2, "leg": 2, "chest": 5, "stomach": 5 },
+
+  "bleeding": {
+    "_note": "PLACEHOLDER numbers. Mirrors scripts/bleeding.py (a test keeps them equal); the old bleed_thresholds / bleed_pips_by_zone above are no longer read by any code. See docs/BLEEDING.md.",
+    "cap_per_round": 5,
+    "cut_stops_after_rounds": 3,
+    "deep_loses_1_rate_every_rounds": 4,
+    "cut_max_damage_through_armour": 5,
+    "rates_per_round": {
+      "base (arms, lower legs, head, chest, stomach)": { "cut": 1, "deep": 2, "artery": 3 },
+      "thigh_groin (upper legs, groin)": { "cut": 2, "deep": 3, "artery": 4 },
+      "throat (never clots)": { "cut": 3, "deep": 4, "artery": 5 }
+    },
+    "bandage_stops_hp_per_round": { "basic_bandage": 3, "improved_bandage": 6, "herbal_poultice": 9 },
+    "bandage_dc": { "basic_bandage": 30, "improved_bandage": 35, "herbal_poultice": 40 }
+  },
+
 
   "shield_system": {
     "coverage_cone_deg": 60,
@@ -171,6 +205,16 @@
     "loss_per_attack": 0.5,
     "loss_on_parry": 1.0,
     "break_threshold": 0
+  },
+
+  "durability": {
+    "_note": "PLACEHOLDER numbers. Permanent wear, see docs/DURABILITY.md. Mirrors constants in scripts/durability.py (a test keeps them equal).",
+    "mark_fraction_of_current_max": 0.30,
+    "mark_loss_fraction_of_original_max": 0.05,
+    "quality_step_fraction_of_original_max": 0.10,
+    "field_repair_cap": 0.85,
+    "weapon_damage_per_step": "1 per 10 base damage, rounded half up, min 1 for weapons with >= 5 base damage",
+    "armor_rating_per_step": 1
   },
 
   "stalemate_prevention": {

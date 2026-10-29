@@ -7,8 +7,11 @@ class Armor:
         self.coverage = coverage
         self.armor_rating = armor_rating
         self.max_durability = max_durability
-        self.current_durability = {part: max_durability // len(coverage) for part in coverage}
-        self.max_repairable_durability = {part: max_durability // len(coverage) for part in coverage}
+        self.current_durability = {part: max_durability // max(1, len(coverage)) for part in coverage}
+        # CURRENT per-zone maximum (shrinks permanently with wear, see durability.py) and the original
+        self.per_zone_max = {part: max_durability // max(1, len(coverage)) for part in coverage}
+        self.original_zone_max = dict(self.per_zone_max)
+        self.max_repairable_durability = {part: max_durability // max(1, len(coverage)) for part in coverage}
         self.weight = weight
         self.stamina_penalty = stamina_penalty
         self.mobility_bonus = mobility_bonus
@@ -24,8 +27,8 @@ class Armor:
         self.current_durability[part] -= durability_loss
         if self.current_durability[part] < 0:
             self.current_durability[part] = 0
-        if self.current_durability[part] < 0.2 * (self.max_durability // len(self.coverage)):
-            self.max_repairable_durability[part] = int(0.8 * (self.max_durability // len(self.coverage)))
+        if self.current_durability[part] < 0.2 * (self.max_durability // max(1, len(self.coverage))):
+            self.max_repairable_durability[part] = int(0.8 * (self.max_durability // max(1, len(self.coverage))))
         print(f"🛡️ {self.name} absorbed {absorbed} {damage_type} damage. Part ({part}) Durability: {self.current_durability[part]}/{self.max_repairable_durability[part]}")
         return remaining
 

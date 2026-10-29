@@ -98,7 +98,7 @@ class DamageConsequences:
                 print(f"🩸 {effect['description']}")
                 character.pain_penalty += effect.get("pain", 0)
                 character.stress_level += effect.get("stress", 0)
-                character.bleeding += effect.get("bleeding", 0)
+                # bleeding is no longer added here: wounds live in CombatHealthManager (docs/BLEEDING.md)
                 if "mobility_penalty" in effect:
                     character.mobility_penalty += effect["mobility_penalty"]
                 if effect.get("collapse", False):
@@ -110,4 +110,5 @@ class DamageConsequences:
                     character.alive = False
                     character.in_combat = False
                     print(f"💀 {character.name} is killed instantly by a catastrophic {body_part} injury!")
-                break
+                return effect["effect"]
+        return None
