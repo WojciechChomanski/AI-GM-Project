@@ -10,6 +10,8 @@ import dotenv
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import progression
+import knight
+import corruption
 
 dotenv.load_dotenv()
 app = FastAPI()
@@ -68,6 +70,13 @@ class Combatant:
         self.pain = 0
         self.stress = 0
         self.armor_specs = []
+        # GM-only (rules/stat_visibility.json); used for the hidden Crusader Breath
+        self.class_name = data.get("class_name")
+        self.virtue = data.get("virtue", 0)
+        self.piety = data.get("piety", 0)
+        self.corruption_level = data.get("corruption_level", 0)
+        self.creature_tags = data.get("creature_tags", [])
+        self.corrupted = bool(data.get("corrupted")) or "corrupted" in self.creature_tags
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Armor & Combat helper functions (unchanged)
@@ -148,14 +157,31 @@ class CombatEngine:
 
         if atk >= def_score:
             effective, absorbed = apply_armor_absorption(weapon_damage, "slashing", defender)
-            defender.hp -= effective
-            defender.pain = min(100, (effective / defender.total_hp) * 120) if defender.total_hp else defender.pain
+            breath = {"state": "none"}
+            if attacker.class_name == "Crusader_Knight":
+                breath = knight.breath_effects(attacker.virtue, attacker.piety, attacker.corruption_level,
+                                               defender.creature_tags + (["corrupted"] if defender.corrupted else []))
+            if defender.corrupted:
+                # total_hp = natural HP; pool x M; Breath damage counts x M; penalties vs natural HP
+                cc = corruption.CorruptedCreature(defender.total_hp, defender_data.get("hp_multiplier"),
+                                                  defender_data.get("corruption_tier", "ordinary"))
+                cc.effective = defender_data.get("damage_taken", 0)
+                cc.take(effective, breath=bool(breath.get("bypass_undying")))
+                defender.hp = cc.hp
+                ratio = cc.wound_ratio
+            else:
+                defender.hp -= effective
+                ratio = effective / defender.total_hp if defender.total_hp else 0
+            defender.pain = min(100, ratio * 120 * breath.get("pain_mult", 1)) if defender.total_hp else defender.pain
             hit = True
         else:
             effective = absorbed = 0
             hit = False
 
+        if not hit:
+            breath = {"state": "none"}
         return {
+            "breath_gm_only": breath,
             "hit": hit,
             "damage": effective,
             "absorbed": absorbed,

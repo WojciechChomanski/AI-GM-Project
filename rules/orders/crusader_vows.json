@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "note": "Built-in obligations of the Crusader Knight class: not bought, give no CP. The price of 12+ years of Order training from age 6-7 (STR ~47 at start) is no profession and these vows.",
+    "sources": [
+      "lore/orders/Crusader_Orders.json",
+      "rules/classes/crusader_knight.json",
+      "rules/virtue_rules.json",
+      "rules/core_rules.txt"
+    ]
+  },
+  "vows": {
+    "chastity": {
+      "rule": "No brothels, no lovers; Templars: no contact with women (existing rule).",
+      "breach_virtue_event": "vice_brothel"
+    },
+    "poverty": {
+      "rule": "Owns only arms, armour, horse, habit; 12% of loot to alms; cannot take Resources.",
+      "breach_virtue_event": "broken_oath",
+      "forbids_advantages": [
+        "resources"
+      ]
+    },
+    "obedience": {
+      "rule": "Must answer the Order's summons and orders.",
+      "breach": "Order reputation -10, possible expulsion"
+    },
+    "purity": {
+      "rule": "Keep Virtue high; no Veil contact; corruption purged at once.",
+      "breach": "see breath ladder"
+    },
+    "no_profession": {
+      "rule": "Cannot take Profession Training. Maintains own gear (sharpen, oil, patch straps), cannot forge or repair plate: the Order's servants and armourers do that.",
+      "forbids_advantages": [
+        "profession_training"
+      ]
+    }
+  },
+  "discipline_ladder": [
+    {
+      "step": 1,
+      "name": "penance",
+      "effect": "fasting, -5 END for 3 days"
+    },
+    {
+      "step": 2,
+      "name": "scourging",
+      "effect": "wounds and +10 stress",
+      "stress": 10
+    },
+    {
+      "step": 3,
+      "name": "stripped",
+      "effect": "loses horse and arms for a month"
+    },
+    {
+      "step": 4,
+      "name": "expulsion",
+      "effect": "class abilities locked; becomes Fallen Knight (enemy of the Order, free Nemesis intensity 3, no CP)"
+    }
+  ],
+  "breath": {
+    "visibility": "gm_only",
+    "rule": "Passive only (core_rules.txt). No visible light. The knight knows something is happening, not why.",
+    "full": {
+      "virtue_min": 70,
+      "piety_min": 70,
+      "corruption_max": 24,
+      "vs": [
+        "veilspawn",
+        "abomination",
+        "demon",
+        "corrupted"
+      ],
+      "effects": {
+        "bypass_undying": true,
+        "bleed_rate_mult": 1.5,
+        "creature_heal_mult": 0.5,
+        "pain_mult": 1.5,
+        "regeneration_blocked_on_his_wounds": true,
+        "creature_morale_mod": -10,
+        "creature_avoids": "corrupted foes prefer other targets (morale test to engage him)",
+        "holy_fury_max_stacks": 5
+      }
+    },
+    "dim": {
+      "virtue_min": 40,
+      "effects": {
+        "holy_fury_max_stacks": 2
+      },
+      "note": "no Breath effects; steel unchanged"
+    },
+    "none": {
+      "effects": {
+        "holy_fury_max_stacks": 0,
+        "demons_sense_him": -10,
+        "discern_sin": "fails"
+      }
+    },
+    "corruption_25_or_more": "counts as dim at best",
+    "steel_rule": "Low Virtue never lowers his normal weapon damage, only removes the Breath."
+  }
+}

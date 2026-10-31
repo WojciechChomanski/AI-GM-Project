@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "applies_to": [
+      "alcoholic",
+      "drug_addict"
+    ]
+  },
+  "hours_per_stage": {
+    "1": 12,
+    "2": 12,
+    "3": 6,
+    "4": 6,
+    "5": 6
+  },
+  "stages": [
+    {
+      "id": "shakes",
+      "effects": {
+        "dexterity": -10,
+        "weapon_skill": -10,
+        "ballistic_skill": -10
+      },
+      "stress": 2
+    },
+    {
+      "id": "sweats_rage",
+      "effects": {
+        "all": -10
+      },
+      "test": "WIL vs Hot-Blooded behaviour",
+      "stress": 4
+    },
+    {
+      "id": "fits",
+      "min_intensity": 4,
+      "test": "END each stage; failure = seizure, 1 round helpless",
+      "stress": 10
+    },
+    {
+      "id": "delirium",
+      "min_intensity": 5,
+      "test": "TOU or dying state",
+      "stress": 10
+    }
+  ],
+  "death_rule": "Only at intensity 5, after Delirium AND a failed TOU test AND nobody helped or tapered. GM warns at every stage.",
+  "halt": "Healer/cleric/apothecary roll or a tapering half dose halts the clock for a day; companions can restrain and nurse.",
+  "spiral": "Each month at intensity >= 3: WIL test or +1 intensity (max 5), no extra CP. Recovery: 3 months clean + sponsor/monastery + XP buy-off.",
+  "indulgence": {
+    "stress_relief": -2,
+    "knight_virtue_loss_event": "vice_drunkenness",
+    "note": "Feeding the habit eases stress but costs a knight Virtue (drink/drugs break Purity)."
+  },
+  "daily_stress_by_intensity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ]
+}

@@ -1,0 +1,302 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "note": "General advantages (24) plus race/gender/class sets. Entries with talent_ref use the talent in rules/talents/ (counts toward the 2-talent limit). cp [lo,hi] = levels.",
+    "doc": "docs/ADVANTAGES_DISADVANTAGES.md"
+  },
+  "iron_thewed": {
+    "talent_ref": "iron_thewed"
+  },
+  "ox_back": {
+    "talent_ref": "ox_back"
+  },
+  "deep_lungs": {
+    "talent_ref": "deep_lungs"
+  },
+  "quick_hands": {
+    "talent_ref": "quick_hands"
+  },
+  "light_footed": {
+    "talent_ref": "light_footed"
+  },
+  "survivor": {
+    "talent_ref": "survivor"
+  },
+  "hawk_eyed": {
+    "talent_ref": "hawk_eyed"
+  },
+  "battle_born": {
+    "talent_ref": "battle_born"
+  },
+  "thorn_trained": {
+    "talent_ref": "thorn_trained"
+  },
+  "steady_aim": {
+    "talent_ref": "steady_aim"
+  },
+  "silver_tongue": {
+    "talent_ref": "silver_tongue"
+  },
+  "iron_will": {
+    "talent_ref": "iron_will"
+  },
+  "ally": {
+    "name": "Ally",
+    "cp": [
+      1,
+      5
+    ],
+    "description": "1 = tavern keeper ... 5 = a lord or abbess who sends help. Mirror of Nemesis."
+  },
+  "contacts": {
+    "name": "Contacts",
+    "cp": [
+      1,
+      3
+    ],
+    "description": "Information network in 1/2/3 regions."
+  },
+  "resources": {
+    "name": "Resources",
+    "cp": [
+      1,
+      3
+    ],
+    "description": "Starting coin x2/x3/x5 plus monthly income.",
+    "forbidden_classes": [
+      "Crusader_Knight"
+    ]
+  },
+  "hardy_constitution": {
+    "name": "Hardy Constitution",
+    "cp": 2,
+    "description": "+10 vs disease, poison, bleeding onset."
+  },
+  "pain_tolerant": {
+    "name": "Pain-Tolerant",
+    "cp": 3,
+    "description": "Pain penalties -25%."
+  },
+  "fast_healer": {
+    "name": "Fast Healer",
+    "cp": 2,
+    "description": "One day less per injury band."
+  },
+  "keen_sense": {
+    "name": "Keen Nose / Ears",
+    "cp": 1,
+    "description": "+10 to one sense."
+  },
+  "literate": {
+    "name": "Literate & Lettered",
+    "cp": 1,
+    "description": "Read and write, maps, scrolls (not default in 1670)."
+  },
+  "beast_friend": {
+    "name": "Beast-Friend",
+    "cp": 2,
+    "description": "Horses and dogs; mount panic -50%."
+  },
+  "fearsome_presence": {
+    "name": "Fearsome Presence",
+    "cp": 2,
+    "description": "Intimidation +10."
+  },
+  "good_reputation": {
+    "name": "Good Reputation",
+    "cp": [
+      1,
+      3
+    ],
+    "description": "+5/+10/+15 reputation in one faction."
+  },
+  "profession_training": {
+    "name": "Profession Training",
+    "cp": 2,
+    "description": "Per profession (system not built yet).",
+    "forbidden_classes": [
+      "Crusader_Knight"
+    ],
+    "per_profession": true
+  },
+  "breath_touched": {
+    "name": "Breath-Touched",
+    "cp": 2,
+    "description": "+5 Faith (hidden), corruption gain -1 per gain.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ],
+      "gender": [
+        "Male"
+      ]
+    }
+  },
+  "adaptable": {
+    "name": "Adaptable",
+    "cp": 2,
+    "description": "One extra talent slot at creation.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ]
+    }
+  },
+  "common_folk": {
+    "name": "Common Folk",
+    "cp": 1,
+    "description": "Blends in towns.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ]
+    }
+  },
+  "flawless": {
+    "name": "Flawless",
+    "cp": 2,
+    "description": "+1 Looks (when Looks exists), but every new scar counts +1 intensity worse among elves.",
+    "set": "elf",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ]
+    }
+  },
+  "long_memory": {
+    "name": "Long Memory",
+    "cp": 2,
+    "description": "+10 lore.",
+    "set": "elf",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ]
+    }
+  },
+  "unshaped": {
+    "name": "Unshaped",
+    "cp": 3,
+    "description": "Corruption gain x0.5.",
+    "set": "elf_male",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ],
+      "gender": [
+        "Male"
+      ]
+    }
+  },
+  "glamour_mask": {
+    "name": "Glamour-Mask",
+    "cp": 2,
+    "description": "Hide Scarred up to intensity 2 at 1 corruption/day.",
+    "set": "elf_female",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ],
+      "gender": [
+        "Female"
+      ]
+    }
+  },
+  "stone_born": {
+    "talent_ref": "stone_born",
+    "set": "dwarf"
+  },
+  "grudge_keeper": {
+    "name": "Grudge-Keeper",
+    "cp": 2,
+    "description": "+10 vs a named enemy race.",
+    "set": "dwarf",
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    }
+  },
+  "forge_sense": {
+    "name": "Forge-Sense",
+    "cp": 1,
+    "description": "Detect metal flaws.",
+    "set": "dwarf",
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    }
+  },
+  "old_blood_ogre": {
+    "talent_ref": "old_blood_ogre",
+    "set": "ogre"
+  },
+  "iron_gut": {
+    "name": "Iron Gut",
+    "cp": 2,
+    "description": "Eat anything.",
+    "set": "ogre",
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    }
+  },
+  "terrifying": {
+    "name": "Terrifying",
+    "cp": 2,
+    "description": "Causes fear.",
+    "set": "ogre",
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    }
+  },
+  "veil_gifted": {
+    "talent_ref": "veil_gifted",
+    "set": "female"
+  },
+  "blood_calm": {
+    "talent_ref": "blood_calm",
+    "set": "female"
+  },
+  "witch_sight": {
+    "name": "Witch-Sight",
+    "cp": 3,
+    "description": "Sense corruption bands (GM tells the fiction, not the number).",
+    "set": "female",
+    "restrictions": {
+      "gender": [
+        "Female"
+      ]
+    }
+  },
+  "relic_bearer": {
+    "name": "Relic-Bearer",
+    "cp": 3,
+    "description": "One saint relic, 1 charge per month.",
+    "set": "crusader_knight",
+    "restrictions": {
+      "class": [
+        "Crusader_Knight"
+      ]
+    }
+  },
+  "order_patron": {
+    "name": "Order Patron",
+    "cp": 3,
+    "description": "Ally intensity 3 inside the Order.",
+    "set": "crusader_knight",
+    "restrictions": {
+      "class": [
+        "Crusader_Knight"
+      ]
+    }
+  }
+}
