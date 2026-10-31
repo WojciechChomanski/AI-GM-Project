@@ -4,6 +4,50 @@ import os
 from character import Character
 from armors import Armor
 
+STAT_NAMES = ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'ballistic_skill', 'faith', 'reputation']
+LEGACY_CLASS_SCALE = 3  # old D&D-size "*_modifier" values x3 (same conversion as backgrounds.json)
+
+
+def class_stat_bonuses(class_data):
+    """Stat bonuses a class gives, applied exactly once.
+    d100 classes use "stat_modifiers" with plain stat names (Crusader Knight STR +12).
+    Older classes only have a "stats" block with small "*_modifier" values; those are scaled x3.
+    If both exist, only "stat_modifiers" counts."""
+    out = {}
+    mods = class_data.get("stat_modifiers")
+    if mods:
+        for k, v in mods.items():
+            if k in STAT_NAMES and isinstance(v, (int, float)):
+                out[k] = out.get(k, 0) + v
+        return out
+    for k, v in (class_data.get("stats") or {}).items():
+        if k.endswith("_modifier") and isinstance(v, (int, float)):
+            stat = k[: -len("_modifier")]
+            if stat in STAT_NAMES:
+                out[stat] = out.get(stat, 0) + v * LEGACY_CLASS_SCALE
+    return out
+
+
+def find_class(name, classes_dir=None):
+    """Class block by key from rules/classes/*.json (case-insensitive, files may hold several classes)."""
+    if not name:
+        return {}
+    classes_dir = classes_dir or os.path.join(os.path.dirname(__file__), "..", "rules", "classes")
+    want = name.lower().replace(" ", "_")
+    for fn in sorted(os.listdir(classes_dir)):
+        if not fn.endswith(".json") or fn == "template.json":
+            continue
+        try:
+            with open(os.path.join(classes_dir, fn), encoding="utf-8-sig") as f:
+                data = json.load(f)
+        except Exception:
+            continue
+        for k, v in data.items():
+            if isinstance(v, dict) and k.lower() == want:
+                return v
+    return {}
+
+
 def _find_hp_percent(class_data):
     """Class HP bonus in percent (e.g. Crusader Knight 15)."""
     for block, key in (("stat_modifiers", "hp_percent"), ("stats", "hp_percent_bonus")):
@@ -36,9 +80,8 @@ class CharacterLoader:
         return races_data.get(name, {})
 
     def load_class(self, name):
-        path = os.path.join(os.path.dirname(__file__), "../rules/classes.json")
-        classes_data = self.load_json_file(path)
-        return classes_data.get(name, {})
+        # rules/classes.json never existed; classes live in rules/classes/*.json
+        return find_class(name)
 
     def load_background(self, name):
         path = os.path.join(os.path.dirname(__file__), "../rules/backgrounds.json")
@@ -133,11 +176,8 @@ class CharacterLoader:
 
         class_data = self.load_class(character.class_name)
         if class_data:
-            class_stats = class_data.get("stats", {})
-            for stat, value in class_stats.items():
-                if hasattr(character, stat):
-                    current = getattr(character, stat, 20)
-                    setattr(character, stat, current + value)
+            for stat, value in class_stat_bonuses(class_data).items():
+                setattr(character, stat, getattr(character, stat, 20) + value)
             character.abilities = class_data.get("abilities", {})
             character.skills = class_data.get("skills", {})
             character.traits = class_data.get("traits", [])
@@ -149,6 +189,14 @@ class CharacterLoader:
                 if hasattr(character, stat):
                     current = getattr(character, stat, 20)
                     setattr(character, stat, current + value)
+
+        # Never above race cap (stats.json) plus talent cap raises.
+        from strength import stat_cap
+        for stat in STAT_NAMES:
+            cap = stats["max_stats"].get(stat)
+            if cap is not None:
+                cap = stat_cap(cap, character.race, character.gender, stat, character.talents)
+                setattr(character, stat, min(getattr(character, stat), cap))
 
         for attr in ['strength_modifier', 'agility_modifier', 'charisma_modifier']:
             if attr in data:

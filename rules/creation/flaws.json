@@ -142,7 +142,8 @@
         "owes money or service; GM calls it in"
       ]
     },
-    "description": "CP 1-3 by size of the debt (GM sets)."
+    "description": "CP 1-3 by size of the debt (GM sets).",
+    "gm_note": "Owner-confirmed: the GM sets the size of the debt (1-3 CP)."
   },
   "ugly_scarring": {
     "name": "Ugly Scarring",
@@ -153,7 +154,8 @@
         "counts against the scar maximum of -2 Looks"
       ]
     },
-    "description": "Needs the Looks stat (not built yet)."
+    "description": "Needs the Looks stat (not built yet).",
+    "status": "WAITING for the Looks stat (Looks/Charisma work). Until then only the CP and GM text apply."
   },
   "veil_tainted": {
     "name": "Veil-Tainted",
