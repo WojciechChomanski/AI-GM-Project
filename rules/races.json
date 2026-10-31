@@ -58,9 +58,9 @@
       "hp_bonus": 0,
       "stamina_bonus": 10,
       "strength_modifier": 0,
-      "agility_modifier": 5,
-      "intelligence_modifier": 2,
-      "charisma_modifier": 1
+      "agility_modifier": 0,
+      "intelligence_modifier": 0,
+      "charisma_modifier": 0
     },
     "abilities": [
       {
@@ -90,10 +90,10 @@
     "stats": {
       "hp_bonus": 20,
       "stamina_bonus": 15,
-      "strength_modifier": 5,
-      "agility_modifier": -2,
+      "strength_modifier": 0,
+      "agility_modifier": 0,
       "intelligence_modifier": 0,
-      "charisma_modifier": -2
+      "charisma_modifier": 0
     },
     "abilities": [
       {
@@ -141,10 +141,10 @@
     "stats": {
       "hp_bonus": 100,
       "stamina_bonus": 500,
-      "strength_modifier": 20,
-      "agility_modifier": -10,
-      "intelligence_modifier": -15,
-      "charisma_modifier": -10
+      "strength_modifier": 0,
+      "agility_modifier": 0,
+      "intelligence_modifier": 0,
+      "charisma_modifier": 0
     },
     "abilities": [
       {

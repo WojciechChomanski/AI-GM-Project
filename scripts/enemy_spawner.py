@@ -11,7 +11,7 @@ class EnemySpawner:
                 "name": "Veilspawn Leviathan",
                 "hp": 50,
                 "stamina": 100,
-                "stats": {"strength": 15, "toughness": 10, "agility": 5},
+                "stats": {"strength": 55, "toughness": 40, "agility": 20},
                 "abilities": {"stun_slam": {"damage": 20, "stun_chance": 0.5, "flood_terrain": 0.5}},
                 "description": "A low-HP, high-stun sea beast summoned by Daughters of the Drowned Moon."
             },
@@ -19,7 +19,7 @@ class EnemySpawner:
                 "name": "Drowned Thrall",
                 "hp": 30,
                 "stamina": 50,
-                "stats": {"strength": 8, "toughness": 8, "agility": 3},
+                "stats": {"strength": 30, "toughness": 30, "agility": 15},
                 "abilities": {"brine_grasp": {"damage": 10, "bleed": 1}},
                 "description": "A drowned minion serving the Drowned Matron."
             },
@@ -27,7 +27,7 @@ class EnemySpawner:
                 "name": "Clockwork Golem",
                 "hp": 80,
                 "stamina": 150,
-                "stats": {"strength": 12, "toughness": 15, "agility": 2},
+                "stats": {"strength": 45, "toughness": 55, "agility": 10},
                 "abilities": {"iron_smash": {"damage": 15, "armor_bonus": 10}},
                 "description": "A rune-forged construct of the Iron Covenant, high armor, blunt damage."
             }
