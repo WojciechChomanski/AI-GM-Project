@@ -54,9 +54,9 @@ class Combatant:
         self.armor = data["armor"]
         self.abilities = data.get("abilities", {})
         self.skills = data.get("skills", {})                  # ← fixed
-        self.strength = data.get("strength", 10)
-        self.dexterity = data.get("dexterity", 10)
-        self.weapon_skill = data.get("weapon_skill", 0)
+        self.strength = data.get("strength", 35)  # d100 scale: human male start (rules/stats.json)
+        self.dexterity = data.get("dexterity", 30)
+        self.weapon_skill = data.get("weapon_skill", 30)
         self.pain = 0
         self.stress = 0
         self.armor_specs = []

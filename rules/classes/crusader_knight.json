@@ -30,14 +30,6 @@
             "stamina_max_flat": 10,
             "hp_percent": 15
         },
-        "stats": {
-            "strength_modifier": 12,
-            "toughness_modifier": 10,
-            "agility_modifier": 5,
-            "willpower_modifier": 8,
-            "stamina_max_bonus": 10,
-            "hp_percent_bonus": 15
-        },
         "proficiencies": {
             "weapons": [
                 "sword_1h",
