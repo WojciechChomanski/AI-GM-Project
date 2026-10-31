@@ -2,6 +2,9 @@
 import json, random
 from pathlib import Path
 from collections import defaultdict
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from strength import strength_damage_bonus
 
 BASE_DIR = Path(__file__).parent.parent / "rules"
 races = json.loads((BASE_DIR / "races.json").read_text())
@@ -57,7 +60,7 @@ def perform_attack(att, defn):
     def_roll = random.randint(1, 100) + defn.get("weapon_skill", 25)
     hit = atk_roll > def_roll + 10
     base_dmg = {"greatsword":14, "axe_2h":13, "mace":12, "sword_1h":11}.get(att["weapon"], 10)
-    dmg = base_dmg + (att.get("strength",35)//5) if hit else 0
+    dmg = base_dmg + strength_damage_bonus(att.get("strength",35), att.get("gender","Male")) if hit else 0
     armor_abs = {"Light_Heavy":3, "Medium_Heavy":5, "Heavy_Heavy":7}[defn["armor"][0]]
     net = max(0, dmg - armor_abs)
     return net, None, None

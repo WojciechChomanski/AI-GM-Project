@@ -13,7 +13,8 @@
     "fear_trigger": true,
     "fear_intensity": 8,
     "stamina_cost": 5,
-    "weight": 12
+    "weight": 12,
+    "min_STR": 40
   },
   "flamberge": {
     "name": "Flamberge",
@@ -30,7 +31,8 @@
     "fear_intensity": 9,
     "stamina_cost": 5,
     "weight": 13,
-    "notes": "Wavy blade design causes vibrations, making it harder to parry; +5 to disarm maneuvers."
+    "notes": "Wavy blade design causes vibrations, making it harder to parry; +5 to disarm maneuvers.",
+    "min_STR": 40
   },
   "claymore": {
     "name": "Claymore",
@@ -47,7 +49,8 @@
     "fear_intensity": 8,
     "stamina_cost": 5,
     "weight": 12,
-    "notes": "Scottish greatsword; effective against cavalry with wide swings, +5 attack bonus vs mounted foes."
+    "notes": "Scottish greatsword; effective against cavalry with wide swings, +5 attack bonus vs mounted foes.",
+    "min_STR": 40
   },
   "zweihander": {
     "name": "Zweihänder",
@@ -64,7 +67,8 @@
     "fear_intensity": 9,
     "stamina_cost": 6,
     "weight": 14,
-    "notes": "German Landsknecht greatsword; designed for pike-breaking, +10 damage vs polearms."
+    "notes": "German Landsknecht greatsword; designed for pike-breaking, +10 damage vs polearms.",
+    "min_STR": 40
   },
   "montante": {
     "name": "Montante",
@@ -81,7 +85,8 @@
     "fear_intensity": 8,
     "stamina_cost": 6,
     "weight": 13,
-    "notes": "Iberian Renaissance greatsword, up to 1.8m long, used for crowd control in formations; +5 vs multiple foes."
+    "notes": "Iberian Renaissance greatsword, up to 1.8m long, used for crowd control in formations; +5 vs multiple foes.",
+    "min_STR": 40
   },
   "spadone": {
     "name": "Spadone",
@@ -98,7 +103,8 @@
     "fear_intensity": 8,
     "stamina_cost": 6,
     "weight": 13,
-    "notes": "Italian two-handed sword from 16th c., evolved from medieval longswords; versatile for thrusting and cutting."
+    "notes": "Italian two-handed sword from 16th c., evolved from medieval longswords; versatile for thrusting and cutting.",
+    "min_STR": 40
   },
   "warhammer": {
     "name": "Warhammer",
@@ -112,7 +118,8 @@
     "base_damage": 18,
     "durability": 60,
     "fear_trigger": true,
-    "fear_intensity": 6
+    "fear_intensity": 6,
+    "min_STR": 42
   },
   "lucerno_hammer": {
     "name": "Lucerno Hammer",
@@ -129,7 +136,8 @@
     "fear_intensity": 7,
     "stamina_cost": 6,
     "weight": 15,
-    "notes": "Swiss anti-armor hammer with spike; +5 piercing alternate mode for armor gaps."
+    "notes": "Swiss anti-armor hammer with spike; +5 piercing alternate mode for armor gaps.",
+    "min_STR": 42
   },
   "longsword": {
     "name": "Longsword",
@@ -640,7 +648,8 @@
     "fear_trigger": true,
     "fear_intensity": 5,
     "stamina_cost": 4,
-    "weight": 8
+    "weight": 8,
+    "min_STR": 38
   },
   "mace": {
     "name": "Mace",
@@ -691,7 +700,8 @@
     "fear_intensity": 7,
     "stamina_cost": 5,
     "weight": 8,
-    "notes": "Chain-mounted head; bypasses shields, +10 vs shielded foes."
+    "notes": "Chain-mounted head; bypasses shields, +10 vs shielded foes.",
+    "min_STR": 35
   },
   "chekan": {
     "name": "Chekan",
@@ -776,7 +786,8 @@
     "fear_intensity": 7,
     "stamina_cost": 5,
     "weight": 10,
-    "notes": "Viking long-hafted axe; extended reach, +5 vs shields."
+    "notes": "Viking long-hafted axe; extended reach, +5 vs shields.",
+    "min_STR": 38
   },
   "bardiche": {
     "name": "Bardiche",
@@ -793,7 +804,8 @@
     "fear_intensity": 7,
     "stamina_cost": 5,
     "weight": 11,
-    "notes": "Russian/Polish poleaxe, 15th-17th c.; long blade, +10 vs infantry lines."
+    "notes": "Russian/Polish poleaxe, 15th-17th c.; long blade, +10 vs infantry lines.",
+    "min_STR": 38
   },
   "lochaber_axe": {
     "name": "Lochaber Axe",
@@ -810,7 +822,8 @@
     "fear_intensity": 6,
     "stamina_cost": 5,
     "weight": 10,
-    "notes": "Scottish poleaxe, 15th c.; hook for pulling, +5 vs mounted."
+    "notes": "Scottish poleaxe, 15th c.; hook for pulling, +5 vs mounted.",
+    "min_STR": 38
   },
   "poleaxe": {
     "name": "Poleaxe",
@@ -827,7 +840,8 @@
     "fear_intensity": 6,
     "stamina_cost": 5,
     "weight": 9,
-    "notes": "Multi-tool polearm (axe/hammer/spike); switch damage_type mid-fight."
+    "notes": "Multi-tool polearm (axe/hammer/spike); switch damage_type mid-fight.",
+    "min_STR": 36
   },
   "halberd": {
     "name": "Halberd",
@@ -844,7 +858,8 @@
     "fear_intensity": 7,
     "stamina_cost": 5,
     "weight": 10,
-    "notes": "Swiss guard weapon; hook for pulling riders, +10 vs mounted."
+    "notes": "Swiss guard weapon; hook for pulling riders, +10 vs mounted.",
+    "min_STR": 38
   },
   "bill": {
     "name": "Bill",
@@ -861,7 +876,8 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 8,
-    "notes": "English billhook; pulls/disarms, +5 to trip foes."
+    "notes": "English billhook; pulls/disarms, +5 to trip foes.",
+    "min_STR": 35
   },
   "glaive": {
     "name": "Glaive",
@@ -878,7 +894,8 @@
     "fear_intensity": 6,
     "stamina_cost": 5,
     "weight": 9,
-    "notes": "Curved blade polearm; sweeping cuts, +5 to multi-target."
+    "notes": "Curved blade polearm; sweeping cuts, +5 to multi-target.",
+    "min_STR": 36
   },
   "spear": {
     "name": "Spear",
@@ -912,7 +929,8 @@
     "fear_intensity": 8,
     "stamina_cost": 6,
     "weight": 10,
-    "notes": "Cavalry charge weapon; +15 damage on mounted charge, breaks on impact."
+    "notes": "Cavalry charge weapon; +15 damage on mounted charge, breaks on impact.",
+    "min_STR": 38
   },
   "boar_spear": {
     "name": "Boar Spear",

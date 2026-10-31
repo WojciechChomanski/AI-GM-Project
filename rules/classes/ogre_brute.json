@@ -69,7 +69,7 @@
                                       "intimidation":  3
                                   },
                        "traits":  [
-                                      "Grizzly Force (+mass//10 damage bonus)",
+                                      "Grizzly Force (Strength damage bonus from rules/strength_system.json; replaces the old +mass//10)",
                                       "Thick Hide (-10% piercing damage)"
                                   ],
                        "progression":  {

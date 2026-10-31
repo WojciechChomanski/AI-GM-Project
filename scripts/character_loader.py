@@ -123,6 +123,7 @@ class CharacterLoader:
         character.inventory_weight = data.get('inventory_weight', 0)
         character.shield_equipped = data.get('shield_equipped', False)
         character.weapon_equipped = data.get('weapon_equipped', True)
+        character.talents = list(data.get('talents', []))
 
         stats = self.load_stats(character.race, character.gender)
         for stat in ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'faith', 'reputation']:

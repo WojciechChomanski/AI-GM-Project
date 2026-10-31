@@ -5,6 +5,7 @@ import random
 import logging
 import os
 from armors import Armor
+from strength import stat_cap, grip_check
 from zone_hp import BASE_ZONES, SPREAD_EXCLUDED, SPREAD_FLOOR, spread_damage, total_hp as zones_total, VITAL_ZONES
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -58,6 +59,8 @@ class Character:
         self.reputation = 0
         self.grapple_committed = False
         self.grappled_by = None
+        self.talents = []
+        self.iron_thewed_used = False
         self.stunned = False
         self.skip_turn = False
         self.health = self.total_hp
@@ -248,6 +251,7 @@ class Character:
     def progress_stat(self, stat, amount):
         current = getattr(self, stat, 0)
         max_stat = load_stats(self.race, self.gender)["max_stats"].get(stat, 50)
+        max_stat = stat_cap(max_stat, self.race, self.gender, stat, getattr(self, "talents", []))
         new_value = min(current + amount, max_stat)
         setattr(self, stat, new_value)
         print(f"📈 {self.name}'s {stat} increases by {amount} to {new_value}!")
@@ -256,9 +260,14 @@ class Character:
         min_str = weapon.get("min_STR", 10)
         size_class = weapon.get("size_class", "medium")
         grip_size = weapon.get("grip_size", "standard")
-        if self.strength < min_str:
+        # Grip Demand (docs/STRENGTH.md): below min_STR you can still wield it, with penalties.
+        # More than 15 points short = too heavy to fight with at all.
+        self.grip = grip_check(self.strength, self.gender, weapon.get("min_STR", 0))
+        if self.strength < min_str - 15:
             print(f"⚠️ {self.name} lacks strength to wield {weapon['name']} (needs {min_str} STR)!")
             return False
+        if not self.grip["ok"]:
+            print(f"⚠️ {self.name} struggles with {weapon['name']} (needs {min_str} STR): parry {self.grip['parry_penalty']}, stamina x{self.grip['stamina_mult']:.1f}, can be disarmed on a failed parry.")
         if self.mass > 150 and size_class == "small":  # Ogres can't use small weapons
             print(f"⚠️ {self.name}'s grip too large for {weapon['name']}!")
             return False
