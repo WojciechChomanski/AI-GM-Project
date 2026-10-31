@@ -120,7 +120,7 @@
         "trick": true
       }
     ],
-    "dual_wield_rank_gains": "off-hand penalty shrinks by 5 per rank to 0 (rank 5 trick: off-hand stamina 0)",
+    "dual_wield_rank_gains": "Owner-confirmed: off-hand penalty starts at -25 and shrinks by 5 per rank to 0 at rank 5 (rank 5 trick: off-hand stamina 0)",
     "two_hander_rank_gains": "same as weapon ranks; does not stack with the weapon family (best of the two is used)",
     "ceiling": {
       "to_hit": 5,

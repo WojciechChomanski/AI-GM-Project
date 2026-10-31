@@ -39,3 +39,9 @@ Shield: block +5, stamina -1, block +5, bash +1 damage, trick. Dual wield: off-h
 ## Wired vs data-only
 Wired: talent caps in `Character.progress_stat` and growth; per-character growth in `adventure_new.py`; Ballistic Skill and mastery to-hit/damage in `combat_engine.attack_roll`; ballistic_skill/flaws/progression loaded by `character_loader`.
 Not wired yet: mastery stamina savings in the stamina spend code, recording mastery uses during fights, tricks, shield block bonus in block rolls, AP formula (no code reads the action economy yet), situational flaw effects, Ox-Back/Quick Hands/Steady Aim/Survivor/Iron Will/Blood-Calm effects, flaw cap penalties in `progress_stat` (they apply in `creation.caps_for`), and talent start bonuses in `character_loader` (characters built with `creation.py` carry final stats).
+
+## Owner confirmations (2026-10-31)
+- Old Debt / Oath-Bound: the GM sets the size (1-3 CP).
+- Dual wield: off-hand penalty starts at -25, shrinks 5 per rank, 0 at rank 5.
+- Converted backgrounds approved.
+- Ugly Scarring waits for the Looks stat; until then only its CP and GM text apply.
