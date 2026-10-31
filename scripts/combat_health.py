@@ -20,6 +20,8 @@ class CombatHealthManager:
         self.total_hp = sum(self.health.values())
         self.starting_hp = self.total_hp
         self.bleeding_wounds = []
+        if getattr(character, "race", None) == "Dwarf" and not hasattr(character, "bleed_clot_mult"):
+            character.bleed_clot_mult = 0.8  # rules/lore/dwarves.json bleed_duration_multiplier
         self.character.health_manager = self  # lets healing scripts find the real wound list
         self.consequences = DamageConsequences()
         self.last_armor_report = None  # what armour did on the most recent hit
@@ -175,7 +177,7 @@ class CombatHealthManager:
         self.character.bleeding_rate = self.character.bleeding
         return self.character.bleeding
 
-    def add_bleeding_wound(self, zone, damage, damage_type, critical=False, artery=False):
+    def add_bleeding_wound(self, zone, damage, damage_type, critical=False, artery=False, breath=False):
         """Add a wound for `damage` that got through armour (None if it does not bleed)."""
         if not artery and any(w["zone"] == zone and w["kind"] == "artery" and w["age"] == 0 for w in self.bleeding_wounds):
             return None  # this very hit already cut an artery here: no extra wound on top
@@ -184,6 +186,9 @@ class CombatHealthManager:
             critical = True
         w = bleeding.make_wound(zone, damage, damage_type, critical, artery,
                                 getattr(self.character, "bleed_rate_mult", 1.0))
+        if w and breath:
+            import recovery
+            w = recovery.breath_wound(w)
         if w:
             self.bleeding_wounds.append(w)
             self.refresh_bleeding()

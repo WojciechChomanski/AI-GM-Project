@@ -62,6 +62,7 @@ def tick_wound(w, clot_mult=1.0):
     w["age"] += 1
     if w["noclot"] or w["rate"] <= 0:
         return
+    clot_mult = clot_mult * w.get("clot_mult", 1.0)  # Breath wounds clot slower (rules/wound_recovery.json)
     if w["kind"] == "cut":
         if w["age"] >= max(1, round(CUT_ROUNDS * clot_mult)):
             w["rate"] = 0
