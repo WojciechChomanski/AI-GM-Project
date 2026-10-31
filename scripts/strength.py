@@ -165,16 +165,13 @@ def grip_check(strength, gender, min_str):
 
 # --- 8/9. Caps and talents -----------------------------------------------
 IRON_THEWED = "iron_thewed"
-TALENT_CAP_RAISE = {IRON_THEWED: {"race": "Human", "gender": "Male", "stat": "strength", "cap": 55}}
 
 
 def stat_cap(base_max, race, gender, stat, talents=()):
-    cap = base_max
-    for t in talents or ():
-        rule = TALENT_CAP_RAISE.get(t)
-        if rule and rule["stat"] == stat and rule["race"] == race and rule["gender"] == gender:
-            cap = max(cap, rule["cap"])
-    return cap
+    """Race cap from stats.json plus talent cap raises from rules/talents/ (max +5).
+    Iron-Thewed: human male STR 50 -> 55."""
+    import talents as T
+    return base_max + T.cap_raise(stat, race, gender, talents)
 
 
 def iron_thewed_break_free(character_talents, used_this_fight, grabber_mass_kg):

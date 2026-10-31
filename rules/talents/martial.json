@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "group": "martial",
+    "version": "0.1",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "doc": "docs/PROGRESSION.md"
+  },
+  "hawk_eyed": {
+    "name": "Hawk-Eyed",
+    "cp": 3,
+    "restrictions": {},
+    "excludes_flaws": [
+      "lost_eye"
+    ],
+    "effects": {
+      "start_bonus": {
+        "ballistic_skill": 3
+      },
+      "cap_raise": {
+        "ballistic_skill": 5
+      }
+    },
+    "description": "BS +3, BS cap +5. Not with Lost Eye."
+  },
+  "battle_born": {
+    "name": "Battle-Born",
+    "cp": 4,
+    "restrictions": {
+      "race": [
+        "Human"
+      ],
+      "gender": [
+        "Male"
+      ]
+    },
+    "effects": {
+      "start_bonus": {
+        "weapon_skill": 3
+      },
+      "mastery_uses_mult": {
+        "tracks": "all_melee",
+        "mult": 0.8
+      }
+    },
+    "description": "WS +3, weapon mastery needs 20% fewer uses."
+  },
+  "thorn_trained": {
+    "name": "Thorn-Trained",
+    "cp": 3,
+    "restrictions": {
+      "race": [
+        "Elf"
+      ],
+      "gender": [
+        "Male"
+      ]
+    },
+    "effects": {
+      "start_bonus": {
+        "weapon_skill": 2
+      },
+      "mastery_uses_mult": {
+        "tracks": [
+          "spear",
+          "one_hand_sword"
+        ],
+        "mult": 0.8
+      }
+    },
+    "description": "WS +2, spear/sword mastery needs 20% fewer uses."
+  },
+  "steady_aim": {
+    "name": "Steady Aim",
+    "cp": 3,
+    "restrictions": {},
+    "effects": {
+      "no_double_aim_penalty": true,
+      "braced_shot_bs": 5
+    },
+    "description": "No penalty for aiming twice; +5 BS on a braced shot."
+  }
+}

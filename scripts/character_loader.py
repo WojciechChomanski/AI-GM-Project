@@ -124,9 +124,11 @@ class CharacterLoader:
         character.shield_equipped = data.get('shield_equipped', False)
         character.weapon_equipped = data.get('weapon_equipped', True)
         character.talents = list(data.get('talents', []))
+        character.flaws = list(data.get('flaws', []))
+        character.progression = dict(data.get('progression', {}))
 
         stats = self.load_stats(character.race, character.gender)
-        for stat in ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'faith', 'reputation']:
+        for stat in ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'ballistic_skill', 'faith', 'reputation']:
             setattr(character, stat, stats["starting_stats"].get(stat, 20))
 
         class_data = self.load_class(character.class_name)

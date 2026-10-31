@@ -1,6 +1,6 @@
 # Strength System v1
 
-> **All numbers are PLACEHOLDERS** for playtesting. Approved 2026-10-31. Code: `scripts/strength.py`. Data: `rules/strength_system.json`, `rules/talents.json`. Tests: `tests/test_strength.py`.
+> **All numbers are PLACEHOLDERS** for playtesting. Approved 2026-10-31. Code: `scripts/strength.py`. Data: `rules/strength_system.json`, `rules/talents/` (Iron-Thewed in `physical.json`). Tests: `tests/test_strength.py`.
 
 ## The idea
 - Humans are the realistic baseline, and the other races build on top of them.

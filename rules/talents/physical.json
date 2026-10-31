@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "group": "physical",
+    "version": "0.1",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "doc": "docs/PROGRESSION.md"
+  },
+  "iron_thewed": {
+    "name": "Iron-Thewed",
+    "cp": 5,
+    "restrictions": {
+      "race": [
+        "Human"
+      ],
+      "gender": [
+        "Male"
+      ]
+    },
+    "effects": {
+      "start_bonus": {
+        "strength": 3
+      },
+      "cap_raise": {
+        "strength": 5
+      },
+      "growth_mult": {
+        "strength": 0.75
+      },
+      "once_per_fight": "automatic break-free from a human-size grab (grabber mass <= 120 kg)"
+    },
+    "description": "An exceptional human. STR +3 at creation, may train past the human peak of 50 up to 55, and STR grows 25% faster. Noticeable, not a different animal."
+  },
+  "ox_back": {
+    "name": "Ox-Back",
+    "cp": 3,
+    "restrictions": {
+      "race": [
+        "Human",
+        "Dwarf"
+      ],
+      "gender": [
+        "Male"
+      ]
+    },
+    "effects": {
+      "carry_mult": 1.15,
+      "march_stamina_mult": 0.8
+    },
+    "description": "Carry +15%, march stamina -20%."
+  },
+  "deep_lungs": {
+    "name": "Deep Lungs",
+    "cp": 3,
+    "restrictions": {},
+    "effects": {
+      "start_bonus": {
+        "endurance": 2
+      },
+      "cap_raise": {
+        "endurance": 5
+      }
+    },
+    "description": "END +2, END cap +5."
+  },
+  "quick_hands": {
+    "name": "Quick Hands",
+    "cp": 3,
+    "restrictions": {},
+    "effects": {
+      "start_bonus": {
+        "dexterity": 2
+      },
+      "reload_ap_reduction": 1
+    },
+    "description": "DEX +2, reload 1 AP faster on crossbows/guns."
+  },
+  "light_footed": {
+    "name": "Light-Footed",
+    "cp": 3,
+    "restrictions": {
+      "race_gender_any": [
+        [
+          "Human",
+          "Female"
+        ],
+        [
+          "Elf",
+          "Female"
+        ],
+        [
+          "Elf",
+          "Male"
+        ]
+      ]
+    },
+    "effects": {
+      "start_bonus": {
+        "agility": 3
+      },
+      "cap_raise": {
+        "agility": 5
+      }
+    },
+    "description": "AGI +3, AGI cap +5. Human women and elves."
+  },
+  "survivor": {
+    "name": "Survivor",
+    "cp": 2,
+    "restrictions": {},
+    "effects": {
+      "once_per_session": "re-roll a bleed or injury roll"
+    },
+    "description": "Once per session re-roll a bleed/injury roll."
+  }
+}

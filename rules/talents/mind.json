@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "group": "mind",
+    "version": "0.1",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "doc": "docs/PROGRESSION.md"
+  },
+  "silver_tongue": {
+    "name": "Silver Tongue",
+    "cp": 3,
+    "restrictions": {},
+    "effects": {
+      "start_bonus": {
+        "charisma": 3
+      },
+      "cap_raise": {
+        "charisma": 5
+      }
+    },
+    "description": "CHA +3, CHA cap +5."
+  },
+  "iron_will": {
+    "name": "Iron Will",
+    "cp": 3,
+    "restrictions": {},
+    "effects": {
+      "start_bonus": {
+        "willpower": 3
+      },
+      "vs_fear": 10
+    },
+    "description": "WIL +3, +10 vs fear."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "group": "racial",
+    "version": "0.1",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "doc": "docs/PROGRESSION.md"
+  },
+  "stone_born": {
+    "name": "Stone-Born",
+    "cp": 4,
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    },
+    "effects": {
+      "start_bonus": {
+        "toughness": 3
+      },
+      "cap_raise": {
+        "toughness": 5
+      }
+    },
+    "description": "TOU +3, TOU cap +5 (65)."
+  },
+  "old_blood_ogre": {
+    "name": "Old-Blood Ogre",
+    "cp": 4,
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    },
+    "effects": {
+      "growth_mult": {
+        "strength": 0.75
+      },
+      "vs_hunger_rage": 10
+    },
+    "description": "STR grows 25% faster (still capped at 70), +10 vs hunger rage."
+  }
+}
