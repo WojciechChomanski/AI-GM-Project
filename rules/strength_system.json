@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "version": "1.0",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "code": "scripts/strength.py",
+    "doc": "docs/STRENGTH.md"
+  },
+  "power_curve": {
+    "up_to_50": "1 + (STR-30)*0.05",
+    "above_50": "2 * 2^((STR-50)/10)",
+    "examples": {
+      "30": 1.0,
+      "50": 2.0,
+      "55": 2.83,
+      "60": 4.0,
+      "70": 8.0
+    }
+  },
+  "male_factors": {
+    "arm": 1.15,
+    "leg": 1.05,
+    "compound": 1.6
+  },
+  "contest": {
+    "formula": "your power / (yours + theirs)",
+    "clamp": [
+      0.05,
+      0.95
+    ],
+    "per_10_bonus_or_technique_mult": 1.414,
+    "allies_add_power": true,
+    "mass_for_shove_knockdown": "(mass/80)^(1/3)"
+  },
+  "clinch": {
+    "round_seconds": 6,
+    "cost_per_round": "2 + 1.2*L^2, L = opponent compound power / yours",
+    "stamina_pool_placeholder": 60
+  },
+  "sustained_hold": {
+    "female_cost_discount_pct": 25,
+    "applies_to": [
+      "bow_full_draw",
+      "shield_raised",
+      "ledge_hold",
+      "static_hold"
+    ],
+    "not": "contested clinch"
+  },
+  "march": {
+    "cost_per_km": "1 + 40*L^2 (+600*(L-0.5) past half load), L = load / carry capacity",
+    "reserve": "END*3 (+10 elves)",
+    "carry": "rules/combat_rules.json carry_capacity (unchanged)"
+  },
+  "damage_bonus": {
+    "formula": "floor(2 * arm power)",
+    "examples": {
+      "F30": 2,
+      "F45": 3,
+      "M50": 4,
+      "M55": 6,
+      "M60": 9,
+      "M70": 18
+    },
+    "replaces": [
+      "gm_console STR//5",
+      "Ogre Grizzly Force +mass//10"
+    ]
+  },
+  "grip_demand": {
+    "weapon_key": "min_STR",
+    "below": "-5 parry and +10% stamina per 5 points short, disarm risk on failed parry",
+    "too_heavy": "more than 15 short",
+    "double_power": "half stamina cost"
+  }
+}
