@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
 import bleeding  # noqa: E402
 import corruption as K  # noqa: E402
-import recovery as R  # noqa: E402
+import wound_recovery as R  # noqa: E402
 from test_bleeding import fresh  # noqa: E402
 
 

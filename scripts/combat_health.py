@@ -187,7 +187,7 @@ class CombatHealthManager:
         w = bleeding.make_wound(zone, damage, damage_type, critical, artery,
                                 getattr(self.character, "bleed_rate_mult", 1.0))
         if w and breath:
-            import recovery
+            import wound_recovery as recovery
             w = recovery.breath_wound(w)
         if w:
             self.bleeding_wounds.append(w)
