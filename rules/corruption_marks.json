@@ -96,11 +96,12 @@
   ],
   "corrupted_creature": {
     "hp_multiplier": 3,
-    "hp_multiplier_range_undecided": [
-      3,
-      4
-    ],
     "rule": "A corrupted creature 'refuses to die': its HP pool is natural HP x hp_multiplier. Wound penalties, bleeding and lost limbs are measured against NATURAL HP, so it still degrades. Damage from a Crusader Knight with active Breath counts x hp_multiplier against the pool (his wounds count as if against its natural HP).",
-    "formula": "pool = natural_hp * M; effective = normal_damage + breath_damage * M; dead when effective >= pool; wound_ratio = min(1, effective / natural_hp) for penalties (capped at 1 = 'should be dead')"
+    "formula": "pool = natural_hp * M; effective = normal_damage + breath_damage * M; dead when effective >= pool; wound_ratio = min(1, effective / natural_hp) for penalties (capped at 1 = 'should be dead')",
+    "tiers": {
+      "ordinary": 3,
+      "special": 4
+    },
+    "tier_rule": "Default tier 'ordinary' (x3) for general corrupted characters/creatures. GM flags corruption_tier: 'special' (x4) for something more special. Explicit hp_multiplier on a creature overrides the tier. Decided by user 2026-10-31."
   }
 }

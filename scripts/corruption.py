@@ -69,17 +69,21 @@ class Tracker:
         return self.level >= 100
 
 
-def hp_multiplier(override=None):
-    return override if override is not None else data()["corrupted_creature"]["hp_multiplier"]
+def hp_multiplier(override=None, tier="ordinary"):
+    """Explicit override, else tier multiplier (ordinary x3, special x4)."""
+    if override is not None:
+        return override
+    cc = data()["corrupted_creature"]
+    return cc.get("tiers", {}).get(tier or "ordinary", cc["hp_multiplier"])
 
 
 class CorruptedCreature:
     """pool = natural_hp * M; effective = normal + breath * M; dead when effective >= pool.
     wound_ratio = min(1, effective / natural_hp) drives wound/pain penalties, so it still degrades."""
 
-    def __init__(self, natural_hp, multiplier=None):
+    def __init__(self, natural_hp, multiplier=None, tier="ordinary"):
         self.natural_hp = natural_hp
-        self.m = hp_multiplier(multiplier)
+        self.m = hp_multiplier(multiplier, tier)
         self.pool = natural_hp * self.m
         self.effective = 0
 

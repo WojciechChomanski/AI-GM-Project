@@ -99,3 +99,23 @@ def test_combat_engine_breath_vs_corrupted():
     random.seed(3)
     r2 = CE.CombatEngine().attack_roll(dict(knight_d, virtue=20), beast, weapon_damage=10)
     assert r2["defender_hp"] == 60 - r2["damage"] and r2["damage"] == r["damage"]  # steel rule
+
+
+def test_corruption_tiers():
+    assert K.hp_multiplier() == 3 and K.hp_multiplier(tier="special") == 4 and K.hp_multiplier(5, "special") == 5
+    assert K.CorruptedCreature(20, tier="special").pool == 80
+
+
+def test_combat_engine_special_tier():
+    import random
+    try:
+        import combat_engine as CE
+    except Exception:
+        import pytest
+        pytest.skip("combat_engine deps unavailable")
+    base = dict(race="Human", total_hp=20, max_stamina=50, armor_weight=0, inventory_weight=0,
+                shield_equipped=False, weapon_equipped=True, weapon="none", armor=[])
+    a = dict(base, name="A", weapon_skill=500)
+    random.seed(3)
+    r = CE.CombatEngine().attack_roll(a, dict(base, name="B", corrupted=True, corruption_tier="special"), 10)
+    assert r["hit"] and r["defender_hp"] == 80 - r["damage"]

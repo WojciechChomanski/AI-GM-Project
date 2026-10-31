@@ -163,7 +163,8 @@ class CombatEngine:
                                                defender.creature_tags + (["corrupted"] if defender.corrupted else []))
             if defender.corrupted:
                 # total_hp = natural HP; pool x M; Breath damage counts x M; penalties vs natural HP
-                cc = corruption.CorruptedCreature(defender.total_hp, defender_data.get("hp_multiplier"))
+                cc = corruption.CorruptedCreature(defender.total_hp, defender_data.get("hp_multiplier"),
+                                                  defender_data.get("corruption_tier", "ordinary"))
                 cc.effective = defender_data.get("damage_taken", 0)
                 cc.take(effective, breath=bool(breath.get("bypass_undying")))
                 defender.hp = cc.hp

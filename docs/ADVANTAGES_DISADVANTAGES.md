@@ -29,7 +29,7 @@ gets fiction bands (stat_visibility.json) only.
 wrong"), 90 unmistakable, 100 lost. Marks are permanent: tracked by the PEAK value; purging lowers current only.
 
 ## Corrupted creatures
-`pool = natural_hp * M` (M default 3, range 3-4 undecided). `effective = normal + breath * M`; dead when
+`pool = natural_hp * M` (M by `corruption_tier`: ordinary x3 default, GM-flagged `special` x4; explicit `hp_multiplier` overrides). `effective = normal + breath * M`; dead when
 `effective >= pool`. Wound/pain penalties use `min(1, effective / natural_hp)` so it still degrades.
 
 ## Crusader Breath (hidden)
@@ -46,3 +46,5 @@ options_for); corruption.py; knight.py; addiction.py; combat_engine attack_roll 
 x M and pain); character.py virtue/piety/corruption_peak attributes.
 Data-only: social reactions, bleed/heal/regeneration/morale Breath effects (no bleed/heal loop in engine yet),
 discipline ladder, spiral, buy-off, NPC generator, hooks, most set-flaw effects text.
+
+Decisions 2026-10-31: shying from a full-Breath knight is a morale test (fail = pick another target if available); Piety threshold 70 with Virtue 70; corruption >= 25 caps Breath at dim.
