@@ -46,22 +46,22 @@ def test_adventure():
     # Create test party with Crusader Knight and Holy Judge
     party = [
         create_test_character("Grokthar", "Ogre", "Male", "Ogre_Brute", {
-            "hp": 200, "stamina": 600, "strength": 20, "toughness": 15, "agility": -5, "endurance": 10
+            "hp": 200, "stamina": 600, "strength": 55, "toughness": 50, "agility": 20, "endurance": 45
         }),
         create_test_character("Eldric", "Human", "Male", "Paladin", {
-            "hp": 100, "stamina": 100, "strength": 10, "willpower": 10, "healing_bonus": 5
+            "hp": 100, "stamina": 100, "strength": 40, "willpower": 35, "healing_bonus": 5
         }),
         create_test_character("Sylvara", "Elf", "Female", "Mage", {
-            "hp": 80, "stamina": 110, "intelligence": 12, "agility": 5
+            "hp": 80, "stamina": 110, "intelligence": 40, "agility": 45
         }),
         create_test_character("Thrain", "Dwarf", "Male", "Warrior", {
-            "hp": 120, "stamina": 115, "strength": 12, "toughness": 10, "rune_craft": 5
+            "hp": 120, "stamina": 115, "strength": 45, "toughness": 45, "rune_craft": 5
         }),
         create_test_character("Baldric", "Human", "Male", "Crusader_Knight", {
-            "hp": 110, "stamina": 105, "strength": 12, "willpower": 8
+            "hp": 110, "stamina": 105, "strength": 47, "willpower": 33
         }),
         create_test_character("Cassian", "Human", "Male", "Holy_Judge", {
-            "hp": 90, "stamina": 100, "willpower": 12, "intelligence": 10
+            "hp": 90, "stamina": 100, "willpower": 37, "intelligence": 40
         })
     ]
 
