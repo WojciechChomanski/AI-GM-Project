@@ -10,7 +10,7 @@
     "race":  "Dwarf",
     "mechanics":  {
                       "stat_caps":  {
-                                        "strength":  55,
+                                        "strength":  60,
                                         "toughness":  60,
                                         "endurance":  60
                                     },
