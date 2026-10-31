@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER"
+  },
+  "max_flaw_cp": 10,
+  "free_cp": 5,
+  "diminishing": {
+    "full_pay_count": 2,
+    "half_pay_count": 2,
+    "order": "highest CP first",
+    "note": "1st-2nd flaw full, 3rd-4th half (round down), 5th+ 0 CP (story flaws)."
+  },
+  "same_area": "Only the highest-CP flaw in one area pays; the others are story flaws.",
+  "heavy_load": {
+    "total_intensity_min": 12,
+    "start_stress": 10,
+    "gm_must_trigger_per_session": 1,
+    "note": "Intensity of a fixed-CP flaw = its CP."
+  },
+  "buy_off": "Story (surgery, cure, quest, atonement) AND paying back its CP with XP/mastery uses. Flaws gained in play pay no CP.",
+  "npc_generator": {
+    "ordinary": [
+      0,
+      1
+    ],
+    "veteran": [
+      1,
+      2
+    ],
+    "named_villain": [
+      2,
+      4
+    ],
+    "villain_needs_exploitable": [
+      "alcoholic",
+      "drug_addict",
+      "hot_blooded",
+      "honour_bound",
+      "zealot"
+    ]
+  }
+}

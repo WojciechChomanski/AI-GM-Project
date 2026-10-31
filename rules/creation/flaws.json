@@ -1,9 +1,10 @@
 {
   "meta": {
-    "version": "0.1",
+    "version": "0.2",
     "status": "PLACEHOLDER",
     "rule": "A flaw must cost something in play every session or the GM refuses it.",
-    "doc": "docs/PROGRESSION.md"
+    "doc": "docs/ADVANTAGES_DISADVANTAGES.md",
+    "note": "General disadvantages (24) plus race/gender/class sets. cp 'intensity' = CP equals chosen intensity 1-5. 'area' = same-area rule (only the highest pays). 'hook' = when the GM brings it into play."
   },
   "lost_eye": {
     "name": "Lost Eye",
@@ -18,7 +19,9 @@
         "no depth judging past 30 m"
       ]
     },
-    "description": "One eye gone."
+    "description": "One eye gone.",
+    "hook": "every ranged or flanking fight",
+    "area": "sight"
   },
   "lost_fingers": {
     "name": "Lost Fingers (2, off-hand)",
@@ -29,7 +32,9 @@
         "two-handers and shields -5 WS"
       ]
     },
-    "description": "Two fingers of the off hand gone."
+    "description": "Two fingers of the off hand gone.",
+    "hook": "every fight with two-handers or shields",
+    "area": "hands"
   },
   "lost_hand": {
     "name": "Lost Hand",
@@ -48,7 +53,9 @@
     "description": "One hand gone.",
     "excludes_flaws": [
       "lost_fingers"
-    ]
+    ],
+    "hook": "every fight, climbing, crafting",
+    "area": "hands"
   },
   "limp": {
     "name": "Limp (old leg wound)",
@@ -62,19 +69,31 @@
       },
       "march_stamina_mult": 1.25
     },
-    "description": "Old leg wound."
+    "description": "Old leg wound.",
+    "hook": "every march and chase",
+    "area": "legs"
   },
   "paranoia": {
     "name": "Paranoia",
-    "cp": 3,
-    "effects": {
-      "situational": [
-        "no long-rest benefit when sleeping near strangers",
-        "WIL test to trust allies",
-        "+5 vs ambush"
-      ]
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "distrusts strangers",
+      "2": "no deals without proof",
+      "3": "no long rest without lock and watch; WIL test to trust allies",
+      "4": "sees plots in allies; refuses shared food",
+      "5": "hears plots, may attack a 'traitor' (GM picks, 1/session)"
     },
-    "description": "Trusts no one."
+    "hook": "most social scenes",
+    "description": "Distrust grows with intensity.",
+    "effects": {
+      "vs_ambush": 5,
+      "vs_ambush_at_5": 10
+    },
+    "area": "mind_trust"
   },
   "weak_lungs": {
     "name": "Weak Lungs",
@@ -88,7 +107,9 @@
     "description": "Short of breath.",
     "excludes_talents": [
       "deep_lungs"
-    ]
+    ],
+    "hook": "every long fight or march",
+    "area": "lungs"
   },
   "night_blind": {
     "name": "Night-Blind",
@@ -98,17 +119,9 @@
         "-20 Perception and -10 attacks in darkness"
       ]
     },
-    "description": "Useless in the dark."
-  },
-  "hunted": {
-    "name": "Hunted / Wanted",
-    "cp": 2,
-    "effects": {
-      "situational": [
-        "bounty hunters, GM-driven encounters"
-      ]
-    },
-    "description": "Someone wants you."
+    "description": "Useless in the dark.",
+    "hook": "every night scene",
+    "area": "sight"
   },
   "hard_of_hearing": {
     "name": "Hard of Hearing",
@@ -119,7 +132,9 @@
         "ambushes harder to spot"
       ]
     },
-    "description": "Half deaf."
+    "description": "Half deaf.",
+    "hook": "every ambush or whispered scene",
+    "area": "hearing"
   },
   "hot_blooded": {
     "name": "Hot-Blooded",
@@ -129,7 +144,8 @@
         "WIL test or attack when insulted or struck first"
       ]
     },
-    "description": "Quick temper."
+    "description": "Quick temper.",
+    "hook": "every insult or first strike"
   },
   "old_debt": {
     "name": "Old Debt / Oath-Bound",
@@ -143,19 +159,8 @@
       ]
     },
     "description": "CP 1-3 by size of the debt (GM sets).",
-    "gm_note": "Owner-confirmed: the GM sets the size of the debt (1-3 CP)."
-  },
-  "ugly_scarring": {
-    "name": "Ugly Scarring",
-    "cp": 1,
-    "effects": {
-      "looks": -1,
-      "situational": [
-        "counts against the scar maximum of -2 Looks"
-      ]
-    },
-    "description": "Needs the Looks stat (not built yet).",
-    "status": "WAITING for the Looks stat (Looks/Charisma work). Until then only the CP and GM text apply."
+    "gm_note": "Owner-confirmed: the GM sets the size of the debt (1-3 CP).",
+    "hook": "GM calls the debt in"
   },
   "veil_tainted": {
     "name": "Veil-Tainted",
@@ -172,6 +177,407 @@
     "restrictions": {
       "gender": [
         "Female"
+      ]
+    },
+    "set": "female"
+  },
+  "nemesis": {
+    "name": "Nemesis",
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "a petty local (bailiff's son, rival hunter): spoils deals, lies, 1 in 4 sessions",
+      "2": "guild master or veteran sellsword with friends: ambush with 3-4 men, bribes guards",
+      "3": "minor noble, cult cell or Order inquisitor: bounty posted, agents in every town",
+      "4": "count, Archon or sorceress coven: armies, assassins, can outlaw you",
+      "5": "final-boss tier (a Templar Ascendant, a Veil-born, an elder): will find you; kill him and his heir takes over at intensity 3"
+    },
+    "hook": "I1 every few sessions, I3 most sessions, I5 every session",
+    "description": "Replaces Hunted. Who wants you, and how big they are.",
+    "area": "enemy"
+  },
+  "scarred": {
+    "name": "Scarred / Disfigured",
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "small but clear face scar, seen in conversation",
+      "2": "broken nose, torn ear, cheek slash; always seen",
+      "3": "half the face burned or ripped; children stare, prices +20%",
+      "4": "melted face, missing nose or lips; treated as cursed",
+      "5": "'burned alive and spat back by hell': outcast, must veil/hood 24/7 like a leper; covering counts as I2 but guards and priests demand faces, unveiling = I5 reaction plus 'liar'"
+    },
+    "hook": "every social scene where the face is seen",
+    "description": "Replaces Ugly Scarring. No physical penalty, only social. Looks -0/-1/-2/-3/-4 once the Looks stat exists (until then Charisma tests). Reactions: rules/creation/social_reactions.json.",
+    "effects": {
+      "looks_by_intensity": [
+        0,
+        -1,
+        -2,
+        -3,
+        -4
+      ],
+      "looks_status": "WAITING for the Looks stat"
+    },
+    "area": "face"
+  },
+  "alcoholic": {
+    "name": "Alcoholic",
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "one drink a day",
+      "2": "drinks most evenings",
+      "3": "several drinks a day, drunk often",
+      "4": "rarely sober",
+      "5": "always drinking; withdrawal can kill"
+    },
+    "hook": "every day without drink",
+    "description": "Need: I1 one dose a day, I3 several, I5 constant. Withdrawal clock: rules/creation/addiction.json.",
+    "area": "addiction",
+    "addiction": true
+  },
+  "drug_addict": {
+    "name": "Drug Addict",
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "occasional need",
+      "2": "weekly need",
+      "3": "daily need",
+      "4": "constant need",
+      "5": "constant; withdrawal can kill"
+    },
+    "hook": "every day without the drug",
+    "description": "Poppy, black lotus or Veil-dust. Need: I1 one dose a day, I3 several, I5 constant. Withdrawal clock: rules/creation/addiction.json. Veil-dust adds +1 corruption per dose.",
+    "area": "addiction",
+    "addiction": true,
+    "veil_dust_corruption_per_dose": 1
+  },
+  "breakdowns": {
+    "name": "Breakdowns",
+    "cp": "intensity",
+    "intensity_range": [
+      1,
+      5
+    ],
+    "levels": {
+      "1": "WIL test 0",
+      "2": "WIL test -5",
+      "3": "WIL test -10",
+      "4": "WIL test -15",
+      "5": "WIL test -20"
+    },
+    "hook": "every trigger",
+    "description": "Trauma episodes. Pick triggers at creation (blood, fire, screaming children...). At a trigger: WIL test at -0/-5/-10/-15/-20; failure = 1d3 rounds frozen/weeping/raging + stress. I5 starts every session at +10 stress.",
+    "effects": {
+      "wil_mod_by_intensity": [
+        0,
+        -5,
+        -10,
+        -15,
+        -20
+      ],
+      "session_stress_at_5": 10
+    },
+    "area": "mind_trauma"
+  },
+  "phobia": {
+    "name": "Phobia",
+    "cp": [
+      1,
+      3
+    ],
+    "hook": "every time the fear shows up",
+    "description": "Fire, deep water, the dead or enclosed spaces: WIL test or flee/freeze.",
+    "area": "mind_fear"
+  },
+  "bad_reputation": {
+    "name": "Bad Reputation",
+    "cp": [
+      1,
+      3
+    ],
+    "hook": "every dealing with that faction",
+    "description": "-5/-10/-15 reputation in one faction; prices and guards."
+  },
+  "branded_criminal": {
+    "name": "Branded Criminal",
+    "cp": 3,
+    "hook": "every guard or court in that realm",
+    "description": "Visible brand; the law of the branding realm is hostile."
+  },
+  "sickly": {
+    "name": "Sickly",
+    "cp": 2,
+    "hook": "every disease roll and rest",
+    "description": "-10 vs disease, slower healing.",
+    "excludes_advantages": [
+      "hardy_constitution",
+      "fast_healer"
+    ]
+  },
+  "glutton": {
+    "name": "Glutton / Big Appetite",
+    "cp": 1,
+    "hook": "every meal on the road",
+    "description": "Double rations or -5 END."
+  },
+  "honour_bound": {
+    "name": "Honour-Bound",
+    "cp": 2,
+    "hook": "every time a lie or ambush would help",
+    "description": "Cannot lie, strike from behind or refuse a duel."
+  },
+  "dependant": {
+    "name": "Dependant",
+    "cp": 2,
+    "hook": "most arcs",
+    "description": "A child, sibling or old parent to protect; the GM threatens them."
+  },
+  "illiterate": {
+    "name": "Illiterate & Ignorant of the Faith",
+    "cp": 1,
+    "hook": "every letter, map, scroll or priest",
+    "description": "Cannot read; priests distrust you.",
+    "excludes_advantages": [
+      "literate"
+    ]
+  },
+  "heretics_blood": {
+    "name": "Heretic's Blood",
+    "cp": 2,
+    "hook": "every Order encounter",
+    "description": "The Order suspects your family.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ]
+    }
+  },
+  "serf_born": {
+    "name": "Serf-Born",
+    "cp": 2,
+    "hook": "the lord's men find you",
+    "description": "You still owe a lord.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ]
+    }
+  },
+  "plague_survivor": {
+    "name": "Plague Survivor",
+    "cp": 1,
+    "hook": "social scenes",
+    "description": "Plague scars: counts as Scarred intensity 1 for reactions.",
+    "set": "human",
+    "restrictions": {
+      "race": [
+        "Human"
+      ]
+    },
+    "counts_as": {
+      "scarred": 1
+    }
+  },
+  "vanity": {
+    "name": "Vanity",
+    "cp": 2,
+    "hook": "every filth, wound or scar",
+    "description": "WIL test to accept being dirty or scarred; stress on failure.",
+    "set": "elf",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ]
+    }
+  },
+  "contempt_short_lived": {
+    "name": "Contempt for the Short-Lived",
+    "cp": 2,
+    "hook": "every human/dwarf dealing",
+    "description": "-10 social with humans and dwarves.",
+    "set": "elf",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ]
+    }
+  },
+  "cannot_mask": {
+    "name": "Cannot Mask",
+    "cp": 1,
+    "hook": "whenever a scar matters",
+    "description": "No Veil glamour to hide scars.",
+    "set": "elf_male",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ],
+      "gender": [
+        "Male"
+      ]
+    }
+  },
+  "veil_hunger": {
+    "name": "Veil-Hunger",
+    "cp": [
+      1,
+      3
+    ],
+    "hook": "weekly",
+    "description": "Must touch the Veil weekly.",
+    "set": "elf_female",
+    "restrictions": {
+      "race": [
+        "Elf"
+      ],
+      "gender": [
+        "Female"
+      ]
+    },
+    "area": "addiction"
+  },
+  "oath_breakers_mark": {
+    "name": "Oath-Breaker's Mark",
+    "cp": 3,
+    "hook": "every dwarf",
+    "description": "Beard shaved; other dwarves hostile.",
+    "set": "dwarf",
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    }
+  },
+  "grudge": {
+    "name": "Grudge",
+    "cp": 2,
+    "hook": "when the wrong-doer is near",
+    "description": "Must take revenge on a named wrong.",
+    "set": "dwarf",
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    }
+  },
+  "surface_sick": {
+    "name": "Surface-Sick",
+    "cp": 2,
+    "hook": "every day outdoors",
+    "description": "-10 Perception in sunlight.",
+    "set": "dwarf",
+    "restrictions": {
+      "race": [
+        "Dwarf"
+      ]
+    }
+  },
+  "ogre_hunger": {
+    "name": "Hunger",
+    "cp": "intensity",
+    "hook": "every missed meal",
+    "description": "Ties to the existing hunger_risk tag; higher intensity = more often hunger rage.",
+    "set": "ogre",
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    },
+    "intensity_range": [
+      1,
+      5
+    ],
+    "area": "hunger"
+  },
+  "simple": {
+    "name": "Simple",
+    "cp": 2,
+    "hook": "every INT test",
+    "description": "-10 INT tests, cannot read.",
+    "set": "ogre",
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    }
+  },
+  "vat_marked": {
+    "name": "Vat-Marked",
+    "cp": 2,
+    "hook": "Reclaimer agents",
+    "description": "Hunted by the Reclaimers.",
+    "set": "ogre",
+    "restrictions": {
+      "race": [
+        "Ogre"
+      ]
+    }
+  },
+  "witch_hunted": {
+    "name": "Witch-Hunted",
+    "cp": [
+      1,
+      3
+    ],
+    "hook": "every Order encounter",
+    "description": "Templars and Holy Judges suspect you.",
+    "set": "female",
+    "restrictions": {
+      "gender": [
+        "Female"
+      ]
+    }
+  },
+  "beautiful_burden": {
+    "name": "Beautiful Burden",
+    "cp": 2,
+    "hook": "towns and camps",
+    "description": "Unwanted attention, abduction hooks.",
+    "set": "female",
+    "restrictions": {
+      "gender": [
+        "Female"
+      ]
+    }
+  },
+  "zealot": {
+    "name": "Zealot",
+    "cp": 2,
+    "hook": "every known heretic",
+    "description": "Must attack known heretics.",
+    "set": "crusader_knight",
+    "restrictions": {
+      "class": [
+        "Crusader_Knight"
+      ]
+    }
+  },
+  "penitent": {
+    "name": "Penitent",
+    "cp": 1,
+    "hook": "after every confession",
+    "description": "Self-flagellation, -5 END after confession.",
+    "set": "crusader_knight",
+    "restrictions": {
+      "class": [
+        "Crusader_Knight"
       ]
     }
   }

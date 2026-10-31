@@ -57,6 +57,9 @@ class Character:
         self.weapon_skill = 0
         self.ballistic_skill = 0
         self.faith = 0
+        self.virtue = 0  # GM-only, Crusader Knights (rules/virtue_rules.json)
+        self.piety = 0  # GM-only
+        self.corruption_peak = 0  # marks are permanent (scripts/corruption.py)
         self.reputation = 0
         self.grapple_committed = False
         self.grappled_by = None

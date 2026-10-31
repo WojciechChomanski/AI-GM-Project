@@ -35,9 +35,9 @@ def test_talent_caps_limited_to_plus_5_and_locked():
     assert not T.allowed_for(T.get_talent("light_footed"), "Human", "Male")
 
 
-def test_thirteen_flaws():
+def test_flaw_catalogue():
     f = C.load_flaws()
-    assert len(f) == 13
+    assert len([k for k, v in f.items() if "set" not in v]) == 23 and len(f) == 41
     assert f["lost_eye"]["cp"] == 4 and f["lost_hand"]["cp"] == 5 and f["old_debt"]["cp"] == [1, 3]
 
 

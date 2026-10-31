@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "version": "0.1",
+    "rule": "The observer's race decides the reaction. Elves judge elves harshest; humans copy elf contempt. Covering moves one row up until someone looks. Used for Scarred, Lost Eye/Hand and visible corruption.",
+    "doc": "docs/ADVANTAGES_DISADVANTAGES.md"
+  },
+  "table": {
+    "Elf": {
+      "1": {
+        "social": -10,
+        "text": "cool; elf subject 'flawed', not invited"
+      },
+      "2": {
+        "social": -20,
+        "text": "elf subject spoken about, not to"
+      },
+      "3": {
+        "social": -30,
+        "text": "elf subject loses house standing; elven services refused"
+      },
+      "4": {
+        "social": -40,
+        "text": "shunned, may be driven out of elven lands"
+      },
+      "5": {
+        "social": -50,
+        "text": "abomination; elven guards attack scarred elves on sight",
+        "attack_on_sight_if_subject": "Elf"
+      }
+    },
+    "Human": {
+      "1": {
+        "social": 0,
+        "text": "nobody cares"
+      },
+      "2": {
+        "social": -5,
+        "text": "nobles only"
+      },
+      "3": {
+        "social": -10,
+        "elf_subject_social": -20,
+        "text": "'even the elves won't have him'"
+      },
+      "4": {
+        "social": -20,
+        "text": "priests suspect a curse, crowds jeer"
+      },
+      "5": {
+        "social": -30,
+        "text": "outcast, leper rules"
+      }
+    },
+    "Dwarf": {
+      "1": {
+        "social": 0,
+        "text": "nobody cares"
+      },
+      "2": {
+        "social": -5,
+        "text": "mild suspicion"
+      },
+      "3": {
+        "social": -10,
+        "text": "hostile looks, refuses trade with non-dwarves"
+      },
+      "4": {
+        "social": -20,
+        "text": "'stay 20 m away'; closing in = attack"
+      },
+      "5": {
+        "social": -50,
+        "text": "attacks to kill within 20 m unless a known ally",
+        "attack_within_m": 20
+      }
+    },
+    "Ogre": {
+      "1": {
+        "social": 5,
+        "text": "respect"
+      },
+      "2": {
+        "social": 5,
+        "text": "respect"
+      },
+      "3": {
+        "social": 0,
+        "text": "neutral"
+      },
+      "4": {
+        "social": 0,
+        "text": "neutral, curious"
+      },
+      "5": {
+        "social": 0,
+        "text": "indifferent; ogres hire you"
+      }
+    }
+  },
+  "dwarf_vs_visible_corruption": "Dwarves react at intensity 5 to any clearly visible corruption mark (stage 75+)."
+}

@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "version": "0.1",
+    "rule": "GM-only stats exist but are never shown to players (in Foundry only the GM sees them). Players get fiction descriptions per band only."
+  },
+  "gm_only": [
+    "faith",
+    "virtue",
+    "piety",
+    "holy_fury_stacks",
+    "corruption_level"
+  ],
+  "fiction_bands": {
+    "virtue": [
+      {
+        "min": 70,
+        "text": "Your conscience is quiet; something stands with you against the dark."
+      },
+      {
+        "min": 40,
+        "text": "Something that used to answer you has gone quiet."
+      },
+      {
+        "min": 0,
+        "text": "You feel alone in the dark."
+      }
+    ],
+    "piety": [
+      {
+        "min": 70,
+        "text": "Prayer comes easily; at times the air feels heavier around you."
+      },
+      {
+        "min": 30,
+        "text": "Prayer is a habit."
+      },
+      {
+        "min": 0,
+        "text": "The words feel empty."
+      }
+    ],
+    "faith": [
+      {
+        "min": 50,
+        "text": "Your faith steadies you."
+      },
+      {
+        "min": 20,
+        "text": "You believe, mostly."
+      },
+      {
+        "min": 0,
+        "text": "Doubt gnaws at you."
+      }
+    ],
+    "corruption_level": "see rules/corruption_marks.json (player_hint per stage)"
+  }
+}

@@ -1,14 +1,22 @@
 {
   "virtue": {
     "start": 75,
-    "thresholds": { "full": 70, "dim": 40 },
+    "thresholds": {
+      "full": 70,
+      "dim": 40
+    },
     "loss_events": {
       "needless_killing": 8,
       "cruelty": 10,
       "broken_oath": 10,
       "desecration": 12,
       "vice_gambling": 4,
-      "vice_debauchery": 6
+      "vice_debauchery": 6,
+      "vice_drunkenness": 4,
+      "vice_drugs": 5,
+      "vice_brawling": 3,
+      "vice_cursing": 1,
+      "vice_brothel": 6
     },
     "gain_events": {
       "defend_innocent": 8,
@@ -17,7 +25,8 @@
       "fasting_day": 5,
       "guard_shrine": 6,
       "alms": 3
-    }
+    },
+    "visibility": "gm_only",
+    "note": "vice_drunkenness, vice_drugs, vice_brawling, vice_cursing and vice_brothel added 2026-10-31 (only gambling and debauchery existed before). Addiction intensity feeds these via scripts/knight.py."
   }
 }
-

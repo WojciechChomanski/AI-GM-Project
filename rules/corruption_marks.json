@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "source": "Stages from rules/magic_rules.json (10/25/50/75/100). Visibility follows rules/classes/veil_sorceress.json corruption_system: never on the sheet; at 75 'friends begin to notice something is wrong'; at 90 'the Veil speaks with your voice'; 100 hollowed. Clearly visible only when the character is already 1-2 steps from lost.",
+    "doc": "docs/ADVANTAGES_DISADVANTAGES.md"
+  },
+  "visible_from": 75,
+  "unmistakable_from": 90,
+  "marks_permanent_after_purge": true,
+  "stages": [
+    {
+      "threshold": 10,
+      "label": "bruised",
+      "visibility": "hidden",
+      "gm_notes": [
+        "bad dreams",
+        "cold hands",
+        "animals slightly uneasy"
+      ],
+      "player_hint": "You sleep badly."
+    },
+    {
+      "threshold": 25,
+      "label": "whispered",
+      "visibility": "hidden",
+      "gm_notes": [
+        "faint dark threads in the veins of the wrists, only seen by someone looking closely in good light",
+        "eyes catch the light oddly",
+        "vivid nightmares, subtle personality shifts"
+      ],
+      "player_hint": "Sometimes you hear your name when no one speaks."
+    },
+    {
+      "threshold": 50,
+      "label": "marked",
+      "visibility": "subtle",
+      "gm_notes": [
+        "minor mutation begins under clothing: a patch of scaly skin, black nail",
+        "intrusive whispers",
+        "short memory gaps"
+      ],
+      "player_hint": "Something under your sleeve itches and will not heal.",
+      "discoverable_by": [
+        "Witch-Sight",
+        "Discern Sin",
+        "undressing/medical exam"
+      ]
+    },
+    {
+      "threshold": 75,
+      "label": "veiled",
+      "visibility": "visible",
+      "marks": [
+        "dark veins spread to neck and face",
+        "reptile-skin patches",
+        "black nails",
+        "split tongue"
+      ],
+      "conceal": "gloves, high collar, veil, paint; fails on close contact",
+      "gm_notes": [
+        "friends begin to notice 'something is wrong'",
+        "blackouts"
+      ],
+      "player_hint": "People look at you a moment too long."
+    },
+    {
+      "threshold": 90,
+      "label": "speaking_veil",
+      "visibility": "unmistakable",
+      "marks": [
+        "bone spikes from shoulders, knuckles or spine",
+        "third eye under the brow skin (opens later)",
+        "snake-like mouth (jaw widens, fangs)"
+      ],
+      "conceal": "mask, full veil, cloak; only from a distance",
+      "gm_notes": [
+        "the Veil speaks with your voice",
+        "acts without deciding"
+      ],
+      "player_hint": "You no longer recognise the face in the water."
+    },
+    {
+      "threshold": 100,
+      "label": "lost",
+      "visibility": "unmistakable",
+      "marks": [
+        "body changes beyond hiding"
+      ],
+      "conceal": "impossible",
+      "gm_notes": [
+        "hollowed: becomes an NPC under GM control"
+      ],
+      "player_hint": "-"
+    }
+  ],
+  "corrupted_creature": {
+    "hp_multiplier": 3,
+    "hp_multiplier_range_undecided": [
+      3,
+      4
+    ],
+    "rule": "A corrupted creature 'refuses to die': its HP pool is natural HP x hp_multiplier. Wound penalties, bleeding and lost limbs are measured against NATURAL HP, so it still degrades. Damage from a Crusader Knight with active Breath counts x hp_multiplier against the pool (his wounds count as if against its natural HP).",
+    "formula": "pool = natural_hp * M; effective = normal_damage + breath_damage * M; dead when effective >= pool; wound_ratio = min(1, effective / natural_hp) for penalties (capped at 1 = 'should be dead')"
+  }
+}
