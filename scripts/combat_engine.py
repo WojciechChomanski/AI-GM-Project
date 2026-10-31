@@ -7,6 +7,9 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 import dotenv
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import progression
 
 dotenv.load_dotenv()
 app = FastAPI()
@@ -57,6 +60,11 @@ class Combatant:
         self.strength = data.get("strength", 10)
         self.dexterity = data.get("dexterity", 10)
         self.weapon_skill = data.get("weapon_skill", 0)
+        self.ballistic_skill = data.get("ballistic_skill", 0)
+        self.gender = data.get("gender")
+        self.talents = data.get("talents", [])
+        self.progression = data.get("progression", {})  # per-character mastery uses
+        self.style = data.get("style")  # "shield" | "dual_wield" | "two_hander" | None
         self.pain = 0
         self.stress = 0
         self.armor_specs = []
@@ -119,8 +127,19 @@ class CombatEngine:
         equip_armor(attacker, armors)
         equip_armor(defender, armors)
 
+        # Ranged/thrown use Ballistic Skill; mastery adds capped to-hit/damage (scripts/progression.py).
+        weapon_ref = attacker.weapon
+        if isinstance(weapon_ref, str):
+            try:
+                weapon_ref = dict(load_json("weapons.json").get(weapon_ref, {}), key=attacker.weapon)
+            except Exception:
+                pass
+        skill = progression.attack_skill(attacker, weapon_ref)
+        mastery = progression.mastery_modifiers(attacker, weapon_ref, attacker.style)
+        weapon_damage = weapon_damage + mastery["damage"]
+
         roll = d100()
-        atk = roll + attacker.weapon_skill + (attacker.dexterity // 10) - attacker.stress - attacker.pain
+        atk = roll + skill + mastery["to_hit"] + (attacker.dexterity // 10) - attacker.stress - attacker.pain
         def_roll = d100()
         def_score = def_roll + (defender.dexterity // 10) - defender.stress - defender.pain
         def_type = random.choice(["Parry", "Block", "Dodge"])
@@ -147,6 +166,8 @@ class CombatEngine:
             "def_roll": def_roll,
             "def_total": def_score,
             "def_type": def_type,
+            "attack_skill": skill,
+            "mastery": mastery,
         }
 
 engine = CombatEngine()

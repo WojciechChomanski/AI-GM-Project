@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER numbers for playtesting",
+    "code": [
+      "scripts/progression.py",
+      "scripts/creation.py",
+      "scripts/talents.py"
+    ],
+    "doc": "docs/PROGRESSION.md"
+  },
+  "creation": {
+    "free_cp": 5,
+    "max_flaw_cp": 10,
+    "max_total_cp": 15,
+    "cp_per_stat_step": 1,
+    "stat_points_per_step": 2,
+    "max_stat_raise_at_creation": 5,
+    "max_talents_at_creation": 2,
+    "max_talents_ever": 4,
+    "talent_cap_raise_limit": 5
+  },
+  "growth": {
+    "formula": "30 + (current - 30) * 12 uses, minimum 30",
+    "near_cap_points": 5,
+    "near_cap_mult": 2,
+    "max_points_per_stat_per_session": 1,
+    "failure_counts": 2,
+    "uses": {
+      "melee_attack": {
+        "weapon_skill": 1,
+        "strength": 1
+      },
+      "heavy_melee_attack": {
+        "weapon_skill": 1,
+        "strength": 2
+      },
+      "ranged_attack": {
+        "ballistic_skill": 1,
+        "dexterity": 1,
+        "perception": 1
+      },
+      "loaded_march_km": {
+        "endurance": 1,
+        "strength": 1
+      },
+      "clinch_round": {
+        "strength": 1,
+        "endurance": 1
+      },
+      "dodge": {
+        "agility": 1
+      }
+    }
+  },
+  "mastery": {
+    "rank_uses": [
+      50,
+      150,
+      400,
+      900,
+      2000
+    ],
+    "rank_names": [
+      "Familiar",
+      "Practiced",
+      "Seasoned",
+      "Veteran",
+      "Master"
+    ],
+    "weapon_families": [
+      "greatsword",
+      "warhammer",
+      "mace",
+      "axe",
+      "one_hand_sword",
+      "spear",
+      "dagger",
+      "bow",
+      "crossbow",
+      "thrown",
+      "gunpowder"
+    ],
+    "styles": [
+      "shield",
+      "dual_wield",
+      "two_hander"
+    ],
+    "weapon_rank_gains": [
+      {
+        "stamina": -1
+      },
+      {
+        "to_hit": 5
+      },
+      {
+        "stamina": -1
+      },
+      {
+        "damage": 1
+      },
+      {
+        "trick": true
+      }
+    ],
+    "shield_rank_gains": [
+      {
+        "block": 5
+      },
+      {
+        "stamina": -1
+      },
+      {
+        "block": 5
+      },
+      {
+        "bash_damage": 1
+      },
+      {
+        "trick": true
+      }
+    ],
+    "dual_wield_rank_gains": "off-hand penalty shrinks by 5 per rank to 0 (rank 5 trick: off-hand stamina 0)",
+    "two_hander_rank_gains": "same as weapon ranks; does not stack with the weapon family (best of the two is used)",
+    "ceiling": {
+      "to_hit": 5,
+      "damage": 1,
+      "stamina": -2,
+      "min_stamina_per_attack": 2,
+      "tricks": 1
+    },
+    "tricks_examples": {
+      "greatsword": "half-sword vs armour",
+      "shield": "shield bash costs no AP",
+      "dual_wield": "off-hand attacks cost 0 stamina"
+    },
+    "weapon_type_to_family": {
+      "2H_sword": "greatsword",
+      "2H_hammer": "warhammer",
+      "1H_blunt": "mace",
+      "1H_axe": "axe",
+      "2H_axe": "axe",
+      "1H_sword": "one_hand_sword",
+      "sword": "one_hand_sword",
+      "shortsword": "one_hand_sword",
+      "polearm": "spear",
+      "dagger": "dagger",
+      "thrown": "thrown",
+      "staff": "spear",
+      "improvised": "mace"
+    },
+    "ranged_name_to_family": {
+      "longbow": "bow",
+      "recurve_bow": "bow",
+      "crossbow": "crossbow",
+      "arbalest": "crossbow",
+      "sling": "thrown"
+    },
+    "spell_mastery": "Veil Sorceress per-spell mastery (50/100/200 uses) stays as written in rules/classes/veil_sorceress.json"
+  }
+}

@@ -15,7 +15,8 @@
       "stress_level": 0,
       "weapon_skill": 30,
       "faith": 20,
-      "reputation": 0
+      "reputation": 0,
+      "ballistic_skill": 25
     },
     "max_stats": {
       "strength": 50,
@@ -32,7 +33,8 @@
       "stress_level": 100,
       "weapon_skill": 55,
       "faith": 60,
-      "reputation": 100
+      "reputation": 100,
+      "ballistic_skill": 50
     }
   },
   "Human_Female": {
@@ -51,7 +53,8 @@
       "stress_level": 0,
       "weapon_skill": 25,
       "faith": 20,
-      "reputation": 0
+      "reputation": 0,
+      "ballistic_skill": 30
     },
     "max_stats": {
       "strength": 45,
@@ -68,7 +71,8 @@
       "stress_level": 100,
       "weapon_skill": 50,
       "faith": 60,
-      "reputation": 100
+      "reputation": 100,
+      "ballistic_skill": 55
     }
   },
   "Ogre_Male": {
@@ -87,7 +91,8 @@
       "stress_level": 0,
       "weapon_skill": 25,
       "faith": 10,
-      "reputation": -20
+      "reputation": -20,
+      "ballistic_skill": 15
     },
     "max_stats": {
       "strength": 70,
@@ -104,7 +109,8 @@
       "stress_level": 100,
       "weapon_skill": 40,
       "faith": 20,
-      "reputation": 50
+      "reputation": 50,
+      "ballistic_skill": 30
     }
   },
   "Dwarf_Male": {
@@ -123,7 +129,8 @@
       "stress_level": 0,
       "weapon_skill": 35,
       "faith": 15,
-      "reputation": 0
+      "reputation": 0,
+      "ballistic_skill": 30
     },
     "max_stats": {
       "strength": 60,
@@ -140,7 +147,8 @@
       "stress_level": 100,
       "weapon_skill": 60,
       "faith": 50,
-      "reputation": 100
+      "reputation": 100,
+      "ballistic_skill": 55
     }
   },
   "Elf_Male": {
@@ -159,7 +167,8 @@
       "stress_level": 0,
       "weapon_skill": 30,
       "faith": 15,
-      "reputation": 0
+      "reputation": 0,
+      "ballistic_skill": 35
     },
     "max_stats": {
       "strength": 45,
@@ -176,7 +185,8 @@
       "stress_level": 100,
       "weapon_skill": 60,
       "faith": 50,
-      "reputation": 100
+      "reputation": 100,
+      "ballistic_skill": 60
     }
   },
   "Elf_Female": {
@@ -195,7 +205,8 @@
       "stress_level": 0,
       "weapon_skill": 25,
       "faith": 15,
-      "reputation": 0
+      "reputation": 0,
+      "ballistic_skill": 35
     },
     "max_stats": {
       "strength": 40,
@@ -212,7 +223,8 @@
       "stress_level": 100,
       "weapon_skill": 55,
       "faith": 50,
-      "reputation": 100
+      "reputation": 100,
+      "ballistic_skill": 60
     }
   }
 }

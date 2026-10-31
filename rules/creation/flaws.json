@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "rule": "A flaw must cost something in play every session or the GM refuses it.",
+    "doc": "docs/PROGRESSION.md"
+  },
+  "lost_eye": {
+    "name": "Lost Eye",
+    "cp": 4,
+    "effects": {
+      "stat_mods": {
+        "ballistic_skill": -15
+      },
+      "situational": [
+        "-10 sight Perception",
+        "-10 parry from the blind side",
+        "no depth judging past 30 m"
+      ]
+    },
+    "description": "One eye gone."
+  },
+  "lost_fingers": {
+    "name": "Lost Fingers (2, off-hand)",
+    "cp": 2,
+    "effects": {
+      "offhand_grip_mult": 0.85,
+      "situational": [
+        "two-handers and shields -5 WS"
+      ]
+    },
+    "description": "Two fingers of the off hand gone."
+  },
+  "lost_hand": {
+    "name": "Lost Hand",
+    "cp": 5,
+    "effects": {
+      "forbids": [
+        "two_handed",
+        "bow",
+        "crossbow",
+        "shield_and_weapon"
+      ],
+      "situational": [
+        "grip contests use one arm only"
+      ]
+    },
+    "description": "One hand gone.",
+    "excludes_flaws": [
+      "lost_fingers"
+    ]
+  },
+  "limp": {
+    "name": "Limp (old leg wound)",
+    "cp": 3,
+    "effects": {
+      "stat_mods": {
+        "mobility": -10
+      },
+      "cap_mods": {
+        "mobility": -10
+      },
+      "march_stamina_mult": 1.25
+    },
+    "description": "Old leg wound."
+  },
+  "paranoia": {
+    "name": "Paranoia",
+    "cp": 3,
+    "effects": {
+      "situational": [
+        "no long-rest benefit when sleeping near strangers",
+        "WIL test to trust allies",
+        "+5 vs ambush"
+      ]
+    },
+    "description": "Trusts no one."
+  },
+  "weak_lungs": {
+    "name": "Weak Lungs",
+    "cp": 3,
+    "effects": {
+      "cap_mods": {
+        "endurance": -5
+      },
+      "stamina_regen": "-1 per 2 rounds"
+    },
+    "description": "Short of breath.",
+    "excludes_talents": [
+      "deep_lungs"
+    ]
+  },
+  "night_blind": {
+    "name": "Night-Blind",
+    "cp": 2,
+    "effects": {
+      "situational": [
+        "-20 Perception and -10 attacks in darkness"
+      ]
+    },
+    "description": "Useless in the dark."
+  },
+  "hunted": {
+    "name": "Hunted / Wanted",
+    "cp": 2,
+    "effects": {
+      "situational": [
+        "bounty hunters, GM-driven encounters"
+      ]
+    },
+    "description": "Someone wants you."
+  },
+  "hard_of_hearing": {
+    "name": "Hard of Hearing",
+    "cp": 2,
+    "effects": {
+      "situational": [
+        "-15 hearing Perception",
+        "ambushes harder to spot"
+      ]
+    },
+    "description": "Half deaf."
+  },
+  "hot_blooded": {
+    "name": "Hot-Blooded",
+    "cp": 2,
+    "effects": {
+      "situational": [
+        "WIL test or attack when insulted or struck first"
+      ]
+    },
+    "description": "Quick temper."
+  },
+  "old_debt": {
+    "name": "Old Debt / Oath-Bound",
+    "cp": [
+      1,
+      3
+    ],
+    "effects": {
+      "situational": [
+        "owes money or service; GM calls it in"
+      ]
+    },
+    "description": "CP 1-3 by size of the debt (GM sets)."
+  },
+  "ugly_scarring": {
+    "name": "Ugly Scarring",
+    "cp": 1,
+    "effects": {
+      "looks": -1,
+      "situational": [
+        "counts against the scar maximum of -2 Looks"
+      ]
+    },
+    "description": "Needs the Looks stat (not built yet)."
+  },
+  "veil_tainted": {
+    "name": "Veil-Tainted",
+    "cp": 3,
+    "effects": {
+      "start_set": {
+        "corruption_level": 10
+      },
+      "situational": [
+        "spells +1 corruption until mastered"
+      ]
+    },
+    "description": "Women only.",
+    "restrictions": {
+      "gender": [
+        "Female"
+      ]
+    }
+  }
+}

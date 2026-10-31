@@ -55,11 +55,14 @@ class Character:
         self.corruption_level = 0
         self.stress_level = 0
         self.weapon_skill = 0
+        self.ballistic_skill = 0
         self.faith = 0
         self.reputation = 0
         self.grapple_committed = False
         self.grappled_by = None
         self.talents = []
+        self.flaws = []
+        self.progression = {}  # per-character use counters and mastery (scripts/progression.py)
         self.iron_thewed_used = False
         self.stunned = False
         self.skip_turn = False

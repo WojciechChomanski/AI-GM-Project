@@ -26,29 +26,33 @@ import random
 from pathlib import Path
 from collections import defaultdict
 
-# ====================== GLOBAL ORGANIC PROGRESSION SYSTEM ======================
+# ====================== ORGANIC PROGRESSION (per character) ======================
+# Counters now live on each character (character.progression), not in one shared dict.
+# Rules: scripts/progression.py and docs/PROGRESSION.md (x2 uses near cap, 1 point/stat/session, talent speed).
+try:
+    from AI_GM_Project.scripts import progression as _prog
+except ImportError:
+    import progression as _prog
+
+
 class GlobalProgression:
-    def __init__(self):
-        self.use_counters = defaultdict(int)
+    """Kept for the existing call sites; stores everything per character."""
 
     def record_action(self, character, stat_name: str, intensity: int = 1):
-        self.use_counters[stat_name] += intensity
+        _prog.record_use(character, stat_name, intensity)
 
     def check_for_growth(self, character):
-        messages = []
-        stats_data = load_stats(character.race, character.gender)
-        max_stats = stats_data.get("max_stats", {})
-        for stat, uses in list(self.use_counters.items()):
-            current = getattr(character, stat, 30)
-            cap = max_stats.get(stat, 50)
-            if current >= cap: continue
-            threshold = 30 + (current - 30) * 12   # 30 first, +12 per level
-            if uses >= threshold:
-                new_value = current + 1
-                setattr(character, stat, new_value)
-                self.use_counters[stat] = 0
-                messages.append(f"✨ {character.name}'s {stat.replace('_', ' ')} improved to {new_value}!")
-        return messages
+        def cap(c, stat):
+            base = load_stats(c.race, c.gender).get("max_stats", {}).get(stat, 50)
+            try:
+                from AI_GM_Project.scripts.strength import stat_cap
+            except ImportError:
+                from strength import stat_cap
+            return stat_cap(base, c.race, c.gender, stat, getattr(c, "talents", []) or [])
+        return [f"✨ {m}" for m in _prog.check_growth(character, cap)]
+
+    def new_session(self, character):
+        _prog.new_session(character)
 
 global_progress = GlobalProgression()
 # ====================== END GLOBAL PROGRESSION ======================

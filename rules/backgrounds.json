@@ -2,8 +2,8 @@
   "Noble": {
     "description": "Born into wealth and influence, navigating courts with ease.",
     "stats": {
-      "charisma_bonus": 10,
-      "intelligence_modifier": 1
+      "charisma": 5,
+      "intelligence": 3
     },
     "abilities": [
       {
@@ -15,8 +15,8 @@
   "Hunter": {
     "description": "A tracker of beasts and men, at home in the wilds.",
     "stats": {
-      "agility_modifier": 2,
-      "perception_bonus": 5
+      "agility": 6,
+      "perception": 2
     },
     "abilities": [
       {
@@ -28,8 +28,8 @@
   "Scholar": {
     "description": "A seeker of forbidden knowledge, versed in ancient lore.",
     "stats": {
-      "intelligence_modifier": 2,
-      "charisma_bonus": 5
+      "intelligence": 6,
+      "charisma": 2
     },
     "abilities": [
       {
@@ -41,8 +41,8 @@
   "Outlaw": {
     "description": "A fugitive thriving in the empire’s shadows.",
     "stats": {
-      "agility_modifier": 1,
-      "strength_modifier": 1
+      "agility": 3,
+      "strength": 3
     },
     "abilities": [
       {
@@ -58,8 +58,8 @@
       "race": "Human"
     },
     "stats": {
-      "charisma_bonus": 10,
-      "agility_modifier": 1,
+      "charisma": 5,
+      "agility": 3,
       "stamina_bonus": 5
     },
     "abilities": [
@@ -80,8 +80,8 @@
       "race": "Human"
     },
     "stats": {
-      "charisma_bonus": 15,
-      "intelligence_modifier": 1,
+      "charisma": 8,
+      "intelligence": 3,
       "stamina_bonus": 0
     },
     "abilities": [
