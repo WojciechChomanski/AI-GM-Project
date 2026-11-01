@@ -273,6 +273,9 @@ class CombatHealthManager:
             if damage_type in ("blunt", "slashing", "piercing"):
                 effect = self.consequences.apply_consequence(self.character, zone, damage_type, overflow)
                 crit_text = self.apply_critical_wound(zone, damage_type, overflow) or ""
+                if "severed" in crit_text.lower() and "tendon" not in crit_text.lower():
+                    self.limb_state = getattr(self, "limb_state", {})
+                    self.limb_state[zone] = "severed"  # scripts/limb_repair.py
                 # a crit result that cuts an artery / the jugular makes an artery wound (never from blunt)
                 if damage_type != "blunt" and (effect == "Artery Slashed" or any(k in crit_text.lower() for k in ("artery", "jugular"))):
                     self.add_bleeding_wound(zone, max(1, damage), damage_type, True, True)

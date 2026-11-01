@@ -1,0 +1,9 @@
+{
+  "meta": {"version": "0.1", "status": "PLACEHOLDER", "doc": "docs/RECOVERY.md"},
+  "round_seconds": 6,
+  "day_rest_modes": ["resting", "bed_rest_with_care", "travelling"],
+  "default_rest_mode": "resting",
+  "max_ticks_per_command": 1000,
+  "round_order": ["bleeding (includes clotting)", "corrupted regeneration"],
+  "day_order": ["infection", "natural healing"]
+}
