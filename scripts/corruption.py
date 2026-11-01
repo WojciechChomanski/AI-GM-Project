@@ -86,9 +86,13 @@ class CorruptedCreature:
         self.m = hp_multiplier(multiplier, tier)
         self.pool = natural_hp * self.m
         self.effective = 0
+        self.breath_effective = 0  # part of effective that came from full-Breath wounds (not regenerated)
 
     def take(self, damage, breath=False):
-        self.effective += damage * (self.m if breath else 1)
+        add = damage * (self.m if breath else 1)
+        self.effective += add
+        if breath:
+            self.breath_effective += add
         return self.effective
 
     @property

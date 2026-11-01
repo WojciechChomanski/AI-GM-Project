@@ -1,0 +1,36 @@
+{
+  "meta": {"version": "0.1", "status": "PLACEHOLDER", "doc": "docs/RECOVERY.md",
+           "note": "Per-round regeneration and per-day natural healing. Bleeding per round stays in scripts/bleeding.py (docs/BLEEDING.md)."},
+  "natural_healing": {
+    "hp_per_zone_per_day": {"resting": 1, "bed_rest_with_care": 2, "travelling": 0.5},
+    "destroyed_zone_heals": false,
+    "destroyed_zone_note": "A zone at 0 (crippled/severed) does not heal by itself: surgery/magic/GM.",
+    "bleeding_blocks_healing": true
+  },
+  "race_healing": {
+    "Ogre": {"mult": 1.5, "requires_fed": true, "unfed_mult": 0.0, "excludes": "severed zones",
+             "source": "rules/races.json 'High Caloric Need & Fast Healing': heal 50% faster for non-severed wounds as long as fed"},
+    "Dwarf": {"bleed_clot_mult": 0.8, "source": "rules/lore/dwarves.json bleed_duration_multiplier 0.8 (no healing-speed trait in data)"}
+  },
+  "corrupted_regeneration": {
+    "per_round_pct_of_natural_hp": 5,
+    "min_per_round": 1,
+    "heals_breath_damage": false,
+    "breath_damage_natural_heal_mult": 0.5,
+    "note": "Regeneration only removes normal damage. Damage from a full-Breath knight is not regenerated and heals naturally at x0.5."
+  },
+  "breath_wounds": {
+    "bleed_rate_mult": 1.5,
+    "clot_time_mult": 1.5,
+    "pain_mult": 1.5,
+    "label_gm": "burning",
+    "fairness": "Cuts still clot (only slower) and the 5 HP/round bleeding cap still applies."
+  },
+  "morale_vs_knight": {
+    "base": 50,
+    "willpower_div": 5,
+    "breath_mod": -10,
+    "rule": "d100 <= base + WIL//5 + breath_mod passes. Fail = pick another target if one is available; otherwise it still attacks. A test, never automatic.",
+    "applies_to_tags": ["veilspawn", "abomination", "demon", "corrupted"]
+  }
+}

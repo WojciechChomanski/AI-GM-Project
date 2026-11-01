@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import progression
 import knight
 import corruption
+import wound_recovery as recovery
 
 dotenv.load_dotenv()
 app = FastAPI()
@@ -147,6 +148,15 @@ class CombatEngine:
         mastery = progression.mastery_modifiers(attacker, weapon_ref, attacker.style)
         weapon_damage = weapon_damage + mastery["damage"]
 
+        # A Veil-thing attacking a full-Breath knight tests morale; fail = turns to another target if one exists
+        if (attacker.corrupted or set(attacker.creature_tags) & {"veilspawn", "abomination", "demon"}) \
+                and defender.class_name == "Crusader_Knight" \
+                and knight.breath_state(defender.virtue, defender.piety, defender.corruption_level) == "full" \
+                and attacker_data.get("other_targets_available") \
+                and not recovery.morale_vs_knight(attacker_data.get("willpower", 30)):
+            return {"hit": False, "shied_away": True, "damage": 0, "absorbed": 0, "defender_hp": defender.hp,
+                    "breath_gm_only": {"state": "full", "morale_failed": True}}
+
         roll = d100()
         atk = roll + skill + mastery["to_hit"] + (attacker.dexterity // 10) - attacker.stress - attacker.pain
         def_roll = d100()
@@ -166,8 +176,10 @@ class CombatEngine:
                 cc = corruption.CorruptedCreature(defender.total_hp, defender_data.get("hp_multiplier"),
                                                   defender_data.get("corruption_tier", "ordinary"))
                 cc.effective = defender_data.get("damage_taken", 0)
+                cc.breath_effective = defender_data.get("breath_damage_taken", 0)
                 cc.take(effective, breath=bool(breath.get("bypass_undying")))
                 defender.hp = cc.hp
+                breath = dict(breath, damage_taken=cc.effective, breath_damage_taken=cc.breath_effective)
                 ratio = cc.wound_ratio
             else:
                 defender.hp -= effective
