@@ -1,0 +1,45 @@
+{
+  "meta": {"version": "0.1", "status": "PLACEHOLDER", "doc": "docs/RECOVERY.md",
+           "lore_check": "rules/core_rules.txt: active magic is female-only (Veil Sorceress line, human/elf women); men never activate magic; passive magic via items, potions, runes and relics is allowed for everyone. rules/magic_rules.json: corruption stages, purge methods (breath_ritual, saint_relic). No surgery/medicine skill exists in the repo."},
+  "limb_states": ["crippled", "severed", "stabilised", "prosthesis"],
+  "surgery": {
+    "skill": "surgery",
+    "fallback_stats": ["intelligence", "dexterity"],
+    "fallback_note": "No surgery skill in the repo: uses skills['surgery'] if present, else (INT + DEX) / 2.",
+    "requires_tools": true,
+    "no_tools_mod": -30,
+    "tools_bonus": {"field_kit": 0, "surgeon_kit": 10, "infirmary": 20},
+    "hours": {"crippled": 2, "severed_stabilise": 1, "prosthesis_fit": 4},
+    "difficulty": {"crippled": 0, "severed_stabilise": 10, "prosthesis_fit": 0},
+    "pain_cap": 20,
+    "success_restore_hp": 1,
+    "crit_fail_from": 96,
+    "fail_extra_damage": 3,
+    "fail_infection_chance_pct": 30,
+    "infection": {"daily_stress": 2, "blocks_healing": true, "toughness_test_daily": true, "clears_after_passes": 2,
+                  "fail_damage_per_day": 1, "note": "Infection damage is spread with floor 1: it cannot kill on its own (fair rule)."},
+    "severed": "Mundane surgery cannot reattach a severed part: only stabilise (stops that zone's bleeding) or fit a prosthesis.",
+    "prosthesis_penalty": {"arm": {"weapon_skill": -20, "dexterity": -10}, "leg": {"mobility": -20}},
+    "retry_wait_days": 1
+  },
+  "magic": {
+    "veil_healing": {
+      "who": "Veil Sorceress (active magic, female only)",
+      "skill": "spellcraft",
+      "restores": ["crippled"],
+      "difficulty": 10,
+      "caster_corruption": 5,
+      "caster_hp_cost": 6,
+      "patient_corruption": 2,
+      "severed_regrowth": {"allowed": true, "difficulty": 40, "caster_corruption": 15, "patient_corruption": 10,
+                           "note": "Rare and costly: Veil flesh regrows, never quite right (counts toward corruption marks)."}
+    },
+    "relic_or_potion": {
+      "who": "anyone (passive magic: relic, potion, rune)",
+      "restores": ["crippled"],
+      "consumes_charge": true,
+      "severed": "only a saint relic (rules/magic_rules.json saint_relic, 1 charge) can restore a severed part, no corruption",
+      "severed_items": ["saint_relic"]
+    }
+  }
+}
