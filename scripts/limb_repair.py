@@ -54,12 +54,21 @@ def _hurt(manager, amount):
     return sum(split.values())
 
 
+def medicine_bonus(person):
+    """+5 per Medicine rank (max 5) + talents such as Field Surgeon. Used by surgery and bandaging."""
+    M = data()["surgery"]["skill_model"]
+    rank = min((getattr(person, "skills", None) or {}).get("medicine", 0), M["medicine_rank_max"])
+    talents = getattr(person, "talents", []) or []
+    return rank * M["medicine_rank_bonus"] + sum(v for t, v in M["talent_bonus"].items() if t in talents)
+
+
 def surgery_skill(surgeon):
-    sk = (getattr(surgeon, "skills", None) or {}).get(data()["surgery"]["skill"])
+    """skills['surgery'] (absolute, legacy) wins; else (INT + DEX) / 2 + Medicine bonus."""
+    sk = (getattr(surgeon, "skills", None) or {}).get("surgery")
     if sk is not None:
         return sk
     a, b = data()["surgery"]["fallback_stats"]
-    return (getattr(surgeon, a, 0) + getattr(surgeon, b, 0)) // 2
+    return (getattr(surgeon, a, 0) + getattr(surgeon, b, 0)) // 2 + medicine_bonus(surgeon)
 
 
 def surgery(surgeon, manager, zone, procedure="repair", tools="field_kit", rng=None):
@@ -166,3 +175,82 @@ def relic_heal(manager, zone, item):
     item["charges"] -= 1
     _restore(manager, zone)
     return {"ok": True, "result": "restored"}
+
+
+# ---- dwarf rune-forged prostheses (NPC service) ----
+def rune_prosthesis(manager, zone, material, smith, weapon=None):
+    """Fit a rune-forged prosthesis made by a dwarf master smith (smith: object/dict with race 'Dwarf'
+    and master_smith True). No penalty; zone back to natural HP + bonus, extra zone armour, never bleeds.
+    Returns dict(ok, cost_gold, weeks, ...). Payment is up to the GM/game."""
+    D = data()["dwarf_rune_prosthesis"]
+    get = (lambda k: smith.get(k)) if isinstance(smith, dict) else (lambda k: getattr(smith, k, None))
+    race = getattr(manager.character, "race", None)
+    if get("race") != "Dwarf" or not get("master_smith"):
+        return {"ok": False, "result": "only a dwarf master smith can forge a rune prosthesis"}
+    if race in D["forbidden_races"] or race not in D["allowed_races"]:
+        return {"ok": False, "result": f"dwarves will not forge for {race}"}
+    if states(manager).get(zone) not in D["requires_state"] or not limb_kind(zone):
+        return {"ok": False, "result": "needs a lost (severed) arm or leg"}
+    mat = D["materials"].get(material)
+    if not mat:
+        return {"ok": False, "result": f"unknown material {material}"}
+    cost = mat["cost_gold"]
+    if weapon:
+        w = D["built_in_weapons"].get(weapon)
+        if not w or (w.get("arms_only") and limb_kind(zone) != "arm"):
+            return {"ok": False, "result": f"weapon {weapon} not possible here"}
+        cost += w["cost_gold"]
+    manager.limb_state[zone] = "rune_prosthesis"
+    manager.initial_health[zone] = manager.initial_health[zone] + mat["zone_hp_bonus"]
+    manager.health[zone] = manager.initial_health[zone]
+    manager.zone_armor_bonus = getattr(manager, "zone_armor_bonus", {})
+    manager.zone_armor_bonus[zone] = mat["zone_armor"]
+    for w_ in manager.bleeding_wounds:
+        if w_["zone"] == zone:
+            w_["rate"] = 0
+    manager.refresh_bleeding()
+    c = manager.character
+    c.prostheses = dict(getattr(c, "prostheses", {}), **{zone: {"material": material, "weapon": weapon}})
+    if zone in getattr(c, "compromised_limbs", []):
+        c.compromised_limbs.remove(zone)
+    manager._sync_total()
+    return {"ok": True, "cost_gold": cost, "weeks": D["craft_weeks"][material], "result": "rune prosthesis fitted"}
+
+
+# ---- elven restoration (service: alchemy, rituals, magic stones) ----
+def elven_restoration(manager, zone):
+    """Start regrowing a crippled or lost limb. Never for dwarves. Completes in time_loop.day_tick."""
+    E = data()["elven_restoration"]
+    race = getattr(manager.character, "race", None)
+    if race in E["forbidden_races"] or race not in E["allowed_races"]:
+        return {"ok": False, "result": f"the elves will not do this for {race}"}
+    st = states(manager).get(zone)
+    if st not in E["requires_state"]:
+        return {"ok": False, "result": "nothing they can regrow here"}
+    kind = "crippled" if st == "crippled" else "severed"
+    manager.regrowing = getattr(manager, "regrowing", {})
+    manager.regrowing[zone] = E["regrow_days"][kind]
+    manager.limb_state[zone] = "regrowing"
+    for w_ in manager.bleeding_wounds:
+        if w_["zone"] == zone:
+            w_["rate"] = 0
+    manager.refresh_bleeding()
+    return {"ok": True, "cost_gold": E["cost_gold"][kind], "days": E["regrow_days"][kind], "result": "regrowing"}
+
+
+def regrow_day(manager):
+    """One day of elven regrowth; finished zones return to full natural HP. Returns finished zones."""
+    done = []
+    for z in list(getattr(manager, "regrowing", {})):
+        manager.regrowing[z] -= 1
+        if manager.regrowing[z] <= 0:
+            del manager.regrowing[z]
+            manager.limb_state.pop(z, None)
+            manager.health[z] = manager.initial_health[z]
+            c = manager.character
+            if z in getattr(c, "compromised_limbs", []):
+                c.compromised_limbs.remove(z)
+            done.append(z)
+    if done:
+        manager._sync_total()
+    return done

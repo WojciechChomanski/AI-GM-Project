@@ -50,3 +50,6 @@ untracked_backup/
 untracked_backup/
 
 untracked_backup/
+
+# character saves (GM console)
+saves/

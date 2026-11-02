@@ -19,7 +19,7 @@ def mk(race="Human", gender="Male", **stats):
 
 def test_talent_folder_loads_and_iron_thewed_migrated():
     t = T.load_talents(refresh=True)
-    assert "iron_thewed" in t and len(t) == 16
+    assert "iron_thewed" in t and len(t) == 17  # +field_surgeon (2026-11-02)
     assert not os.path.exists(os.path.join(ROOT, "rules", "talents.json"))
     it = t["iron_thewed"]["effects"]
     assert it["start_bonus"] == {"strength": 3} and it["cap_raise"] == {"strength": 5} and it["growth_mult"] == {"strength": 0.75}

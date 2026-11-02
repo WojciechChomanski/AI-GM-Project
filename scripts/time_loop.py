@@ -35,8 +35,9 @@ def day_tick(manager, mode=None, fed=True, rng=None):
         return {"healed": 0, "alive": False}
     limb_repair.states(manager)
     inf = limb_repair.infection_day(manager, rng)
+    regrown = limb_repair.regrow_day(manager)
     healed = 0 if getattr(manager, "infection", None) else WR.heal_manager_day(manager, fed, mode)
-    return {"healed": healed, "infection": inf, "mode": mode}
+    return {"healed": healed, "infection": inf, "mode": mode, "regrown": regrown}
 
 
 def gm_command(line, characters, creatures=None):

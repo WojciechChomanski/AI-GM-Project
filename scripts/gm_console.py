@@ -65,12 +65,19 @@ def perform_attack(att, defn):
     net = max(0, dmg - armor_abs)
     return net, None, None
 
+import character_store  # tick / save / load / list / status (docs/RECOVERY.md)
+loaded_characters = {}
+
 while True:
-    cmd = input("gm> ").strip().lower().split()
+    raw = input("gm> ").strip()
+    cmd = raw.lower().split()
     if not cmd: continue
     if cmd[0] == "quit": break
+    if cmd[0] in ("tick", "save", "load", "list", "status"):
+        print(character_store.console_command(raw, loaded_characters))
+        continue
     if cmd[0] != "simulate":
-        print("simulate quick 150")
+        print("simulate quick 150 | tick round [n] | tick day [n] [mode] [unfed] | load/save <name> | list | status <name>")
         continue
     mode = cmd[1] if len(cmd) > 1 else "quick"
     runs = int(cmd[2]) if len(cmd) > 2 else 100

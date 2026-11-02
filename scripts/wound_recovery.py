@@ -24,9 +24,11 @@ def heal_mult(race, fed=True):
     return r["mult"]
 
 
-def heal_day(health, initial, race=None, fed=True, mode="resting", bleeding=False, extra_mult=1.0):
+def heal_day(health, initial, race=None, fed=True, mode="resting", bleeding=False, extra_mult=1.0, carry=None):
     """One day of natural healing on a {zone: hp} dict (changed in place).
-    Zones at 0 do not heal; no healing while still bleeding. Returns HP healed."""
+    Zones at 0 do not heal; no healing while still bleeding. Returns HP healed.
+    carry: optional {zone: fraction} dict; fractions (Dwarf 1.5, travelling 0.5) carry over day to day.
+    Without carry, a fraction is rolled as a chance."""
     nh = data()["natural_healing"]
     if bleeding and nh["bleeding_blocks_healing"]:
         return 0
@@ -36,7 +38,15 @@ def heal_day(health, initial, race=None, fed=True, mode="resting", bleeding=Fals
         top = initial.get(z, hp)
         if hp <= 0 and not nh["destroyed_zone_heals"] or hp >= top or per <= 0:
             continue
-        gain = min(top - hp, max(1, math.floor(per)) if per >= 1 else (1 if random.random() < per else 0))
+        if carry is not None:
+            acc = carry.get(z, 0.0) + per
+            whole = math.floor(acc + 1e-9)
+            carry[z] = acc - whole
+        else:
+            whole = math.floor(per) + (1 if random.random() < per - math.floor(per) else 0)
+        gain = min(top - hp, whole)
+        if gain <= 0:
+            continue
         health[z] = hp + gain
         healed += gain
     return healed
@@ -45,8 +55,10 @@ def heal_day(health, initial, race=None, fed=True, mode="resting", bleeding=Fals
 def heal_manager_day(manager, fed=True, mode="resting"):
     """heal_day for a CombatHealthManager (13-zone model; total = sum of zones)."""
     c = manager.character
+    if not hasattr(manager, "heal_carry"):
+        manager.heal_carry = {}
     got = heal_day(manager.health, manager.initial_health, getattr(c, "race", None), fed, mode,
-                   any(w["rate"] > 0 for w in manager.bleeding_wounds))
+                   any(w["rate"] > 0 for w in manager.bleeding_wounds), carry=manager.heal_carry)
     manager._sync_total()
     return got
 

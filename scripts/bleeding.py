@@ -108,7 +108,8 @@ def attempt_bandage(healer, target, item, health=None, rng=None):
     if not item.use():
         return False
     roll = rng.randint(1, 100)
-    dex_bonus = getattr(healer, "dexterity", 0) // 5
+    import limb_repair  # Medicine rank / Field Surgeon also help bandaging
+    dex_bonus = getattr(healer, "dexterity", 0) // 5 + limb_repair.medicine_bonus(healer)
     pain = min(getattr(healer, "pain_penalty", 0), 20)
     total = roll + dex_bonus - pain
     print(f"🩹 {healer.name} bandages {target.name} with {item.name} "
