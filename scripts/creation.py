@@ -42,6 +42,8 @@ def _allowed(entry, race, gender, class_name):
         return False
     if r.get("class") and class_name not in r["class"]:
         return False
+    if race in entry.get("forbidden_races", []):
+        return False
     return class_name not in entry.get("forbidden_classes", [])
 
 

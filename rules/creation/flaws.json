@@ -225,7 +225,11 @@
       ],
       "looks_status": "WAITING for the Looks stat"
     },
-    "area": "face"
+    "area": "face",
+    "forbidden_races": [
+      "Elf"
+    ],
+    "elf_note": "Elves keep no lasting scars (races.json 'Unscarred')."
   },
   "alcoholic": {
     "name": "Alcoholic",

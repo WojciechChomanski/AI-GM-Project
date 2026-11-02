@@ -57,3 +57,31 @@ After treatment a severed zone becomes `stabilised` or `prosthesis`.
     her price even when the spell fails.
   - A relic or potion (passive) restores a crippled part and uses one charge. Only a saint relic can restore a severed
     part, with no corruption.
+
+## Race healing, medicine, prostheses, elven regrowth (2026-11-02)
+- **Dwarf healing:** 1.5x the normal daily rate, on top of normal healing. Any unfed day falls back to x1. Fractions carry
+  over per zone (`manager.heal_carry`), so resting goes 1, 2, 1, 2... Ogre stays x1.5 when fed and x0 when unfed.
+- **Medicine skill:** a rank from 0 to 5 in `skills["medicine"]`, in the same rank style as `rules/classes/*.json`
+  "skills". Each rank adds +5. The **Field Surgeon** talent (rules/talents/mind.json, 2 CP) adds +10.
+  - Surgery target = (INT + DEX) / 2 + Medicine bonus. A legacy `skills["surgery"]` value overrides it.
+  - Bandaging also adds the Medicine bonus.
+- **Cleric:** no magical healing. `healing_bonus` was replaced by Medicine rank 3 (mundane medicine with tools). The
+  Cleric has no limb-restoring ability.
+- **Dwarf rune prosthesis** (`limb_repair.rune_prosthesis`): forged by a dwarf master smith (NPC service). Runes are
+  passive magic.
+  - Available to Humans, Dwarves and Ogres. Never to Elves.
+  - No penalty. The zone returns to natural HP + 1/1/2/3 and gets zone armour 2/2/3/5 (iron / bronze / star-bronze /
+    adamantine). The armour works against aimed hits on that zone. The metal never bleeds.
+  - Cost: 300 / 350 / 800 / 2500 gold, taking 4 / 4 / 6 / 10 weeks.
+  - Optional built-in weapon, arms only: hidden blade, bolt thrower or hand gun (one shot, slow reload, 10% misfire).
+  - The mundane prosthesis with penalties remains for non-dwarf makers.
+- **Elven restoration** (`limb_repair.elven_restoration`): elven alchemy, rituals and magic stones, as a service or item.
+  It is passive magic, so it fits core_rules.txt.
+  - Never for Dwarves.
+  - Regrows a crippled limb in 7 days (600 gold) or a lost limb in 30 days (3000 gold), to full natural HP with no
+    scar and no corruption. `time_loop.day_tick` finishes the regrowth.
+- **Elves keep no scars:** the Scarred / Disfigured disadvantage is not available to Elves (`forbidden_races`), and the
+  races.json "Unscarred" trait describes it.
+- **GM console:** `list`, `load <name>`, `save <name>|all`, `status <name>`, `tick round [n]` and
+  `tick day [n] [mode] [unfed]`. Saves go to `saves/characters/<name>.json`, which is git-ignored
+  (`scripts/character_store.py`).

@@ -64,6 +64,10 @@
     },
     "abilities": [
       {
+        "name": "Unscarred",
+        "description": "Elves keep no lasting scars: wounds heal without marks (no Scarred / Disfigured disadvantage). Lost limbs can be regrown by elven alchemy at a high price (rules/limb_repair.json elven_restoration)."
+      },
+      {
         "name": "Eagle-Eye Vision",
         "description": "+15 perception for long-distance sight. +5 ranged attack accuracy with bows or throwing weapons."
       }
@@ -96,6 +100,10 @@
       "charisma_modifier": 0
     },
     "abilities": [
+      {
+        "name": "Deep-Forged Flesh",
+        "description": "Heals 1.5x the normal daily rate (on top of normal healing), lost on any day without proper food. Values: rules/wound_recovery.json race_healing.Dwarf."
+      },
       {
         "name": "Stone Resilience",
         "description": "Reduce blunt/slash damage by 10%. +10 Veil resistance."

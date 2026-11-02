@@ -332,10 +332,16 @@ class CombatHealthManager:
             print(f"🛡️ Armour on {zone.replace('_', ' ')} absorbed {self.last_armor_report['absorbed']}; {damage} gets through.")
             if damage <= 0:
                 return 0
+        plate = getattr(self, "zone_armor_bonus", {}).get(zone, 0)  # dwarf rune prosthesis (limb_repair.py)
+        if plate and damage_type != "bleeding":
+            damage = max(0, damage - plate)
+            if damage <= 0:
+                return 0
         overflow = max(0, damage - self.health[zone])
         self.health[zone] = max(0, self.health[zone] - damage)
         self._zone_hit(zone, damage, damage_type, overflow)
-        self.add_bleeding_wound(zone, damage, damage_type, critical, artery)
+        if getattr(self, "limb_state", {}).get(zone) != "rune_prosthesis":  # metal does not bleed
+            self.add_bleeding_wound(zone, damage, damage_type, critical, artery)
         self._sync_total()
         self.check_zone_collapse()
         if self.total_hp <= 0 and self.character.alive:

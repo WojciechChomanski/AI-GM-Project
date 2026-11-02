@@ -30,5 +30,15 @@
       "vs_fear": 10
     },
     "description": "WIL +3, +10 vs fear."
+  },
+  "field_surgeon": {
+    "name": "Field Surgeon",
+    "cp": 2,
+    "restrictions": {},
+    "effects": {
+      "surgery_bonus": 10,
+      "first_aid_bonus": 10
+    },
+    "description": "+10 to surgery and bandaging (trained hands, steady nerves). Mundane, no magic."
   }
 }
