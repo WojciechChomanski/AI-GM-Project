@@ -159,6 +159,10 @@ class CombatEngine:
 
         # Ranged/thrown use Ballistic Skill; mastery adds capped to-hit/damage (scripts/progression.py).
         weapon_ref = CT.weapon_data(attacker.weapon) if attacker.weapon else {}
+        # longsword: full 2H_sword guards in two hands (no shield, grip not "one_hand")
+        if weapon_ref.get("two_hand_guard_set"):
+            weapon_ref = CT.grip(weapon_ref, not attacker.shield_equipped and attacker_data.get("grip") != "one_hand")
+        armor_wear = []
         if weapon_damage is None:
             weapon_damage = int(weapon_ref.get("base_damage", 14))
         skill = progression.attack_skill(attacker, weapon_ref)
@@ -206,10 +210,7 @@ class CombatEngine:
 
         # --- Maneuver (ONE per action) ---------------------------------------
         aimed_zone = attacker_data.get("aimed_zone")
-        defeat = min(CT.ARMOR_DEFEAT_MAX, int(weapon_ref.get("armor_defeat", 0)) +
-                     (perks["armor_defeat"] if weapon_ref.get("armor_defeat", 0) else 0))
-        if trick == "crater":
-            defeat = CT.ARMOR_DEFEAT_TRICK
+        defeat = CT.weapon_armor_piercing(weapon_ref, perks["armor_piercing"], trick == "crater")
         maneuver, mnote = None, "none"
         if attacker_data.get("disarmed"):
             mnote = "disarmed: no maneuver"
@@ -273,9 +274,13 @@ class CombatEngine:
             dmg += min(extra, max(0, progression.CEIL["damage"] - mastery["damage"]))
             if attacker_data.get("disarmed"):
                 dmg, dtype = 2, "blunt"
-            protection = CT.effective_armor(defender.armor_specs, dtype, zone, bypass, defeat,
-                                            bool(weapon_ref.get("percussive")))
+            protection = CT.effective_armor(defender.armor_specs, dtype, zone, bypass, defeat)
             absorbed = min(max(dmg, 0), protection)
+            # armour durability: the caller applies it (stateless engine); x2 for armour piercing
+            armor_wear = [{"armor": sp.get("name", "?"), "zone": zone,
+                           "durability_loss": CT.armor_durability_loss(dmg, defeat)}
+                          for sp in defender.armor_specs if CT.spec_covers(sp, zone)
+                          and CT.armor_rating(sp, dtype) > 0] if absorbed > 0 else []
             effective = max(0, dmg - protection)
             breath = {"state": "none"}
             if attacker.class_name == "Crusader_Knight":
@@ -353,7 +358,8 @@ class CombatEngine:
             "maneuver": maneuver["name"] if maneuver else None,
             "maneuver_note": mnote,
             "aimed_penalty": aim_pen,
-            "armor_defeat": defeat,
+            "armor_piercing": defeat,
+            "armor_wear": armor_wear,
             "trick": trick,
             "stamina_spent": stamina_spent,
             "effects": effects_applied,

@@ -77,7 +77,7 @@
       "effects": {
         "attack_bonus": 2,
         "defense_bonus": 0,
-        "stamina_cost_modifier": 3,
+        "stamina_cost_modifier": 2,
         "damage_type": "piercing",
         "armor_bypass": 0.5,
         "notes": "Usable normally from the half-sword guard (owner t98u). Piercing, ignores 50% of the armour; the guard's -3 attack still applies."
@@ -608,6 +608,55 @@
         "stamina_cost_modifier": 1,
         "disarm_chance": 15,
         "notes": "15% disarm on a hit."
+      }
+    }
+  ],
+  "dagger": [
+    {
+      "name": "Fendente Stab",
+      "stance_required": "sopramano",
+      "trigger": "always",
+      "description": "Overhand stab down into the collar, armpit or visor.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "armor_bypass": 0.25,
+        "notes": "Fiore: the dagger seeks the gaps of armour."
+      }
+    },
+    {
+      "name": "Sottano Thrust",
+      "stance_required": "mezana_porta_di_ferro",
+      "trigger": "always",
+      "description": "Rising underhand thrust to the belly or groin.",
+      "effects": {
+        "attack_bonus": 1,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 0,
+        "damage_type": "piercing",
+        "target_zone": [
+          "stomach",
+          "groin"
+        ],
+        "notes": "Hits the least protected of stomach/groin."
+      }
+    },
+    {
+      "name": "Arm Bind",
+      "stance_required": "posta_longa",
+      "trigger": [
+        "after_parry",
+        "after_block"
+      ],
+      "description": "Catch the stabbing arm and turn the dagger out of the hand.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "disarm_chance": 20,
+        "notes": "Fiore's dagger remedies: bind and disarm."
       }
     }
   ]

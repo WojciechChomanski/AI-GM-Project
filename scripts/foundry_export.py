@@ -23,7 +23,7 @@ def weapon_item(key):
         "base_damage": w.get("base_damage", 0), "damage_type": w.get("damage_type", ""),
         "damage_types": ",".join(w.get("damage_types", [])), "stamina_cost": w.get("stamina_cost", 0),
         "min_str": w.get("min_STR", 0) or 0, "weight": w.get("weight", 0), "durability": w.get("durability", 0),
-        "armor_defeat": w.get("armor_defeat", 0), "percussive": int(bool(w.get("percussive"))),
+        "armor_piercing": int(bool(w.get("armor_piercing"))), "two_hand_guard_set": w.get("two_hand_guard_set", ""),
         "features": ",".join(w.get("features", [])), "guard_set": w.get("guard_set") or "",
         "default_guard": gs.get("default_stance", "neutral") if guards else "neutral",
         "guards": ",".join(guards) or "offensive,neutral,defensive",

@@ -69,16 +69,21 @@ def test_every_2h_guard_has_a_maneuver():
     assert used == set(CT.GUARD_SETS["2H_sword"]["stances"])
 
 
-def test_damage_types_and_armor_defeat_only_on_impact():
+def test_damage_types_and_armor_piercing_property():
+    swords = ("2H_sword", "1H_sword", "sword", "shortsword", "dagger")
     for k, w in CT.WEAPONS.items():
         assert w["damage_types"] and set(w["damage_types"]) <= set(CT.DAMAGE_TYPE_NAMES), k
         assert w["damage_type"] == w["damage_types"][0]
-        assert 0 <= w["armor_defeat"] <= CT.ARMOR_DEFEAT_MAX
-        fam = P.weapon_family(w)
-        if w["armor_defeat"]:
-            assert fam in CT.DAMAGE_TYPES["armor_defeat"]["only_families"], k
-        if w["type"] in ("2H_sword", "1H_sword", "sword", "shortsword", "dagger"):
-            assert w["armor_defeat"] == 0 and not w["percussive"], k
+        assert "percussive" not in w and "armor_defeat" not in w, k        # one mechanic only
+        assert isinstance(w["armor_piercing"], bool), k
+        if w["type"] in swords:
+            assert not w["armor_piercing"], k
+        if w["type"] in ("1H_axe", "2H_axe", "2H_hammer", "1H_blunt") or "axe" in k:
+            assert w["armor_piercing"], k                                     # all axes, no size distinction
+    for k in ("halberd", "poleaxe", "bardiche", "lochaber_axe", "lucerno_hammer", "war_pick", "mace", "warhammer"):
+        assert CT.WEAPONS[k]["armor_piercing"], k
+    for k in ("spear", "lance", "quarterstaff"):
+        assert not CT.WEAPONS[k]["armor_piercing"], k
     assert CT.WEAPONS["greatsword"]["damage_types"] == ["slashing", "piercing"]
     assert CT.WEAPONS["warhammer"]["damage_types"] == ["blunt", "piercing"]
 
@@ -159,13 +164,60 @@ def test_tool_philosophy_vs_plate_mail_and_cloth():
     assert bare["damage"] > dmg("warhammer", "impact_form", "Unarmored")["damage"] - 6
 
 
-def test_requested_damage_type_and_percussive():
+def test_requested_damage_type_and_one_flat_armor_piercing():
     r = hit(fighter("greatsword", stance="wrath_guard", maneuver=False, damage_type="slashing"),
             fighter(armor=["Heavy_Medium"], name="D"))
     assert r["damage_type"] == "slashing" and r["damage"] == 0
-    spec = ARMORS["Heavy_Medium"]["standard"]
-    assert CT.armor_rating(spec, "slashing", percussive=True) == spec["armor_rating"]["blunt"]
-    assert CT.armor_rating(ARMORS["Light_Heavy"]["standard"], "slashing", percussive=True) == 7  # mail not rigid
+    plate = [ARMORS["Heavy_Medium"]["standard"]]
+    assert CT.effective_armor(plate, "slashing", defeat=CT.AP_VALUE) == 14 - CT.AP_VALUE
+    assert CT.effective_armor(plate, "blunt", defeat=99) == 0                  # never below 0
+    assert CT.weapon_armor_piercing("greatsword", 1, True) == 0
+    assert CT.weapon_armor_piercing("battle_axe") == CT.weapon_armor_piercing("dane_axe") == CT.AP_VALUE
+
+
+def test_full_plate_swords_clearly_worse_than_axes_hammers_maces():
+    def through(w):
+        return hit(fighter(w, maneuver=False), fighter(armor=["Heavy_Medium"], name="D"))["damage"]
+    best_sword = max(through(w) for w in ("greatsword", "longsword", "arming_sword", "estoc", "falchion"))
+    assert best_sword <= 1
+    for w in ("battle_axe", "dane_axe", "halberd", "poleaxe", "mace", "morning_star", "war_pick", "warhammer"):
+        assert through(w) > best_sword, w
+    assert through("dane_axe") >= best_sword + 3 and through("mace") >= best_sword + 5
+
+
+def test_armor_piercing_wears_armour_twice_as_fast():
+    plate = fighter(armor=["Heavy_Medium"], name="D")
+    sw = hit(fighter("longsword", maneuver=False), plate)["armor_wear"]
+    ax = hit(fighter("tabar", maneuver=False), fighter(armor=["Heavy_Medium"], name="D"))["armor_wear"]
+    assert sw and ax and ax[0]["durability_loss"] == 2 * CT.armor_durability_loss(11)
+    assert sw[0]["durability_loss"] == CT.armor_durability_loss(9)          # longsword thrust 10-1, no x2
+    assert CT.armor_durability_loss(10, 5) == 2 * CT.armor_durability_loss(10)
+    import armor_system as AS
+    from test_zone_armor import piece
+    p1, p2 = piece("Heavy_Medium"), piece("Heavy_Medium")
+    l1 = AS.armor_vs_aimed([p1], "chest", 20, "slashing")["wear"]["Full Plate"]
+    l2 = AS.armor_vs_aimed([p2], "chest", 20, "slashing", armor_piercing=True)["wear"]["Full Plate"]
+    assert l2 == 2 * l1
+
+
+def test_longsword_two_hands_gets_all_greatsword_guards_and_dagger_fiore_guards():
+    two = hit(fighter("longsword", stance="alber", maneuver=False), fighter(name="D"))
+    assert two["stance"] == "alber"
+    one = hit(fighter("longsword", stance="alber", maneuver=False, grip="one_hand"), fighter(name="D"))
+    assert one["stance"] != "alber"
+    assert len(CT.guards_for(CT.grip("longsword"))) == 10
+    assert CT.guards_for("rondel_dagger") == ["sopramano", "mezana_porta_di_ferro", "posta_longa"]
+    assert [m["name"] for m in CT.valid_maneuvers("dagger", "sopramano")] == ["Fendente Stab"]
+    hst = CT.find_maneuver("greatsword", "Half-Sword Thrust")
+    assert hst["effects"]["stamina_cost_modifier"] == 2
+
+
+def test_gm_console_prompts_pending_perk_picks():
+    c = fighter("warhammer"); P.record_mastery(c, "warhammer", 150)
+    pend = P.pending_perk_picks(c)
+    assert [(f, r) for f, r, _ in pend] == [("warhammer", 2)]
+    P.choose_perk(c, "warhammer", 2, pend[0][2][0])
+    assert P.pending_perk_picks(c) == []
 
 
 # ---------- maneuver effects ----------
@@ -257,21 +309,21 @@ def test_only_weapon_in_hand_counts_and_picks_are_permanent():
     assert "Zwerchhau" in [m["name"] for m in CT.valid_maneuvers("greatsword", "ochs", "always", perks=P.perk_effects(c, "greatsword"))]
 
 
-def test_armor_defeat_cap_and_crater_once_per_fight():
+def test_armor_piercing_perk_cap_and_crater_once_per_fight():
+    v = CT.AP_VALUE
     c = fighter("warhammer", stance="crater_maker", maneuver=False)
-    assert hit(c, fighter(armor=["Heavy_Medium"], name="D"))["armor_defeat"] == 1
+    assert hit(c, fighter(armor=["Heavy_Medium"], name="D"))["armor_piercing"] == v
     P.record_mastery(c, "warhammer", 2000)
-    assert hit(c, fighter(armor=["Heavy_Medium"], name="D"))["armor_defeat"] == 2        # Through the Plate, cap 2
+    assert hit(c, fighter(armor=["Heavy_Medium"], name="D"))["armor_piercing"] == v + 1   # Through the Plate
     P.choose_perk(c, "warhammer", 5, "crater")
     c["use_trick"] = True
     r = hit(c, fighter(armor=["Heavy_Medium"], name="D"))
-    assert r["trick"] == "crater" and r["armor_defeat"] == 3 and r["fight_state"]["trick_used"]
+    assert r["trick"] == "crater" and r["armor_piercing"] == v + 2 and r["fight_state"]["trick_used"]
     c["fight_state"] = r["fight_state"]
     r2 = hit(c, fighter(armor=["Heavy_Medium"], name="D"))
-    assert r2["trick"] is None and r2["armor_defeat"] == 2 and r2["notes"]
-    # a sword never gets armour defeat, even at Master
+    assert r2["trick"] is None and r2["armor_piercing"] == v + 1 and r2["notes"]
     s = fighter("greatsword", stance="vom_tag", maneuver=False); P.record_mastery(s, "greatsword", 2000)
-    assert hit(s, fighter(armor=["Heavy_Medium"], name="D"))["armor_defeat"] == 0
+    assert hit(s, fighter(armor=["Heavy_Medium"], name="D"))["armor_piercing"] == 0
 
 
 def test_seamless_guards_uses_any_guard_maneuver_once():
@@ -310,7 +362,7 @@ def test_foundry_export(tmp_path):
     items = json.load(open(tmp_path / "weapons_items.json"))
     gs = next(i for i in items if i["system"]["props"]["weapon_id"] == "greatsword")["system"]["props"]
     for k in ("damage_type", "damage_types", "guards", "default_guard", "guard_change_stamina", "maneuvers_json",
-              "armor_defeat", "stamina_cost"):
+              "armor_piercing", "stamina_cost"):
         assert k in gs
     assert "Half-Sword Thrust" in gs["maneuvers"] and len(gs["guards"].split(",")) == 10
     arm = json.load(open(tmp_path / "armor_items.json"))

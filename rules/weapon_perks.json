@@ -6,11 +6,10 @@
     "stamina_reduction": 2,
     "min_stamina_per_attack": 2,
     "aim_relief": 5,
-    "armor_defeat": 2,
-    "armor_defeat_trick": 3,
     "tricks_per_fight": 1,
     "crits": "never changed by perks or maneuvers",
-    "binding": "only the family of the weapon in hand counts"
+    "binding": "only the family of the weapon in hand counts",
+    "armor_piercing": "weapon value +1 (perk); value +2 once per fight (Crater trick); see damage_types.json armor_piercing"
   },
   "_structure": "rank 1 auto; rank 2 +5 to hit (every family) and pick 1 of 2; rank 3 two autos; rank 4 one auto and pick 1 of 2; rank 5 pick 1 of 2 = 7 perks. Unchosen picks give nothing until chosen (progression.choose_perk).",
   "_rank_gains": {
@@ -369,9 +368,9 @@
         {
           "id": "through_the_plate",
           "name": "Through the Plate",
-          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "description": "Armour piercing +1 (never above the weapon value +1). Only weapons with armor_piercing.",
           "effects": {
-            "armor_defeat": 1
+            "armor_piercing": 1
           }
         },
         {
@@ -431,7 +430,7 @@
           {
             "id": "crater",
             "name": "Crater",
-            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "description": "Once per fight (your one trick): this blow pierces 2 more armour than your weapon value (armour piercing value +2).",
             "effects": {
               "trick": "crater"
             }
@@ -493,9 +492,9 @@
         {
           "id": "through_the_plate",
           "name": "Through the Plate",
-          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "description": "Armour piercing +1 (never above the weapon value +1). Only weapons with armor_piercing.",
           "effects": {
-            "armor_defeat": 1
+            "armor_piercing": 1
           }
         },
         {
@@ -555,7 +554,7 @@
           {
             "id": "crater",
             "name": "Crater",
-            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "description": "Once per fight (your one trick): this blow pierces 2 more armour than your weapon value (armour piercing value +2).",
             "effects": {
               "trick": "crater"
             }
@@ -616,9 +615,9 @@
         {
           "id": "through_the_plate",
           "name": "Through the Plate",
-          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "description": "Armour piercing +1 (never above the weapon value +1). Only weapons with armor_piercing.",
           "effects": {
-            "armor_defeat": 1
+            "armor_piercing": 1
           }
         },
         {
@@ -679,7 +678,7 @@
           {
             "id": "crater",
             "name": "Crater",
-            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "description": "Once per fight (your one trick): this blow pierces 2 more armour than your weapon value (armour piercing value +2).",
             "effects": {
               "trick": "crater"
             }
@@ -743,9 +742,9 @@
         {
           "id": "through_the_plate",
           "name": "Through the Plate",
-          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "description": "Armour piercing +1 (never above the weapon value +1). Only weapons with armor_piercing.",
           "effects": {
-            "armor_defeat": 1
+            "armor_piercing": 1
           }
         },
         {
@@ -823,7 +822,7 @@
           {
             "id": "crater",
             "name": "Crater",
-            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "description": "Once per fight (your one trick): this blow pierces 2 more armour than your weapon value (armour piercing value +2).",
             "effects": {
               "trick": "crater"
             }

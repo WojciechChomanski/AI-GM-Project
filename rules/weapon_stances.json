@@ -361,6 +361,44 @@
           "description": "Boar's tooth: low point rising, the queue ready to strike from below."
         }
       }
+    },
+    "dagger": {
+      "default_stance": "mezana_porta_di_ferro",
+      "source": "Fiore dei Liberi, Fior di Battaglia, dagger section (posta longa, mezana porta di ferro; the overhand 'sopramano' grip of the fendente stab). Numbers filled in.",
+      "stances": {
+        "sopramano": {
+          "type": "offensive",
+          "name": "Sopramano (overhand)",
+          "attack_bonus": 3,
+          "defense_penalty": 3,
+          "stamina_modifier": {
+            "offensive": -1,
+            "defensive": 1
+          },
+          "description": "Dagger held point-down, raised for the downward stab."
+        },
+        "mezana_porta_di_ferro": {
+          "type": "neutral",
+          "name": "Mezana Porta di Ferro",
+          "initiative_bonus": 1,
+          "stamina_modifier": {
+            "offensive": 0,
+            "defensive": 0
+          },
+          "description": "Middle iron door: dagger hand low and forward, free hand ready."
+        },
+        "posta_longa": {
+          "type": "defensive",
+          "name": "Posta Longa",
+          "attack_penalty": 2,
+          "defense_bonus": 4,
+          "stamina_modifier": {
+            "offensive": 1,
+            "defensive": -1
+          },
+          "description": "Free arm extended to meet the stab and bind the arm."
+        }
+      }
     }
   }
 }

@@ -22,9 +22,11 @@ _WM = _load("weapon_maneuvers.json")
 MANEUVERS = {k: v for k, v in _WM.items() if not k.startswith("_")}
 DAMAGE_TYPES = _load("damage_types.json")
 DAMAGE_TYPE_NAMES = ("slashing", "piercing", "blunt")
-_DEFEAT = DAMAGE_TYPES["armor_defeat"]
-ARMOR_DEFEAT_MAX = int(_DEFEAT["max"])
-ARMOR_DEFEAT_TRICK = int(_DEFEAT["max_once_per_fight"])
+AP = DAMAGE_TYPES["armor_piercing"]
+AP_VALUE = int(AP["value"])                       # the one tunable number
+AP_MAX = AP_VALUE + int(AP["perk_bonus"])         # with the perk
+AP_TRICK = AP_VALUE + int(AP["trick_bonus"])      # Crater, once per fight
+AP_DURABILITY_MULT = float(AP["durability_multiplier"])
 WEAPONS = _load("weapons.json")
 ARMS = {"left_upper_arm", "left_lower_arm", "right_upper_arm", "right_lower_arm"}
 LEGS = {"left_upper_leg", "left_lower_leg", "right_upper_leg", "right_lower_leg"}
@@ -166,21 +168,42 @@ def spec_covers(spec, zone):
     return zone is None or not cov or zone in cov
 
 
-def armor_rating(spec, dtype, percussive=False):
-    r = spec.get("armor_rating", {})
-    val = r.get(dtype, 0)
-    if percussive and dtype == "slashing" and spec.get("rigid"):
-        val = min(val, r.get("blunt", val))
-    return val
+def armor_rating(spec, dtype):
+    return spec.get("armor_rating", {}).get(dtype, 0)
 
 
-def effective_armor(specs, dtype, zone=None, bypass=0.0, defeat=0, percussive=False):
-    """Total armour against one hit: each covering layer = rating x (1-bypass) - defeat, never below 0."""
+def weapon_armor_piercing(weapon, perk_bonus=0, trick=False):
+    """Flat armour piercing of a weapon (0 if it has no armor_piercing property)."""
+    if not weapon_data(weapon).get("armor_piercing"):
+        return 0
+    if trick:
+        return AP_TRICK
+    return min(AP_MAX, AP_VALUE + max(0, int(perk_bonus)))
+
+
+def armor_durability_loss(damage, armor_piercing=0):
+    """Durability an armour layer loses from one hit it absorbs: max(1, 20% of damage), x2 for armour piercing
+    (same 20% as armor_system.ARMOR_WEAR_FRACTION)."""
+    base = max(1, int(max(0, damage) * 0.20))
+    return int(base * (AP_DURABILITY_MULT if armor_piercing else 1))
+
+
+def grip(weapon, two_handed=True):
+    """A weapon with `two_hand_guard_set` (longsword) uses that full guard set when held in two hands."""
+    w = weapon_data(weapon)
+    gs = w.get("two_hand_guard_set")
+    if two_handed and gs in GUARD_SETS:
+        w = dict(w, guard_set=gs, stance_tree=list(GUARD_SETS[gs]["stances"]), grip="two_hands")
+    return w
+
+
+def effective_armor(specs, dtype, zone=None, bypass=0.0, defeat=0):
+    """Total armour against one hit: each covering layer = rating x (1-bypass) - armour piercing, never below 0."""
     total = 0
     for s in specs:
         if not spec_covers(s, zone):
             continue
-        val = armor_rating(s, dtype, percussive)
+        val = armor_rating(s, dtype)
         if val <= 0:
             continue
         total += max(0, int(round(val * (1 - bypass))) - defeat)
@@ -213,10 +236,9 @@ def best_damage_type(weapon, specs, base_damage, zone=None, bypass=0.0, defeat=0
     """The weapon type (or forced choices) that gets the most damage through this armour."""
     w = weapon_data(weapon)
     types = as_list(choices) or w.get("damage_types") or [w.get("damage_type", "blunt")]
-    perc = bool(w.get("percussive"))
 
     def through(t):
-        return base_damage + type_damage_mod(t, raw_armor(specs, t, zone)) - effective_armor(specs, t, zone, bypass, defeat, perc)
+        return base_damage + type_damage_mod(t, raw_armor(specs, t, zone)) - effective_armor(specs, t, zone, bypass, defeat)
     return max(types, key=lambda t: (through(t), -types.index(t)))
 
 
@@ -224,9 +246,8 @@ def score_maneuver(m, weapon, specs, base_damage, defeat=0):
     e = m["effects"]
     zone = pick_zone(specs, e.get("target_zone"), e.get("damage_type") or "slashing")
     t = e.get("damage_type") or best_damage_type(weapon, specs, base_damage, zone, 0, defeat)
-    perc = bool(weapon_data(weapon).get("percussive"))
     through = max(0, base_damage + e.get("damage_bonus", 0) + type_damage_mod(t, raw_armor(specs, t, zone))
-                  - effective_armor(specs, t, zone, e.get("armor_bypass", 0), defeat, perc))
+                  - effective_armor(specs, t, zone, e.get("armor_bypass", 0), defeat))
     return through * 2 + e.get("attack_bonus", 0) + e.get("defense_bonus", 0) / 2 - e.get("stamina_cost_modifier", 0)
 
 

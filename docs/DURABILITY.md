@@ -42,3 +42,7 @@ Marks speed up as the current maximum shrinks (30% of a smaller number). If the 
 | quality_step_fraction_of_original_max | 0.10 |
 | field_repair_cap | 0.85 |
 | weapon loss per attack / per parry | 0.5 / 1.0 |
+
+
+## Armour-piercing weapons (t99u)
+Armour-piercing weapons (axes, hammers, maces, picks, axe/spike polearms; see docs/COMBAT_STANCES_MANEUVERS.md) make armour lose **x2** durability on a hit: `armor_vs_aimed` / `armor_vs_spread` / `ArmorPiece.absorb_damage(..., armor_piercing=True)`. `/combat/attack` returns `armor_wear` for the caller to apply.

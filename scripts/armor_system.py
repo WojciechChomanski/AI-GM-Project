@@ -101,7 +101,7 @@ class ArmorPiece:
             return 0.25
         return 0.0
 
-    def absorb_damage(self, damage: int, damage_type: str, zone: Optional[str]) -> int:
+    def absorb_damage(self, damage: int, damage_type: str, zone: Optional[str], armor_piercing: bool = False) -> int:
         """
         Return the amount of damage absorbed (not the remainder).
 
@@ -124,7 +124,7 @@ class ArmorPiece:
         absorbed = min(max(0, int(damage)), prot)
 
         # Durability loss proportional to incoming damage (not absorbed), at least 1
-        dur_loss = max(1, int(damage * 0.20))
+        dur_loss = max(1, int(damage * 0.20)) * (AP_DURABILITY_MULT if armor_piercing else 1)
         _wear(self, zone, dur_loss)
 
         print(
@@ -280,6 +280,7 @@ class ArmorSystem:
 # ---------------------------------------------------------------------------
 from zone_hp import BASE_ZONES, SPREAD_EXCLUDED, spread_damage  # noqa: E402
 
+AP_DURABILITY_MULT = 2  # armour-piercing weapons wear armour x2 (rules/damage_types.json armor_piercing)
 ARMOR_WEAR_FRACTION = 0.20  # durability lost = max(1, 20% of damage/absorbed)
 
 
@@ -389,7 +390,7 @@ def _wear(piece, zone, loss) -> float:
     return lost
 
 
-def armor_vs_aimed(pieces, zone: str, damage: int, damage_type: str) -> dict:
+def armor_vs_aimed(pieces, zone: str, damage: int, damage_type: str, armor_piercing: bool = False) -> dict:
     """AIMED strike: damage is reduced by the armour on the hit zone only - the
     single best piece there (rating x condition). Only that piece loses
     max(1, 20% of the incoming damage) durability on that zone."""
@@ -399,13 +400,13 @@ def armor_vs_aimed(pieces, zone: str, damage: int, damage_type: str) -> dict:
     absorbed = min(damage, protection)
     wear = {}
     if counted is not None and damage > 0:
-        loss = max(1, int(damage * ARMOR_WEAR_FRACTION))
+        loss = max(1, int(damage * ARMOR_WEAR_FRACTION)) * (AP_DURABILITY_MULT if armor_piercing else 1)
         wear[counted.name] = _wear(counted, zone, loss)
     return {"incoming": damage, "protection": protection, "absorbed": absorbed,
             "remainder": damage - absorbed, "wear": wear}
 
 
-def armor_vs_spread(pieces, damage: int, damage_type: str) -> dict:
+def armor_vs_spread(pieces, damage: int, damage_type: str, armor_piercing: bool = False) -> dict:
     """NORMAL (spread) hit: damage is reduced by the weighted average armour over
     the 11 hittable zones (best piece per zone; rounded half up, never below 0,
     never more than the damage). The remainder is spread by the normal spread rule
@@ -430,7 +431,7 @@ def armor_vs_spread(pieces, damage: int, damage_type: str) -> dict:
                 continue  # did not count anywhere -> no wear
             contrib = sum(prot * SPREAD_WEIGHTS[z] for z, prot in zones.items()) / SPREAD_WEIGHT_TOTAL
             share = absorbed * contrib / avg
-            loss = max(1, int(share * ARMOR_WEAR_FRACTION))
+            loss = max(1, int(share * ARMOR_WEAR_FRACTION)) * (AP_DURABILITY_MULT if armor_piercing else 1)
             covered = {z: p.current_durability[z] for z in zones}
             weights = {z: SPREAD_WEIGHTS[z] for z in covered}
             taken = spread_damage(covered, weights, loss, excluded=(), floor={})

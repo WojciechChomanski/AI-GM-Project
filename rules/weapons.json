@@ -30,8 +30,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "flamberge": {
     "name": "Flamberge",
@@ -65,8 +64,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "claymore": {
     "name": "Claymore",
@@ -100,8 +98,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "zweihander": {
     "name": "Zweihänder",
@@ -135,8 +132,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "montante": {
     "name": "Montante",
@@ -170,8 +166,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "spadone": {
     "name": "Spadone",
@@ -205,8 +200,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "warhammer": {
     "name": "Warhammer",
@@ -230,9 +224,8 @@
     "features": [
       "beak"
     ],
-    "armor_defeat": 1,
-    "percussive": false,
-    "stamina_cost": 6
+    "stamina_cost": 6,
+    "armor_piercing": true
   },
   "lucerno_hammer": {
     "name": "Lucerno Hammer",
@@ -262,8 +255,7 @@
       "point",
       "hook"
     ],
-    "armor_defeat": 1,
-    "percussive": false
+    "armor_piercing": true
   },
   "longsword": {
     "name": "Longsword",
@@ -289,9 +281,9 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false,
-    "stamina_cost": 4
+    "stamina_cost": 4,
+    "armor_piercing": false,
+    "two_hand_guard_set": "2H_sword"
   },
   "arming_sword": {
     "name": "Arming Sword",
@@ -320,8 +312,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "ulfberht_sword": {
     "name": "Ulfberht Sword",
@@ -350,8 +341,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "falchion": {
     "name": "Falchion",
@@ -380,8 +370,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "messer": {
     "name": "Messer",
@@ -410,8 +399,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "estoc": {
     "name": "Estoc",
@@ -439,8 +427,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "szabla": {
     "name": "Szabla",
@@ -469,8 +456,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "karabela": {
     "name": "Karabela",
@@ -499,8 +485,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "koncerz": {
     "name": "Koncerz",
@@ -528,8 +513,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "shashka": {
     "name": "Shashka",
@@ -558,8 +542,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "kilij": {
     "name": "Kilij",
@@ -588,8 +571,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "hussar_szabla": {
     "name": "Hussar Szabla",
@@ -618,8 +600,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "hungarian_hussar_sabre": {
     "name": "Hungarian Hussar Sabre",
@@ -648,8 +629,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "british_1796_sabre": {
     "name": "1796 Light Cavalry Sabre",
@@ -678,8 +658,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "french_an_xi_sabre": {
     "name": "An XI Cavalry Sabre",
@@ -708,8 +687,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "pallasch": {
     "name": "Pallasch",
@@ -738,8 +716,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "mortuary_sword": {
     "name": "Mortuary Sword",
@@ -768,8 +745,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "walloon_sword": {
     "name": "Walloon Sword",
@@ -798,8 +774,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "magyar_sabre": {
     "name": "Magyar Sabre",
@@ -828,8 +803,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "avar_sabre": {
     "name": "Avar Sabre",
@@ -858,8 +832,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "shortsword": {
     "name": "Shortsword",
@@ -885,9 +858,8 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false,
-    "stamina_cost": 3
+    "stamina_cost": 3,
+    "armor_piercing": false
   },
   "gladius": {
     "name": "Gladius",
@@ -916,8 +888,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "dagger": {
     "name": "Dagger",
@@ -927,8 +898,12 @@
       "piercing",
       "slashing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 50,
     "fear_trigger": false,
@@ -938,8 +913,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "rondel_dagger": {
     "name": "Rondel Dagger",
@@ -948,8 +922,12 @@
     "damage_types": [
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
@@ -960,8 +938,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "stiletto": {
     "name": "Stiletto",
@@ -970,8 +947,12 @@
     "damage_types": [
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 45,
     "fear_trigger": false,
@@ -982,8 +963,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "baselard": {
     "name": "Baselard",
@@ -993,8 +973,12 @@
       "piercing",
       "slashing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
@@ -1005,8 +989,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "bollock_dagger": {
     "name": "Bollock Dagger",
@@ -1015,8 +998,12 @@
     "damage_types": [
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 50,
     "fear_trigger": false,
@@ -1027,8 +1014,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "misericorde": {
     "name": "Misericorde",
@@ -1037,8 +1023,12 @@
     "damage_types": [
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
@@ -1049,8 +1039,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "seax": {
     "name": "Seax",
@@ -1060,8 +1049,12 @@
       "slashing",
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 55,
     "fear_trigger": false,
@@ -1072,8 +1065,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "cinquedea": {
     "name": "Cinquedea",
@@ -1083,8 +1075,12 @@
       "piercing",
       "slashing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 8,
     "durability": 55,
     "fear_trigger": false,
@@ -1095,8 +1091,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "yatagan": {
     "name": "Yatagan",
@@ -1106,8 +1101,12 @@
       "slashing",
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 8,
     "durability": 55,
     "fear_trigger": true,
@@ -1118,8 +1117,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "qama": {
     "name": "Qama",
@@ -1128,8 +1126,12 @@
     "damage_types": [
       "piercing"
     ],
-    "guard_set": null,
-    "stance_tree": [],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
@@ -1140,8 +1142,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "improvised_club": {
     "name": "Improvised Club",
@@ -1160,8 +1161,7 @@
     "weight": 8,
     "min_STR": 38,
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "mace": {
     "name": "Mace",
@@ -1184,8 +1184,7 @@
     "weight": 6,
     "notes": "Flanged head for armor crushing; +5 vs plate.",
     "features": [],
-    "armor_defeat": 1,
-    "percussive": false
+    "armor_piercing": true
   },
   "morning_star": {
     "name": "Morning Star",
@@ -1208,8 +1207,7 @@
     "weight": 7,
     "notes": "Spiked ball head; causes additional bleeding on hit.",
     "features": [],
-    "armor_defeat": 1,
-    "percussive": false
+    "armor_piercing": true
   },
   "flail": {
     "name": "Flail",
@@ -1235,8 +1233,7 @@
     "features": [
       "chain"
     ],
-    "armor_defeat": 1,
-    "percussive": false
+    "armor_piercing": true
   },
   "chekan": {
     "name": "Chekan",
@@ -1262,8 +1259,7 @@
     "features": [
       "beak"
     ],
-    "armor_defeat": 1,
-    "percussive": false
+    "armor_piercing": true
   },
   "battle_axe": {
     "name": "Battle Axe",
@@ -1288,8 +1284,7 @@
     "features": [
       "hook"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "horsemans_axe": {
     "name": "Horseman's Axe",
@@ -1315,8 +1310,7 @@
     "features": [
       "beak"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "tabar": {
     "name": "Tabar",
@@ -1339,8 +1333,7 @@
     "weight": 7,
     "notes": "Turkish/Persian battle axe, medieval; ornate, +5 vs shields.",
     "features": [],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "dane_axe": {
     "name": "Dane Axe",
@@ -1366,8 +1359,7 @@
     "features": [
       "hook"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "bardiche": {
     "name": "Bardiche",
@@ -1394,8 +1386,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "lochaber_axe": {
     "name": "Lochaber Axe",
@@ -1423,8 +1414,7 @@
       "hook",
       "point"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "poleaxe": {
     "name": "Poleaxe",
@@ -1455,8 +1445,7 @@
       "hook",
       "beak"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "halberd": {
     "name": "Halberd",
@@ -1485,8 +1474,7 @@
       "point",
       "hook"
     ],
-    "armor_defeat": 1,
-    "percussive": true
+    "armor_piercing": true
   },
   "bill": {
     "name": "Bill",
@@ -1515,8 +1503,7 @@
       "point",
       "hook"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": true
   },
   "glaive": {
     "name": "Glaive",
@@ -1544,8 +1531,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "spear": {
     "name": "Spear",
@@ -1571,8 +1557,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "lance": {
     "name": "Lance",
@@ -1599,8 +1584,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "boar_spear": {
     "name": "Boar Spear",
@@ -1626,8 +1610,7 @@
     "features": [
       "point"
     ],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "longbow": {
     "name": "Longbow",
@@ -1646,8 +1629,7 @@
     "weight": 3,
     "notes": "English longbow; high draw weight, +5 pierce vs mail at range.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "recurve_bow": {
     "name": "Recurve Bow",
@@ -1666,8 +1648,7 @@
     "weight": 3,
     "notes": "Middle Eastern/Mongol bow; curved for power, +5 from horseback.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "crossbow": {
     "name": "Crossbow",
@@ -1686,8 +1667,7 @@
     "weight": 8,
     "notes": "High penetration; +10 vs plate, slow reload.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "arbalest": {
     "name": "Arbalest",
@@ -1706,8 +1686,7 @@
     "weight": 10,
     "notes": "Heavy crossbow; cranked for power, +15 vs heavy armor, very slow reload.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "javelin": {
     "name": "Javelin",
@@ -1726,8 +1705,7 @@
     "weight": 4,
     "notes": "Thrown spear; +5 at short range, can pin shields.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "pilum": {
     "name": "Pilum",
@@ -1746,8 +1724,7 @@
     "weight": 4,
     "notes": "Roman javelin; bends on impact, disables shields (+10 vs shielded).",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "throwing_axe": {
     "name": "Throwing Axe",
@@ -1766,8 +1743,7 @@
     "weight": 5,
     "notes": "Francisca-style; spins for impact, +5 vs shields.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": true
   },
   "francisca": {
     "name": "Francisca",
@@ -1786,8 +1762,7 @@
     "weight": 5,
     "notes": "Frankish throwing axe; curved for hooking, +5 disarm on hit.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": true
   },
   "quarterstaff": {
     "name": "Quarterstaff",
@@ -1811,8 +1786,7 @@
     "weight": 4,
     "notes": "Simple wooden staff; versatile defense, +5 parry.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "bo_staff": {
     "name": "Bo Staff",
@@ -1836,8 +1810,7 @@
     "weight": 4,
     "notes": "Long staff; extended reach, +5 vs multiple foes.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "sling": {
     "name": "Sling",
@@ -1856,8 +1829,7 @@
     "weight": 1,
     "notes": "Simple projectile; cheap ammo, +5 vs unarmored heads.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
   },
   "atlatl": {
     "name": "Atlatl",
@@ -1876,7 +1848,33 @@
     "weight": 3,
     "notes": "Dart thrower; increased range/force, +5 pierce.",
     "features": [],
-    "armor_defeat": 0,
-    "percussive": false
+    "armor_piercing": false
+  },
+  "war_pick": {
+    "name": "War Pick",
+    "type": "1H_blunt",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing"
+    ],
+    "guard_set": "1H_blunt",
+    "stance_tree": [
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
+    ],
+    "base_damage": 11,
+    "durability": 60,
+    "fear_trigger": true,
+    "fear_intensity": 5,
+    "stamina_cost": 4,
+    "weight": 6,
+    "notes": "Volga Bulgarian/Russian war hammer, 10th-13th c.; pick side for piercing, +5 vs armor.",
+    "features": [
+      "beak"
+    ],
+    "description": "A short hammer with a long, narrow beak behind the head; the horseman's answer to plate.",
+    "armor_piercing": true
   }
 }

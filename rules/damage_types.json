@@ -21,16 +21,12 @@
     "bleeds": false,
     "note": "Impact passes through armour as shock (armour rates lowest against it), causes 25% more pain, rarely bleeds; impact weapons are heavy and less versatile."
   },
-  "percussive_rule": "A weapon marked percussive (axes, halberd, poleaxe, bardiche) cutting into rigid armour (plate) uses the armour's blunt rating if it is lower: the heavy head transmits force even when the edge does not bite.",
-  "armor_defeat": {
-    "max": 2,
-    "max_once_per_fight": 3,
-    "only_families": [
-      "warhammer",
-      "mace",
-      "axe",
-      "spear"
-    ],
-    "note": "Flat armour ignored. Only impact weapons have it (weapons.json armor_defeat); swords never do."
+  "armor_piercing": {
+    "value": 5,
+    "perk_bonus": 1,
+    "trick_bonus": 2,
+    "durability_multiplier": 2,
+    "weapons": "all axes (one- and two-handed, thrown, no size distinction), halberd/poleaxe/bardiche/lochaber/bill and other axe- or spike-headed polearms, the lucerne hammer, war hammer, mace, morning star, flail, chekan, war pick. Never swords, daggers, spears or staffs.",
+    "note": "ONE mechanic (replaces the old percussive rule and impact armour-defeat). Each armour layer covering the hit zone protects `value` less (never below 0), whatever the damage type. A perk can add +1 (cap value+1); the Crater trick gives value+2 once per fight. On a hit that the armour absorbs, the armour loses durability_multiplier x the normal durability loss (armor_system ARMOR_WEAR_FRACTION). Tune `value` here only."
   }
 }

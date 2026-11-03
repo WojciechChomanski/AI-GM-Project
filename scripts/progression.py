@@ -186,6 +186,19 @@ def choose_perk(c, family, rank, perk_id):
     picks[str(rank)] = perk_id
 
 
+def pending_perk_picks(c):
+    """[(family, rank, [option ids])] for every 'pick 1 of 2' the character has reached but not chosen.
+    The GM console shows these (`perks <name>`) and records a choice with `pick`."""
+    out = []
+    for fam in LADDERS:
+        rank = mastery_rank(c, fam)
+        picks = state(c).get("perks", {}).get(fam, {})
+        for r, _, opts in _ladder_slots(fam):
+            if r <= rank and len(opts) > 1 and str(r) not in picks:
+                out.append((fam, r, [o["id"] for o in opts]))
+    return out
+
+
 def active_perks(c, weapon):
     """Perks of the family of the weapon IN HAND only (no cross-family stacking)."""
     fam = weapon_family(weapon)
@@ -208,11 +221,11 @@ def perk_effects(c, weapon):
     """Merged perk effects for the weapon in hand, with global caps applied."""
     fx = {"free_guard_changes": 0, "maneuver_extra_stances": {}, "maneuver_extra_triggers": {},
           "maneuver_stamina": {}, "maneuver_attack": {}, "maneuver_aim_relief": {}, "guard_mods": {},
-          "damage_vs_light": [], "aim_relief": [], "armor_defeat": 0, "ring_on_head": False, "tricks": [], "ids": []}
+          "damage_vs_light": [], "aim_relief": [], "armor_piercing": 0, "ring_on_head": False, "tricks": [], "ids": []}
     for p in active_perks(c, weapon):
         fx["ids"].append(p["id"])
         for k, v in p["effects"].items():
-            if k in ("free_guard_changes", "armor_defeat"):
+            if k in ("free_guard_changes", "armor_piercing"):
                 fx[k] += v
             elif k in ("maneuver_extra_stances", "maneuver_extra_triggers"):
                 for n, lst in v.items():

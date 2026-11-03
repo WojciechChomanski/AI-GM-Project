@@ -10,8 +10,8 @@ committed export is stale.
 - **Damage:**
   - damage_type: the primary type, one of slashing / piercing / blunt
   - damage_types: comma list
-  - armor_defeat: 0 for swords, 1 for impact weapons
-  - percussive: 0/1
+  - armor_piercing: 0/1 (the value itself lives in rules/damage_types.json)
+  - two_hand_guard_set: set used in two hands (longsword → 2H_sword)
   - features: point / beak / hook / chain
 - **Guards:**
   - guard_set
