@@ -393,17 +393,10 @@ def apply_durability_tick(attacker, round_log, kind="attack"):
                          else f"⚠️ {attacker['name']}'s {label} is worn through (0 durability).")
 
 # ========= Stance / rolls =========
-def stance_mods(stance):
-    stance = (stance or "neutral").lower()
-    atk = 0
-    df = 0
-    if stance == "offensive":
-        atk += 10
-        df -= 10
-    elif stance == "defensive":
-        atk -= 10
-        df += 10
-    return atk, df
+def stance_mods(stance, weapon=None):
+    """(attack, defence) from rules/stances.json / weapon_stances.json (one source: combat_techniques)."""
+    from combat_techniques import stance_modifiers
+    return stance_modifiers(stance, weapon)
 
 # ——— Aimed zones and difficulty ———
 AIM_ZONES = [

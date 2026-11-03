@@ -1,42 +1,27 @@
-# ✅ File: scripts/maneuver_engine.py
-# Loads and selects weapon-specific combat maneuvers based on stance, weapon type, and combat context
+# file: scripts/maneuver_engine.py
+"""Kept for old imports: maneuver selection now lives in combat_techniques (one maneuver per action)."""
+import combat_techniques as CT
 
-import json
-import random
 
 class ManeuverEngine:
-    def __init__(self, path="../rules/weapon_maneuvers.json"):
-        with open(path, 'r') as f:
-            self.maneuvers_data = json.load(f)
+    def __init__(self, path=None):
+        self.maneuvers_data = CT.MANEUVERS
 
-    def get_available_maneuvers(self, weapon_type, stance, round_context="always", aimed_zone=None):
-        """Return maneuvers based on weapon type, stance, context, and aimed zone."""
-        if weapon_type not in self.maneuvers_data:
-            return []
+    def get_available_maneuvers(self, weapon, stance, round_context="always", aimed_zone=None, perks=None):
+        """weapon = weapons.json key or dict (or a guard-set id such as '2H_sword')."""
+        if isinstance(weapon, str) and weapon in CT.GUARD_SETS:
+            weapon = {"guard_set": weapon, "stance_tree": list(CT.GUARD_SETS[weapon]["stances"]),
+                      "features": ["point", "beak", "hook", "chain"]}
+        return CT.valid_maneuvers(weapon, stance, round_context, aimed_zone, perks)
 
-        maneuvers = []
-        for m in self.maneuvers_data[weapon_type]:
-            if m["stance_required"] == stance and (m["trigger"] == round_context or m["trigger"] == "always"):
-                if aimed_zone and "aimed_zone" in m:
-                    if aimed_zone in m["aimed_zone"]:
-                        maneuvers.append(m)
-                else:
-                    maneuvers.append(m)
-        return maneuvers
+    def select_maneuver(self, weapon, stance, round_context="always", aimed_zone=None, name=None, perks=None):
+        if isinstance(weapon, str) and weapon in CT.GUARD_SETS:
+            weapon = {"guard_set": weapon, "stance_tree": list(CT.GUARD_SETS[weapon]["stances"]),
+                      "features": ["point", "beak", "hook", "chain"]}
+        return CT.choose_maneuver(weapon, stance, round_context, aimed_zone, perks, name)[0]
 
-    def select_random_maneuver(self, weapon_type, stance, round_context="always", aimed_zone=None):
-        """Randomly select a maneuver from available options."""
-        options = self.get_available_maneuvers(weapon_type, stance, round_context, aimed_zone)
-        if not options:
-            return None
-        return random.choice(options)
+    select_random_maneuver = select_maneuver  # old name; now deterministic best-valid
 
     def describe_maneuver(self, maneuver):
-        """Generate a description log line for the maneuver."""
-        return f"🗡️ Maneuver used: {maneuver['name']} (Stamina: {maneuver['effects']['stamina_cost_modifier']}, Attack Bonus: {maneuver['effects']['attack_bonus']})"
-
-if __name__ == "__main__":
-    engine = ManeuverEngine()
-    move = engine.select_random_maneuver("2H_sword", "vom_tag")
-    if move:
-        print(engine.describe_maneuver(move))
+        e = maneuver["effects"]
+        return f"🗡️ Maneuver used: {maneuver['name']} (Stamina: {e['stamina_cost_modifier']}, Attack Bonus: {e['attack_bonus']})"

@@ -249,17 +249,10 @@ def init_weapon_state(unit):
     unit["_weapon_durability"] = dur
 
 # ========= Rolls / math =========
-def stance_mods(stance):
-    stance = (stance or "neutral").lower()
-    atk = 0
-    df = 0
-    if stance == "offensive":
-        atk += 10
-        df -= 10
-    elif stance == "defensive":
-        atk -= 10
-        df += 10
-    return atk, df
+def stance_mods(stance, weapon=None):
+    """(attack, defence) from rules/stances.json / weapon_stances.json (one source: combat_techniques)."""
+    from combat_techniques import stance_modifiers
+    return stance_modifiers(stance, weapon)
 
 def attack_roll(attacker, attack_stance, target, target_stance, attack_type="normal", round_num=1, player_turn=False):
     # Compute modifiers

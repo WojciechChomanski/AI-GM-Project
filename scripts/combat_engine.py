@@ -13,6 +13,8 @@ import progression
 import knight
 import corruption
 import wound_recovery as recovery
+import combat_techniques as CT
+from zone_hp import aimed_penalty
 
 dotenv.load_dotenv()
 app = FastAPI()
@@ -125,27 +127,43 @@ def d100(): return random.randint(1, 100)
 # ─────────────────────────────────────────────────────────────────────────────
 # Combat Engine (used by frontend)
 # ─────────────────────────────────────────────────────────────────────────────
+def _cond_total(conds, ctype, zones=None):
+    return sum(int(c.get("value", 0)) for c in conds
+               if c.get("type") == ctype and (zones is None or c.get("zone") in zones))
+
+
+def _consume(conds, ctype):
+    """Remove one-shot ('next') conditions of a type; returns their total value."""
+    total = sum(int(c.get("value", 1)) for c in conds if c.get("type") == ctype and c.get("duration") == "next")
+    conds[:] = [c for c in conds if not (c.get("type") == ctype and c.get("duration") == "next")]
+    return total
+
+
 class CombatEngine:
-    def attack_roll(self, attacker_data: dict, defender_data: dict, weapon_damage: int = 14):
+    def attack_roll(self, attacker_data: dict, defender_data: dict, weapon_damage: int | None = None, rng=random):
+        """One attack. Optional inputs (all stateless; the caller stores what comes back):
+        attacker_data: stance (guard id or offensive/defensive/neutral), previous_stance, maneuver (name),
+          trigger (always/after_parry/after_block/after_dodge), aimed_zone, damage_type, use_trick,
+          fight_state {trick_used, free_changes_used, rung}, conditions [..], disarmed.
+        defender_data: stance, conditions [..], shield_equipped.
+        See docs/COMBAT_STANCES_MANEUVERS.md."""
         attacker = Combatant(attacker_data)
         defender = Combatant(defender_data)
 
         try:
             armors = load_json("armors.json")
-        except:
+        except Exception:
             armors = {}
         equip_armor(attacker, armors)
         equip_armor(defender, armors)
 
         # Ranged/thrown use Ballistic Skill; mastery adds capped to-hit/damage (scripts/progression.py).
-        weapon_ref = attacker.weapon
-        if isinstance(weapon_ref, str):
-            try:
-                weapon_ref = dict(load_json("weapons.json").get(weapon_ref, {}), key=attacker.weapon)
-            except Exception:
-                pass
+        weapon_ref = CT.weapon_data(attacker.weapon) if attacker.weapon else {}
+        if weapon_damage is None:
+            weapon_damage = int(weapon_ref.get("base_damage", 14))
         skill = progression.attack_skill(attacker, weapon_ref)
         mastery = progression.mastery_modifiers(attacker, weapon_ref, attacker.style)
+        perks = progression.perk_effects(attacker, weapon_ref)
         weapon_damage = weapon_damage + mastery["damage"]
 
         # A Veil-thing attacking a full-Breath knight tests morale; fail = turns to another target if one exists
@@ -157,16 +175,108 @@ class CombatEngine:
             return {"hit": False, "shied_away": True, "damage": 0, "absorbed": 0, "defender_hp": defender.hp,
                     "breath_gm_only": {"state": "full", "morale_failed": True}}
 
-        roll = d100()
-        atk = roll + skill + mastery["to_hit"] + (attacker.dexterity // 10) - attacker.stress - attacker.pain
-        def_roll = d100()
-        def_score = def_roll + (defender.dexterity // 10) - defender.stress - defender.pain
-        def_type = random.choice(["Parry", "Block", "Dodge"])
-        if def_type == "Block":
+        fight = dict(attacker_data.get("fight_state") or {})
+        fight.setdefault("rung", [])
+        a_conds = [dict(c) for c in attacker_data.get("conditions", [])]
+        d_conds = [dict(c) for c in defender_data.get("conditions", [])]
+        notes = []
+
+        # --- Trick (one per fight) -------------------------------------------
+        trick = None
+        want = attacker_data.get("use_trick")
+        if want and perks["tricks"] and not fight.get("trick_used"):
+            if want is True or want in perks["tricks"]:
+                trick = perks["tricks"][0]
+                fight["trick_used"] = True
+        elif want:
+            notes.append("trick not available (none learned, or already used this fight)")
+
+        # --- Guards ----------------------------------------------------------
+        a_guard = CT.guard_info(weapon_ref, attacker_data.get("stance"))
+        d_weapon = CT.weapon_data(defender.weapon) if defender.weapon else {}
+        d_guard = CT.guard_info(d_weapon, defender_data.get("stance"))
+        if attacker_data.get("stance") and not a_guard["valid"]:
+            notes.append(f"guard {attacker_data.get('stance')} not available to this weapon: using {a_guard['id']}")
+        gmod = perks["guard_mods"].get(a_guard["id"], {})
+        free_left = perks["free_guard_changes"] - int(fight.get("free_changes_used", 0))
+        prev = attacker_data.get("previous_stance")
+        change_cost = CT.guard_change_cost(prev, a_guard["id"], free_left, trick == "seamless_guards")
+        if prev and prev != a_guard["id"] and change_cost == 0 and trick != "seamless_guards":
+            fight["free_changes_used"] = int(fight.get("free_changes_used", 0)) + 1
+
+        # --- Maneuver (ONE per action) ---------------------------------------
+        aimed_zone = attacker_data.get("aimed_zone")
+        defeat = min(CT.ARMOR_DEFEAT_MAX, int(weapon_ref.get("armor_defeat", 0)) +
+                     (perks["armor_defeat"] if weapon_ref.get("armor_defeat", 0) else 0))
+        if trick == "crater":
+            defeat = CT.ARMOR_DEFEAT_TRICK
+        maneuver, mnote = None, "none"
+        if attacker_data.get("disarmed"):
+            mnote = "disarmed: no maneuver"
+        elif _consume(a_conds, "lose_next_maneuver"):
+            mnote = "rung/disrupted: no maneuver this action"
+        elif attacker_data.get("maneuver") is not False:
+            maneuver, mnote = CT.choose_maneuver(weapon_ref, a_guard["id"], attacker_data.get("trigger", "always"),
+                                                 aimed_zone, perks, attacker_data.get("maneuver"),
+                                                 defender.armor_specs, weapon_damage, defeat,
+                                                 any_guard=(trick == "seamless_guards"))
+        fx = maneuver["effects"] if maneuver else {}
+
+        # --- Attack ------------------------------------------------------------
+        aim_pen = 0
+        if aimed_zone:
+            relief = fx.get("aim_relief", 0) + (perks["maneuver_aim_relief"].get(maneuver["name"], 0) if maneuver else 0)
+            for ar in perks["aim_relief"]:
+                armoured = CT.raw_armor(defender.armor_specs, "slashing", aimed_zone) > 0
+                if aimed_zone in ar["zones"] and (armoured or not ar.get("armoured_only")):
+                    relief += ar["value"]
+            aim_pen = aimed_penalty(aimed_zone) - min(progression.PCAPS["aim_relief"], relief)
+        man_atk = fx.get("attack_bonus", 0) + (perks["maneuver_attack"].get(maneuver["name"], 0) if maneuver else 0)
+        arm_pen = _cond_total(a_conds, "limb_disabled", CT.ARMS)
+        roll = rng.randint(1, 100)
+        atk = (roll + skill + mastery["to_hit"] + (attacker.dexterity // 10) + a_guard["attack"] + gmod.get("attack", 0)
+               + man_atk - aim_pen - arm_pen - attacker.stress - attacker.pain)
+
+        # --- Defence -------------------------------------------------------------
+        def_roll = rng.randint(1, 100)
+        d_bonus = min(progression.PCAPS["defense"], _consume(d_conds, "counter_defense"))
+        def_score = (def_roll + (defender.dexterity // 10) + d_guard["defense"] + d_bonus
+                     - _consume(d_conds, "unbalanced") - _cond_total(d_conds, "limb_disabled", CT.LEGS)
+                     - defender.stress - defender.pain)
+        def_type = rng.choice(["Parry", "Block", "Dodge"])
+        stripped = _consume(d_conds, "shield_stripped")
+        if def_type == "Block" and not fx.get("ignore_shield") and not stripped:
             def_score = int(def_score * block_bonus(defender))
 
+        # --- Stamina -------------------------------------------------------------
+        w_cost = int(weapon_ref.get("stamina_cost", 2))
+        m_red = CT.maneuver_perk_reduction(maneuver, perks)
+        total_red = min(progression.PCAPS["stamina_reduction"], -mastery["stamina"] + m_red)
+        raw_cost = w_cost + fx.get("stamina_cost_modifier", 0) + a_guard["stamina"].get("offensive", 0) + change_cost
+        stamina_spent = max(min(raw_cost, progression.PCAPS["min_stamina_per_attack"]), raw_cost - total_red)
+
+        dtype = None
+        zone = aimed_zone
+        effects_applied = []
+        disarmed = False
         if atk >= def_score:
-            effective, absorbed = apply_armor_absorption(weapon_damage, "slashing", defender)
+            hit_type = fx.get("damage_type")
+            if not zone and fx.get("target_zone"):
+                zone = CT.pick_zone(defender.armor_specs, fx["target_zone"], hit_type or "slashing")
+            bypass = fx.get("armor_bypass", 0)
+            req = attacker_data.get("damage_type")
+            choices = [hit_type] if hit_type else ([req] if req in weapon_ref.get("damage_types", []) else None)
+            dtype = CT.best_damage_type(weapon_ref, defender.armor_specs, weapon_damage, zone, bypass, defeat, choices)
+            raw = CT.raw_armor(defender.armor_specs, dtype, zone)
+            dmg = weapon_damage + CT.type_damage_mod(dtype, raw) + fx.get("damage_bonus", 0)
+            extra = sum(d["bonus"] for d in perks["damage_vs_light"] if dtype in d["types"] and raw <= d["max_armor"])
+            dmg += min(extra, max(0, progression.CEIL["damage"] - mastery["damage"]))
+            if attacker_data.get("disarmed"):
+                dmg, dtype = 2, "blunt"
+            protection = CT.effective_armor(defender.armor_specs, dtype, zone, bypass, defeat,
+                                            bool(weapon_ref.get("percussive")))
+            absorbed = min(max(dmg, 0), protection)
+            effective = max(0, dmg - protection)
             breath = {"state": "none"}
             if attacker.class_name == "Crusader_Knight":
                 breath = knight.breath_effects(attacker.virtue, attacker.piety, attacker.corruption_level,
@@ -184,8 +294,37 @@ class CombatEngine:
             else:
                 defender.hp -= effective
                 ratio = effective / defender.total_hp if defender.total_hp else 0
-            defender.pain = min(100, ratio * 120 * breath.get("pain_mult", 1)) if defender.total_hp else defender.pain
+            pain_mult = breath.get("pain_mult", 1) * CT.DAMAGE_TYPES.get(dtype, {}).get("pain_mult", 1)
+            defender.pain = min(100, ratio * 120 * pain_mult) if defender.total_hp else defender.pain
             hit = True
+            # --- maneuver / perk effects on a hit ---
+            if fx.get("limb_disable") and effective > 0:
+                lz = zone if zone in CT.ARMS | CT.LEGS else None
+                if lz:
+                    d_conds.append({"type": "limb_disabled", "zone": lz, "value": fx["limb_disable"], "duration": "fight"})
+                    effects_applied.append(f"{lz} disabled (-{fx['limb_disable']})")
+            if fx.get("disarm_chance") and CT.roll_chance(fx["disarm_chance"], rng):
+                disarmed = True
+                effects_applied.append("foe disarmed")
+            if fx.get("target_lose_next_maneuver"):
+                d_conds.append({"type": "lose_next_maneuver", "value": 1, "duration": "next"})
+                effects_applied.append("foe loses next maneuver")
+            foe_id = defender_data.get("name", "?")
+            if perks["ring_on_head"] and dtype == "blunt" and zone == "head" and foe_id not in fight["rung"] \
+                    and not fx.get("target_lose_next_maneuver"):
+                fight["rung"].append(foe_id)
+                d_conds.append({"type": "lose_next_maneuver", "value": 1, "duration": "next"})
+                effects_applied.append("helm rung: foe loses next maneuver")
+            if fx.get("target_defense_penalty_next"):
+                d_conds.append({"type": "unbalanced", "value": fx["target_defense_penalty_next"], "duration": "next"})
+                effects_applied.append(f"foe unbalanced (-{fx['target_defense_penalty_next']} next defence)")
+            if fx.get("target_initiative_penalty_next"):
+                d_conds.append({"type": "initiative", "value": -fx["target_initiative_penalty_next"], "duration": "next"})
+            if fx.get("strip_shield"):
+                d_conds.append({"type": "shield_stripped", "value": 1, "duration": "next"})
+                effects_applied.append("shield hooked aside")
+            if fx.get("counter_defense_next"):
+                a_conds.append({"type": "counter_defense", "value": fx["counter_defense_next"], "duration": "next"})
         else:
             effective = absorbed = 0
             hit = False
@@ -197,6 +336,8 @@ class CombatEngine:
             "hit": hit,
             "damage": effective,
             "absorbed": absorbed,
+            "damage_type": dtype,
+            "zone": zone,
             "defender_hp": defender.hp,
             "defender_pain": defender.pain,
             "attack_roll": roll,
@@ -206,6 +347,21 @@ class CombatEngine:
             "def_type": def_type,
             "attack_skill": skill,
             "mastery": mastery,
+            "stance": a_guard["id"],
+            "defender_stance": d_guard["id"],
+            "guard_change_cost": change_cost,
+            "maneuver": maneuver["name"] if maneuver else None,
+            "maneuver_note": mnote,
+            "aimed_penalty": aim_pen,
+            "armor_defeat": defeat,
+            "trick": trick,
+            "stamina_spent": stamina_spent,
+            "effects": effects_applied,
+            "defender_disarmed": disarmed,
+            "attacker_conditions": a_conds,
+            "defender_conditions": d_conds,
+            "fight_state": fight,
+            "notes": notes,
         }
 
 engine = CombatEngine()
@@ -215,7 +371,7 @@ def api_attack_roll(data: dict, username: str = Depends(verify_credentials)):
     return engine.attack_roll(
         data.get('attacker', {}),
         data.get('defender', {}),
-        data.get('weapon_damage', 14)
+        data.get('weapon_damage')
     )
 
 # Simple health check

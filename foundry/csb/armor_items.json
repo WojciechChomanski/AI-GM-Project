@@ -1,0 +1,602 @@
+[
+  {
+    "name": "Veil Wraps",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Unarmored",
+        "armor_variant": "standard",
+        "armor_label": "Veil Wraps",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 0,
+        "armor_piercing": 0,
+        "armor_blunt": 0,
+        "rigid": 0,
+        "coverage": "",
+        "stamina_penalty": 0,
+        "weight": 0,
+        "max_durability": 10
+      }
+    }
+  },
+  {
+    "name": "Padded Cloth",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Light",
+        "armor_variant": "standard",
+        "armor_label": "Padded Cloth",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 3,
+        "armor_piercing": 2,
+        "armor_blunt": 1,
+        "rigid": 0,
+        "coverage": "chest",
+        "stamina_penalty": 1,
+        "weight": 5,
+        "max_durability": 40
+      }
+    }
+  },
+  {
+    "name": "Veil-Woven Silk",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Light",
+        "armor_variant": "elven",
+        "armor_label": "Veil-Woven Silk",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 3,
+        "armor_piercing": 2,
+        "armor_blunt": 1,
+        "rigid": 0,
+        "coverage": "chest",
+        "stamina_penalty": 0,
+        "weight": 3,
+        "max_durability": 30
+      }
+    }
+  },
+  {
+    "name": "Forged Leather",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Light",
+        "armor_variant": "dwarven",
+        "armor_label": "Forged Leather",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 3,
+        "armor_piercing": 2,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest",
+        "stamina_penalty": 2,
+        "weight": 7,
+        "max_durability": 50
+      }
+    }
+  },
+  {
+    "name": "Reinforced Cloth",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Medium",
+        "armor_variant": "standard",
+        "armor_label": "Reinforced Cloth",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 4,
+        "armor_piercing": 2,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm",
+        "stamina_penalty": 2,
+        "weight": 7,
+        "max_durability": 50
+      }
+    }
+  },
+  {
+    "name": "Veilwood Lamellar",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Medium",
+        "armor_variant": "elven",
+        "armor_label": "Veilwood Lamellar",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 5,
+        "armor_piercing": 3,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm",
+        "stamina_penalty": 1,
+        "weight": 5,
+        "max_durability": 40
+      }
+    }
+  },
+  {
+    "name": "Iron-Bound Leather",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Medium",
+        "armor_variant": "dwarven",
+        "armor_label": "Iron-Bound Leather",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 5,
+        "armor_piercing": 3,
+        "armor_blunt": 3,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm",
+        "stamina_penalty": 3,
+        "weight": 9,
+        "max_durability": 60
+      }
+    }
+  },
+  {
+    "name": "Light Chainmail",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Heavy",
+        "armor_variant": "standard",
+        "armor_label": "Light Chainmail",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 7,
+        "armor_piercing": 4,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 3,
+        "weight": 10,
+        "max_durability": 60
+      }
+    }
+  },
+  {
+    "name": "Veilfiber Chain",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Heavy",
+        "armor_variant": "elven",
+        "armor_label": "Veilfiber Chain",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 7,
+        "armor_piercing": 4,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 2,
+        "weight": 8,
+        "max_durability": 50
+      }
+    }
+  },
+  {
+    "name": "Heavy Chainmail",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Light_Heavy",
+        "armor_variant": "dwarven",
+        "armor_label": "Heavy Chainmail",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 8,
+        "armor_piercing": 5,
+        "armor_blunt": 3,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 4,
+        "weight": 12,
+        "max_durability": 70
+      }
+    }
+  },
+  {
+    "name": "Brigandine",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Light",
+        "armor_variant": "standard",
+        "armor_label": "Brigandine",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 8,
+        "armor_piercing": 6,
+        "armor_blunt": 3,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 4,
+        "weight": 12,
+        "max_durability": 70
+      }
+    }
+  },
+  {
+    "name": "Veilscale Brigandine",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Light",
+        "armor_variant": "elven",
+        "armor_label": "Veilscale Brigandine",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 8,
+        "armor_piercing": 6,
+        "armor_blunt": 3,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 3,
+        "weight": 10,
+        "max_durability": 60
+      }
+    }
+  },
+  {
+    "name": "Steel Brigandine",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Light",
+        "armor_variant": "dwarven",
+        "armor_label": "Steel Brigandine",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 9,
+        "armor_piercing": 7,
+        "armor_blunt": 4,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 5,
+        "weight": 14,
+        "max_durability": 80
+      }
+    }
+  },
+  {
+    "name": "Scale Mail",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Medium",
+        "armor_variant": "standard",
+        "armor_label": "Scale Mail",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 8,
+        "armor_piercing": 6,
+        "armor_blunt": 4,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 5,
+        "weight": 15,
+        "max_durability": 80
+      }
+    }
+  },
+  {
+    "name": "Veilscale Mail",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Medium",
+        "armor_variant": "elven",
+        "armor_label": "Veilscale Mail",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 8,
+        "armor_piercing": 6,
+        "armor_blunt": 4,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 4,
+        "weight": 12,
+        "max_durability": 70
+      }
+    }
+  },
+  {
+    "name": "Forged Scale Mail",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Medium",
+        "armor_variant": "dwarven",
+        "armor_label": "Forged Scale Mail",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 9,
+        "armor_piercing": 7,
+        "armor_blunt": 5,
+        "rigid": 0,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 6,
+        "weight": 18,
+        "max_durability": 90
+      }
+    }
+  },
+  {
+    "name": "Breastplate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Heavy",
+        "armor_variant": "standard",
+        "armor_label": "Breastplate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 11,
+        "armor_piercing": 8,
+        "armor_blunt": 5,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 9,
+        "weight": 12.6,
+        "max_durability": 48
+      }
+    }
+  },
+  {
+    "name": "Forged Breastplate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Medium_Heavy",
+        "armor_variant": "dwarven",
+        "armor_label": "Forged Breastplate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 12,
+        "armor_piercing": 9,
+        "armor_blunt": 6,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach",
+        "stamina_penalty": 10,
+        "weight": 14.9,
+        "max_durability": 52
+      }
+    }
+  },
+  {
+    "name": "Half Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Light",
+        "armor_variant": "standard",
+        "armor_label": "Half Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 12,
+        "armor_piercing": 9,
+        "armor_blunt": 6,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 8,
+        "weight": 15.9,
+        "max_durability": 54
+      }
+    }
+  },
+  {
+    "name": "Forged Half Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Light",
+        "armor_variant": "dwarven",
+        "armor_label": "Forged Half Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 13,
+        "armor_piercing": 10,
+        "armor_blunt": 7,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,stomach,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 9,
+        "weight": 19.0,
+        "max_durability": 60
+      }
+    }
+  },
+  {
+    "name": "Full Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Medium",
+        "armor_variant": "standard",
+        "armor_label": "Full Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 14,
+        "armor_piercing": 10,
+        "armor_blunt": 7,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,left_lower_arm,right_lower_arm,stomach,left_upper_leg,right_upper_leg,left_lower_leg,right_lower_leg,head,throat,groin",
+        "stamina_penalty": 10,
+        "weight": 32.2,
+        "max_durability": 143
+      }
+    }
+  },
+  {
+    "name": "Forged Full Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Medium",
+        "armor_variant": "dwarven",
+        "armor_label": "Forged Full Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 15,
+        "armor_piercing": 11,
+        "armor_blunt": 8,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,left_lower_arm,right_lower_arm,stomach,left_upper_leg,right_upper_leg,left_lower_leg,right_lower_leg,head,throat,groin",
+        "stamina_penalty": 11,
+        "weight": 36.8,
+        "max_durability": 156
+      }
+    }
+  },
+  {
+    "name": "Siege Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Heavy",
+        "armor_variant": "standard",
+        "armor_label": "Siege Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 15,
+        "armor_piercing": 11,
+        "armor_blunt": 8,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,left_lower_arm,right_lower_arm,stomach,left_upper_leg,right_upper_leg,left_lower_leg,right_lower_leg,head,throat,groin",
+        "stamina_penalty": 12,
+        "weight": 40.2,
+        "max_durability": 156
+      }
+    }
+  },
+  {
+    "name": "Rune-Forged Siege Plate",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Heavy_Heavy",
+        "armor_variant": "dwarven",
+        "armor_label": "Rune-Forged Siege Plate",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 16,
+        "armor_piercing": 12,
+        "armor_blunt": 9,
+        "rigid": 1,
+        "coverage": "chest,left_upper_arm,right_upper_arm,left_lower_arm,right_lower_arm,stomach,left_upper_leg,right_upper_leg,left_lower_leg,right_lower_leg,head,throat,groin",
+        "stamina_penalty": 13,
+        "weight": 46.0,
+        "max_durability": 169
+      }
+    }
+  }
+]

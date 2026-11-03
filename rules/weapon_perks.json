@@ -1,0 +1,835 @@
+{
+  "_caps": {
+    "to_hit": 5,
+    "damage": 2,
+    "defense": 5,
+    "stamina_reduction": 2,
+    "min_stamina_per_attack": 2,
+    "aim_relief": 5,
+    "armor_defeat": 2,
+    "armor_defeat_trick": 3,
+    "tricks_per_fight": 1,
+    "crits": "never changed by perks or maneuvers",
+    "binding": "only the family of the weapon in hand counts"
+  },
+  "_structure": "rank 1 auto; rank 2 +5 to hit (every family) and pick 1 of 2; rank 3 two autos; rank 4 one auto and pick 1 of 2; rank 5 pick 1 of 2 = 7 perks. Unchosen picks give nothing until chosen (progression.choose_perk).",
+  "_rank_gains": {
+    "2": {
+      "to_hit": 5
+    }
+  },
+  "ladders": {
+    "greatsword": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "wider_use",
+            "name": "Wider Use",
+            "description": "Zwerchhau and Krumphau also from Ochs and Posta di Donna.",
+            "effects": {
+              "maneuver_extra_stances": {
+                "Zwerchhau": [
+                  "ochs",
+                  "posta_di_donna"
+                ],
+                "Krumphau": [
+                  "ochs",
+                  "posta_di_donna"
+                ]
+              }
+            }
+          },
+          {
+            "id": "practiced_half_sword",
+            "name": "Practiced Half-Sword",
+            "description": "Half-sword guard attack penalty -3 becomes -1.",
+            "effects": {
+              "guard_mods": {
+                "half_sword": {
+                  "attack": 2
+                }
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "close_play",
+          "name": "Close Play",
+          "description": "Absetzen also after a block; Exchange Thrust also after a parry.",
+          "effects": {
+            "maneuver_extra_triggers": {
+              "Absetzen": [
+                "after_block"
+              ],
+              "Exchange Thrust": [
+                "after_parry"
+              ]
+            }
+          }
+        },
+        {
+          "id": "practiced_counters",
+          "name": "Practiced Counters",
+          "description": "Absetzen and Half-Sword Thrust cost 1 less stamina.",
+          "effects": {
+            "maneuver_stamina": {
+              "Absetzen": -1,
+              "Half-Sword Thrust": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "edge_on_flesh",
+          "name": "Edge on Flesh",
+          "description": "+1 damage on slashing hits where the zone's slashing armour is 3 or less.",
+          "effects": {
+            "damage_vs_light": {
+              "bonus": 1,
+              "max_armor": 3,
+              "types": [
+                "slashing"
+              ]
+            }
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "mordhau_grip",
+              "name": "Mordhau Grip",
+              "description": "Mordhau also after a parry, 1 less stamina.",
+              "effects": {
+                "maneuver_extra_triggers": {
+                  "Mordhau": [
+                    "after_parry"
+                  ]
+                },
+                "maneuver_stamina": {
+                  "Mordhau": -1
+                }
+              }
+            },
+            {
+              "id": "gap_finder",
+              "name": "Gap-Finder",
+              "description": "Aimed strikes at an ARMOURED head/throat/groin/left_upper_arm/right_upper_arm are 5 easier (cap 5 total).",
+              "effects": {
+                "aim_relief": {
+                  "value": 5,
+                  "zones": [
+                    "head",
+                    "throat",
+                    "groin",
+                    "left_upper_arm",
+                    "right_upper_arm"
+                  ],
+                  "armoured_only": true
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "seamless_guards",
+            "name": "Seamless Guards",
+            "description": "Once per fight (your one trick): change guard free and use a maneuver of ANY guard in your set whose trigger fits.",
+            "effects": {
+              "trick": "seamless_guards"
+            }
+          },
+          {
+            "id": "cut_master",
+            "name": "Krumphau and Zwerchhau Master",
+            "description": "Both cost 1 less stamina; Krumphau also after a parry.",
+            "effects": {
+              "maneuver_stamina": {
+                "Krumphau": -1,
+                "Zwerchhau": -1
+              },
+              "maneuver_extra_triggers": {
+                "Krumphau": [
+                  "after_parry"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "one_hand_sword": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "quick_riposte",
+            "name": "Quick Riposte",
+            "description": "Parry and Riposte also after a block, 1 less stamina.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Parry and Riposte": [
+                  "after_block"
+                ]
+              },
+              "maneuver_stamina": {
+                "Parry and Riposte": -1
+              }
+            }
+          },
+          {
+            "id": "practiced_half_sword",
+            "name": "Practiced Half-Sword",
+            "description": "Half-sword guard attack penalty -3 becomes -1.",
+            "effects": {
+              "guard_mods": {
+                "half_sword": {
+                  "attack": 2
+                }
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "close_play",
+          "name": "Close Play",
+          "description": "Pommel Strike also after a parry.",
+          "effects": {
+            "maneuver_extra_triggers": {
+              "Pommel Strike": [
+                "after_parry"
+              ]
+            }
+          }
+        },
+        {
+          "id": "disarm_practice",
+          "name": "Disarm Practice",
+          "description": "Disarm Attempt: attack -2 becomes 0 and 1 less stamina.",
+          "effects": {
+            "maneuver_attack": {
+              "Disarm Attempt": 2
+            },
+            "maneuver_stamina": {
+              "Disarm Attempt": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "edge_on_flesh",
+          "name": "Edge on Flesh",
+          "description": "+1 damage on slashing hits where the zone's slashing armour is 3 or less.",
+          "effects": {
+            "damage_vs_light": {
+              "bonus": 1,
+              "max_armor": 3,
+              "types": [
+                "slashing"
+              ]
+            }
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "gap_finder",
+              "name": "Gap-Finder",
+              "description": "Aimed strikes at an ARMOURED head/throat/groin/left_upper_arm/right_upper_arm are 5 easier (cap 5 total).",
+              "effects": {
+                "aim_relief": {
+                  "value": 5,
+                  "zones": [
+                    "head",
+                    "throat",
+                    "groin",
+                    "left_upper_arm",
+                    "right_upper_arm"
+                  ],
+                  "armoured_only": true
+                }
+              }
+            },
+            {
+              "id": "oberhau_weight",
+              "name": "Oberhau Weight",
+              "description": "Oberhau also from Vom Tag, 1 less stamina.",
+              "effects": {
+                "maneuver_extra_stances": {
+                  "Oberhau": [
+                    "vom_tag"
+                  ]
+                },
+                "maneuver_stamina": {
+                  "Oberhau": -1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "seamless_guards",
+            "name": "Seamless Guards",
+            "description": "Once per fight (your one trick): change guard free and use a maneuver of ANY guard in your set whose trigger fits.",
+            "effects": {
+              "trick": "seamless_guards"
+            }
+          },
+          {
+            "id": "thrust_master",
+            "name": "Thrust Master",
+            "description": "Thrust costs 1 less stamina and is also usable from Guardia Alta.",
+            "effects": {
+              "maneuver_stamina": {
+                "Thrust": -1
+              },
+              "maneuver_extra_stances": {
+                "Thrust": [
+                  "guardia_alta"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "warhammer": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "short_grip",
+            "name": "Short Grip",
+            "description": "Haft Parry and Queue Strike also after a block, 1 less stamina.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Haft Parry and Queue Strike": [
+                  "after_block"
+                ]
+              },
+              "maneuver_stamina": {
+                "Haft Parry and Queue Strike": -1
+              }
+            }
+          },
+          {
+            "id": "hook_master",
+            "name": "Hook Master",
+            "description": "Hook the Leg also after a parry.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Hook the Leg": [
+                  "after_parry"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "through_the_plate",
+          "name": "Through the Plate",
+          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "effects": {
+            "armor_defeat": 1
+          }
+        },
+        {
+          "id": "weight_control",
+          "name": "Weight Control",
+          "description": "Crushing Blow costs 1 less stamina.",
+          "effects": {
+            "maneuver_stamina": {
+              "Crushing Blow": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "ringing_blow",
+          "name": "Ringing Blow",
+          "description": "A blunt hit on the head makes the foe lose their next maneuver (once per foe per fight), even if armour stops the damage.",
+          "effects": {
+            "ring_on_head": true
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "haft_defence",
+              "name": "Haft Defence",
+              "description": "+3 defence in counterweight.",
+              "effects": {
+                "guard_mods": {
+                  "counterweight": {
+                    "defense": 3
+                  }
+                }
+              }
+            },
+            {
+              "id": "spike_thrust",
+              "name": "Spike Thrust",
+              "description": "Beak Thrust also after a parry, 1 less stamina.",
+              "effects": {
+                "maneuver_extra_triggers": {
+                  "Beak Thrust": [
+                    "after_parry"
+                  ]
+                },
+                "maneuver_stamina": {
+                  "Beak Thrust": -1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "crater",
+            "name": "Crater",
+            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "effects": {
+              "trick": "crater"
+            }
+          },
+          {
+            "id": "relentless",
+            "name": "Relentless",
+            "description": "Crushing Blow costs 1 less stamina again (cap -2 total).",
+            "effects": {
+              "maneuver_stamina": {
+                "Crushing Blow": -1
+              }
+            }
+          }
+        ]
+      }
+    },
+    "mace": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "short_grip",
+            "name": "Short Grip",
+            "description": "Haft Check also after a block, 1 less stamina.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Haft Check": [
+                  "after_block"
+                ]
+              },
+              "maneuver_stamina": {
+                "Haft Check": -1
+              }
+            }
+          },
+          {
+            "id": "helm_hunter",
+            "name": "Helm Hunter",
+            "description": "Helm Ringer: aimed penalty 5 smaller.",
+            "effects": {
+              "maneuver_aim_relief": {
+                "Helm Ringer": 5
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "through_the_plate",
+          "name": "Through the Plate",
+          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "effects": {
+            "armor_defeat": 1
+          }
+        },
+        {
+          "id": "weight_control",
+          "name": "Weight Control",
+          "description": "Overhead Smash costs 1 less stamina.",
+          "effects": {
+            "maneuver_stamina": {
+              "Overhead Smash": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "ringing_blow",
+          "name": "Ringing Blow",
+          "description": "A blunt hit on the head makes the foe lose their next maneuver (once per foe per fight).",
+          "effects": {
+            "ring_on_head": true
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "haft_defence",
+              "name": "Haft Defence",
+              "description": "+3 defence in hanging_guard.",
+              "effects": {
+                "guard_mods": {
+                  "hanging_guard": {
+                    "defense": 3
+                  }
+                }
+              }
+            },
+            {
+              "id": "spike_thrust",
+              "name": "Spike Thrust",
+              "description": "Beak Thrust also from High Guard, 1 less stamina.",
+              "effects": {
+                "maneuver_extra_stances": {
+                  "Beak Thrust": [
+                    "high_guard"
+                  ]
+                },
+                "maneuver_stamina": {
+                  "Beak Thrust": -1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "crater",
+            "name": "Crater",
+            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "effects": {
+              "trick": "crater"
+            }
+          },
+          {
+            "id": "relentless",
+            "name": "Relentless",
+            "description": "Overhead Smash costs 1 less stamina again (cap -2 total).",
+            "effects": {
+              "maneuver_stamina": {
+                "Overhead Smash": -1
+              }
+            }
+          }
+        ]
+      }
+    },
+    "axe": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "bearded_hook",
+            "name": "Bearded Hook Mastery",
+            "description": "Bearded Hook also after a parry.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Bearded Hook": [
+                  "after_parry"
+                ]
+              }
+            }
+          },
+          {
+            "id": "low_guard_practice",
+            "name": "Low Guard Practice",
+            "description": "Low Guard attack penalty -2 becomes 0.",
+            "effects": {
+              "guard_mods": {
+                "low_guard": {
+                  "attack": 2
+                }
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "through_the_plate",
+          "name": "Through the Plate",
+          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "effects": {
+            "armor_defeat": 1
+          }
+        },
+        {
+          "id": "weight_control",
+          "name": "Weight Control",
+          "description": "Overhead Chop costs 1 less stamina.",
+          "effects": {
+            "maneuver_stamina": {
+              "Overhead Chop": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "cleave",
+          "name": "Cleave",
+          "description": "+1 damage on slashing hits where the zone's slashing armour is 3 or less.",
+          "effects": {
+            "damage_vs_light": {
+              "bonus": 1,
+              "max_armor": 3,
+              "types": [
+                "slashing"
+              ]
+            }
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "leg_chop_mastery",
+              "name": "Leg Chop Mastery",
+              "description": "Leg Chop: aimed penalty 5 smaller.",
+              "effects": {
+                "maneuver_aim_relief": {
+                  "Leg Chop": 5
+                }
+              }
+            },
+            {
+              "id": "haft_defence",
+              "name": "Haft Defence",
+              "description": "+3 defence in middle_guard.",
+              "effects": {
+                "guard_mods": {
+                  "middle_guard": {
+                    "defense": 3
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "crater",
+            "name": "Crater",
+            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "effects": {
+              "trick": "crater"
+            }
+          },
+          {
+            "id": "relentless",
+            "name": "Relentless",
+            "description": "Overhead Chop costs 1 less stamina again (cap -2 total).",
+            "effects": {
+              "maneuver_stamina": {
+                "Overhead Chop": -1
+              }
+            }
+          }
+        ]
+      }
+    },
+    "spear": {
+      "1": [
+        {
+          "id": "fluid_guards",
+          "name": "Fluid Guards",
+          "description": "One guard change per round costs no stamina.",
+          "effects": {
+            "free_guard_changes": 1
+          }
+        }
+      ],
+      "2": {
+        "pick": [
+          {
+            "id": "reach_control",
+            "name": "Reach Control",
+            "description": "Spike Thrust also after a parry, 1 less stamina.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Spike Thrust": [
+                  "after_parry"
+                ]
+              },
+              "maneuver_stamina": {
+                "Spike Thrust": -1
+              }
+            }
+          },
+          {
+            "id": "hook_practice",
+            "name": "Hook Practice",
+            "description": "Hook and Pull also after a block.",
+            "effects": {
+              "maneuver_extra_triggers": {
+                "Hook and Pull": [
+                  "after_block"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "3": [
+        {
+          "id": "through_the_plate",
+          "name": "Through the Plate",
+          "description": "Armour defeat +1 (total never above 2). Only weapons that already have armour defeat.",
+          "effects": {
+            "armor_defeat": 1
+          }
+        },
+        {
+          "id": "queue_practice",
+          "name": "Queue Practice",
+          "description": "Queue Strike also after a parry, 1 less stamina.",
+          "effects": {
+            "maneuver_extra_triggers": {
+              "Queue Strike": [
+                "after_parry"
+              ]
+            },
+            "maneuver_stamina": {
+              "Queue Strike": -1
+            }
+          }
+        }
+      ],
+      "4": [
+        {
+          "id": "weight_control",
+          "name": "Weight Control",
+          "description": "Overhead Blow costs 1 less stamina.",
+          "effects": {
+            "maneuver_stamina": {
+              "Overhead Blow": -1
+            }
+          }
+        },
+        {
+          "pick": [
+            {
+              "id": "gap_finder",
+              "name": "Gap-Finder",
+              "description": "Aimed strikes at an ARMOURED head/throat/groin/left_upper_arm/right_upper_arm are 5 easier (cap 5 total).",
+              "effects": {
+                "aim_relief": {
+                  "value": 5,
+                  "zones": [
+                    "head",
+                    "throat",
+                    "groin",
+                    "left_upper_arm",
+                    "right_upper_arm"
+                  ],
+                  "armoured_only": true
+                }
+              }
+            },
+            {
+              "id": "haft_defence",
+              "name": "Haft Defence",
+              "description": "+3 defence in tutta_porta_di_ferro.",
+              "effects": {
+                "guard_mods": {
+                  "tutta_porta_di_ferro": {
+                    "defense": 3
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "5": {
+        "pick": [
+          {
+            "id": "seamless_guards",
+            "name": "Seamless Guards",
+            "description": "Once per fight (your one trick): change guard free and use a maneuver of ANY guard in your set whose trigger fits.",
+            "effects": {
+              "trick": "seamless_guards"
+            }
+          },
+          {
+            "id": "crater",
+            "name": "Crater",
+            "description": "Once per fight (your one trick): this blow ignores 3 armour instead of your usual armour defeat.",
+            "effects": {
+              "trick": "crater"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

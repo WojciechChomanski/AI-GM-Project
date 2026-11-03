@@ -1,249 +1,614 @@
 {
-"2H_sword": [
-{
-"name": "Zwerchhau",
-"stance_required": "vom_tag",
-"trigger": "always",
-"description": "A powerful horizontal cut meant to interrupt an opponent’s attack and counter simultaneously.",
-"effects": {
-"attack_bonus": 5,
-"defense_bonus": 0,
-"stamina_cost_modifier": 1,
-"notes": "Increased chance to counter on successful hit."
-}
-},
-{
-"name": "Absetzen",
-"stance_required": "half_sword",
-"trigger": "after_parry",
-"description": "Deflect and immediately thrust into the opponent’s opening.",
-"effects": {
-"attack_bonus": 8,
-"defense_bonus": 2,
-"stamina_cost_modifier": 2,
-"notes": "Effective against armored opponents."
-}
-},
-{
-"name": "Durchwechseln",
-"stance_required": "wrath_guard",
-"trigger": "after_block",
-"description": "Change through under the opponent’s guard to reposition and strike.",
-"effects": {
-"attack_bonus": 3,
-"defense_bonus": 3,
-"stamina_cost_modifier": 0,
-"notes": "Reduces opponent’s initiative next round."
-}
-},
-{
-"name": "Half-Sword Thrust",
-"stance_required": "half_sword",
-"trigger": "in_critical_hit",
-"description": "Grip the blade and thrust with precision into weak armor points.",
-"effects": {
-"attack_bonus": 10,
-"defense_bonus": 0,
-"stamina_cost_modifier": 3,
-"notes": "Bypasses 50% of armor protection."
-}
-},
-{
-"name": "Mordhau",
-"stance_required": "vom_tag",
-"trigger": "after_block",
-"description": "Grip the blade and use the pommel or crossguard to bludgeon.",
-"effects": {
-"attack_bonus": 7,
-"defense_bonus": -2,
-"stamina_cost_modifier": 2,
-"notes": "Deals blunt damage with a slashing weapon."
-}
-},
-{
-"name": "Aimed Leg Strike",
-"stance_required": "wrath_guard",
-"trigger": "always",
-"aimed_zone": ["left_lower_leg", "right_lower_leg", "left_upper_leg", "right_upper_leg"],
-"description": "Target the opponent’s legs to cripple mobility.",
-"effects": {
-"attack_bonus": 0,
-"defense_bonus": -5,
-"stamina_cost_modifier": 2,
-"notes": "Deals full damage to unarmored legs, -30 penalty."
-}
-},
-{
-"name": "Krumphau",
-"stance_required": "vom_tag",
-"trigger": "always",
-"description": "Crooked strike to the side, aiming at hands or arms.",
-"effects": {
-"attack_bonus": 6,
-"defense_bonus": 1,
-"stamina_cost_modifier": 2,
-"notes": "Effective against undercuts, incapacitates limbs."
-}
-},
-{
-"name": "Scheitelhau",
-"stance_required": "ochs",
-"trigger": "after_parry",
-"description": "Parting strike to the head, quick vertical cut.",
-"effects": {
-"attack_bonus": 7,
-"defense_bonus": -1,
-"stamina_cost_modifier": 1,
-"notes": "High chance for head wound, vulnerable to counters."
-}
-},
-{
-"name": "Schielhau",
-"stance_required": "pflug",
-"trigger": "always",
-"description": "Squinting strike, feint and invert blade to thrust.",
-"effects": {
-"attack_bonus": 5,
-"defense_bonus": 2,
-"stamina_cost_modifier": 2,
-"notes": "Deals with extended blades, targets throat."
-}
-},
-{
-"name": "Exchange Thrust",
-"stance_required": "posta_di_fenestra",
-"trigger": "after_block",
-"description": "Exchange thrusts by covering and counter-thrusting quickly.",
-"effects": {
-"attack_bonus": 4,
-"defense_bonus": 3,
-"stamina_cost_modifier": 1,
-"notes": "Breaks opponent’s thrust, enters close play."
-}
-},
-{
-"name": "Break Thrust",
-"stance_required": "porta_di_ferro",
-"trigger": "after_parry",
-"description": "Beat opponent’s thrust to the ground and follow up.",
-"effects": {
-"attack_bonus": 3,
-"defense_bonus": 4,
-"stamina_cost_modifier": 2,
-"notes": "Strong defense, disarms or disbalances foe."
-}
-},
-{
-"name": "Underhand Thrust",
-"stance_required": "dente_di_zenghiaro",
-"trigger": "always",
-"description": "Powerful upward thrust mimicking boar’s tusk.",
-"effects": {
-"attack_bonus": 6,
-"defense_bonus": 0,
-"stamina_cost_modifier": 3,
-"notes": "Targets face or torso, follows with downward strike."
-},
-"exclusive_to": "ogre"
-}
-],
-"1H_sword": [
-{
-"name": "Thrust",
-"stance_required": "vom_tag",
-"trigger": "always",
-"description": "A quick thrust aimed at the opponent's torso or face.",
-"effects": {
-"attack_bonus": 3,
-"defense_bonus": 0,
-"stamina_cost_modifier": 1,
-"notes": "Effective against lightly armored opponents."
-}
-},
-{
-"name": "Parry and Riposte",
-"stance_required": "wrath_guard",
-"trigger": "after_parry",
-"description": "Deflect an attack and immediately counter with a slash.",
-"effects": {
-"attack_bonus": 5,
-"defense_bonus": 2,
-"stamina_cost_modifier": 2,
-"notes": "Increases chance of critical hit."
-}
-},
-{
-"name": "Pommel Strike",
-"stance_required": "half_sword",
-"trigger": "after_block",
-"description": "Use the pommel to strike the opponent, stunning them briefly.",
-"effects": {
-"attack_bonus": 4,
-"defense_bonus": -1,
-"stamina_cost_modifier": 1,
-"notes": "Can disrupt opponent's next action."
-}
-},
-{
-"name": "Disarm Attempt",
-"stance_required": ["vom_tag", "wrath_guard"],
-"trigger": ["after_block", "after_parry"],
-"description": "Attempt to knock the opponent's weapon from their hand.",
-"effects": {
-"attack_bonus": -2,
-"defense_bonus": 3,
-"stamina_cost_modifier": 3,
-"notes": "+10% chance to disarm if successful."
-}
-},
-{
-"name": "Aimed Head Strike",
-"stance_required": ["vom_tag", "half_sword"],
-"trigger": ["always", "in_critical_hit"],
-"aimed_zone": ["head"],
-"description": "Target the head for a potentially devastating blow.",
-"effects": {
-"attack_bonus": 8,
-"defense_bonus": -5,
-"stamina_cost_modifier": 2,
-"notes": "+20% chance of critical hit, but -30 penalty against helmets."
-}
-},
-{
-"name": "Oberhau",
-"stance_required": "guardia_alta",
-"trigger": "always",
-"description": "Downward diagonal cut from high guard.",
-"effects": {
-"attack_bonus": 4,
-"defense_bonus": 1,
-"stamina_cost_modifier": 2,
-"notes": "Powerful against unarmored foes."
-}
-},
-{
-"name": "Unterhau",
-"stance_required": "porta_di_ferro",
-"trigger": "after_parry",
-"description": "Upward diagonal cut from low guard.",
-"effects": {
-"attack_bonus": 5,
-"defense_bonus": 0,
-"stamina_cost_modifier": 1,
-"notes": "Targets legs or underarms."
-}
-},
-{
-"name": "Mittelhau",
-"stance_required": "guardia_di_testa",
-"trigger": "always",
-"description": "Horizontal middle cut protecting the head.",
-"effects": {
-"attack_bonus": 3,
-"defense_bonus": 3,
-"stamina_cost_modifier": 2,
-"notes": "Versatile for defense and offense."
-}
-}
-]
+  "_meta": {
+    "triggers": [
+      "always",
+      "after_parry",
+      "after_block",
+      "after_dodge"
+    ],
+    "effect_keys": {
+      "attack_bonus": "to the attack roll",
+      "defense_bonus": "to your defence this exchange",
+      "stamina_cost_modifier": "extra stamina on top of the weapon's cost",
+      "damage_type": "switches the hit's damage type (thrusts pierce, Mordhau and pommel are blunt)",
+      "armor_bypass": "fraction of the armour rating ignored (half-sword thrust into gaps)",
+      "target_zone": "zone (or list: least protected is taken) the blow lands on; only armour covering it counts",
+      "aimed_zone": "maneuver only valid when aiming at one of these zones",
+      "aim_relief": "reduces the aimed penalty (all sources together capped at 5)",
+      "limb_disable": "if damage gets through to an arm: -N to that side's attacks for the fight; a leg: -N to defence",
+      "disarm_chance": "percent chance on a hit that the foe drops the weapon",
+      "target_defense_penalty_next": "foe is unbalanced: -N to their next defence",
+      "target_initiative_penalty_next": "foe loses N initiative next round",
+      "target_lose_next_maneuver": "foe cannot use a maneuver on their next action (rung, disrupted)",
+      "counter_defense_next": "your next defence +N (counts toward the +5 defence cap)",
+      "strip_shield": "foe's shield gives no block bonus on their next defence",
+      "ignore_shield": "this attack ignores the foe's shield block bonus",
+      "requires_feature": "weapon must have this feature in weapons.json",
+      "damage_bonus": "added to the hit's damage (Mordhau/pommel: a crossguard is a poor hammer, -2)"
+    },
+    "rules": "One maneuver per action (chosen, or the best valid one). Maneuvers never change crit chance or crit damage."
+  },
+  "2H_sword": [
+    {
+      "name": "Zwerchhau",
+      "stance_required": "vom_tag",
+      "trigger": "always",
+      "description": "A powerful horizontal cut meant to interrupt an opponent’s attack and counter simultaneously.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "counter_defense_next": 3,
+        "notes": "Cross-cut from the roof that defends while striking: your next defence +3."
+      }
+    },
+    {
+      "name": "Absetzen",
+      "stance_required": "half_sword",
+      "trigger": "after_parry",
+      "description": "Deflect and immediately thrust into the opponent’s opening.",
+      "effects": {
+        "attack_bonus": 8,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 2,
+        "damage_type": "piercing",
+        "armor_bypass": 0.25,
+        "notes": "Set aside and thrust into a gap: piercing, ignores 25% of the armour."
+      }
+    },
+    {
+      "name": "Durchwechseln",
+      "stance_required": "wrath_guard",
+      "trigger": "after_block",
+      "description": "Change through under the opponent’s guard to reposition and strike.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 0,
+        "target_initiative_penalty_next": 2,
+        "notes": "Change through under the bind: foe -2 initiative next round."
+      }
+    },
+    {
+      "name": "Half-Sword Thrust",
+      "stance_required": "half_sword",
+      "trigger": "always",
+      "description": "Grip the blade and thrust with precision into weak armor points.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 3,
+        "damage_type": "piercing",
+        "armor_bypass": 0.5,
+        "notes": "Usable normally from the half-sword guard (owner t98u). Piercing, ignores 50% of the armour; the guard's -3 attack still applies."
+      }
+    },
+    {
+      "name": "Mordhau",
+      "stance_required": "vom_tag",
+      "trigger": "after_block",
+      "description": "Grip the blade and use the pommel or crossguard to bludgeon.",
+      "effects": {
+        "attack_bonus": 7,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "damage_type": "blunt",
+        "notes": "Murder-stroke with hilt and crossguard: blunt damage; -2 damage (a hilt is a poor hammer, so a real mace or hammer still beats it on plate).",
+        "damage_bonus": -2
+      }
+    },
+    {
+      "name": "Aimed Leg Strike",
+      "stance_required": "wrath_guard",
+      "trigger": "always",
+      "description": "Target the opponent’s legs to cripple mobility.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": -5,
+        "stamina_cost_modifier": 2,
+        "aimed_zone": [
+          "left_lower_leg",
+          "right_lower_leg",
+          "left_upper_leg",
+          "right_upper_leg"
+        ],
+        "limb_disable": 10,
+        "notes": "Aimed at a leg (normal aimed penalty applies). Damage through: that leg -10 to defence for the fight."
+      }
+    },
+    {
+      "name": "Krumphau",
+      "stance_required": "vom_tag",
+      "trigger": "always",
+      "description": "Crooked strike to the side, aiming at hands or arms.",
+      "effects": {
+        "attack_bonus": 6,
+        "defense_bonus": 1,
+        "stamina_cost_modifier": 2,
+        "target_zone": [
+          "right_lower_arm",
+          "left_lower_arm"
+        ],
+        "limb_disable": 10,
+        "notes": "Crooked strike at the hands: lands on a forearm; damage through = -10 to that arm."
+      }
+    },
+    {
+      "name": "Scheitelhau",
+      "stance_required": "ochs",
+      "trigger": "after_parry",
+      "description": "Parting strike to the head, quick vertical cut.",
+      "effects": {
+        "attack_bonus": 7,
+        "defense_bonus": -1,
+        "stamina_cost_modifier": 1,
+        "target_zone": "head",
+        "notes": "Parting strike: lands on the head (only head armour counts)."
+      }
+    },
+    {
+      "name": "Schielhau",
+      "stance_required": "pflug",
+      "trigger": "always",
+      "description": "Squinting strike, feint and invert blade to thrust.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 2,
+        "target_zone": "throat",
+        "damage_type": "piercing",
+        "notes": "Squinting strike ending in a thrust at the throat."
+      }
+    },
+    {
+      "name": "Exchange Thrust",
+      "stance_required": "posta_di_fenestra",
+      "trigger": "after_block",
+      "description": "Exchange thrusts by covering and counter-thrusting quickly.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "notes": "Fiore's exchange of thrust: piercing."
+      }
+    },
+    {
+      "name": "Break Thrust",
+      "stance_required": "porta_di_ferro",
+      "trigger": "after_parry",
+      "description": "Beat opponent’s thrust to the ground and follow up.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 4,
+        "stamina_cost_modifier": 2,
+        "target_defense_penalty_next": 10,
+        "disarm_chance": 10,
+        "notes": "Beat the thrust aside: foe -10 to next defence, 10% disarm on a hit."
+      }
+    },
+    {
+      "name": "Underhand Thrust",
+      "stance_required": "dente_di_zenghiaro",
+      "trigger": "always",
+      "description": "Powerful upward thrust mimicking boar’s tusk.",
+      "effects": {
+        "attack_bonus": 6,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 3,
+        "damage_type": "piercing",
+        "target_zone": [
+          "head",
+          "chest",
+          "stomach"
+        ],
+        "notes": "Rising thrust at face or torso: least protected of the three."
+      }
+    },
+    {
+      "name": "Alber Counter",
+      "stance_required": "alber",
+      "trigger": "after_parry",
+      "description": "From the fool's guard, invite the blow and counter at once (Liechtenauer: 'Alber breaks what is struck or thrust').",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "notes": "Counter after a parry."
+      }
+    },
+    {
+      "name": "Fendente",
+      "stance_required": "posta_di_donna",
+      "trigger": "always",
+      "description": "Fiore's descending blow from the woman's guard, breaking through other guards.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "target_defense_penalty_next": 5,
+        "notes": "Foe -5 to next defence (guard broken)."
+      }
+    }
+  ],
+  "1H_sword": [
+    {
+      "name": "Thrust",
+      "stance_required": "vom_tag",
+      "trigger": "always",
+      "description": "A quick thrust aimed at the opponent's torso or face.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "notes": "Piercing; good against mail gaps."
+      }
+    },
+    {
+      "name": "Parry and Riposte",
+      "stance_required": "wrath_guard",
+      "trigger": "after_parry",
+      "description": "Deflect an attack and immediately counter with a slash.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 2,
+        "notes": "Riposte after a parry. (Old '+crit chance' removed: crits are never changed.)"
+      }
+    },
+    {
+      "name": "Pommel Strike",
+      "stance_required": "half_sword",
+      "trigger": "after_block",
+      "description": "Use the pommel to strike the opponent, stunning them briefly.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": -1,
+        "stamina_cost_modifier": 1,
+        "damage_type": "blunt",
+        "target_lose_next_maneuver": true,
+        "notes": "Blunt; disrupts the foe's next action (no maneuver); -2 damage (a hilt is a poor hammer, so a real mace or hammer still beats it on plate).",
+        "damage_bonus": -2
+      }
+    },
+    {
+      "name": "Disarm Attempt",
+      "stance_required": [
+        "vom_tag",
+        "wrath_guard"
+      ],
+      "trigger": [
+        "after_block",
+        "after_parry"
+      ],
+      "description": "Attempt to knock the opponent's weapon from their hand.",
+      "effects": {
+        "attack_bonus": -2,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 3,
+        "disarm_chance": 25,
+        "notes": "On a hit, 25% the foe drops the weapon (no damage roll change)."
+      }
+    },
+    {
+      "name": "Aimed Head Strike",
+      "stance_required": [
+        "vom_tag",
+        "half_sword"
+      ],
+      "trigger": "always",
+      "description": "Target the head for a potentially devastating blow.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": -5,
+        "stamina_cost_modifier": 2,
+        "aimed_zone": [
+          "head"
+        ],
+        "aim_relief": 5,
+        "notes": "Aimed at the head; the aimed penalty is 5 smaller. (Old +8 and +20% crit removed.)"
+      }
+    },
+    {
+      "name": "Oberhau",
+      "stance_required": "guardia_alta",
+      "trigger": "always",
+      "description": "Downward diagonal cut from high guard.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": 1,
+        "stamina_cost_modifier": 2,
+        "notes": "Strong over-cut; best against the unarmoured (slashing bonus)."
+      }
+    },
+    {
+      "name": "Unterhau",
+      "stance_required": "porta_di_ferro",
+      "trigger": "after_parry",
+      "description": "Upward diagonal cut from low guard.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "target_zone": [
+          "left_upper_leg",
+          "right_upper_leg",
+          "left_upper_arm",
+          "right_upper_arm"
+        ],
+        "notes": "Under-cut at legs or underarms: least protected of them."
+      }
+    },
+    {
+      "name": "Mittelhau",
+      "stance_required": "guardia_di_testa",
+      "trigger": "always",
+      "description": "Horizontal middle cut protecting the head.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 2,
+        "notes": "Middle cut, balanced."
+      }
+    }
+  ],
+  "2H_hammer": [
+    {
+      "name": "Crushing Blow",
+      "stance_required": "crater_maker",
+      "trigger": "always",
+      "description": "Full overhead blow with the hammer face.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "damage_type": "blunt",
+        "notes": "Blunt."
+      }
+    },
+    {
+      "name": "Beak Thrust",
+      "stance_required": "impact_form",
+      "trigger": "always",
+      "description": "Drive the beak (bec de faucon) into a joint or plate.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "requires_feature": "beak",
+        "notes": "Piercing with the beak."
+      }
+    },
+    {
+      "name": "Haft Parry and Queue Strike",
+      "stance_required": "counterweight",
+      "trigger": "after_parry",
+      "description": "Le Jeu de la Hache: parry on the haft and strike with the queue.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 3,
+        "stamina_cost_modifier": 1,
+        "damage_type": "blunt",
+        "target_lose_next_maneuver": true,
+        "notes": "Foe loses their next maneuver."
+      }
+    },
+    {
+      "name": "Hook the Leg",
+      "stance_required": "counterweight",
+      "trigger": "after_block",
+      "description": "Hook behind the knee with the beak and pull.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": 1,
+        "stamina_cost_modifier": 2,
+        "requires_feature": "beak",
+        "target_defense_penalty_next": 10,
+        "notes": "Foe -10 to next defence."
+      }
+    }
+  ],
+  "1H_blunt": [
+    {
+      "name": "Overhead Smash",
+      "stance_required": "high_guard",
+      "trigger": "always",
+      "description": "Mace brought down on helm or shoulder.",
+      "effects": {
+        "attack_bonus": 4,
+        "defense_bonus": -1,
+        "stamina_cost_modifier": 1,
+        "damage_type": "blunt",
+        "notes": "Blunt."
+      }
+    },
+    {
+      "name": "Helm Ringer",
+      "stance_required": "high_guard",
+      "trigger": "always",
+      "description": "A blow at the helm to ring the head inside it.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": -3,
+        "stamina_cost_modifier": 2,
+        "aimed_zone": [
+          "head"
+        ],
+        "damage_type": "blunt",
+        "target_lose_next_maneuver": true,
+        "notes": "Aimed at the head; on a hit the foe loses their next maneuver even if armour stops the damage."
+      }
+    },
+    {
+      "name": "Beak Thrust",
+      "stance_required": "middle_guard",
+      "trigger": "always",
+      "description": "War-pick beak driven into plate or a joint.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 0,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "requires_feature": "beak",
+        "notes": "Piercing (chekan/war pick)."
+      }
+    },
+    {
+      "name": "Haft Check",
+      "stance_required": "hanging_guard",
+      "trigger": "after_parry",
+      "description": "Catch the blow on the haft and strike back.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "notes": "Counter after a parry."
+      }
+    },
+    {
+      "name": "Around the Shield",
+      "stance_required": "high_guard",
+      "trigger": "always",
+      "description": "The flail's chain wraps over the shield rim.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "requires_feature": "chain",
+        "ignore_shield": true,
+        "notes": "Ignores the foe's shield block bonus."
+      }
+    }
+  ],
+  "axe": [
+    {
+      "name": "Overhead Chop",
+      "stance_required": "high_guard",
+      "trigger": "always",
+      "description": "Full descending chop.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "notes": "Uses the axe's own damage."
+      }
+    },
+    {
+      "name": "Bearded Hook",
+      "stance_required": "low_guard",
+      "trigger": "after_block",
+      "description": "Hook the shield rim or weapon with the beard and pull it aside.",
+      "effects": {
+        "attack_bonus": 1,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "requires_feature": "hook",
+        "strip_shield": true,
+        "notes": "Foe's shield gives no block bonus on their next defence."
+      }
+    },
+    {
+      "name": "Leg Chop",
+      "stance_required": "low_guard",
+      "trigger": "always",
+      "description": "Low chop at the leg.",
+      "effects": {
+        "attack_bonus": 0,
+        "defense_bonus": -3,
+        "stamina_cost_modifier": 2,
+        "aimed_zone": [
+          "left_lower_leg",
+          "right_lower_leg",
+          "left_upper_leg",
+          "right_upper_leg"
+        ],
+        "limb_disable": 10,
+        "notes": "Aimed at a leg; damage through = -10 defence."
+      }
+    },
+    {
+      "name": "Haft Thrust",
+      "stance_required": "middle_guard",
+      "trigger": "after_parry",
+      "description": "Strike with the haft end after a parry.",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "damage_type": "blunt",
+        "notes": "Blunt."
+      }
+    }
+  ],
+  "polearm": [
+    {
+      "name": "Overhead Blow",
+      "stance_required": "posta_di_donna_sinestra",
+      "trigger": "always",
+      "description": "Fiore's great descending poleaxe blow.",
+      "effects": {
+        "attack_bonus": 5,
+        "defense_bonus": -2,
+        "stamina_cost_modifier": 2,
+        "notes": "Uses the weapon's own damage (hammer head on a poleaxe is blunt)."
+      }
+    },
+    {
+      "name": "Spike Thrust",
+      "stance_required": "posta_breve_serpentina",
+      "trigger": "always",
+      "description": "Thrust with the top spike at face or gaps.",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 1,
+        "stamina_cost_modifier": 1,
+        "damage_type": "piercing",
+        "requires_feature": "point",
+        "notes": "Piercing."
+      }
+    },
+    {
+      "name": "Hook and Pull",
+      "stance_required": "tutta_porta_di_ferro",
+      "trigger": "after_parry",
+      "description": "Hook the neck, arm or leg and pull (halberd, bill, poleaxe fluke).",
+      "effects": {
+        "attack_bonus": 2,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 2,
+        "requires_feature": "hook",
+        "target_defense_penalty_next": 10,
+        "notes": "Foe -10 to next defence."
+      }
+    },
+    {
+      "name": "Queue Strike",
+      "stance_required": "dente_di_zenghiaro",
+      "trigger": "after_block",
+      "description": "Le Jeu de la Hache: strike with the queue (butt-end).",
+      "effects": {
+        "attack_bonus": 3,
+        "defense_bonus": 2,
+        "stamina_cost_modifier": 1,
+        "damage_type": "blunt",
+        "target_lose_next_maneuver": true,
+        "notes": "Foe loses their next maneuver."
+      }
+    },
+    {
+      "name": "Haft Bind",
+      "stance_required": "posta_breve_serpentina",
+      "trigger": "after_block",
+      "description": "Bind the foe's weapon on the haft and wrench it.",
+      "effects": {
+        "attack_bonus": -1,
+        "defense_bonus": 4,
+        "stamina_cost_modifier": 1,
+        "disarm_chance": 15,
+        "notes": "15% disarm on a hit."
+      }
+    }
+  ]
 }

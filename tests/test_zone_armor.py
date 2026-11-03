@@ -13,9 +13,17 @@ from armor_system import (ArmorPiece, average_protection, zone_protection, armor
 ARMORS = json.load(open(os.path.join(os.path.dirname(__file__), "..", "rules", "armors.json")))
 
 
+# The armour MECHANICS below were written against the v1 standard ratings. The ratings were rebalanced by
+# damage type (docs/COMBAT_STANCES_MANEUVERS.md, owner t98u); the mechanics tests keep the v1 numbers here
+# so they stay exact. tests/test_stances_maneuvers.py checks the new ratings.
+V1_RATINGS = {"Light_Light": (2, 1, 1), "Light_Heavy": (5, 4, 3), "Medium_Heavy": (8, 7, 6),
+              "Heavy_Light": (9, 8, 7), "Heavy_Medium": (10, 9, 8), "Heavy_Heavy": (11, 10, 9)}
+
+
 def piece(key):
     s = ARMORS[key]["standard"]
-    return ArmorPiece(s["name"], s["coverage"], s["armor_rating"], s["stamina_penalty"],
+    r = dict(zip(("slashing", "piercing", "blunt"), V1_RATINGS[key])) if key in V1_RATINGS else s["armor_rating"]
+    return ArmorPiece(s["name"], s["coverage"], r, s["stamina_penalty"],
                       s["max_durability"], s["weight"])
 
 

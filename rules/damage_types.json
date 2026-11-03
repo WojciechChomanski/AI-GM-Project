@@ -1,0 +1,36 @@
+{
+  "_note": "Three damage types (owner t98u). Armour ratings per type live in armors.json. Numbers are placeholders tuned to the history notes in docs/COMBAT_STANCES_MANEUVERS.md.",
+  "slashing": {
+    "alias": "cut",
+    "bonus_vs_light": {
+      "max_armor": 2,
+      "damage": 2
+    },
+    "bleeds": true,
+    "note": "Cuts are devastating on bare skin and cloth (+2 damage where the zone's slashing armour is 2 or less) and bleed, but mail and plate stop them best."
+  },
+  "piercing": {
+    "alias": "thrust",
+    "damage_mod": -1,
+    "bleeds": true,
+    "note": "Thrusts make narrow wounds (-1 damage) but armour rates lowest against them through mail rings and plate gaps; the half-sword and the beak use this."
+  },
+  "blunt": {
+    "alias": "impact",
+    "pain_mult": 1.25,
+    "bleeds": false,
+    "note": "Impact passes through armour as shock (armour rates lowest against it), causes 25% more pain, rarely bleeds; impact weapons are heavy and less versatile."
+  },
+  "percussive_rule": "A weapon marked percussive (axes, halberd, poleaxe, bardiche) cutting into rigid armour (plate) uses the armour's blunt rating if it is lower: the heavy head transmits force even when the edge does not bite.",
+  "armor_defeat": {
+    "max": 2,
+    "max_once_per_fight": 3,
+    "only_families": [
+      "warhammer",
+      "mace",
+      "axe",
+      "spear"
+    ],
+    "note": "Flat armour ignored. Only impact weapons have it (weapons.json armor_defeat); swords never do."
+  }
+}

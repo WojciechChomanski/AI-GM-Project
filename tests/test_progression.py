@@ -112,6 +112,13 @@ def test_mastery_ranks_and_ceiling():
     for uses, rank in [(49, 0), (50, 1), (150, 2), (400, 3), (900, 4), (2000, 5), (99999, 5)]:
         c.progression = {}; P.record_mastery(c, "greatsword", uses)
         assert P.mastery_rank(c, "greatsword") == rank
+    # greatsword now uses its perk ladder (rules/weapon_perks.json): +5 to hit at rank 2, perks, no flat gains
+    m = P.mastery_modifiers(c, {"name": "claymore", "type": "2H_sword"}, "two_hander")
+    assert (m["to_hit"], m["damage"], m["stamina"], m["trick"]) == (5, 0, 0, False)
+    P.choose_perk(c, "greatsword", 5, "seamless_guards")
+    assert P.mastery_modifiers(c, {"name": "claymore", "type": "2H_sword"})["trick"] is True
+    # the two_hander STYLE track keeps the generic gains; best of family and style
+    P.record_mastery(c, "two_hander", 2000)
     m = P.mastery_modifiers(c, {"name": "claymore", "type": "2H_sword"}, "two_hander")
     assert (m["to_hit"], m["damage"], m["stamina"], m["trick"]) == (5, 1, -2, True)
     assert P.stamina_per_attack(5, m) == 3 and P.stamina_per_attack(3, m) == 2 and P.stamina_per_attack(2, m) == 2

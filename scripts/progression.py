@@ -14,6 +14,10 @@ with open(os.path.join(ROOT, "rules", "progression.json"), encoding="utf-8-sig")
 G = RULES["growth"]
 M = RULES["mastery"]
 CEIL = M["ceiling"]
+with open(os.path.join(ROOT, "rules", "weapon_perks.json"), encoding="utf-8-sig") as _f:
+    PERKS = json.load(_f)
+PCAPS = PERKS["_caps"]
+LADDERS = PERKS["ladders"]
 MELEE_FAMILIES = [f for f in M["weapon_families"] if f not in ("bow", "crossbow", "thrown", "gunpowder")]
 RANGED_FAMILIES = ("bow", "crossbow", "thrown", "gunpowder")
 
@@ -94,10 +98,22 @@ def new_session(c):
 
 
 # --- Weapons / mastery ----------------------------------------------------
+_WEAPONS = None
+
+
+def _weapons():
+    global _WEAPONS
+    if _WEAPONS is None:
+        with open(os.path.join(ROOT, "rules", "weapons.json"), encoding="utf-8-sig") as f:
+            _WEAPONS = json.load(f)
+    return _WEAPONS
+
+
 def weapon_family(weapon):
     """Family id for a weapon dict (from rules/weapons.json) or a weapon key."""
     if isinstance(weapon, str):
-        key, wtype = weapon, None
+        key = weapon.lower().replace(" ", "_")
+        wtype = _weapons().get(key, {}).get("type")
     else:
         weapon = weapon or {}
         key, wtype = str(weapon.get("key") or weapon.get("name", "")).lower().replace(" ", "_"), weapon.get("type")
@@ -145,11 +161,104 @@ def _gains(rank, table):
     return out
 
 
-def mastery_modifiers(c, weapon, style=None):
-    """Bonuses for one attack. Family and style (two_hander) do not stack: best of each value.
-    Hard ceiling: +5 to hit, +1 damage, -2 stamina, one trick."""
+def _ladder_slots(family):
+    """[(rank, slot, [perk options])] for a family's ladder; auto slots have 1 option."""
+    out = []
+    for rank, entry in (LADDERS.get(family) or {}).items():
+        items = entry if isinstance(entry, list) else [entry]
+        for i, it in enumerate(items):
+            out.append((int(rank), i, it["pick"] if isinstance(it, dict) and "pick" in it else [it]))
+    return out
+
+
+def perk_options(family, rank):
+    return [p["id"] for r, _, opts in _ladder_slots(family) if r == rank and len(opts) > 1 for p in opts]
+
+
+def choose_perk(c, family, rank, perk_id):
+    """Pick one of a 'pick 1 of 2' perk. Permanent per family and rank."""
+    if perk_id not in perk_options(family, rank):
+        raise ValueError(f"{perk_id} is not a pick for {family} rank {rank}")
+    st = state(c)
+    picks = st.setdefault("perks", {}).setdefault(family, {})
+    if str(rank) in picks and picks[str(rank)] != perk_id:
+        raise ValueError(f"{family} rank {rank} already chose {picks[str(rank)]}")
+    picks[str(rank)] = perk_id
+
+
+def active_perks(c, weapon):
+    """Perks of the family of the weapon IN HAND only (no cross-family stacking)."""
     fam = weapon_family(weapon)
-    mods = _gains(mastery_rank(c, fam), M["weapon_rank_gains"]) if fam else _gains(0, [])
+    if fam not in LADDERS:
+        return []
+    rank = mastery_rank(c, fam)
+    picks = state(c).get("perks", {}).get(fam, {})
+    out = []
+    for r, _, opts in _ladder_slots(fam):
+        if r > rank:
+            continue
+        if len(opts) == 1:
+            out.append(opts[0])
+        else:
+            out += [p for p in opts if p["id"] == picks.get(str(r))]
+    return out
+
+
+def perk_effects(c, weapon):
+    """Merged perk effects for the weapon in hand, with global caps applied."""
+    fx = {"free_guard_changes": 0, "maneuver_extra_stances": {}, "maneuver_extra_triggers": {},
+          "maneuver_stamina": {}, "maneuver_attack": {}, "maneuver_aim_relief": {}, "guard_mods": {},
+          "damage_vs_light": [], "aim_relief": [], "armor_defeat": 0, "ring_on_head": False, "tricks": [], "ids": []}
+    for p in active_perks(c, weapon):
+        fx["ids"].append(p["id"])
+        for k, v in p["effects"].items():
+            if k in ("free_guard_changes", "armor_defeat"):
+                fx[k] += v
+            elif k in ("maneuver_extra_stances", "maneuver_extra_triggers"):
+                for n, lst in v.items():
+                    fx[k].setdefault(n, []).extend(lst)
+            elif k in ("maneuver_stamina", "maneuver_attack", "maneuver_aim_relief"):
+                for n, d in v.items():
+                    fx[k][n] = fx[k].get(n, 0) + d
+            elif k == "guard_mods":
+                for g, mods in v.items():
+                    cur = fx[k].setdefault(g, {"attack": 0, "defense": 0})
+                    for mk, mv in mods.items():
+                        cur[mk] = cur.get(mk, 0) + mv
+            elif k in ("damage_vs_light", "aim_relief"):
+                fx[k].append(v)
+            elif k == "ring_on_head":
+                fx[k] = fx[k] or bool(v)
+            elif k == "trick":
+                fx["tricks"].append(v)
+    red = PCAPS["stamina_reduction"]
+    fx["maneuver_stamina"] = {n: max(-red, d) for n, d in fx["maneuver_stamina"].items()}
+    fx["maneuver_attack"] = {n: min(PCAPS["to_hit"], d) for n, d in fx["maneuver_attack"].items()}
+    fx["maneuver_aim_relief"] = {n: min(PCAPS["aim_relief"], d) for n, d in fx["maneuver_aim_relief"].items()}
+    for g in fx["guard_mods"].values():
+        g["defense"] = min(PCAPS["defense"], g.get("defense", 0))
+    fx["tricks"] = fx["tricks"][:PCAPS["tricks_per_fight"]]
+    return fx
+
+
+def mastery_modifiers(c, weapon, style=None):
+    """Bonuses for one attack. Families with a perk ladder (rules/weapon_perks.json) get +5 to hit at rank 2
+    and their perks; other families keep the generic weapon_rank_gains. Family and style (two_hander) do not
+    stack: best of each value. Hard ceiling: +5 to hit, +2 damage, -2 stamina, one trick."""
+    fam = weapon_family(weapon)
+    if fam in LADDERS:
+        rank = mastery_rank(c, fam)
+        mods = _gains(0, [])
+        for r, g in PERKS["_rank_gains"].items():
+            if rank >= int(r):
+                for k, v in g.items():
+                    mods[k] += v
+        fx = perk_effects(c, weapon)
+        mods["trick"] = bool(fx["tricks"])
+        mods["perks"] = fx["ids"]
+    else:
+        mods = _gains(mastery_rank(c, fam), M["weapon_rank_gains"]) if fam else _gains(0, [])
+        mods["perks"] = []
     if style == "two_hander":
         s = _gains(mastery_rank(c, "two_hander"), M["weapon_rank_gains"])
         for k in ("to_hit", "damage"):
