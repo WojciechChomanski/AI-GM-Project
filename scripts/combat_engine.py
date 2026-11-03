@@ -22,7 +22,10 @@ app = FastAPI()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    # Foundry VTT runs on :30000 by default. Override with BREATH_CORS_ORIGINS="http://host:port,..."
+    allow_origins=[o.strip() for o in os.getenv(
+        "BREATH_CORS_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:30000,http://127.0.0.1:30000").split(",") if o.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -387,4 +390,5 @@ def healthz():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # Local bridge for Foundry (foundry/csb/COMBAT_BRIDGE.md). Localhost only by default.
+    uvicorn.run(app, host=os.getenv("BREATH_HOST", "127.0.0.1"), port=int(os.getenv("BREATH_PORT", "8000")))
