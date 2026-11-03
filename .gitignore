@@ -53,3 +53,8 @@ untracked_backup/
 
 # character saves (GM console)
 saves/
+
+# Foundry system build output (built by CI / npm run build)
+foundry/system/node_modules/
+foundry/system/build/
+foundry/system/breath-and-the-veil/packs/

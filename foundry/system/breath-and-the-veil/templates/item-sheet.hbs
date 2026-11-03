@@ -1,0 +1,28 @@
+<section class="breath-sheet">
+  <header class="sheet-header">
+    <img src="{{item.img}}" data-action="editImage" data-edit="img" alt="{{item.name}}" width="64" height="64"/>
+    <input name="name" type="text" value="{{item.name}}"/>
+    <span class="type">{{typeLabel}}</span>
+  </header>
+  {{#if isWeapon}}
+  <div class="grid">
+    <span>{{localize "BREATH.Damage"}}: {{system.base_damage}} ({{system.damage_type}})</span>
+    <span>{{localize "BREATH.Stamina"}}: {{system.stamina_cost}}</span>
+    <span>{{localize "BREATH.MinStr"}}: {{system.min_str}}</span>
+    <span>{{localize "BREATH.ArmorPiercing"}}: {{#if system.armor_piercing}}✓{{else}}–{{/if}}</span>
+    <span>{{localize "BREATH.Guards"}}: {{system.guards.length}}</span>
+    <span>{{localize "BREATH.Maneuvers"}}: {{system.maneuvers.length}}</span>
+  </div>
+  {{/if}}
+  {{#if isArmor}}
+  <div class="grid">
+    <span>{{localize "BREATH.Slashing"}}: {{system.rating.slashing}}</span>
+    <span>{{localize "BREATH.Piercing"}}: {{system.rating.piercing}}</span>
+    <span>{{localize "BREATH.Blunt"}}: {{system.rating.blunt}}</span>
+    <label>{{localize "BREATH.Durability"}} <input name="system.durability.value" type="number" value="{{system.durability.value}}"/> / {{system.durability.max}}</label>
+  </div>
+  {{/if}}
+  <h3>{{localize "BREATH.Description"}}</h3>
+  <div class="description">{{{description}}}</div>
+  <details><summary>{{localize "BREATH.RulesData"}}</summary><pre>{{rulesJson}}</pre></details>
+</section>

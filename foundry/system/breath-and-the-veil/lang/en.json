@@ -1,0 +1,72 @@
+{
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC",
+      "creature": "Creature"
+    },
+    "Item": {
+      "weapon": "Weapon",
+      "armor": "Armour",
+      "class": "Class",
+      "race": "Race",
+      "gender": "Gender",
+      "talent": "Talent",
+      "flaw": "Flaw",
+      "advantage": "Advantage",
+      "skill": "Skill"
+    }
+  },
+  "BREATH": {
+    "Attr": {
+      "strength": "Strength",
+      "toughness": "Toughness",
+      "agility": "Agility",
+      "mobility": "Mobility",
+      "dexterity": "Dexterity",
+      "endurance": "Endurance",
+      "intelligence": "Intelligence",
+      "willpower": "Willpower",
+      "perception": "Perception",
+      "charisma": "Charisma",
+      "weapon_skill": "Weapon Skill",
+      "ballistic_skill": "Ballistic Skill"
+    },
+    "SheetActor": "Breath Character Sheet",
+    "SheetItem": "Breath Item Sheet",
+    "Race": "Race",
+    "Gender": "Gender",
+    "Class": "Class",
+    "Age": "Age",
+    "HP": "HP",
+    "Stamina": "Stamina",
+    "Attributes": "Attributes",
+    "Cap": "Cap",
+    "Felt": "How you feel",
+    "FeltEmpty": "Nothing stirs yet.",
+    "Combat": "Combat",
+    "WeaponInHand": "Weapon in hand",
+    "Grip": "Grip",
+    "TwoHands": "Two hands",
+    "OneHand": "One hand",
+    "Guard": "Guard",
+    "Items": "Items",
+    "DropItems": "Drag class, race, gender, weapons and armour here from the compendiums.",
+    "Biography": "Biography",
+    "Damage": "Damage",
+    "MinStr": "Min STR",
+    "ArmorPiercing": "Armour piercing",
+    "Guards": "Guards",
+    "Maneuvers": "Maneuvers",
+    "Slashing": "Slashing",
+    "Piercing": "Piercing",
+    "Blunt": "Blunt",
+    "Durability": "Durability",
+    "Description": "Description",
+    "RulesData": "Rules data",
+    "Setting": {
+      "backendUrl": "Breath backend URL",
+      "backendUrlHint": "Local Python backend (scripts/combat_engine.py). Used from the GM's browser only."
+    }
+  }
+}
