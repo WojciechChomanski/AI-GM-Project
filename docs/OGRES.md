@@ -30,4 +30,4 @@
 ## Devouring foes (Ogre Flesh Eater only)
 - **Code:** `ogre_hunger.devour(eater, victim, grabbed_or_downed)`. The numbers come from `consume_rip`: 10 stamina, heal 15 HP, +10 corruption, 15 bite damage, and it feeds 2000 kcal. The victim must be grabbed or downed.
 - **Every other ogre is refused.**
-- **Note:** Ogre Ravager's `flesh_rend` text still mentions a "devour heal" (+10 HP, +5 corruption). This needs the owner's call.
+- **Ogre Ravager:** `flesh_rend` is a tearing/ripping attack with extra bleeding. Neither it nor `gluttons_vitality` (stamina only) heals or adds corruption from flesh. Owner decision (t105).

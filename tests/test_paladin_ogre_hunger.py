@@ -116,3 +116,12 @@ def test_hunger_and_progression_saved(tmp_path):
     back = character_store.load("Grub", str(tmp_path))
     assert back.character.hunger == {"points": 5, "kcal_today": 100}
     assert back.character.progression["order"]["path"] == "order_contractor"
+
+
+def test_ravager_rips_but_does_not_eat():
+    r = find_class("Ogre_Ravager")
+    fr = r["abilities"]["active"]["flesh_rend"]
+    assert fr["heal_hp"] == 0 and fr["corruption"] == 0 and "heal 1" not in fr["description"].lower()
+    for a in r["abilities"].get("passive", {}).values():
+        assert "corruption penalty" not in a["description"]
+    assert not H.can_devour(_ogre("Ogre_Ravager").character)
