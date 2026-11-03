@@ -124,13 +124,13 @@
     "two_hander_rank_gains": "same as weapon ranks; does not stack with the weapon family (best of the two is used)",
     "ceiling": {
       "to_hit": 5,
-      "damage": 1,
+      "damage": 2,
       "stamina": -2,
       "min_stamina_per_attack": 2,
       "tricks": 1
     },
     "tricks_examples": {
-      "greatsword": "half-sword vs armour",
+      "greatsword": "Seamless Guards (weapon_perks.json)",
       "shield": "shield bash costs no AP",
       "dual_wield": "off-hand attacks cost 0 stamina"
     },
@@ -156,6 +156,7 @@
       "arbalest": "crossbow",
       "sling": "thrown"
     },
-    "spell_mastery": "Veil Sorceress per-spell mastery (50/100/200 uses) stays as written in rules/classes/veil_sorceress.json"
+    "spell_mastery": "Veil Sorceress per-spell mastery (50/100/200 uses) stays as written in rules/classes/veil_sorceress.json",
+    "perk_ladders": "Per-family perk ladders in rules/weapon_perks.json replace weapon_rank_gains for greatsword, one_hand_sword, warhammer, mace, axe and spear (owner t98u). weapon_rank_gains stay for dagger, bow, crossbow, thrown, gunpowder and the two_hander style."
   }
 }

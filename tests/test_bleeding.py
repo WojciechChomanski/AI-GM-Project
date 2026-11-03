@@ -98,13 +98,13 @@ def test_only_damage_through_armour_bleeds():
     c, h = fresh()
     c.armor = [ArmorPiece(plate["name"], plate["coverage"], plate["armor_rating"], plate["stamina_penalty"],
                           plate["max_durability"], plate["weight"])]
-    h.take_damage_to_zone("chest", 10, "slashing")   # Full Plate absorbs 10: nothing gets through
-    h.distribute_damage(10, "slashing")
+    h.take_damage_to_zone("chest", plate["armor_rating"]["slashing"], "slashing")   # Full Plate absorbs it all
+    h.distribute_damage(plate["armor_rating"]["slashing"], "slashing")
     assert h.bleeding_wounds == [] and c.bleeding == 0
     c2, h2 = fresh()
     c2.armor = [ArmorPiece(plate["name"], plate["coverage"], plate["armor_rating"], plate["stamina_penalty"],
                            plate["max_durability"], plate["weight"])]
-    h2.take_damage_to_zone("chest", 14, "slashing")  # 4 gets through -> a cut
+    h2.take_damage_to_zone("chest", plate["armor_rating"]["slashing"] + 4, "slashing")  # 4 gets through -> a cut
     assert [w["kind"] for w in h2.bleeding_wounds] == ["cut"]
 
 

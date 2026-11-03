@@ -66,6 +66,33 @@ def perform_attack(att, defn):
     return net, None, None
 
 import character_store  # tick / save / load / list / status (docs/RECOVERY.md)
+import progression
+
+
+def perk_prompt(chars):
+    """Remind the GM of weapon perk picks a character has reached but not chosen (new mastery rank)."""
+    lines = []
+    for name, c in chars.items():
+        for fam, rank, opts in progression.pending_perk_picks(c):
+            lines.append(f"⭐ {name}: {fam} rank {rank} - choose a perk: {' / '.join(opts)}"
+                         f"  (pick {name} {fam} {rank} <id>)")
+    return "\n".join(lines)
+
+
+def perk_command(args, chars):
+    """perks <name> | pick <name> <family> <rank> <perk_id>"""
+    if len(args) < 2 or args[1] not in chars:
+        return "usage: perks <name> | pick <name> <family> <rank> <perk_id> (load the character first)"
+    c = chars[args[1]]
+    if args[0] == "perks":
+        return perk_prompt({args[1]: c}) or f"{args[1]} has no perk picks waiting."
+    if len(args) != 5:
+        return "usage: pick <name> <family> <rank> <perk_id>"
+    try:
+        progression.choose_perk(c, args[2], int(args[3]), args[4])
+    except ValueError as e:
+        return f"✗ {e}"
+    return f"✓ {args[1]} chose {args[4]} ({args[2]} rank {args[3]}). Permanent. Remember to save {args[1]}."
 loaded_characters = {}
 
 while True:
@@ -75,9 +102,14 @@ while True:
     if cmd[0] == "quit": break
     if cmd[0] in ("tick", "save", "load", "list", "status"):
         print(character_store.console_command(raw, loaded_characters))
+        if cmd[0] in ("load", "status", "tick"):
+            print(perk_prompt(loaded_characters))
+        continue
+    if cmd[0] in ("perks", "pick"):
+        print(perk_command(raw.split(), loaded_characters))
         continue
     if cmd[0] != "simulate":
-        print("simulate quick 150 | tick round [n] | tick day [n] [mode] [unfed] | load/save <name> | list | status <name>")
+        print("perks <name> | pick <name> <family> <rank> <id> | simulate quick 150 | tick round [n] | tick day [n] [mode] [unfed] | load/save <name> | list | status <name>")
         continue
     mode = cmd[1] if len(cmd) > 1 else "quick"
     runs = int(cmd[2]) if len(cmd) > 2 else 100

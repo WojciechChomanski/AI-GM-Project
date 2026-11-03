@@ -3,10 +3,22 @@
     "name": "Greatsword",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 12,
     "durability": 70,
@@ -14,16 +26,32 @@
     "fear_intensity": 8,
     "stamina_cost": 5,
     "weight": 12,
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "flamberge": {
     "name": "Flamberge",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 13,
     "durability": 75,
@@ -32,16 +60,32 @@
     "stamina_cost": 5,
     "weight": 13,
     "notes": "Wavy blade design causes vibrations, making it harder to parry; +5 to disarm maneuvers.",
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "claymore": {
     "name": "Claymore",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 12,
     "durability": 70,
@@ -50,16 +94,32 @@
     "stamina_cost": 5,
     "weight": 12,
     "notes": "Scottish greatsword; effective against cavalry with wide swings, +5 attack bonus vs mounted foes.",
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "zweihander": {
     "name": "Zweihänder",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 14,
     "durability": 80,
@@ -68,16 +128,32 @@
     "stamina_cost": 6,
     "weight": 14,
     "notes": "German Landsknecht greatsword; designed for pike-breaking, +10 damage vs polearms.",
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "montante": {
     "name": "Montante",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 13,
     "durability": 75,
@@ -86,16 +162,32 @@
     "stamina_cost": 6,
     "weight": 13,
     "notes": "Iberian Renaissance greatsword, up to 1.8m long, used for crowd control in formations; +5 vs multiple foes.",
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "spadone": {
     "name": "Spadone",
     "type": "2H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 13,
     "durability": 75,
@@ -104,12 +196,21 @@
     "stamina_cost": 6,
     "weight": 13,
     "notes": "Italian two-handed sword from 16th c., evolved from medieval longswords; versatile for thrusting and cutting.",
-    "min_STR": 40
+    "min_STR": 40,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "warhammer": {
     "name": "Warhammer",
     "type": "2H_hammer",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing"
+    ],
+    "guard_set": "2H_hammer",
     "stance_tree": [
       "crater_maker",
       "counterweight",
@@ -119,16 +220,27 @@
     "durability": 60,
     "fear_trigger": true,
     "fear_intensity": 6,
-    "min_STR": 42
+    "min_STR": 42,
+    "features": [
+      "beak"
+    ],
+    "stamina_cost": 6,
+    "armor_piercing": true
   },
   "lucerno_hammer": {
     "name": "Lucerno Hammer",
     "type": "2H_hammer",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "crater_maker",
-      "counterweight",
-      "impact_form"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 19,
     "durability": 65,
@@ -137,30 +249,58 @@
     "stamina_cost": 6,
     "weight": 15,
     "notes": "Swiss anti-armor hammer with spike; +5 piercing alternate mode for armor gaps.",
-    "min_STR": 42
+    "min_STR": 42,
+    "features": [
+      "beak",
+      "point",
+      "hook"
+    ],
+    "armor_piercing": true
   },
   "longsword": {
     "name": "Longsword",
     "type": "sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
     "fear_trigger": false,
-    "fear_intensity": 0
+    "fear_intensity": 0,
+    "features": [
+      "point"
+    ],
+    "stamina_cost": 4,
+    "armor_piercing": false,
+    "two_hand_guard_set": "2H_sword"
   },
   "arming_sword": {
     "name": "Arming Sword",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 60,
@@ -168,16 +308,28 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Standard knightly sword; versatile for one-hand with shield."
+    "notes": "Standard knightly sword; versatile for one-hand with shield.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "ulfberht_sword": {
     "name": "Ulfberht Sword",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 11,
     "durability": 80,
@@ -185,16 +337,28 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Viking high-quality steel sword; superior durability, +10 vs rust/corrosion."
+    "notes": "Viking high-quality steel sword; superior durability, +10 vs rust/corrosion.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "falchion": {
     "name": "Falchion",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -202,16 +366,28 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "European cleaver-like sword, 12th-14th c. England/France; heavy chopping, +5 vs unarmored."
+    "notes": "European cleaver-like sword, 12th-14th c. England/France; heavy chopping, +5 vs unarmored.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "messer": {
     "name": "Messer",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -219,16 +395,27 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "German single-edged sword, 14th-16th c.; knife-like hilt, used by commoners; +5 in close quarters."
+    "notes": "German single-edged sword, 14th-16th c.; knife-like hilt, used by commoners; +5 in close quarters.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "estoc": {
     "name": "Estoc",
     "type": "1H_sword",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 70,
@@ -236,16 +423,28 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "French thrusting sword, 14th-17th c.; edgeless for armor penetration, +10 vs plate gaps."
+    "notes": "French thrusting sword, 14th-17th c.; edgeless for armor penetration, +10 vs plate gaps.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "szabla": {
     "name": "Szabla",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -253,16 +452,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Polish curved sabre, 16th c.; Hussar weapon, +5 from horseback."
+    "notes": "Polish curved sabre, 16th c.; Hussar weapon, +5 from horseback.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "karabela": {
     "name": "Karabela",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -270,16 +481,27 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Polish/Ottoman sabre variant, 17th c.; ornate hilt, +5 to draw cuts."
+    "notes": "Polish/Ottoman sabre variant, 17th c.; ornate hilt, +5 to draw cuts.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "koncerz": {
     "name": "Koncerz",
     "type": "1H_sword",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 70,
@@ -287,16 +509,28 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Polish thrusting sword, 15th-16th c.; long blade for cavalry, +10 vs armor."
+    "notes": "Polish thrusting sword, 15th-16th c.; long blade for cavalry, +10 vs armor.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "shashka": {
     "name": "Shashka",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 60,
@@ -304,16 +538,28 @@
     "fear_intensity": 4,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Russian/Cossack sabre, 12th c. origins; hiltless guard, +5 quick draws."
+    "notes": "Russian/Cossack sabre, 12th c. origins; hiltless guard, +5 quick draws.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "kilij": {
     "name": "Kilij",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -321,16 +567,28 @@
     "fear_intensity": 6,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Ottoman Turkish sabre, 15th c.; curved for deep cuts, +5 bleed chance."
+    "notes": "Ottoman Turkish sabre, 15th c.; curved for deep cuts, +5 bleed chance.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "hussar_szabla": {
     "name": "Hussar Szabla",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -338,16 +596,28 @@
     "fear_intensity": 6,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Polish Winged Hussar sabre, 17th c.; lightweight curved blade for devastating charges, renowned in battles like Vienna 1683; +10 from horseback vs infantry."
+    "notes": "Polish Winged Hussar sabre, 17th c.; lightweight curved blade for devastating charges, renowned in battles like Vienna 1683; +10 from horseback vs infantry.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "hungarian_hussar_sabre": {
     "name": "Hungarian Hussar Sabre",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -355,16 +625,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Hungarian light cavalry sabre, 15th-18th c.; curved blade influenced by Turkish designs, used by hussars across Europe; +5 slashing from mount."
+    "notes": "Hungarian light cavalry sabre, 15th-18th c.; curved blade influenced by Turkish designs, used by hussars across Europe; +5 slashing from mount.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "british_1796_sabre": {
     "name": "1796 Light Cavalry Sabre",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -372,16 +654,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "British pattern 1796 sabre, Napoleonic Wars; curved blade for slashing, infamous for Waterloo; +10 damage on cavalry charges."
+    "notes": "British pattern 1796 sabre, Napoleonic Wars; curved blade for slashing, infamous for Waterloo; +10 damage on cavalry charges.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "french_an_xi_sabre": {
     "name": "An XI Cavalry Sabre",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 70,
@@ -389,16 +683,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 6,
-    "notes": "French Napoleonic heavy cavalry sabre, straight blade for thrust and cut; used by cuirassiers, effective vs infantry; +5 vs unarmored."
+    "notes": "French Napoleonic heavy cavalry sabre, straight blade for thrust and cut; used by cuirassiers, effective vs infantry; +5 vs unarmored.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "pallasch": {
     "name": "Pallasch",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 11,
     "durability": 70,
@@ -406,16 +712,28 @@
     "fear_intensity": 6,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "Straight-bladed cavalry sword, 17th-18th c. Germany/Sweden/Russia; heavy for cutting and thrusting from horseback; +5 vs armored foes."
+    "notes": "Straight-bladed cavalry sword, 17th-18th c. Germany/Sweden/Russia; heavy for cutting and thrusting from horseback; +5 vs armored foes.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "mortuary_sword": {
     "name": "Mortuary Sword",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -423,16 +741,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "English Civil War cavalry sword, 17th c.; basket hilt with engraved heads, versatile for cavalry; +5 parry."
+    "notes": "English Civil War cavalry sword, 17th c.; basket hilt with engraved heads, versatile for cavalry; +5 parry.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "walloon_sword": {
     "name": "Walloon Sword",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 10,
     "durability": 65,
@@ -440,16 +770,28 @@
     "fear_intensity": 5,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Broad straight sword, 17th c. France/Netherlands; used by heavy cavalry, good for thrust; +5 piercing."
+    "notes": "Broad straight sword, 17th c. France/Netherlands; used by heavy cavalry, good for thrust; +5 piercing.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "magyar_sabre": {
     "name": "Magyar Sabre",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 60,
@@ -457,16 +799,28 @@
     "fear_intensity": 4,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Early medieval Hungarian sabre, 9th-10th c.; curved blade from steppe influences, light cavalry use; +5 mobility on horse."
+    "notes": "Early medieval Hungarian sabre, 9th-10th c.; curved blade from steppe influences, light cavalry use; +5 mobility on horse.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "avar_sabre": {
     "name": "Avar Sabre",
     "type": "1H_sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 9,
     "durability": 60,
@@ -474,30 +828,55 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Early medieval Avar sabre found in Bulgaria/Hungary, 7th-9th c.; single-edged curved blade, nomadic cavalry origin; +5 vs light armor."
+    "notes": "Early medieval Avar sabre found in Bulgaria/Hungary, 7th-9th c.; single-edged curved blade, nomadic cavalry origin; +5 vs light armor.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "shortsword": {
     "name": "Shortsword",
     "type": "sword",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 8,
     "durability": 55,
     "fear_trigger": false,
-    "fear_intensity": 0
+    "fear_intensity": 0,
+    "features": [
+      "point"
+    ],
+    "stamina_cost": 3,
+    "armor_piercing": false
   },
   "gladius": {
     "name": "Gladius",
     "type": "shortsword",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing",
+      "slashing"
+    ],
+    "guard_set": "1H_sword",
     "stance_tree": [
       "vom_tag",
       "half_sword",
-      "wrath_guard"
+      "wrath_guard",
+      "guardia_alta",
+      "porta_di_ferro",
+      "guardia_di_testa"
     ],
     "base_damage": 8,
     "durability": 55,
@@ -505,160 +884,297 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Roman short sword; excellent for thrusting in close formation, +5 in shield wall tactics."
+    "notes": "Roman short sword; excellent for thrusting in close formation, +5 in shield wall tactics.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "dagger": {
     "name": "Dagger",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing",
+      "slashing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
-    "weight": 2
+    "weight": 2,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "rondel_dagger": {
     "name": "Rondel Dagger",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 2,
-    "notes": "Anti-armor dagger; tapered blade for mail gaps, +5 vs chain armor."
+    "notes": "Anti-armor dagger; tapered blade for mail gaps, +5 vs chain armor.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "stiletto": {
     "name": "Stiletto",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 45,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 1,
-    "notes": "Narrow blade for thrusting into joints; +10 vs plate armor gaps."
+    "notes": "Narrow blade for thrusting into joints; +10 vs plate armor gaps.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "baselard": {
     "name": "Baselard",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing",
+      "slashing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 2,
-    "notes": "Swiss dagger; H-shaped hilt for better grip, +5 to grapple maneuvers."
+    "notes": "Swiss dagger; H-shaped hilt for better grip, +5 to grapple maneuvers.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "bollock_dagger": {
     "name": "Bollock Dagger",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 6,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 2,
-    "notes": "English 14th-16th c. dagger; phallic hilt, civilian carry, +5 conceal."
+    "notes": "English 14th-16th c. dagger; phallic hilt, civilian carry, +5 conceal.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "misericorde": {
     "name": "Misericorde",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 1,
-    "notes": "French/English mercy dagger, 12th c.; for finishing wounded, +10 vs downed foes."
+    "notes": "French/English mercy dagger, 12th c.; for finishing wounded, +10 vs downed foes.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "seax": {
     "name": "Seax",
     "type": "dagger",
     "damage_type": "slashing",
-    "stance_tree": [],
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 55,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 3,
-    "notes": "Anglo-Saxon broken-back knife, 5th-11th c.; utility/combat, +5 slash."
+    "notes": "Anglo-Saxon broken-back knife, 5th-11th c.; utility/combat, +5 slash.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "cinquedea": {
     "name": "Cinquedea",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing",
+      "slashing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 8,
     "durability": 55,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 3,
-    "notes": "Italian broad dagger, 15th c.; five-finger width blade, +5 thrust."
+    "notes": "Italian broad dagger, 15th c.; five-finger width blade, +5 thrust.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "yatagan": {
     "name": "Yatagan",
     "type": "dagger",
     "damage_type": "slashing",
-    "stance_tree": [],
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 8,
     "durability": 55,
     "fear_trigger": true,
     "fear_intensity": 4,
     "stamina_cost": 3,
     "weight": 3,
-    "notes": "Ottoman Turkish short sword/dagger, 16th-19th c.; curved for draw cuts, +5 bleed."
+    "notes": "Ottoman Turkish short sword/dagger, 16th-19th c.; curved for draw cuts, +5 bleed.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "qama": {
     "name": "Qama",
     "type": "dagger",
     "damage_type": "piercing",
-    "stance_tree": [],
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "dagger",
+    "stance_tree": [
+      "sopramano",
+      "mezana_porta_di_ferro",
+      "posta_longa"
+    ],
     "base_damage": 7,
     "durability": 50,
     "fear_trigger": false,
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 2,
-    "notes": "Caucasian/Russian dagger, evolved from Roman blades; +5 vs mail."
+    "notes": "Caucasian/Russian dagger, evolved from Roman blades; +5 vs mail.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "improvised_club": {
     "name": "Improvised Club",
     "type": "improvised",
     "damage_type": "blunt",
-    "stance_tree": [
-      "neutral"
+    "damage_types": [
+      "blunt"
     ],
+    "guard_set": null,
+    "stance_tree": [],
     "base_damage": 15,
     "durability": 60,
     "fear_trigger": true,
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 8,
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [],
+    "armor_piercing": false
   },
   "mace": {
     "name": "Mace",
     "type": "1H_blunt",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": "1H_blunt",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
     ],
     "base_damage": 10,
     "durability": 60,
@@ -666,16 +1182,22 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "Flanged head for armor crushing; +5 vs plate."
+    "notes": "Flanged head for armor crushing; +5 vs plate.",
+    "features": [],
+    "armor_piercing": true
   },
   "morning_star": {
     "name": "Morning Star",
     "type": "1H_blunt",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": "1H_blunt",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
     ],
     "base_damage": 11,
     "durability": 55,
@@ -683,16 +1205,22 @@
     "fear_intensity": 6,
     "stamina_cost": 4,
     "weight": 7,
-    "notes": "Spiked ball head; causes additional bleeding on hit."
+    "notes": "Spiked ball head; causes additional bleeding on hit.",
+    "features": [],
+    "armor_piercing": true
   },
   "flail": {
     "name": "Flail",
     "type": "1H_blunt",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": "1H_blunt",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
     ],
     "base_damage": 12,
     "durability": 50,
@@ -701,16 +1229,25 @@
     "stamina_cost": 5,
     "weight": 8,
     "notes": "Chain-mounted head; bypasses shields, +10 vs shielded foes.",
-    "min_STR": 35
+    "min_STR": 35,
+    "features": [
+      "chain"
+    ],
+    "armor_piercing": true
   },
   "chekan": {
     "name": "Chekan",
     "type": "1H_blunt",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing"
+    ],
+    "guard_set": "1H_blunt",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
     ],
     "base_damage": 11,
     "durability": 60,
@@ -718,16 +1255,24 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "Volga Bulgarian/Russian war hammer, 10th-13th c.; pick side for piercing, +5 vs armor."
+    "notes": "Volga Bulgarian/Russian war hammer, 10th-13th c.; pick side for piercing, +5 vs armor.",
+    "features": [
+      "beak"
+    ],
+    "armor_piercing": true
   },
   "battle_axe": {
     "name": "Battle Axe",
     "type": "1H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 11,
     "durability": 60,
@@ -735,16 +1280,25 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 7,
-    "notes": "Versatile axe; +5 to hook/disarm maneuvers."
+    "notes": "Versatile axe; +5 to hook/disarm maneuvers.",
+    "features": [
+      "hook"
+    ],
+    "armor_piercing": true
   },
   "horsemans_axe": {
     "name": "Horseman's Axe",
     "type": "1H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 10,
     "durability": 60,
@@ -752,16 +1306,24 @@
     "fear_intensity": 5,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "European cavalry axe, 15th c.; hammer back, +5 from mount."
+    "notes": "European cavalry axe, 15th c.; hammer back, +5 from mount.",
+    "features": [
+      "beak"
+    ],
+    "armor_piercing": true
   },
   "tabar": {
     "name": "Tabar",
     "type": "1H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 11,
     "durability": 65,
@@ -769,16 +1331,22 @@
     "fear_intensity": 6,
     "stamina_cost": 4,
     "weight": 7,
-    "notes": "Turkish/Persian battle axe, medieval; ornate, +5 vs shields."
+    "notes": "Turkish/Persian battle axe, medieval; ornate, +5 vs shields.",
+    "features": [],
+    "armor_piercing": true
   },
   "dane_axe": {
     "name": "Dane Axe",
     "type": "2H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 14,
     "durability": 65,
@@ -787,16 +1355,25 @@
     "stamina_cost": 5,
     "weight": 10,
     "notes": "Viking long-hafted axe; extended reach, +5 vs shields.",
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [
+      "hook"
+    ],
+    "armor_piercing": true
   },
   "bardiche": {
     "name": "Bardiche",
     "type": "2H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 14,
     "durability": 70,
@@ -805,16 +1382,25 @@
     "stamina_cost": 5,
     "weight": 11,
     "notes": "Russian/Polish poleaxe, 15th-17th c.; long blade, +10 vs infantry lines.",
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": true
   },
   "lochaber_axe": {
     "name": "Lochaber Axe",
     "type": "2H_axe",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "axe",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "high_guard",
+      "low_guard",
+      "middle_guard"
     ],
     "base_damage": 13,
     "durability": 65,
@@ -823,16 +1409,28 @@
     "stamina_cost": 5,
     "weight": 10,
     "notes": "Scottish poleaxe, 15th c.; hook for pulling, +5 vs mounted.",
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [
+      "hook",
+      "point"
+    ],
+    "armor_piercing": true
   },
   "poleaxe": {
     "name": "Poleaxe",
     "type": "polearm",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing",
+      "slashing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 13,
     "durability": 65,
@@ -841,16 +1439,28 @@
     "stamina_cost": 5,
     "weight": 9,
     "notes": "Multi-tool polearm (axe/hammer/spike); switch damage_type mid-fight.",
-    "min_STR": 36
+    "min_STR": 36,
+    "features": [
+      "point",
+      "hook",
+      "beak"
+    ],
+    "armor_piercing": true
   },
   "halberd": {
     "name": "Halberd",
     "type": "polearm",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 14,
     "durability": 65,
@@ -859,16 +1469,27 @@
     "stamina_cost": 5,
     "weight": 10,
     "notes": "Swiss guard weapon; hook for pulling riders, +10 vs mounted.",
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [
+      "point",
+      "hook"
+    ],
+    "armor_piercing": true
   },
   "bill": {
     "name": "Bill",
     "type": "polearm",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 12,
     "durability": 60,
@@ -877,16 +1498,27 @@
     "stamina_cost": 4,
     "weight": 8,
     "notes": "English billhook; pulls/disarms, +5 to trip foes.",
-    "min_STR": 35
+    "min_STR": 35,
+    "features": [
+      "point",
+      "hook"
+    ],
+    "armor_piercing": true
   },
   "glaive": {
     "name": "Glaive",
     "type": "polearm",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 13,
     "durability": 65,
@@ -895,16 +1527,25 @@
     "stamina_cost": 5,
     "weight": 9,
     "notes": "Curved blade polearm; sweeping cuts, +5 to multi-target.",
-    "min_STR": 36
+    "min_STR": 36,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "spear": {
     "name": "Spear",
     "type": "polearm",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 8,
     "durability": 50,
@@ -912,16 +1553,25 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Basic thrusting weapon; throwable, +5 reach vs melee."
+    "notes": "Basic thrusting weapon; throwable, +5 reach vs melee.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "lance": {
     "name": "Lance",
     "type": "polearm",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 15,
     "durability": 40,
@@ -930,16 +1580,25 @@
     "stamina_cost": 6,
     "weight": 10,
     "notes": "Cavalry charge weapon; +15 damage on mounted charge, breaks on impact.",
-    "min_STR": 38
+    "min_STR": 38,
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "boar_spear": {
     "name": "Boar Spear",
     "type": "polearm",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 9,
     "durability": 55,
@@ -947,12 +1606,20 @@
     "fear_intensity": 0,
     "stamina_cost": 4,
     "weight": 6,
-    "notes": "Crossbar prevents impaled foes from closing; +5 vs charging beasts."
+    "notes": "Crossbar prevents impaled foes from closing; +5 vs charging beasts.",
+    "features": [
+      "point"
+    ],
+    "armor_piercing": false
   },
   "longbow": {
     "name": "Longbow",
     "type": "ranged",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 10,
     "durability": 50,
@@ -960,12 +1627,18 @@
     "fear_intensity": 0,
     "stamina_cost": 4,
     "weight": 3,
-    "notes": "English longbow; high draw weight, +5 pierce vs mail at range."
+    "notes": "English longbow; high draw weight, +5 pierce vs mail at range.",
+    "features": [],
+    "armor_piercing": false
   },
   "recurve_bow": {
     "name": "Recurve Bow",
     "type": "ranged",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 9,
     "durability": 50,
@@ -973,12 +1646,18 @@
     "fear_intensity": 0,
     "stamina_cost": 4,
     "weight": 3,
-    "notes": "Middle Eastern/Mongol bow; curved for power, +5 from horseback."
+    "notes": "Middle Eastern/Mongol bow; curved for power, +5 from horseback.",
+    "features": [],
+    "armor_piercing": false
   },
   "crossbow": {
     "name": "Crossbow",
     "type": "ranged",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 12,
     "durability": 55,
@@ -986,12 +1665,18 @@
     "fear_intensity": 0,
     "stamina_cost": 5,
     "weight": 8,
-    "notes": "High penetration; +10 vs plate, slow reload."
+    "notes": "High penetration; +10 vs plate, slow reload.",
+    "features": [],
+    "armor_piercing": false
   },
   "arbalest": {
     "name": "Arbalest",
     "type": "ranged",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 14,
     "durability": 60,
@@ -999,12 +1684,18 @@
     "fear_intensity": 5,
     "stamina_cost": 6,
     "weight": 10,
-    "notes": "Heavy crossbow; cranked for power, +15 vs heavy armor, very slow reload."
+    "notes": "Heavy crossbow; cranked for power, +15 vs heavy armor, very slow reload.",
+    "features": [],
+    "armor_piercing": false
   },
   "javelin": {
     "name": "Javelin",
     "type": "thrown",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 8,
     "durability": 40,
@@ -1012,12 +1703,18 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Thrown spear; +5 at short range, can pin shields."
+    "notes": "Thrown spear; +5 at short range, can pin shields.",
+    "features": [],
+    "armor_piercing": false
   },
   "pilum": {
     "name": "Pilum",
     "type": "thrown",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 8,
     "durability": 35,
@@ -1025,12 +1722,18 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Roman javelin; bends on impact, disables shields (+10 vs shielded)."
+    "notes": "Roman javelin; bends on impact, disables shields (+10 vs shielded).",
+    "features": [],
+    "armor_piercing": false
   },
   "throwing_axe": {
     "name": "Throwing Axe",
     "type": "thrown",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 9,
     "durability": 45,
@@ -1038,12 +1741,18 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Francisca-style; spins for impact, +5 vs shields."
+    "notes": "Francisca-style; spins for impact, +5 vs shields.",
+    "features": [],
+    "armor_piercing": true
   },
   "francisca": {
     "name": "Francisca",
     "type": "thrown",
     "damage_type": "slashing",
+    "damage_types": [
+      "slashing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 9,
     "durability": 45,
@@ -1051,16 +1760,23 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 5,
-    "notes": "Frankish throwing axe; curved for hooking, +5 disarm on hit."
+    "notes": "Frankish throwing axe; curved for hooking, +5 disarm on hit.",
+    "features": [],
+    "armor_piercing": true
   },
   "quarterstaff": {
     "name": "Quarterstaff",
     "type": "staff",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 7,
     "durability": 50,
@@ -1068,16 +1784,23 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Simple wooden staff; versatile defense, +5 parry."
+    "notes": "Simple wooden staff; versatile defense, +5 parry.",
+    "features": [],
+    "armor_piercing": false
   },
   "bo_staff": {
     "name": "Bo Staff",
     "type": "staff",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": "polearm",
     "stance_tree": [
-      "vom_tag",
-      "half_sword",
-      "wrath_guard"
+      "posta_di_donna_sinestra",
+      "posta_breve_serpentina",
+      "tutta_porta_di_ferro",
+      "dente_di_zenghiaro"
     ],
     "base_damage": 7,
     "durability": 50,
@@ -1085,12 +1808,18 @@
     "fear_intensity": 0,
     "stamina_cost": 3,
     "weight": 4,
-    "notes": "Long staff; extended reach, +5 vs multiple foes."
+    "notes": "Long staff; extended reach, +5 vs multiple foes.",
+    "features": [],
+    "armor_piercing": false
   },
   "sling": {
     "name": "Sling",
     "type": "ranged",
     "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 6,
     "durability": 40,
@@ -1098,12 +1827,18 @@
     "fear_intensity": 0,
     "stamina_cost": 2,
     "weight": 1,
-    "notes": "Simple projectile; cheap ammo, +5 vs unarmored heads."
+    "notes": "Simple projectile; cheap ammo, +5 vs unarmored heads.",
+    "features": [],
+    "armor_piercing": false
   },
   "atlatl": {
     "name": "Atlatl",
     "type": "thrown",
     "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
     "stance_tree": [],
     "base_damage": 10,
     "durability": 45,
@@ -1111,6 +1846,35 @@
     "fear_intensity": 0,
     "stamina_cost": 4,
     "weight": 3,
-    "notes": "Dart thrower; increased range/force, +5 pierce."
+    "notes": "Dart thrower; increased range/force, +5 pierce.",
+    "features": [],
+    "armor_piercing": false
+  },
+  "war_pick": {
+    "name": "War Pick",
+    "type": "1H_blunt",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt",
+      "piercing"
+    ],
+    "guard_set": "1H_blunt",
+    "stance_tree": [
+      "high_guard",
+      "hanging_guard",
+      "middle_guard"
+    ],
+    "base_damage": 11,
+    "durability": 60,
+    "fear_trigger": true,
+    "fear_intensity": 5,
+    "stamina_cost": 4,
+    "weight": 6,
+    "notes": "Volga Bulgarian/Russian war hammer, 10th-13th c.; pick side for piercing, +5 vs armor.",
+    "features": [
+      "beak"
+    ],
+    "description": "A short hammer with a long, narrow beak behind the head; the horseman's answer to plate.",
+    "armor_piercing": true
   }
 }
