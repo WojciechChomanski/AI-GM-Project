@@ -102,6 +102,10 @@
     "Stonewarden": [
       "smithing",
       "endurance"
+    ],
+    "Knight": [
+      "riding",
+      "etiquette"
     ]
   },
   "background_free_skills": {

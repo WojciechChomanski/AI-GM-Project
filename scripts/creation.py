@@ -216,7 +216,11 @@ def create_character(race, gender, flaws=(), talents=(), stat_buys=None, flaw_cp
     import skills as SK
     skill_values, skill_errors = SK.creation_skills(stats, race, gender, skills, class_name, background, advantages)
     errors.extend(skill_errors)
-    return {"skills": skill_values, "background": background, "race": race, "gender": gender, "stats": stats, "caps": caps, "cp_total": cp_total,
+    # Career / Order origin (rules/careers.json, rules/orders/paths.json); applied with order_paths.start_at_creation
+    import careers
+    career = {"raised_by_order": careers.is_order_raised(class_name),
+              "start_path": "holy_judge" if class_name == "Holy_Judge" else None}
+    return {"career": career, "skills": skill_values, "background": background, "race": race, "gender": gender, "stats": stats, "caps": caps, "cp_total": cp_total,
             "cp_spent": spent, "cp_left": cp_total - spent, "talents": list(talents),
             "flaws": list(flaws), "flaw_paid": flaw_paid, "total_intensity": total_intensity,
             "heavy_load": heavy, "advantages": advantages, "vows": vows, "class": class_name,
