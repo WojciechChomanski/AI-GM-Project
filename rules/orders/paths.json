@@ -1,0 +1,497 @@
+{
+  "meta": {
+    "version": "1.0",
+    "doc": "docs/CAREER_PATHS.md",
+    "source": "breath-audit/ORDER_PATHS_DRAFT.md v0.1, owner t104u (yes to all 6)",
+    "status": "numbers are placeholders for playtesting",
+    "hidden": "virtue/piety/faith/corruption checks are backend-only; the player sees only felt text"
+  },
+  "rules": {
+    "max_ranks_per_arc": 1,
+    "switch_backs_per_character": 1,
+    "switch_back": {
+      "to_rank": 1,
+      "reputation": -20,
+      "task": "penance"
+    },
+    "order_paths_need_raised_by_order": true,
+    "refused_task": {
+      "reputation": -10,
+      "discipline_step": 1
+    },
+    "felt": {
+      "ready": "Your superiors watch you with new interest.",
+      "not_ready": "The Order is not yet sure of you.",
+      "hidden_fail": "You feel no certainty that you are worthy.",
+      "promoted": "You are summoned, and rise."
+    }
+  },
+  "paths": {
+    "crusader_knight": {
+      "name": "Crusader Knight (Order hierarchy)",
+      "class": "Crusader_Knight",
+      "entry": {
+        "class_tier_min": 4
+      },
+      "ranks": [
+        {
+          "rank": 1,
+          "name": "Brother-Knight",
+          "requires": {},
+          "gives": [
+            "order_hospitality",
+            "order_armourers"
+          ],
+          "costs": [
+            "all five vows",
+            "12% alms",
+            "answers summons"
+          ]
+        },
+        {
+          "rank": 2,
+          "name": "Knight-Sergeant of the Chapter",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "any": 2
+            },
+            "reputation": 30,
+            "hidden": {
+              "virtue": 50
+            }
+          },
+          "gives": [
+            "followers: 3-5 sergeants",
+            "free skill: leadership"
+          ],
+          "costs": [
+            "leads Order patrols",
+            "followers' failures cost reputation"
+          ]
+        },
+        {
+          "rank": 3,
+          "name": "Preceptor",
+          "requires": {
+            "sessions_min": 10,
+            "reputation": 50,
+            "hidden": {
+              "piety": 60
+            },
+            "task": true
+          },
+          "gives": [
+            "commandery base",
+            "supply cart",
+            "horse replaced once per arc",
+            "order_bonus_step: 1",
+            "free skill: lore_theology"
+          ],
+          "costs": [
+            "bound to a region",
+            "1 session in 4 on Order business"
+          ]
+        },
+        {
+          "rank": 4,
+          "name": "Marshal",
+          "requires": {
+            "sessions_min": 12,
+            "reputation": 70,
+            "hidden": {
+              "virtue": 70
+            },
+            "deeds": {
+              "major_victory": 1
+            },
+            "task": true
+          },
+          "gives": [
+            "call a lance (10 knights) once per arc",
+            "chapter council seat",
+            "order_bonus_step: 2"
+          ],
+          "costs": [
+            "public target of politics",
+            "Templar vows strict",
+            "wrong calls: reputation x2 loss"
+          ]
+        },
+        {
+          "rank": 5,
+          "name": "Grand Commander",
+          "requires": {
+            "sessions_min": 15,
+            "reputation": 90,
+            "story": "chapter vote",
+            "task": true
+          },
+          "gives": [
+            "directs the Order in his region"
+          ],
+          "costs": [
+            "effectively retires from adventuring"
+          ]
+        }
+      ]
+    },
+    "holy_judge": {
+      "name": "Holy Judge (outside the hierarchy)",
+      "class": "Holy_Judge",
+      "authority": "Holy Tribunal",
+      "entry": {
+        "convert_from": "crusader_knight",
+        "class_tier_min": 3,
+        "deeds": {
+          "just_discern_sin": 3
+        },
+        "hidden": {
+          "virtue": 60,
+          "piety": 60
+        },
+        "story": "Tribunal summons",
+        "sessions_to_convert": 1
+      },
+      "start": {
+        "counts_as_class_tier": 2,
+        "former_tier_name": "Squire_Sergeant",
+        "hidden_start": {
+          "virtue": 60,
+          "piety": 60
+        },
+        "abilities": [
+          "Basic_Strike",
+          "Shield_Bash",
+          "Rally_Cry",
+          "Precision_Thrust",
+          "Stand_Fast",
+          "Discern_Sin",
+          "Final_Verdict"
+        ],
+        "note": "no tier 3-4 knight abilities, so a starting Judge does not out-rank a starting knight"
+      },
+      "loses": [
+        "order_hospitality",
+        "order_armourers",
+        "followers",
+        "order rank"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "name": "Inquisitor-Novice",
+          "requires": {},
+          "gives": [
+            "writ: commoners and lesser clergy",
+            "Final_Verdict 1/day"
+          ],
+          "costs": [
+            "no Order support",
+            "every verdict reviewed by the Tribunal"
+          ]
+        },
+        {
+          "rank": 2,
+          "name": "Judge",
+          "requires": {
+            "sessions_min": 8,
+            "deeds": {
+              "verdict_just": 3
+            },
+            "reputation": 30,
+            "hidden": {
+              "piety": 60
+            }
+          },
+          "gives": [
+            "writ: knights and minor nobles",
+            "requisition lodging and a guide",
+            "Divine_Clarity",
+            "free skill: letters_law (no Literate needed)"
+          ],
+          "costs": [
+            "one Tribunal case per arc",
+            "Feared_By_The_Flock grows to -15"
+          ]
+        },
+        {
+          "rank": 3,
+          "name": "High Judge",
+          "requires": {
+            "sessions_min": 12,
+            "deeds": {
+              "verdict_just": 6
+            },
+            "no_unjust_sessions": 6,
+            "reputation": 55,
+            "hidden": {
+              "virtue": 70
+            }
+          },
+          "gives": [
+            "writ: Order officers below Marshal",
+            "1 Witness (NPC aide)",
+            "Purge_Verdict"
+          ],
+          "costs": [
+            "no land, title or wealth",
+            "one Tribunal order per arc may target friends"
+          ],
+          "witness_max": 1
+        },
+        {
+          "rank": 4,
+          "name": "Lord Inquisitor",
+          "requires": {
+            "sessions_min": 15,
+            "reputation": 85,
+            "story": "Tribunal summons",
+            "task": true
+          },
+          "gives": [
+            "writ: anyone but the Tribunal",
+            "call an Order to arms vs heresy once per campaign"
+          ],
+          "costs": [
+            "hidden suspicion on every relationship",
+            "one unjust verdict = expulsion"
+          ]
+        }
+      ],
+      "bond": {
+        "name": "Executioner's Bond",
+        "weapons": [
+          "executioner_sword",
+          "headsman_axe"
+        ],
+        "mastery_family": {
+          "executioner_sword": "greatsword",
+          "headsman_axe": "axe"
+        },
+        "authority_only": true,
+        "writ_social_bonus": 10,
+        "writ_skills": [
+          "intimidation",
+          "etiquette"
+        ],
+        "defy_test": "lesser authorities make a hidden WIL test to defy him",
+        "lawful_verdict_requires_bond": true,
+        "unlawful_verdict_event": "needless_killing",
+        "lost": {
+          "reputation": -10,
+          "writ_suspended": true,
+          "reconsecrate_sessions": 1
+        },
+        "felt": "The blade feels heavy in unjust hands.",
+        "no_thrust": true,
+        "damage_bonus": 0
+      },
+      "unjust_verdict": {
+        "hidden": {
+          "piety": -20,
+          "virtue": -15
+        },
+        "reputation": -25
+      }
+    },
+    "warden_of_the_marches": {
+      "name": "Warden of the Marches (Veil Hunter)",
+      "class": "Crusader_Knight",
+      "entry": {
+        "convert_from": "crusader_knight",
+        "class_tier_min": 3,
+        "deeds": {
+          "veil_site_cleansed": 1
+        },
+        "hidden": {
+          "virtue": 60
+        },
+        "story": "posted to a watch-fort"
+      },
+      "loses": [
+        "chapter council",
+        "courtly Etiquette bonuses"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "name": "Watchman of the Fort",
+          "requires": {},
+          "gives": [
+            "free skills: lore_veil, survival_tracking",
+            "watch-fort base"
+          ],
+          "costs": [
+            "must answer any Veil breach, even mid-quest",
+            "slow Stress from exposure (hidden)"
+          ]
+        },
+        {
+          "rank": 2,
+          "name": "Marcher Knight",
+          "requires": {
+            "sessions_min": 8,
+            "deeds": {
+              "veil_site_cleansed": 2
+            },
+            "reputation": 30,
+            "hidden": {
+              "virtue": 60
+            }
+          },
+          "gives": [
+            "felt Veil dread (detects nearby Veil, no number)",
+            "+10 Survival in swamps"
+          ],
+          "costs": [
+            "leaves the fort only by leave of the Warden-Captain"
+          ]
+        },
+        {
+          "rank": 3,
+          "name": "Warden-Captain",
+          "requires": {
+            "sessions_min": 12,
+            "reputation": 55,
+            "hidden": {
+              "virtue": 70,
+              "corruption_max": 24
+            },
+            "task": true
+          },
+          "gives": [
+            "commands one fort and its 6 men",
+            "swamp guides"
+          ],
+          "costs": [
+            "the fort falls if he is away too long"
+          ]
+        },
+        {
+          "rank": 4,
+          "name": "Lord Warden of the March",
+          "requires": {
+            "sessions_min": 15,
+            "reputation": 85,
+            "story": "holds a breach"
+          },
+          "gives": [
+            "calls all forts once per campaign"
+          ],
+          "costs": [
+            "no court life; heavy hidden Stress"
+          ]
+        }
+      ]
+    },
+    "penitent_brother": {
+      "name": "Penitent Brother (fallen-knight fallback)",
+      "class": "Crusader_Knight",
+      "fallback": true,
+      "entry": {
+        "from_discipline_steps": [
+          2,
+          3
+        ],
+        "instead_of": "expulsion"
+      },
+      "loses": [
+        "rank",
+        "heavy armour",
+        "horse"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "name": "Penitent",
+          "requires": {},
+          "gives": [
+            "free skill: resist_pain_toxins",
+            "virtue can be restored by penance deeds"
+          ],
+          "costs": [
+            "light armour only, walks",
+            "takes the hardest tasks"
+          ]
+        },
+        {
+          "rank": 2,
+          "name": "Redeemed",
+          "requires": {
+            "sessions_min": 8,
+            "deeds": {
+              "penance_done": 3
+            },
+            "hidden": {
+              "virtue": 60
+            }
+          },
+          "gives": [
+            "may return to crusader_knight rank 1 (does not use the switch-back)"
+          ],
+          "costs": [
+            "the Order never fully trusts him (-10 reputation cap)"
+          ]
+        }
+      ]
+    }
+  },
+  "order_contractor": {
+    "name": "Order ally / contractor",
+    "for": "anyone not raised by the Order",
+    "vows": false,
+    "breath": false,
+    "ranks": [
+      {
+        "rank": 1,
+        "name": "Hireling",
+        "requires": {},
+        "gives": [
+          "paid Order contracts"
+        ],
+        "costs": [
+          "breaking a contract: banned"
+        ]
+      },
+      {
+        "rank": 2,
+        "name": "Trusted Contractor",
+        "requires": {
+          "sessions_min": 6,
+          "reputation": 30
+        },
+        "gives": [
+          "Order safe houses",
+          "one favour per arc"
+        ],
+        "costs": [
+          "Order watches his conduct"
+        ]
+      },
+      {
+        "rank": 3,
+        "name": "Friend of the Order",
+        "requires": {
+          "sessions_min": 12,
+          "reputation": 60
+        },
+        "gives": [
+          "Order armourers at cost",
+          "letters of passage"
+        ],
+        "costs": [
+          "enemies of the Order are his enemies"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    "escort a heretic you believe innocent to trial",
+    "burn a village grain store to starve a Veil cult",
+    "give your best horse or blade to the Order",
+    "spend a season in a far preceptory (downtime)",
+    "judge a friend or patron",
+    "lie to protect the Order's name"
+  ]
+}

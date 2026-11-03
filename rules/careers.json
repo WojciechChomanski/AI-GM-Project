@@ -1,0 +1,656 @@
+{
+  "meta": {
+    "version": "1.0",
+    "doc": "docs/CAREER_PATHS.md",
+    "status": "evolutions marked placeholder are for the owner to refine",
+    "rule": "An evolution never re-applies class stat modifiers and never raises caps: it opens skills (learned at base value, no XP) and abilities. Staying on the starting path still progresses (class tiers, order ranks, skills, mastery)."
+  },
+  "origins": {
+    "_note": "Who can enter which path. Order paths need raised_by_order (taken at age 6-7); it is set only by starting in an order_raised class.",
+    "order_raised": [
+      "Crusader_Knight",
+      "Holy_Judge",
+      "Paladin",
+      "Cleric"
+    ],
+    "noble": [
+      "Knight"
+    ],
+    "worldly_martial": [
+      "Warrior",
+      "Outlaw_Mercenary_Warrior",
+      "Rogue"
+    ],
+    "dwarf": [
+      "Stonewarden"
+    ],
+    "arcane": [
+      "Mage",
+      "Veil_Sorceress"
+    ],
+    "ogre": [
+      "Ogre_Brute",
+      "Ogre_Behemoth",
+      "Ogre_Ravager",
+      "Ogre_Stormbreaker",
+      "Ogre_Flesh_Eater"
+    ]
+  },
+  "order_gated": {
+    "classes": [
+      "Crusader_Knight",
+      "Holy_Judge",
+      "Paladin",
+      "Cleric"
+    ],
+    "paths": [
+      "crusader_knight",
+      "holy_judge",
+      "warden_of_the_marches",
+      "penitent_brother"
+    ],
+    "evolution_kinds": [
+      "preacher"
+    ],
+    "fallback": "order_contractor"
+  },
+  "classes": {
+    "Crusader_Knight": {
+      "stay": "order path crusader_knight (Brother-Knight to Grand Commander) + class tiers 1-5",
+      "evolutions": [
+        {
+          "id": "holy_judge",
+          "name": "Holy Judge",
+          "description": "Leaves the hierarchy for the Tribunal's Writ.",
+          "requires": {
+            "order_path": "holy_judge"
+          },
+          "gains": {
+            "skills": [
+              "letters_law"
+            ],
+            "abilities": [
+              "Judgment",
+              "Divine_Clarity",
+              "Purge_Verdict"
+            ]
+          },
+          "placeholder": false,
+          "to_class": "Holy_Judge"
+        },
+        {
+          "id": "warden_of_the_marches",
+          "name": "Warden of the Marches",
+          "description": "Veil hunter at the swamp watch-forts.",
+          "requires": {
+            "order_path": "warden_of_the_marches"
+          },
+          "gains": {
+            "skills": [
+              "lore_veil",
+              "survival_tracking"
+            ],
+            "abilities": []
+          },
+          "placeholder": false
+        }
+      ]
+    },
+    "Holy_Judge": {
+      "stay": "order path holy_judge (Inquisitor-Novice to Lord Inquisitor)",
+      "evolutions": [],
+      "note": "switch back to crusader_knight once (rank 1, -20 reputation, penance)"
+    },
+    "Paladin": {
+      "stay": "legacy class (levels 1-5)",
+      "note": "legacy file still has active holy damage (divine_verdict): conflicts with core_rules, needs a review",
+      "evolutions": [
+        {
+          "id": "crusader_knight",
+          "name": "Crusader Knight",
+          "description": "If the Paladin is an Order-raised warrior, he joins the hierarchy.",
+          "requires": {
+            "class_level_min": 3
+          },
+          "gains": {
+            "skills": [],
+            "abilities": []
+          },
+          "placeholder": true,
+          "to_class": "Crusader_Knight"
+        }
+      ]
+    },
+    "Cleric": {
+      "stay": "on hold",
+      "evolutions": [],
+      "on_hold": true
+    },
+    "Knight": {
+      "stay": "class tiers Squire to Lord (liege, lands, honour)",
+      "evolutions": [
+        {
+          "id": "knight_errant",
+          "name": "Knight Errant",
+          "description": "Gives up lands for the road and honour: wandering champion.",
+          "requires": {
+            "class_tier_min": 2,
+            "sessions_min": 6,
+            "noble_reputation": 30
+          },
+          "gains": {
+            "skills": [
+              "survival_tracking",
+              "persuasion"
+            ],
+            "abilities": [
+              "Errant_Challenge"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "castellan",
+          "name": "Castellan / Marcher Lord",
+          "description": "Holds a border keep for his liege.",
+          "requires": {
+            "class_tier_min": 3,
+            "granted_land": true
+          },
+          "gains": {
+            "skills": [
+              "leadership",
+              "engineering"
+            ],
+            "abilities": [
+              "Hold_The_Walls"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "church_sword",
+          "name": "Church-Paid Sword",
+          "description": "Fights the Church's wars for pay: order_contractor, no vows, no Breath.",
+          "requires": {
+            "order_contractor_rank": 2
+          },
+          "gains": {
+            "skills": [
+              "lore_theology"
+            ],
+            "abilities": []
+          },
+          "placeholder": true,
+          "order_contractor": true
+        }
+      ]
+    },
+    "Warrior": {
+      "stay": "class tiers + weapon mastery",
+      "evolutions": [
+        {
+          "id": "sergeant_at_arms",
+          "name": "Sergeant-at-Arms",
+          "description": "Drills and leads common soldiers.",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "led_victory": 1
+            }
+          },
+          "gains": {
+            "skills": [
+              "leadership"
+            ],
+            "abilities": [
+              "Hold_The_Line"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "duelist",
+          "name": "Duelist",
+          "description": "Champion of single combat.",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "duel_won": 3
+            }
+          },
+          "gains": {
+            "skills": [
+              "acrobatics"
+            ],
+            "abilities": [
+              "Riposte_Master"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "knighted",
+          "name": "Knighted for Valour",
+          "description": "A lord knights him on the field: becomes a Knight (no Noble background needed).",
+          "requires": {
+            "deeds": {
+              "knighted": 1
+            },
+            "race": [
+              "Human"
+            ]
+          },
+          "gains": {
+            "skills": [
+              "riding",
+              "etiquette"
+            ],
+            "abilities": []
+          },
+          "placeholder": true,
+          "to_class": "Knight"
+        }
+      ]
+    },
+    "Outlaw_Mercenary_Warrior": {
+      "stay": "class tiers + weapon mastery",
+      "evolutions": [
+        {
+          "id": "mercenary_captain",
+          "name": "Mercenary Captain",
+          "description": "Leads a free company.",
+          "requires": {
+            "sessions_min": 8,
+            "reputation": 30
+          },
+          "gains": {
+            "skills": [
+              "leadership",
+              "haggle_trade"
+            ],
+            "abilities": [
+              "Company_Pay"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "bounty_hunter",
+          "name": "Bounty Hunter",
+          "description": "Hunts people for coin; can take Order contracts.",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "bounty_collected": 3
+            }
+          },
+          "gains": {
+            "skills": [
+              "survival_tracking",
+              "awareness"
+            ],
+            "abilities": [
+              "Mark_The_Quarry"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "bandit_chief",
+          "name": "Bandit Chief",
+          "description": "Rules a band on the roads; wanted.",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "raid_led": 2
+            }
+          },
+          "gains": {
+            "skills": [
+              "intimidation",
+              "stealth"
+            ],
+            "abilities": [
+              "Road_Toll"
+            ]
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Rogue": {
+      "stay": "class tiers + skills",
+      "evolutions": [
+        {
+          "id": "assassin",
+          "name": "Assassin",
+          "description": "Paid killer.",
+          "requires": {
+            "sessions_min": 8,
+            "deeds": {
+              "contract_kill": 2
+            }
+          },
+          "gains": {
+            "skills": [
+              "deception",
+              "alchemy_herbcraft"
+            ],
+            "abilities": [
+              "Silent_Kill"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "spy",
+          "name": "Spy / Informant",
+          "description": "Sells secrets to courts or the Order (as contractor).",
+          "requires": {
+            "sessions_min": 6,
+            "reputation": 20
+          },
+          "gains": {
+            "skills": [
+              "etiquette",
+              "letters_law"
+            ],
+            "abilities": [
+              "Second_Face"
+            ]
+          },
+          "placeholder": true
+        },
+        {
+          "id": "guild_thief",
+          "name": "Guild Thief",
+          "description": "Rises in a thieves' guild.",
+          "requires": {
+            "sessions_min": 6,
+            "deeds": {
+              "heist": 2
+            }
+          },
+          "gains": {
+            "skills": [
+              "sleight_of_hand",
+              "haggle_trade"
+            ],
+            "abilities": [
+              "Fence_Network"
+            ]
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Mage": {
+      "stay": "class levels + spell mastery",
+      "evolutions": [
+        {
+          "id": "court_magus",
+          "name": "Court Magus",
+          "description": "Serves a noble house openly.",
+          "requires": {
+            "sessions_min": 8,
+            "reputation": 30
+          },
+          "gains": {
+            "skills": [
+              "etiquette",
+              "letters_law"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        },
+        {
+          "id": "hedge_witch",
+          "name": "Hedge Witch",
+          "description": "Village healer and herbalist.",
+          "requires": {
+            "sessions_min": 6
+          },
+          "gains": {
+            "skills": [
+              "alchemy_herbcraft",
+              "medicine"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        },
+        {
+          "id": "veil_scholar",
+          "name": "Veil Scholar",
+          "description": "Studies the Veil (Stress risk, hidden).",
+          "requires": {
+            "sessions_min": 8
+          },
+          "gains": {
+            "skills": [
+              "lore_veil",
+              "lore_history"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Veil_Sorceress": {
+      "stay": "per-spell mastery",
+      "evolutions": [
+        {
+          "id": "veil_seer",
+          "name": "Veil Seer",
+          "description": "Reads omens through the Veil.",
+          "requires": {
+            "sessions_min": 8
+          },
+          "gains": {
+            "skills": [
+              "lore_veil",
+              "awareness"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        },
+        {
+          "id": "coven_mistress",
+          "name": "Coven Mistress",
+          "description": "Leads a coven; hunted by the Church.",
+          "requires": {
+            "sessions_min": 10,
+            "reputation": 30
+          },
+          "gains": {
+            "skills": [
+              "leadership",
+              "deception"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Stonewarden": {
+      "stay": "class tiers",
+      "evolutions": [
+        {
+          "id": "hold_engineer",
+          "name": "Hold Engineer",
+          "description": "Builds and breaks fortifications.",
+          "requires": {
+            "sessions_min": 6
+          },
+          "gains": {
+            "skills": [
+              "engineering",
+              "smithing"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        },
+        {
+          "id": "gate_thane",
+          "name": "Gate Thane",
+          "description": "Commands a hold's gate.",
+          "requires": {
+            "sessions_min": 10,
+            "reputation": 40
+          },
+          "gains": {
+            "skills": [
+              "leadership",
+              "etiquette"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Ogre_Brute": {
+      "stay": "class tiers + mastery",
+      "evolutions": [
+        {
+          "id": "ravager",
+          "name": "Ogre Ravager",
+          "description": "Hunger-driven destroyer.",
+          "requires": {
+            "sessions_min": 6
+          },
+          "gains": {
+            "skills": [],
+            "abilities": []
+          },
+          "placeholder": true,
+          "to_class": "Ogre_Ravager"
+        },
+        {
+          "id": "stormbreaker",
+          "name": "Ogre Stormbreaker",
+          "description": "Siege specialist.",
+          "requires": {
+            "sessions_min": 6
+          },
+          "gains": {
+            "skills": [
+              "engineering"
+            ],
+            "abilities": []
+          },
+          "placeholder": true,
+          "to_class": "Ogre_Stormbreaker"
+        },
+        {
+          "id": "behemoth",
+          "name": "Ogre Behemoth",
+          "description": "Immovable guard.",
+          "requires": {
+            "sessions_min": 6
+          },
+          "gains": {
+            "skills": [
+              "endurance"
+            ],
+            "abilities": []
+          },
+          "placeholder": true,
+          "to_class": "Ogre_Behemoth"
+        }
+      ]
+    },
+    "Ogre_Behemoth": {
+      "stay": "class tiers",
+      "evolutions": [
+        {
+          "id": "gut_guard",
+          "name": "Gut-Guard",
+          "description": "Bodyguard of a tyrant.",
+          "requires": {
+            "sessions_min": 8
+          },
+          "gains": {
+            "skills": [
+              "intimidation"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Ogre_Ravager": {
+      "stay": "class tiers",
+      "evolutions": [
+        {
+          "id": "tyrant",
+          "name": "Ogre Tyrant",
+          "description": "Leads a warband by fear.",
+          "requires": {
+            "sessions_min": 10,
+            "reputation": 30
+          },
+          "gains": {
+            "skills": [
+              "leadership",
+              "intimidation"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Ogre_Stormbreaker": {
+      "stay": "class tiers",
+      "evolutions": [
+        {
+          "id": "siege_master",
+          "name": "Siege Master",
+          "description": "Runs a whole siege.",
+          "requires": {
+            "sessions_min": 8
+          },
+          "gains": {
+            "skills": [
+              "engineering",
+              "navigation"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    },
+    "Ogre_Flesh_Eater": {
+      "stay": "class tiers",
+      "evolutions": [
+        {
+          "id": "gorger",
+          "name": "Gorger",
+          "description": "Deeper corruption, stronger regeneration (hidden cost).",
+          "requires": {
+            "sessions_min": 8,
+            "hidden": {
+              "corruption": 40
+            }
+          },
+          "gains": {
+            "skills": [
+              "resist_pain_toxins"
+            ],
+            "abilities": []
+          },
+          "placeholder": true
+        }
+      ]
+    }
+  }
+}
