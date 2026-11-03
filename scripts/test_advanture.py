@@ -138,12 +138,10 @@ def test_adventure():
         faction_system.align_with_faction("daughters_drowned_moon", 10)
 
     # Scenario 6: Breath Purge Test
-    print("\n=== Scenario 6: Breath Purge Healing ===")
+    print("\n=== Scenario 6: Passive Breath Purge (after a just verdict) ===")
     for char in party:
-        if char.class_name in ["Cleric", "Holy_Judge"]:
-            for target in party:
-                if any(e["name"] in ["salt_kiss", "taint_mark", "brine_marks"] for e in target.status_effects):
-                    healing_system.breath_purge(char, target)
+        if char.class_name == "Holy_Judge":
+            print(healing_system.breath_purge(char, party, trigger="just_verdict"))
 
 if __name__ == "__main__":
     test_adventure()
