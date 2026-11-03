@@ -1,0 +1,559 @@
+{
+  "meta": {
+    "version": "1.0",
+    "status": "numbers are placeholders for playtesting",
+    "doc": "docs/SKILLS.md",
+    "source": "breath-audit/SKILLS_DRAFT.md v0.2 + SKILL_PICKS_EXAMPLES.md, owner decisions 2026-11-03",
+    "excluded": "Prayer/Rites: waits for the Cleric redesign",
+    "format": "skills: {id: {name, stats[1-2], trained_only, tools (tier examples or null), restrictions {race, gender}, description, ...}}. Base = floor(average of stats)."
+  },
+  "rules": {
+    "creation_picks": 6,
+    "pick_bonus": 10,
+    "xp_cost": {
+      "common": 100,
+      "trained_only": 200
+    },
+    "xp_never_raises_value": true,
+    "untrained_mult": 0.5,
+    "skill_max": 95,
+    "growth": "rules/progression.json growth (uses_needed, failures x2, 1 point per skill per session)",
+    "use_bar": {
+      "thresholds": [
+        50,
+        150,
+        400,
+        900,
+        2000
+      ],
+      "ranks": [
+        "Familiar",
+        "Practiced",
+        "Seasoned",
+        "Veteran",
+        "Master"
+      ]
+    },
+    "master_gate": {
+      "free_until": 50,
+      "master_margin": 10,
+      "points_per_period": 5,
+      "gold_per_target_point": 20,
+      "reputation": [
+        {
+          "up_to": 60,
+          "min": 20
+        },
+        {
+          "up_to": 75,
+          "min": 40
+        },
+        {
+          "up_to": 95,
+          "min": 60
+        }
+      ]
+    },
+    "cross_race": {
+      "gold_mult": 5,
+      "reputation_extra": 30,
+      "points_per_period": 2,
+      "requires_found_master": true,
+      "note": "Only way to get a race-locked skill. Gender locks are absolute (magic rules)."
+    },
+    "tool_tiers": {
+      "none": 30,
+      "field_kit": 50,
+      "proper_tools": 70,
+      "workshop": 95
+    },
+    "tools_above_cap": "uses still fill the use bar but do not raise the value"
+  },
+  "class_free_skills": {
+    "_note": "Free creation picks. From class files 'skills' where they name a skill; others from SKILL_PICKS_EXAMPLES.md (marked invented in docs).",
+    "Crusader_Knight": [
+      "riding",
+      "leadership",
+      "etiquette",
+      "lore_theology"
+    ],
+    "Holy_Judge": [
+      "lore_theology",
+      "intimidation"
+    ],
+    "Cleric": [
+      "medicine"
+    ],
+    "Outlaw_Mercenary_Warrior": [
+      "intimidation",
+      "stealth"
+    ],
+    "Warrior": [
+      "athletics",
+      "intimidation"
+    ],
+    "Ogre_Brute": [
+      "intimidation"
+    ],
+    "Veil_Sorceress": [
+      "spellcraft",
+      "lore_veil"
+    ],
+    "Stonewarden": [
+      "smithing",
+      "endurance"
+    ]
+  },
+  "background_free_skills": {
+    "Noble": [
+      "etiquette"
+    ],
+    "Hunter": [
+      "survival_tracking"
+    ],
+    "Scholar": [
+      "lore_history"
+    ],
+    "Outlaw": [
+      "deception"
+    ],
+    "Street_Whore": [
+      "deception"
+    ],
+    "High_End_Escort": [
+      "etiquette"
+    ]
+  },
+  "class_weapon_skills": {
+    "_note": "Class 'skills' that are weapon ranks give a mastery head start instead (uses on the bar).",
+    "head_start_uses": {
+      "1": 50,
+      "2": 50,
+      "3": 150,
+      "4": 150,
+      "5": 150
+    },
+    "map": {
+      "swordsmanship": "one_hand_sword",
+      "shield_defense": "shield",
+      "club_smash": "mace"
+    }
+  },
+  "skills": {
+    "athletics": {
+      "name": "Athletics",
+      "stats": [
+        "strength",
+        "agility"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Climbing, swimming, jumping, running. character.athletics_check."
+    },
+    "riding": {
+      "name": "Riding",
+      "stats": [
+        "agility",
+        "willpower"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Mounted travel and combat.",
+      "notes": "Dwarves refuse mounts.",
+      "forbidden_races": [
+        "Dwarf"
+      ]
+    },
+    "stealth": {
+      "name": "Stealth",
+      "stats": [
+        "agility",
+        "perception"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Moving unseen and unheard."
+    },
+    "sleight_of_hand": {
+      "name": "Sleight of Hand",
+      "stats": [
+        "dexterity"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Locks, pockets, palming."
+    },
+    "acrobatics": {
+      "name": "Acrobatics",
+      "stats": [
+        "agility"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Tumbling, balance, falls."
+    },
+    "endurance": {
+      "name": "Endurance",
+      "stats": [
+        "endurance",
+        "toughness"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Marching, fasting, cold."
+    },
+    "resist_pain_toxins": {
+      "name": "Resist Pain/Toxins",
+      "stats": [
+        "toughness",
+        "willpower"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Pain, poison and addiction tests."
+    },
+    "awareness": {
+      "name": "Awareness",
+      "stats": [
+        "perception"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Noticing danger, ambushes, details."
+    },
+    "survival_tracking": {
+      "name": "Survival/Tracking",
+      "stats": [
+        "perception",
+        "intelligence"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Foraging, shelter, following tracks."
+    },
+    "animal_handling": {
+      "name": "Animal Handling",
+      "stats": [
+        "charisma",
+        "willpower"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Calming, training, driving animals.",
+      "notes": "Beast Friend +10."
+    },
+    "navigation": {
+      "name": "Navigation",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Finding the way by stars, maps, landmarks."
+    },
+    "medicine": {
+      "name": "Medicine",
+      "stats": [
+        "intelligence",
+        "dexterity"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "torn cloth",
+        "field_kit": "bandages, needle, thread",
+        "proper_tools": "clean scalpels, tinctures, splints, saw",
+        "workshop": "infirmary"
+      },
+      "restrictions": {},
+      "description": "Treating wounds, surgery, infection.",
+      "untrained_exception": "basic bandage at half value (bleeding.attempt_bandage)",
+      "rank_perks": [
+        {
+          "rank": 1,
+          "bonus": 5
+        },
+        {
+          "rank": 2,
+          "bonus": 5,
+          "bandage_rounds": -1
+        },
+        {
+          "rank": 3,
+          "bonus": 5,
+          "own_surgery_infection_mult": 0.5
+        },
+        {
+          "rank": 4,
+          "bonus": 5,
+          "field_kit_counts_as": "proper_tools"
+        },
+        {
+          "rank": 5,
+          "bonus": 5,
+          "failed_surgery_rerolls_per_day": 1
+        }
+      ]
+    },
+    "alchemy_herbcraft": {
+      "name": "Alchemy/Herbcraft",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "-",
+        "field_kit": "mortar, pouches",
+        "proper_tools": "alembic, scales",
+        "workshop": "laboratory"
+      },
+      "restrictions": {},
+      "description": "Potions, poultices, poisons.",
+      "notes": "Regrowth-grade elven restoration needs Elf (see limb_repair)."
+    },
+    "smithing": {
+      "name": "Smithing",
+      "stats": [
+        "strength",
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "-",
+        "field_kit": "hammer, tongs",
+        "proper_tools": "full tool set",
+        "workshop": "forge, anvil, bellows"
+      },
+      "restrictions": {},
+      "description": "Forging and repairing metal arms and armour.",
+      "notes": "Rune prostheses need Dwarf."
+    },
+    "runecraft": {
+      "name": "Runecraft",
+      "stats": [
+        "intelligence",
+        "willpower"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "-",
+        "field_kit": "chisels",
+        "proper_tools": "rune kit",
+        "workshop": "rune forge"
+      },
+      "restrictions": {
+        "race": [
+          "Dwarf"
+        ],
+        "gender": [
+          "Female"
+        ]
+      },
+      "description": "Carving passive runes (passive magic only)."
+    },
+    "crafting": {
+      "name": "Crafting",
+      "stats": [
+        "dexterity"
+      ],
+      "trained_only": false,
+      "tools": {
+        "none": "knife",
+        "field_kit": "awl, knife, glue",
+        "proper_tools": "bench tools",
+        "workshop": "workshop"
+      },
+      "restrictions": {},
+      "description": "Woodwork, leatherwork, fletching."
+    },
+    "cooking": {
+      "name": "Cooking",
+      "stats": [
+        "intelligence",
+        "perception"
+      ],
+      "trained_only": false,
+      "tools": {
+        "none": "stick over fire",
+        "field_kit": "pot, knife",
+        "proper_tools": "pans, spices, salt",
+        "workshop": "kitchen with stove"
+      },
+      "restrictions": {},
+      "description": "Meals that keep a party going."
+    },
+    "engineering": {
+      "name": "Engineering",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "-",
+        "field_kit": "rule, plumb",
+        "proper_tools": "drafting and tool chest",
+        "workshop": "engineer's yard"
+      },
+      "restrictions": {},
+      "description": "Gunpowder, bolt throwers, siege works."
+    },
+    "lore_history": {
+      "name": "Lore: History",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": null,
+      "restrictions": {},
+      "description": "Kingdoms, wars, grudges."
+    },
+    "lore_theology": {
+      "name": "Lore: Theology",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": null,
+      "restrictions": {},
+      "description": "Scripture, the Church, the Orders."
+    },
+    "lore_veil": {
+      "name": "Lore: Veil",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": null,
+      "restrictions": {},
+      "description": "The Veil and its spawn.",
+      "notes": "Studying the Veil risks stress (backend)."
+    },
+    "letters_law": {
+      "name": "Letters & Law",
+      "stats": [
+        "intelligence"
+      ],
+      "trained_only": true,
+      "tools": null,
+      "restrictions": {},
+      "description": "Reading, writing, contracts, law.",
+      "requires_advantage": "literate"
+    },
+    "persuasion": {
+      "name": "Persuasion",
+      "stats": [
+        "charisma"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Convincing honestly."
+    },
+    "intimidation": {
+      "name": "Intimidation",
+      "stats": [
+        "strength",
+        "charisma"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Threats and presence.",
+      "notes": "Fearsome Presence +10."
+    },
+    "deception": {
+      "name": "Deception",
+      "stats": [
+        "charisma",
+        "intelligence"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Lies, disguise, misdirection."
+    },
+    "etiquette": {
+      "name": "Etiquette",
+      "stats": [
+        "charisma",
+        "intelligence"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Courts, ranks, manners.",
+      "notes": "social_reactions apply on top."
+    },
+    "leadership": {
+      "name": "Leadership",
+      "stats": [
+        "charisma",
+        "willpower"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Morale of followers."
+    },
+    "haggle_trade": {
+      "name": "Haggle/Trade",
+      "stats": [
+        "charisma",
+        "intelligence"
+      ],
+      "trained_only": false,
+      "tools": null,
+      "restrictions": {},
+      "description": "Prices, prostheses, masters' fees."
+    },
+    "elven_bowcraft": {
+      "name": "Elven Bowcraft",
+      "stats": [
+        "dexterity",
+        "perception"
+      ],
+      "trained_only": true,
+      "tools": {
+        "none": "-",
+        "field_kit": "knife, string",
+        "proper_tools": "bowyer's kit",
+        "workshop": "bowyer's workshop"
+      },
+      "restrictions": {
+        "race": [
+          "Elf"
+        ]
+      },
+      "description": "Making and mastering elven bows."
+    },
+    "spellcraft": {
+      "name": "Spellcraft",
+      "stats": [
+        "intelligence",
+        "willpower"
+      ],
+      "trained_only": true,
+      "tools": null,
+      "restrictions": {
+        "race": [
+          "Human",
+          "Elf"
+        ],
+        "gender": [
+          "Female"
+        ]
+      },
+      "description": "Active magic (female only, magic_rules.json)."
+    }
+  }
+}
