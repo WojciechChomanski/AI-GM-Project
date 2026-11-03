@@ -44,7 +44,7 @@ Two class files each contained a second class:
 - PER +6
 - the Judgment and Purge Verdict numbers
 - proficiencies, the three tiers (Inquisitor_Novice → Judge → High_Judge) and their requirements
-- the skills interrogation and theology
+- the skills intimidation and lore_theology (ids from rules/skills.json)
 - the flaw Feared_By_The_Flock (−10 CHA with common folk)
 - `healing_bonus 2` was dropped, because its meaning is unknown
 
