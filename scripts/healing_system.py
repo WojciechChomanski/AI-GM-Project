@@ -24,18 +24,31 @@ class HealingSystem:
             return False
         return bleeding.attempt_bandage(healer, target, item)
 
-    def breath_purge(self, healer: Character, target: Character):
-        if healer.class_name not in ["Cleric", "Holy_Judge"]:
-            print(f"❌ {healer.name} cannot use Breath Purge (Cleric/Holy Judge only).")
-            return False
-        if healer.stamina < 10:
-            print(f"⚡ {healer.name} is too exhausted to cast Breath Purge!")
-            return False
-        healer.consume_stamina(10)
-        target.status_effects = [e for e in target.status_effects if e["name"] not in ["salt_kiss", "taint_mark", "brine_marks"]]
-        print(f"✨ {healer.name} purges Veil effects from {target.name}!")
-        logging.debug(f"Breath Purge by {healer.name} on {target.name}")
-        return True
+    VEIL_EFFECTS = ("salt_kiss", "taint_mark", "brine_marks")
+
+    def breath_purge(self, healer: Character, targets, trigger="just_verdict"):
+        """PASSIVE Breath (core_rules: no active magic for men). There is no action, no stamina cost.
+        It fires on its own for a Holy Judge at full Breath (knight.breath_state: Virtue >= 70, high Piety,
+        low Corruption) right after a just Final_Verdict (holy_judge.json Purge_Verdict), clearing Veil
+        effects from the given allies. Cleric: on hold (redesign pending), so nothing happens.
+        Returns the names of allies cleared."""
+        import knight
+        if getattr(healer, "class_name", None) != "Holy_Judge" or trigger != "just_verdict":
+            return []
+        if knight.breath_state(getattr(healer, "virtue", 0), getattr(healer, "piety", 0),
+                               getattr(healer, "corruption_level", 0)) != "full":
+            return []
+        if not isinstance(targets, (list, tuple)):
+            targets = [targets]
+        cleared = []
+        for t in targets:
+            before = len(t.status_effects)
+            t.status_effects = [e for e in t.status_effects if e["name"] not in self.VEIL_EFFECTS]
+            if len(t.status_effects) < before:
+                cleared.append(t.name)
+        if cleared:
+            logging.debug(f"Passive Purge_Verdict by {healer.name}: {cleared}")
+        return cleared
 
     def fast_heal(self, character: Character):
         if character.race == "Ogre":
