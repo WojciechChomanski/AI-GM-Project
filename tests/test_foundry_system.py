@@ -85,3 +85,44 @@ def test_manifest_is_v14_and_release_ready():
     assert m["download"].endswith("/breath-and-the-veil.zip")
     for f in m["esmodules"] + m["styles"] + [l["path"] for l in m["languages"]]:
         assert os.path.exists(os.path.join(SYS, f)), f
+
+
+def test_skills_pack_comes_from_skills_rules(tmp_path):
+    counts, docs = built(tmp_path)
+    src = B.load("skills.json")["skills"]
+    assert counts["skills"] == len(src)
+    by_id = {d["system"]["source_id"]: d for d in docs["skills"]}
+    assert set(by_id) == set(src)
+    for sid, e in src.items():
+        d = by_id[sid]
+        assert d["name"] == e["name"] and d["system"]["source_file"] == "rules/skills.json"
+        assert d["system"]["rules"]["stats"] == e["stats"]
+        assert d["system"]["rules"]["trained_only"] == e["trained_only"]
+
+
+def test_classes_pack_has_knight_and_no_paladin(tmp_path):
+    _, docs = built(tmp_path)
+    names = {d["name"].lower() for d in docs["classes"]}
+    ids = {d["system"]["source_id"].lower() for d in docs["classes"]}
+    assert not any("paladin" in n for n in names | ids)
+    assert any("knight" == i or i.endswith("knight") for i in ids)
+    assert "integration" not in ids
+
+
+def test_no_gm_only_stat_keys_in_packs(tmp_path):
+    _, docs = built(tmp_path)
+    gm = {k.lower() for k in B.load("stat_visibility.json").get("gm_only", [])}
+    bad = []
+    def walk(n, w):
+        if isinstance(n, dict):
+            for k, v in n.items():
+                if str(k).lower() in gm:
+                    bad.append(f"{w}.{k}")
+                walk(v, f"{w}.{k}")
+        elif isinstance(n, list):
+            for v in n:
+                walk(v, w)
+    for items in docs.values():
+        for d in items:
+            walk(d["system"], d["name"])
+    assert bad == []

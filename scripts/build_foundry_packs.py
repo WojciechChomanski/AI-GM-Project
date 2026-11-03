@@ -110,7 +110,7 @@ def class_entries():
             continue
         d = load("classes", fn)
         for k, c in d.items():
-            if k != "meta" and isinstance(c, dict):
+            if k not in ("meta", "integration") and isinstance(c, dict):
                 yield fn, k, c
 
 
@@ -187,17 +187,16 @@ def creation(pack, fn, itype, talent_names):
 
 
 def skills():
-    """No skills rules file exists yet: collect class skills and skill trees so they appear as items."""
-    found = {}
-    for fn, k, c in class_entries():
-        for s in (c.get("skills") or {}):
-            found.setdefault(s, {"from_classes": []})["from_classes"].append(k)
-        for s, info in (c.get("skill_trees") or {}).items():
-            e = found.setdefault(s, {"from_classes": []})
-            e["from_classes"].append(k)
-            e.update({x: v for x, v in info.items()} if isinstance(info, dict) else {})
-    return [item("skills", s, s.replace("_", " ").title(), "skill", "rules/classes/*.json",
-                 para(e.get("focus")), rules=e, rank=0) for s, e in sorted(found.items())]
+    """Skills pack from rules/skills.json (PR 16): one item per skill, with linked stats,
+    trained_only, tools and restrictions under system.rules. Rank starts at 0 (use-bar rank)."""
+    S = load("skills.json")
+    out = []
+    for sid, e in sorted(S["skills"].items()):
+        info = {k: v for k, v in e.items() if k not in ("name", "description")}
+        info["xp_cost"] = S["rules"]["xp_cost"]["trained_only" if e["trained_only"] else "common"]
+        out.append(item("skills", sid, e["name"], "skill", "rules/skills.json",
+                        para(e.get("description"), e.get("notes")), rules=info, rank=0))
+    return out
 
 
 def build(out_dir=OUT):
