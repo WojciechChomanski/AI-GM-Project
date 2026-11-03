@@ -136,3 +136,21 @@ def test_weapon_head_start():
     c = C()
     SK.apply_weapon_head_start(c, {"club_smash": 4})
     assert P.mastery_rank(c, "mace") == 2
+
+
+def test_order_reputation_counts_with_order_master():
+    import order_paths as O
+    c = C(gold=10000, reputation=0)
+    SK.learn(c, "athletics", 50)
+    O.join(c, "crusader_knight")
+    O.add_reputation(c, 25)
+    assert SK.teach(c, "athletics", 65)["ok"] is False  # ordinary master: general reputation 0
+    assert SK.teach(c, "athletics", 65, master_of="tribunal")["ok"] is False  # wrong body
+    assert SK.teach(c, "athletics", 65, master_of="order")["ok"]
+    j = C(gold=10000, reputation=0)
+    SK.learn(j, "lore_theology", 50)
+    O.join(j, "holy_judge")
+    O.add_reputation(j, 25)
+    assert SK.teach(j, "lore_theology", 65, master_of="order")["ok"] is False
+    assert SK.teach(j, "lore_theology", 65, master_of="tribunal")["ok"]
+    assert SK.teaching_reputation(C(reputation=30), "order") == 30
