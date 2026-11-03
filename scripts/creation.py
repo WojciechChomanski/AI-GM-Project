@@ -111,7 +111,7 @@ def flaw_payout(flaw_cps):
 
 
 def create_character(race, gender, flaws=(), talents=(), stat_buys=None, flaw_cp_choice=None,
-                     advantages=None, class_name=None):
+                     advantages=None, class_name=None, skills=(), background=None):
     """Build starting stats.
     flaws: list of ids or {id: intensity/CP level}. talents: id list. advantages: {id: level} (talent_ref
     entries count as talents). stat_buys: {stat: CP spent} (1 CP = +2). class_name: e.g. Crusader_Knight.
@@ -211,7 +211,12 @@ def create_character(race, gender, flaws=(), talents=(), stat_buys=None, flaw_cp
 
     if spent > cp_total:
         errors.append(f"spent {spent} CP but only {cp_total} available")
-    return {"race": race, "gender": gender, "stats": stats, "caps": caps, "cp_total": cp_total,
+
+    # Skills (rules/skills.json): 6 picks + free class/background skills, each base + 10
+    import skills as SK
+    skill_values, skill_errors = SK.creation_skills(stats, race, gender, skills, class_name, background, advantages)
+    errors.extend(skill_errors)
+    return {"skills": skill_values, "background": background, "race": race, "gender": gender, "stats": stats, "caps": caps, "cp_total": cp_total,
             "cp_spent": spent, "cp_left": cp_total - spent, "talents": list(talents),
             "flaws": list(flaws), "flaw_paid": flaw_paid, "total_intensity": total_intensity,
             "heavy_load": heavy, "advantages": advantages, "vows": vows, "class": class_name,

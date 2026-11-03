@@ -57,16 +57,29 @@ def _hurt(manager, amount):
 def medicine_bonus(person):
     """+5 per Medicine rank (max 5) + talents such as Field Surgeon. Used by surgery and bandaging."""
     M = data()["surgery"]["skill_model"]
-    rank = min((getattr(person, "skills", None) or {}).get("medicine", 0), M["medicine_rank_max"])
+    import skills as SK  # use-bar rank (rules/skills.json) or legacy skills['medicine']
+    rank = min(SK.medicine_rank(person), M["medicine_rank_max"])
     talents = getattr(person, "talents", []) or []
     return rank * M["medicine_rank_bonus"] + sum(v for t, v in M["talent_bonus"].items() if t in talents)
 
 
-def surgery_skill(surgeon):
-    """skills['surgery'] (absolute, legacy) wins; else (INT + DEX) / 2 + Medicine bonus."""
+TOOL_TIER = {None: "none", "field_kit": "field_kit", "surgeon_kit": "proper_tools", "infirmary": "workshop"}
+
+
+def surgery_skill(surgeon, tools="field_kit"):
+    """skills['surgery'] (absolute, legacy) wins. Characters on rules/skills.json use their Medicine
+    value capped by the tool tier (None if untrained: trained-only) + Medicine bonus.
+    Otherwise (INT + DEX) / 2 + Medicine bonus."""
     sk = (getattr(surgeon, "skills", None) or {}).get("surgery")
     if sk is not None:
         return sk
+    import skills as SK
+    if SK.uses_skill_system(surgeon):
+        tier = TOOL_TIER.get(tools, "none")
+        if tier == "field_kit" and SK.medicine_perks(surgeon).get("field_kit_counts_as"):
+            tier = SK.medicine_perks(surgeon)["field_kit_counts_as"]
+        v = SK.effective_value(surgeon, "medicine", tier)
+        return None if v is None else v + medicine_bonus(surgeon)
     a, b = data()["surgery"]["fallback_stats"]
     return (getattr(surgeon, a, 0) + getattr(surgeon, b, 0)) // 2 + medicine_bonus(surgeon)
 
@@ -87,7 +100,10 @@ def surgery(surgeon, manager, zone, procedure="repair", tools="field_kit", rng=N
         return {"ok": False, "result": "no prosthesis for this zone"}
     key = {"repair": "crippled", "stabilise": "severed_stabilise", "prosthesis": "prosthesis_fit"}[procedure]
     mod = S["tools_bonus"].get(tools, 0) if tools else S["no_tools_mod"]
-    target = surgery_skill(surgeon) + mod - S["difficulty"][key] - min(getattr(surgeon, "pain_penalty", 0), S["pain_cap"])
+    skill = surgery_skill(surgeon, tools)
+    if skill is None:
+        return {"ok": False, "result": "Medicine is trained-only: this character cannot do surgery"}
+    target = skill + mod - S["difficulty"][key] - min(getattr(surgeon, "pain_penalty", 0), S["pain_cap"])
     roll = rng.randint(1, 100)
     out = {"roll": roll, "target": target, "hours": S["hours"][key]}
     if roll <= target and roll < S["crit_fail_from"]:
@@ -103,7 +119,9 @@ def surgery(surgeon, manager, zone, procedure="repair", tools="field_kit", rng=N
             manager.limb_state[zone] = "prosthesis"
         return dict(out, ok=True, result=procedure + " succeeded")
     extra = _hurt(manager, S["fail_extra_damage"]) if roll >= S["crit_fail_from"] or roll > target + 20 else 0
-    infected = rng.randint(1, 100) <= S["fail_infection_chance_pct"]
+    import skills as SK
+    chance = S["fail_infection_chance_pct"] * SK.medicine_perks(surgeon).get("own_surgery_infection_mult", 1)
+    infected = rng.randint(1, 100) <= chance
     if infected:
         manager.infection = {"passes": 0}
     return dict(out, ok=False, result="failed", extra_damage=extra, infected=infected)
