@@ -134,7 +134,46 @@
             "effectively retires from adventuring"
           ]
         }
-      ]
+      ],
+      "honours": {
+        "paladin": {
+          "name": "Paladin",
+          "kind": "honour title, not a rank (does not use the 1-rank-per-arc limit)",
+          "replaces": "rules/classes/paladin.json (retired as a playable class, owner t105)",
+          "min_rank": 2,
+          "why_rank_2": "An honour for proven deeds, not a command post: Knight-Sergeant is the first rank where a knight is proven in the field; Preceptor is administrative (a house, a region).",
+          "requires": {
+            "sessions_at_rank_min": 4,
+            "deeds": {
+              "veil_foe_slain": 3
+            },
+            "reputation": 40,
+            "hidden": {
+              "virtue": 75,
+              "piety": 75,
+              "corruption_max": 10
+            },
+            "story": "chapter confirms the title"
+          },
+          "active_only_while": "Breath is full (knight.breath_state == 'full'); otherwise the title stays but its passives sleep",
+          "revoked_if": "discipline step 2+ or a broken vow",
+          "passives": {
+            "corruption_gain_mult": 0.75,
+            "veil_fear_resist": 10,
+            "ally_morale_vs_veil": 5,
+            "ally_radius_m": 6,
+            "regen_block_extra_rounds": 1,
+            "note": "All passive. corruption_gain_mult: Veil/corruption gains on him x0.75. veil_fear_resist: +10 to his Fear tests vs Veil-born. ally_morale_vs_veil: allies within 6 m get +5 morale vs Veil-born. regen_block_extra_rounds: corrupted creatures he wounded keep the 'no regeneration on his wounds' rule 1 round after he stops hitting them. No damage, no actions."
+          },
+          "felt": "Men stand straighter near you. The swamp-things hesitate.",
+          "invented_numbers": true
+        }
+      },
+      "start": {
+        "rank": 1,
+        "counts_as_class_tier": 2,
+        "note": "Squire is a pre-game background only (owner t105): apprentices are not sent to war. Play starts as a Brother-Knight; class tier 2 matches a starting Holy Judge."
+      }
     },
     "holy_judge": {
       "name": "Holy Judge (outside the hierarchy)",

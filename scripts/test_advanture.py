@@ -48,7 +48,7 @@ def test_adventure():
         create_test_character("Grokthar", "Ogre", "Male", "Ogre_Brute", {
             "hp": 200, "stamina": 600, "strength": 55, "toughness": 50, "agility": 20, "endurance": 45
         }),
-        create_test_character("Eldric", "Human", "Male", "Paladin", {
+        create_test_character("Eldric", "Human", "Male", "Crusader_Knight", {
             "hp": 100, "stamina": 100, "strength": 40, "willpower": 35, "healing_bonus": 5
         }),
         create_test_character("Sylvara", "Elf", "Female", "Mage", {
@@ -88,8 +88,6 @@ def test_adventure():
             )
             if char.class_name == "Mage":
                 magic_system.cast_spell(char, enemy, "tide_wail", CombatHealthManager(char), CombatHealthManager(enemy))
-            elif char.class_name == "Paladin":
-                magic_system.cast_spell(char, enemy, "divine_verdict", CombatHealthManager(char), CombatHealthManager(enemy))
             elif char.class_name == "Crusader_Knight":
                 magic_system.cast_spell(char, enemy, "holy_smite", CombatHealthManager(char), CombatHealthManager(enemy))
             elif char.class_name == "Holy_Judge":

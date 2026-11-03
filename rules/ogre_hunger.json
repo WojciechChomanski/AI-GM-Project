@@ -1,0 +1,24 @@
+{
+  "meta": {"version": "1.0", "visibility": "gm_only", "doc": "docs/OGRES.md",
+    "source": "races.json 'High Caloric Need' (6000 kcal, 10% ally attack for 20 damage), character.consume_food/reset_daily, flaws.json ogre_hunger, talents racial vs_hunger_rage; owner t105",
+    "status": "numbers are placeholders for playtesting; the player sees only felt text"},
+  "applies_to_race": "Ogre",
+  "daily_need_kcal": 6000,
+  "human_reference_kcal": 2500,
+  "hunger_points": {"per_1000_kcal_short": 1, "full_day_fed_recovers": 2, "per_1000_kcal_surplus_recovers": 1, "max": 30},
+  "states": [
+    {"id": "sated", "min": 0, "felt": "Your belly is quiet.", "wil_mod": 0, "stress_per_day": 0, "fed": true},
+    {"id": "peckish", "min": 1, "felt": "You keep thinking about food.", "wil_mod": 0, "stress_per_day": 0, "fed": true},
+    {"id": "hungry", "min": 4, "felt": "Your stomach growls; the smell of your friends is... nice.", "wil_mod": -5, "stress_per_day": 1, "fed": true},
+    {"id": "ravenous", "min": 8, "felt": "Everything smells like meat.", "wil_mod": -10, "stress_per_day": 2, "fed": false, "check": true},
+    {"id": "starving", "min": 14, "felt": "Hunger is all there is.", "wil_mod": -20, "stress_per_day": 3, "fed": false, "check": true, "damage_per_day": 1}
+  ],
+  "rage_check": {"stat": "willpower", "base_bonus": 30, "per_flaw_intensity": -5, "talent_bonus_key": "vs_hunger_rage",
+    "when": "daily from ravenous, before the meal",
+    "on_fail": {"targets": "nearest companion (caller orders companions by distance)", "zone_choice": ["left_arm", "right_arm"],
+      "damage": 20, "damage_type": "bite", "eats_kcal": 1500, "victim_stress": 10,
+      "felt_ogre": "You did not mean to. It tasted good.", "felt_victim": "Teeth. Your arm. Its eyes are not friendly any more."}},
+  "devour": {"classes": ["Ogre_Flesh_Eater"], "source": "ogre_flesh_eater.json consume_rip (heal 15, +10 corruption)",
+    "victim_must_be": "grabbed or downed", "stamina_cost": 10, "heal_hp": 15, "corruption": 10, "eats_kcal": 2000, "damage": 15,
+    "felt": "Warm. Strength floods back. Something dark settles in you."}
+}

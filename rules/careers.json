@@ -10,7 +10,6 @@
     "order_raised": [
       "Crusader_Knight",
       "Holy_Judge",
-      "Paladin",
       "Cleric"
     ],
     "noble": [
@@ -40,7 +39,6 @@
     "classes": [
       "Crusader_Knight",
       "Holy_Judge",
-      "Paladin",
       "Cleric"
     ],
     "paths": [
@@ -100,26 +98,6 @@
       "stay": "order path holy_judge (Inquisitor-Novice to Lord Inquisitor)",
       "evolutions": [],
       "note": "switch back to crusader_knight once (rank 1, -20 reputation, penance)"
-    },
-    "Paladin": {
-      "stay": "legacy class (levels 1-5)",
-      "note": "legacy file still has active holy damage (divine_verdict): conflicts with core_rules, needs a review",
-      "evolutions": [
-        {
-          "id": "crusader_knight",
-          "name": "Crusader Knight",
-          "description": "If the Paladin is an Order-raised warrior, he joins the hierarchy.",
-          "requires": {
-            "class_level_min": 3
-          },
-          "gains": {
-            "skills": [],
-            "abilities": []
-          },
-          "placeholder": true,
-          "to_class": "Crusader_Knight"
-        }
-      ]
     },
     "Cleric": {
       "stay": "on hold",
@@ -652,5 +630,8 @@
         }
       ]
     }
+  },
+  "retired_classes": {
+    "Paladin": "now an honour title on the crusader_knight Order path (rules/orders/paths.json honours.paladin)"
   }
 }

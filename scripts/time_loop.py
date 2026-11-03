@@ -27,17 +27,24 @@ def round_tick(manager=None, creature=None):
     return rep
 
 
-def day_tick(manager, mode=None, fed=True, rng=None):
+def day_tick(manager, mode=None, fed=True, rng=None, companions=()):
+    """companions: other CombatHealthManagers, nearest first (target of an ogre hunger bite)."""
     mode = mode or cfg()["default_rest_mode"]
     if mode not in cfg()["day_rest_modes"]:
         raise ValueError(f"rest mode must be one of {cfg()['day_rest_modes']}")
     if not getattr(manager.character, "alive", True):
         return {"healed": 0, "alive": False}
     limb_repair.states(manager)
+    import ogre_hunger
+    hunger = ogre_hunger.day_end(manager, companions, rng)
+    fed = fed and ogre_hunger.is_fed(manager.character)
     inf = limb_repair.infection_day(manager, rng)
     regrown = limb_repair.regrow_day(manager)
     healed = 0 if getattr(manager, "infection", None) else WR.heal_manager_day(manager, fed, mode)
-    return {"healed": healed, "infection": inf, "mode": mode, "regrown": regrown}
+    rep = {"healed": healed, "infection": inf, "mode": mode, "regrown": regrown}
+    if hunger is not None:
+        rep["hunger"] = hunger
+    return rep
 
 
 def gm_command(line, characters, creatures=None):
