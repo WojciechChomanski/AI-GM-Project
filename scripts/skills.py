@@ -210,13 +210,29 @@ def teaching_quote(c, sid, master_value):
             "reputation": reputation_needed(target, cross), "cross_race": cross}
 
 
-def teach(c, sid, master_value):
-    """One teaching period: pays gold from c.gold, checks c.reputation, raises the unlock ceiling.
+ORDER_MASTER_PATHS = {"order": ("crusader_knight", "warden_of_the_marches", "penitent_brother", "order_contractor"),
+                      "tribunal": ("holy_judge",)}
+
+
+def teaching_reputation(c, master_of=None):
+    """Reputation that counts for the master gate. With an Order or Tribunal master
+    (master_of='order'|'tribunal'), the character's standing on a matching Order path counts
+    if it is higher than his general reputation."""
+    rep = _get(c, "reputation", 0) or 0
+    order = (P.state(c).get("order") or {})
+    if master_of in ORDER_MASTER_PATHS and order.get("path") in ORDER_MASTER_PATHS[master_of]:
+        rep = max(rep, order.get("reputation", 0))
+    return rep
+
+
+def teach(c, sid, master_value, master_of=None):
+    """One teaching period: pays gold from c.gold, checks reputation (Order/Tribunal standing
+    counts with an Order/Tribunal master, see teaching_reputation), raises the unlock ceiling.
     The value itself still grows only by use."""
     q = teaching_quote(c, sid, master_value)
     if not q["ok"]:
         return q
-    gold, rep = _get(c, "gold", 0) or 0, _get(c, "reputation", 0) or 0
+    gold, rep = _get(c, "gold", 0) or 0, teaching_reputation(c, master_of)
     if rep < q["reputation"]:
         return dict(q, ok=False, reason=f"needs reputation {q['reputation']} (has {rep})")
     if gold < q["gold"]:

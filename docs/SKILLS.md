@@ -15,6 +15,7 @@ Source: SKILLS_DRAFT v0.2 + SKILL_PICKS_EXAMPLES, with the owner's decisions (20
   - Gold = 20 × the target value.
   - Reputation must be 20 (up to 60), 40 (up to 75) or 60 (up to 95).
   - It only raises the ceiling. The value still has to grow by use.
+- **Order/Tribunal masters:** `teach(..., master_of="order"|"tribunal")` counts the character's standing on a matching Order path (Crusader Knight, Warden, Penitent, contractor → order; Holy Judge → tribunal) if it is higher than general reputation.
 - **Cross-race teaching** is the only way to get a race-locked skill (for example a Dwarf learning Elven Bowcraft): 5× gold, +30 reputation, and +2 per period. **Gender locks are absolute** (Spellcraft and Runecraft follow the magic rules).
 - **Tools cap the usable value:** none 30, field kit 50, proper tools 70, workshop 95. Above the cap, uses still fill the bar but don't raise the value.
 - **Untrained use:** trained-only skills can't be used (`effective_value` returns None), with one exception: a basic bandage at half value. Common skills work at half value.
