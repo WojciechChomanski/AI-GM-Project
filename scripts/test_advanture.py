@@ -48,7 +48,7 @@ def test_adventure():
         create_test_character("Grokthar", "Ogre", "Male", "Ogre_Brute", {
             "hp": 200, "stamina": 600, "strength": 55, "toughness": 50, "agility": 20, "endurance": 45
         }),
-        create_test_character("Eldric", "Human", "Male", "Paladin", {
+        create_test_character("Eldric", "Human", "Male", "Crusader_Knight", {
             "hp": 100, "stamina": 100, "strength": 40, "willpower": 35, "healing_bonus": 5
         }),
         create_test_character("Sylvara", "Elf", "Female", "Mage", {
@@ -88,8 +88,6 @@ def test_adventure():
             )
             if char.class_name == "Mage":
                 magic_system.cast_spell(char, enemy, "tide_wail", CombatHealthManager(char), CombatHealthManager(enemy))
-            elif char.class_name == "Paladin":
-                magic_system.cast_spell(char, enemy, "divine_verdict", CombatHealthManager(char), CombatHealthManager(enemy))
             elif char.class_name == "Crusader_Knight":
                 magic_system.cast_spell(char, enemy, "holy_smite", CombatHealthManager(char), CombatHealthManager(enemy))
             elif char.class_name == "Holy_Judge":
@@ -138,12 +136,10 @@ def test_adventure():
         faction_system.align_with_faction("daughters_drowned_moon", 10)
 
     # Scenario 6: Breath Purge Test
-    print("\n=== Scenario 6: Breath Purge Healing ===")
+    print("\n=== Scenario 6: Passive Breath Purge (after a just verdict) ===")
     for char in party:
-        if char.class_name in ["Cleric", "Holy_Judge"]:
-            for target in party:
-                if any(e["name"] in ["salt_kiss", "taint_mark", "brine_marks"] for e in target.status_effects):
-                    healing_system.breath_purge(char, target)
+        if char.class_name == "Holy_Judge":
+            print(healing_system.breath_purge(char, party, trigger="just_verdict"))
 
 if __name__ == "__main__":
     test_adventure()

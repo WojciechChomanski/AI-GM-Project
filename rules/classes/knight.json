@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "id": "class_knight_v1_0",
+    "kind": "class",
+    "name": "Knight",
+    "label": "Knight (worldly)",
+    "version": "1.0",
+    "updated": "2026-11-03",
+    "sources": [
+      "owner t104u: lesser/greater noble serving a king or lord, maybe church-paid, no vows, no Breath",
+      "crusader_knight.json (shared fighting profile)",
+      "backgrounds.json Noble"
+    ],
+    "invented": [
+      "stat numbers (Crusader minus the Order's Breath/WIL edge, plus CHA)",
+      "tiers and abilities Liege_Call, Courtly_Bearing, Oath_of_Fealty",
+      "obligations numbers",
+      "Human only, Male only"
+    ]
+  },
+  "Knight": {
+    "description": "Worldly heavy cavalry/infantry: a lesser or greater noble sworn to a king or lord. Same steel as a Crusader Knight, different chains: liege, lands and honour, not Order and Church.",
+    "lore": "Knighted by a lord's sword, not raised by an Order. Some take Church pay for a campaign; none take the Order's vows.",
+    "race_lock": [
+      "Human"
+    ],
+    "gender_lock": [
+      "Male"
+    ],
+    "power_source": "none",
+    "breath": false,
+    "background_required": [
+      "Noble"
+    ],
+    "role_tags": [
+      "tank",
+      "striker",
+      "mounted"
+    ],
+    "stat_modifiers": {
+      "strength": 10,
+      "toughness": 9,
+      "agility": 5,
+      "willpower": 5,
+      "charisma": 6,
+      "stamina_max_flat": 8,
+      "hp_percent": 10
+    },
+    "proficiencies": {
+      "weapons": [
+        "sword_1h",
+        "sword_2h",
+        "mace",
+        "lance",
+        "axe",
+        "warhammer"
+      ],
+      "shields": [
+        "heater",
+        "kite"
+      ],
+      "armor_tiers": [
+        "medium-light",
+        "medium-medium",
+        "medium-heavy",
+        "heavy-light",
+        "heavy-medium",
+        "heavy-heavy"
+      ],
+      "mounts": [
+        "warhorse"
+      ]
+    },
+    "skills": {
+      "riding": 1,
+      "etiquette": 1
+    },
+    "obligations": {
+      "liege": "named at creation (GM)",
+      "feudal_duty": "answer the liege's call to arms; 40 days' service per year (one arc in four)",
+      "honour": "noble reputation track; cowardice, broken word or dishonourable fighting cost reputation (no Virtue)",
+      "lands": "from Banneret: holdings that need stewardship and attract trouble",
+      "church_pay": "may take Church contracts as order_contractor; no vows, no Breath"
+    },
+    "progression": [
+      {
+        "tier": 1,
+        "name": "Squire",
+        "requirements": {},
+        "abilities_gain": [
+          "Basic_Strike",
+          "Shield_Bash"
+        ]
+      },
+      {
+        "tier": 2,
+        "name": "Knight_Bachelor",
+        "requirements": {
+          "battles_survived": 3,
+          "knighted": true
+        },
+        "abilities_gain": [
+          "Precision_Thrust",
+          "Mounted_Charge",
+          "Courtly_Bearing"
+        ]
+      },
+      {
+        "tier": 3,
+        "name": "Knight_Banneret",
+        "requirements": {
+          "led_victory": 1,
+          "liege_favour": true
+        },
+        "abilities_gain": [
+          "Cleave",
+          "Lance_Thrust",
+          "Liege_Call"
+        ]
+      },
+      {
+        "tier": 4,
+        "name": "Lord",
+        "requirements": {
+          "granted_land": true
+        },
+        "abilities_gain": [
+          "Oath_of_Fealty"
+        ]
+      }
+    ],
+    "abilities": {
+      "Basic_Strike": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Shield_Bash": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Precision_Thrust": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Mounted_Charge": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Cleave": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Lance_Thrust": {
+        "type": "active",
+        "note": "as Crusader_Knight"
+      },
+      "Courtly_Bearing": {
+        "type": "passive",
+        "effect": "+10 Etiquette with nobles; -10 Persuasion with peasants who know him",
+        "invented_numbers": true
+      },
+      "Liege_Call": {
+        "type": "utility",
+        "effect": "once per arc call 1d6 men-at-arms from his liege's levy",
+        "invented_numbers": true
+      },
+      "Oath_of_Fealty": {
+        "type": "passive",
+        "effect": "his own vassals: +10 morale near him; breaking faith with his liege makes him an outlaw",
+        "invented_numbers": true
+      }
+    },
+    "flaws": {
+      "Feudal_Duty": {
+        "type": "obligation",
+        "effect": "the liege's summons overrides party plans"
+      },
+      "Honour_Bound": {
+        "type": "social",
+        "effect": "cannot refuse a formal challenge without reputation loss"
+      }
+    }
+  }
+}

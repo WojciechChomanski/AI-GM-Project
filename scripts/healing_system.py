@@ -24,43 +24,39 @@ class HealingSystem:
             return False
         return bleeding.attempt_bandage(healer, target, item)
 
-    def breath_purge(self, healer: Character, target: Character):
-        if healer.class_name not in ["Cleric", "Holy_Judge"]:
-            print(f"❌ {healer.name} cannot use Breath Purge (Cleric/Holy Judge only).")
-            return False
-        if healer.stamina < 10:
-            print(f"⚡ {healer.name} is too exhausted to cast Breath Purge!")
-            return False
-        healer.consume_stamina(10)
-        target.status_effects = [e for e in target.status_effects if e["name"] not in ["salt_kiss", "taint_mark", "brine_marks"]]
-        print(f"✨ {healer.name} purges Veil effects from {target.name}!")
-        logging.debug(f"Breath Purge by {healer.name} on {target.name}")
-        return True
+    VEIL_EFFECTS = ("salt_kiss", "taint_mark", "brine_marks")
+
+    def breath_purge(self, healer: Character, targets, trigger="just_verdict"):
+        """PASSIVE Breath (core_rules: no active magic for men). There is no action, no stamina cost.
+        It fires on its own for a Holy Judge at full Breath (knight.breath_state: Virtue >= 70, high Piety,
+        low Corruption) right after a just Final_Verdict (holy_judge.json Purge_Verdict), clearing Veil
+        effects from the given allies. Cleric: on hold (redesign pending), so nothing happens.
+        Returns the names of allies cleared."""
+        import knight
+        if getattr(healer, "class_name", None) != "Holy_Judge" or trigger != "just_verdict":
+            return []
+        if knight.breath_state(getattr(healer, "virtue", 0), getattr(healer, "piety", 0),
+                               getattr(healer, "corruption_level", 0)) != "full":
+            return []
+        if not isinstance(targets, (list, tuple)):
+            targets = [targets]
+        cleared = []
+        for t in targets:
+            before = len(t.status_effects)
+            t.status_effects = [e for e in t.status_effects if e["name"] not in self.VEIL_EFFECTS]
+            if len(t.status_effects) < before:
+                cleared.append(t.name)
+        if cleared:
+            logging.debug(f"Passive Purge_Verdict by {healer.name}: {cleared}")
+        return cleared
 
     def fast_heal(self, character: Character):
+        """Fed ogres heal fast. Hunger (and hunger bites) is run by ogre_hunger via time_loop.day_tick."""
+        import ogre_hunger
         if character.race == "Ogre":
-            if character.calories_consumed >= 6000:
-                heal_rate = 1.5
-                healed = int(character.total_hp * 0.1 * heal_rate)
+            if ogre_hunger.is_fed(character):
+                healed = int(character.total_hp * 0.1 * 1.5)
                 character.health = min(character.total_hp, character.health + healed)
                 print(f"🩹 {character.name} heals {healed} HP (fast healing)!")
-                logging.debug(f"Ogre {character.name} healed {healed} HP with fast healing")
             else:
-                print(f"⚠️ {character.name} starves—reduced healing.")
-                logging.debug(f"Ogre {character.name} underfed, reduced healing")
-                hunger_roll = random.randint(1, 100)
-                if hunger_roll < 10 and character.allies:
-                    ally = random.choice(character.allies)
-                    print(f"🍖 {character.name} attacks {ally.name} in hunger!")
-                    limb = random.choice(["left_upper_arm", "right_upper_arm"])
-                    ally.take_damage_to_zone(limb, 20)
-                    ally.bleeding_rate += 1.0
-                    ally.pain_penalty += 10
-                    ally.stress_level += 10
-                    character.health = min(character.total_hp, character.health + 5)
-                    print(f"🩸 {ally.name} bleeds and suffers pain! {character.name} gains 5 HP from flesh!")
-                    roll = random.randint(1, 100)
-                    threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10
-                    if roll > threshold:
-                        print(f"💔 {ally.name} panics from the attack and may flee!")
-                        ally.in_combat = False if "elite" not in ally.tags else ally.in_combat
+                print(f"⚠️ {character.name}: {ogre_hunger.felt(character)}")
