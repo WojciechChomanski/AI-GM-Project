@@ -1,0 +1,50 @@
+{
+  "id": "breath-and-the-veil",
+  "title": "Breath and the Veil",
+  "description": "Game system for Breath and the Veil (AI-GM Project). Rules data is built from the AI-GM-Project repository; combat and hidden-stat numbers are handled by the Breath backend.",
+  "version": "0.1.0",
+  "compatibility": { "minimum": "14", "verified": "14" },
+  "authors": [{ "name": "Wojciech Chomanski", "url": "https://github.com/WojciechChomanski" }],
+  "esmodules": ["module/breath.mjs"],
+  "styles": ["styles/breath.css"],
+  "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
+  "documentTypes": {
+    "Actor": {
+      "character": { "htmlFields": ["biography"] },
+      "npc": { "htmlFields": ["biography"] },
+      "creature": { "htmlFields": ["biography"] }
+    },
+    "Item": {
+      "weapon": { "htmlFields": ["description"] },
+      "armor": { "htmlFields": ["description"] },
+      "class": { "htmlFields": ["description"] },
+      "race": { "htmlFields": ["description"] },
+      "gender": { "htmlFields": ["description"] },
+      "talent": { "htmlFields": ["description"] },
+      "flaw": { "htmlFields": ["description"] },
+      "advantage": { "htmlFields": ["description"] },
+      "skill": { "htmlFields": ["description"] }
+    }
+  },
+  "packs": [
+    { "name": "weapons", "label": "Weapons", "type": "Item", "system": "breath-and-the-veil", "path": "packs/weapons", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "armor", "label": "Armour", "type": "Item", "system": "breath-and-the-veil", "path": "packs/armor", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "classes", "label": "Classes", "type": "Item", "system": "breath-and-the-veil", "path": "packs/classes", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "races", "label": "Races", "type": "Item", "system": "breath-and-the-veil", "path": "packs/races", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "genders", "label": "Genders", "type": "Item", "system": "breath-and-the-veil", "path": "packs/genders", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "talents", "label": "Talents", "type": "Item", "system": "breath-and-the-veil", "path": "packs/talents", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "flaws", "label": "Flaws", "type": "Item", "system": "breath-and-the-veil", "path": "packs/flaws", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "advantages", "label": "Advantages", "type": "Item", "system": "breath-and-the-veil", "path": "packs/advantages", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } },
+    { "name": "skills", "label": "Skills", "type": "Item", "system": "breath-and-the-veil", "path": "packs/skills", "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" } }
+  ],
+  "packFolders": [
+    { "name": "Breath and the Veil", "sorting": "m", "packs": ["weapons", "armor", "classes", "races", "genders", "talents", "flaws", "advantages", "skills"] }
+  ],
+  "grid": { "type": 1, "distance": 1, "units": "m" },
+  "primaryTokenAttribute": "resources.hp",
+  "secondaryTokenAttribute": "resources.stamina",
+  "url": "https://github.com/WojciechChomanski/AI-GM-Project",
+  "manifest": "https://github.com/WojciechChomanski/AI-GM-Project/releases/latest/download/system.json",
+  "download": "https://github.com/WojciechChomanski/AI-GM-Project/releases/download/v0.1.0/breath-and-the-veil.zip",
+  "license": "LICENSE"
+}

@@ -1,0 +1,59 @@
+<section class="breath-sheet">
+  <header class="sheet-header">
+    <img src="{{actor.img}}" data-action="editImage" data-edit="img" alt="{{actor.name}}" width="96" height="96"/>
+    <div class="header-fields">
+      <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'Name'}}"/>
+      {{#if isCharacter}}
+      <div class="details">
+        <label>{{localize "BREATH.Race"}} <input name="system.details.race" type="text" value="{{system.details.race}}"/></label>
+        <label>{{localize "BREATH.Gender"}} <input name="system.details.gender" type="text" value="{{system.details.gender}}"/></label>
+        <label>{{localize "BREATH.Class"}} <input name="system.details.class_name" type="text" value="{{system.details.class_name}}"/></label>
+        <label>{{localize "BREATH.Age"}} <input name="system.details.age" type="number" value="{{system.details.age}}"/></label>
+      </div>
+      {{/if}}
+      <div class="resources">
+        <label>{{localize "BREATH.HP"}} <input name="system.resources.hp.value" type="number" value="{{system.resources.hp.value}}"/> / <input name="system.resources.hp.max" type="number" value="{{system.resources.hp.max}}"/></label>
+        <label>{{localize "BREATH.Stamina"}} <input name="system.resources.stamina.value" type="number" value="{{system.resources.stamina.value}}"/> / <input name="system.resources.stamina.max" type="number" value="{{system.resources.stamina.max}}"/></label>
+      </div>
+    </div>
+  </header>
+
+  <h3>{{localize "BREATH.Attributes"}}</h3>
+  <div class="attributes">
+    {{#each attributes}}
+    <div class="attribute">
+      <span class="label">{{label}}</span>
+      <input name="system.attributes.{{key}}.value" type="number" value="{{value}}"/>
+      <span class="max" title="{{localize 'BREATH.Cap'}}">/ {{max}}</span>
+    </div>
+    {{/each}}
+  </div>
+
+  <h3>{{localize "BREATH.Felt"}}</h3>
+  <div class="felt">
+    {{#each system.felt}}<p><b>{{topic}}:</b> {{text}}</p>
+    {{else}}<p class="hint">{{localize "BREATH.FeltEmpty"}}</p>{{/each}}
+  </div>
+
+  <h3>{{localize "BREATH.Combat"}}</h3>
+  <div class="combat">
+    <label>{{localize "BREATH.WeaponInHand"}} <input name="system.combat.weapon_in_hand" type="text" value="{{system.combat.weapon_in_hand}}"/></label>
+    <label>{{localize "BREATH.Grip"}} <select name="system.combat.grip">{{selectOptions gripChoices selected=system.combat.grip localize=true}}</select></label>
+    <label>{{localize "BREATH.Guard"}} <input name="system.combat.current_guard" type="text" value="{{system.combat.current_guard}}"/></label>
+  </div>
+
+  <h3>{{localize "BREATH.Items"}}</h3>
+  {{#each groups}}
+  <h4>{{label}}</h4>
+  <ul class="items">
+    {{#each items}}
+    <li data-item-id="{{id}}"><img src="{{img}}" width="24" height="24"/> <a data-action="openItem">{{name}}</a>
+      <a class="delete" data-action="deleteItem" title="{{localize 'Delete'}}">✕</a></li>
+    {{/each}}
+  </ul>
+  {{else}}<p class="hint">{{localize "BREATH.DropItems"}}</p>
+  {{/each}}
+
+  <h3>{{localize "BREATH.Biography"}}</h3>
+  <prose-mirror name="system.biography" value="{{system.biography}}">{{{biography}}}</prose-mirror>
+</section>

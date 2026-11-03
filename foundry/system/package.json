@@ -1,0 +1,18 @@
+{
+  "name": "breath-and-the-veil-build",
+  "version": "1.0.0",
+  "description": "Build tooling for the Breath and the Veil Foundry system",
+  "scripts": {
+    "build:sources": "node tools/build-sources.mjs",
+    "build:packs": "node tools/compile-packs.mjs",
+    "build": "npm run build:sources && npm run build:packs",
+    "test": "node --test tools/"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN ../../LICENSE",
+  "type": "module",
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.5"
+  },
+  "private": true
+}
