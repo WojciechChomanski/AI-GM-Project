@@ -41,8 +41,8 @@
       "armor_tiers": ["medium-light", "medium-medium", "medium-heavy", "heavy-light"]
     },
     "skills": {
-      "interrogation": 1,
-      "theology": 1
+      "intimidation": 1,
+      "lore_theology": 1
     },
     "progression": [
       {
