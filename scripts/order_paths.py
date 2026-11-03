@@ -91,6 +91,10 @@ def start_at_creation(c, class_name):
             _set(c, k, v)
         join(c, "holy_judge")
         return s["abilities"]
+    if class_name == "Crusader_Knight":
+        # Squire years are pre-game background only: play starts as a Brother-Knight.
+        st["class_tier"] = PATHS["crusader_knight"]["start"]["counts_as_class_tier"]
+        join(c, "crusader_knight")
     return []
 
 
@@ -138,8 +142,11 @@ def switch_back(c):
 
 
 def fall(c, discipline_step):
-    """Discipline ladder: steps 2-3 offer the Penitent Brother instead of expulsion; step 4 ends every path."""
+    """Discipline ladder: steps 2-3 offer the Penitent Brother instead of expulsion; step 4 ends every path.
+    Any step 2+ revokes the Paladin honour."""
     st = state(c)
+    if discipline_step >= 2:
+        st["honours"] = [h for h in st.get("honours", []) if h != "paladin"]
     if discipline_step >= 4:
         join(c, None, 0)
         st["raised_by_order"] = False
@@ -269,3 +276,52 @@ def name_witness(c, npc_id):
         return False
     st["witness"] = npc_id
     return True
+
+
+# --- Paladin honour (Crusader Knight path) -------------------------------------
+PALADIN = PATHS["crusader_knight"]["honours"]["paladin"]
+
+
+def can_grant_paladin(c, story_ok=True):
+    st, q = state(c), PALADIN["requires"]
+    why = []
+    if st["path"] != "crusader_knight" or st["rank"] < PALADIN["min_rank"]:
+        why.append("Crusader Knight rank 2+ needed")
+    if st["sessions_at_rank"] < q["sessions_at_rank_min"]:
+        why.append("sessions")
+    if st["reputation"] < q["reputation"]:
+        why.append("reputation")
+    if not _deeds_ok(st, q["deeds"]):
+        why.append("deeds")
+    if not _hidden_ok(c, q["hidden"]):
+        why.append("hidden")
+    if not story_ok:
+        why.append("story")
+    return not why, why
+
+
+def grant_paladin(c, story_ok=True):
+    ok, why = can_grant_paladin(c, story_ok)
+    if ok:
+        state(c)["honours"] = sorted(set(state(c).get("honours", [])) | {"paladin"})
+        return {"ok": True, "felt": PALADIN["felt"]}
+    return {"ok": False, "why": why, "felt": R["felt"]["not_ready"]}
+
+
+def revoke_paladin(c):
+    st = state(c)
+    st["honours"] = [h for h in st.get("honours", []) if h != "paladin"]
+
+
+def is_paladin(c):
+    return "paladin" in state(c).get("honours", [])
+
+
+def paladin_passives(c):
+    """Passive-only extras while his Breath is full. {} otherwise."""
+    import knight
+    if not is_paladin(c) or state(c)["path"] != "crusader_knight":
+        return {}
+    if knight.breath_state(_get(c, "virtue", 0) or 0, _get(c, "piety", 0) or 0, _get(c, "corruption_level", 0) or 0) != "full":
+        return {}
+    return {k: v for k, v in PALADIN["passives"].items() if k != "note"}

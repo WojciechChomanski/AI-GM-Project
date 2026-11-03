@@ -15,31 +15,53 @@
       "stat_modifiers are the old STR +4 / TOU +3 / DEX -2 scaled x3 (legacy rule): no new numbers",
       "abilities renamed to the d100 class layout; descriptions and numbers unchanged"
     ],
-    "doc": "docs/CLASSES_HOLY_JUDGE_OGRE_RAVAGER.md"
+    "doc": "docs/CLASSES_HOLY_JUDGE_OGRE_RAVAGER.md",
+    "changes": [
+      "2026-11-03: flesh_rend and gluttons_vitality no longer heal or add corruption from flesh; lore says tear, not devour (owner t105)"
+    ]
   },
   "Ogre_Ravager": {
     "description": "Brutal melee destroyer driven by hunger, tearing foes apart in grimdark frenzy.",
-    "lore": "Ravagers devour in Cursed Swamps, their corruption drawing Dark Elves as handlers.",
-    "race_lock": ["Ogre"],
-    "gender_lock": ["Male"],
+    "lore": "Ravagers tear through Cursed Swamps, their frenzy drawing Dark Elves as handlers.",
+    "race_lock": [
+      "Ogre"
+    ],
+    "gender_lock": [
+      "Male"
+    ],
     "power_source": "none",
-    "role_tags": ["brute", "grappler", "shock"],
+    "role_tags": [
+      "brute",
+      "grappler",
+      "shock"
+    ],
     "stat_modifiers": {
       "strength": 12,
       "toughness": 9,
       "dexterity": -6
     },
     "progression": {
-      "xp_requirements": {"level_1": 0, "level_2": 100, "level_3": 300, "level_4": 600, "level_5": 1000},
-      "level_up_stats": {"strength": 2, "toughness": 2}
+      "xp_requirements": {
+        "level_1": 0,
+        "level_2": 100,
+        "level_3": 300,
+        "level_4": 600,
+        "level_5": 1000
+      },
+      "level_up_stats": {
+        "strength": 2,
+        "toughness": 2
+      }
     },
     "abilities": {
       "active": {
         "flesh_rend": {
           "level": 1,
           "type": "active",
-          "description": "Enhanced grab_rip with devour heal on rip success (+10 HP, +5 corruption).",
-          "stamina_cost": 10
+          "description": "Enhanced grab_rip: tears and rips flesh from a grabbed foe (extra bleeding). No healing, no corruption: only the Ogre Flesh Eater eats foes (rules/ogre_hunger.json devour).",
+          "stamina_cost": 10,
+          "heal_hp": 0,
+          "corruption": 0
         },
         "devour_charge": {
           "level": 5,
@@ -52,7 +74,7 @@
         "gluttons_vitality": {
           "level": 3,
           "type": "passive",
-          "description": "Recover stamina/health after rip/smash, +bleeding to grabbed, corruption penalty (+5)."
+          "description": "Recover stamina after rip/smash, +bleeding to grabbed. No healing or corruption from flesh (only the Flesh Eater eats foes)."
         }
       }
     }

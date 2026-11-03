@@ -283,31 +283,19 @@ class Character:
         return True
 
     def consume_food(self, calories):
-        self.calories_consumed += calories
-        if self.race == "Ogre" and self.calories_consumed < 6000:
-            self.hunger_level += 1
-            if self.hunger_level >= 3:
-                print(f"⚠️ {self.name} hungers—10% chance to attack ally.")
-                if random.random() < 0.1 and self.allies:
-                    ally = random.choice(self.allies)
-                    print(f"🍖 {self.name} attacks {ally.name} in hunger!")
-                    limb = random.choice(["left_upper_arm", "right_upper_arm"])
-                    ally.take_damage_to_zone(limb, 20)
-                    ally.bleeding_rate += 1.0
-                    ally.pain_penalty += 10
-                    ally.stress_level += 10
-                    self.health = min(self.total_hp, self.health + 5)
-                    print(f"🩸 {ally.name} bleeds and suffers pain! {self.name} gains 5 HP from flesh!")
-                    roll = random.randint(1, 100)
-                    threshold = (ally.willpower // 5) + 30 - ally.pain_penalty // 2 - ally.stress_level // 10
-                    if roll > threshold:
-                        print(f"💔 {ally.name} panics from the attack and may flee!")
-                        ally.in_combat = False if "elite" not in ally.tags else ally.in_combat
+        """Ogre hunger is run by scripts/ogre_hunger.py (hidden numbers, day tick); this only logs food."""
+        import ogre_hunger
+        ogre_hunger.eat(self, calories)
 
     def reset_daily(self):
-        if self.race == "Ogre" and self.calories_consumed < 6000:
-            self.hunger_level += (6000 - self.calories_consumed) // 1000
-        self.calories_consumed = 0
+        """Kept for old scripts; the real day step is time_loop.day_tick -> ogre_hunger.day_end."""
+        import ogre_hunger
+        if ogre_hunger.is_ogre(self):
+            st = ogre_hunger.state(self)
+            short = ogre_hunger.H["daily_need_kcal"] - st["kcal_today"]
+            st["points"] = max(0, st["points"] + max(0, -(-short // 1000)))
+            st["kcal_today"] = 0
+            ogre_hunger._mirror(self)
 
 def load_stats(race, gender):
     path = os.path.join(os.path.dirname(__file__), "../rules/stats.json")

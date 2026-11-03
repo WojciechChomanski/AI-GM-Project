@@ -14,7 +14,7 @@ SAVE_DIR = os.path.join(ROOT, "saves", "characters")
 STAT_FIELDS = ("race", "gender", "class_name", "strength", "toughness", "agility", "dexterity", "endurance",
                "intelligence", "willpower", "perception", "charisma", "stress_level", "corruption_level",
                "corruption_peak", "faith", "virtue", "piety", "talents", "flaws", "skills", "prostheses",
-               "compromised_limbs", "bleed_clot_mult", "bleed_rate_mult")
+               "compromised_limbs", "bleed_clot_mult", "bleed_rate_mult", "hunger", "progression", "abilities")
 MANAGER_FIELDS = ("limb_state", "infection", "regrowing", "zone_armor_bonus", "heal_carry")
 
 

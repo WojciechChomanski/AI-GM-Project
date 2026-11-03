@@ -9,7 +9,6 @@
     "Mage": ["veil_bound", "caster", "corruption_risk"],
     "Rogue": ["martial", "stealth", "agile"],
     "Cleric": ["breath_bound", "healer", "support"],
-    "Paladin": ["breath_bound", "martial", "tank"],
     "Outlaw_Mercenary_Warrior": ["martial", "melee", "intimidation"],
     "Ogre_Brute": ["brute", "melee", "hunger_risk", "nonmagical"],
     "Ogre_Ravager": ["brute", "melee", "hunger_risk", "corruption_risk"],
