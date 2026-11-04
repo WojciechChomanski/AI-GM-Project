@@ -16,6 +16,7 @@ Do not import Divine Smite or Divine_Surge as clickable actions on the Knight.
 ## Weapons and armour (contract v1.0)
 
 1. Run `python scripts/foundry_export.py`.
-2. Create Equippable Item Templates named Breath Weapon and Breath Armor, with the keys in WEAPON_ITEM_CONTRACT.md.
-3. Paste each item's `system.props` from weapons_items.json / armor_items.json.
-4. Resolve attacks through `/combat/attack` (macro or GM console). CSB alone cannot run the maneuver/armour engine.
+2. Import `breath-templates.json` (CSB → Import templates). It now contains the actor template "Breath Character (Combat v1)" and the item templates Breath Weapon and Breath Armor, so you no longer build them by hand.
+3. Create Equippable Items from those templates and paste each item's `system.props` from weapons_items.json / armor_items.json.
+4. Resolve attacks with the Breath Attack macro, which calls `/combat/attack` through the local bridge. Setup: COMBAT_BRIDGE.md. CSB alone cannot run the maneuver/armour engine.
+5. After changing rules/*.json, run `python scripts/foundry_export.py && python foundry/csb/build_csb.py` (tests fail if the build is stale).

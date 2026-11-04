@@ -1,0 +1,43 @@
+{
+  "name": "Bandit (Human, Padded Cloth)",
+  "type": "character",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "template": "BvKnightTplV1000",
+    "props": {
+      "race_hp_bonus": 0,
+      "class_hp_pct": 0,
+      "armor_worn": "Light_Light",
+      "bleed_wounds": "[]",
+      "bleed_rate": 0,
+      "bleed_list": "none",
+      "chest_hp": 20,
+      "chest_armor": "Padded Cloth 2/1/1",
+      "left_upper_leg_hp": 13,
+      "left_upper_leg_armor": "-",
+      "right_upper_leg_hp": 13,
+      "right_upper_leg_armor": "-",
+      "stomach_hp": 11,
+      "stomach_armor": "-",
+      "head_hp": 7,
+      "head_armor": "-",
+      "left_upper_arm_hp": 6,
+      "left_upper_arm_armor": "-",
+      "right_upper_arm_hp": 6,
+      "right_upper_arm_armor": "-",
+      "left_lower_leg_hp": 6,
+      "left_lower_leg_armor": "-",
+      "right_lower_leg_hp": 6,
+      "right_lower_leg_armor": "-",
+      "left_lower_arm_hp": 3,
+      "left_lower_arm_armor": "-",
+      "right_lower_arm_hp": 3,
+      "right_lower_arm_armor": "-",
+      "throat_hp": 3,
+      "throat_armor": "-",
+      "groin_hp": 3,
+      "groin_armor": "-"
+    }
+  },
+  "flags": {}
+}

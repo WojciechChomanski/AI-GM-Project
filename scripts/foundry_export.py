@@ -31,7 +31,14 @@ def weapon_item(key):
         "guards_json": json.dumps({g: CT.guard_info(w, g) for g in guards}, ensure_ascii=False),
         "maneuvers": ",".join(m["name"] for m in mans),
         "maneuvers_json": json.dumps(mans, ensure_ascii=False),
+        "guards_two_hand_json": "", "maneuvers_two_hand_json": "",
     }
+    if w.get("two_hand_guard_set"):          # longsword: the full 2H_sword set in two hands
+        w2 = CT.grip(w, True)
+        m2 = [m for m in CT.maneuvers_for(w2)
+              if not m["effects"].get("requires_feature") or m["effects"]["requires_feature"] in w2.get("features", [])]
+        props["guards_two_hand_json"] = json.dumps({g: CT.guard_info(w2, g) for g in CT.guards_for(w2)}, ensure_ascii=False)
+        props["maneuvers_two_hand_json"] = json.dumps(m2, ensure_ascii=False)
     return {"name": w.get("name", key), "type": "equippableItem", "img": "icons/svg/sword.svg",
             "system": {"unique": False, "template": "", "props": props}}
 

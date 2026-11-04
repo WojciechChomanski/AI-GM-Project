@@ -1,0 +1,61 @@
+/* Breath and the Veil - "dark ink storybook" sheet style (Witcher 3 loading-screen look).
+   For Custom System Builder 6.0.2: Game Settings > Configure Settings > Custom System Builder >
+   "Custom CSS" file = breath/breath-sheet.css (path from your Foundry Data folder). Needs a reload.
+   Only sheets that contain the Body & Wounds panel (.bv-body) are restyled. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=UnifrakturMaguntia&display=swap');
+
+.custom-system-entity:has(.bv-body) {
+  --bv-ink: #1c120a; --bv-ink2: #2f1f10; --bv-blood: #4a120c; --bv-red: #8f2018; --bv-brown: #5a3d22;
+  --bv-paper: #d9c7a0; --bv-iron: #3c3a37;
+  font-family: 'EB Garamond', Georgia, serif; color: var(--bv-ink);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,245,215,.55), transparent 60%),
+    radial-gradient(ellipse at 100% 100%, rgba(60,30,8,.45), transparent 55%),
+    repeating-linear-gradient(17deg, rgba(90,60,25,.05) 0 2px, transparent 2px 7px),
+    #cdb88c;
+  box-shadow: inset 0 0 70px rgba(60,32,8,.65), inset 0 0 8px rgba(0,0,0,.7);
+  border: 3px solid #3a3027; outline: 1px solid #7b6a4c; outline-offset: -9px;
+  padding: 10px 14px;
+}
+.custom-system-entity:has(.bv-body) .charname input {
+  font-family: 'UnifrakturMaguntia', serif; font-size: 34px; color: var(--bv-ink);
+  background: transparent; border: none; border-bottom: 1px dashed rgba(60,40,20,.5);
+}
+.custom-system-entity:has(.bv-body) .custom-system-panel-title {
+  font-family: 'UnifrakturMaguntia', serif; font-weight: 400; font-size: 22px; color: var(--bv-blood);
+  display: flex; align-items: center; gap: 10px; border: none; background: none; margin: 6px 0 4px;
+}
+.custom-system-entity:has(.bv-body) .custom-system-panel-title::after {
+  content: ""; flex: 1; height: 2px; background: linear-gradient(90deg, var(--bv-blood), transparent);
+}
+.custom-system-entity:has(.bv-body) label,
+.custom-system-entity:has(.bv-body) .custom-system-label-bold {
+  font-family: 'Cinzel', serif; letter-spacing: .5px; color: var(--bv-ink2);
+}
+.custom-system-entity:has(.bv-body) input[type=text],
+.custom-system-entity:has(.bv-body) input[type=number] {
+  background: rgba(255,248,225,.35); border: 1px solid rgba(58,40,20,.55); color: var(--bv-ink); border-radius: 2px;
+}
+/* top strip: total HP, state, bleeding */
+.bv-vitals { background: linear-gradient(#2a2622, #1a1714); color: #e8dcc0; border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #5a4a30; border-radius: 3px; padding: 6px 10px; margin-bottom: 8px; }
+.bv-vitals label, .bv-vitals .custom-system-label-bold { color: #d8c39a !important; }
+.bv-total .custom-system-label-title, .bv-total { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: #f2e6c8; }
+.bv-state { font-family: 'UnifrakturMaguntia', serif; font-size: 22px; color: #e0b58a; }
+.bv-bleed input { color: #ff9a8a !important; background: rgba(143,32,24,.35) !important; border-color: #8f2018 !important; font-weight: 700; }
+.bv-wounds input { font-style: italic; }
+/* the 13 zone boxes */
+.bv-zone { background: linear-gradient(90deg, rgba(255,248,225,.55), rgba(255,248,225,.2));
+  border: 1px solid rgba(58,40,20,.7); border-left: 4px solid var(--bv-iron); border-radius: 2px;
+  padding: 3px 6px; margin: 2px; box-shadow: 1px 2px 0 rgba(30,15,5,.35); }
+.bv-zone-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 12px; color: var(--bv-ink2); }
+.bv-zone-hp input { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; width: 3.2em; text-align: center; }
+.bv-zone-max { font-style: italic; color: var(--bv-brown); }
+.bv-zone-armor input { font-style: italic; font-size: 12px; color: var(--bv-brown); background: transparent !important; border: none !important; }
+.bv-zone-head, .bv-zone-throat, .bv-zone-chest { border-left-color: var(--bv-red); }   /* vital zones */
+/* GM panel: dark iron box */
+.bv-gm { background: linear-gradient(#2a2622, #1a1714); color: #d8c9a8; border: 1px solid #1b1b1b;
+  box-shadow: inset 0 0 0 1px #5a4a30; border-radius: 3px; padding: 4px 10px 8px; margin-top: 8px; }
+.custom-system-entity:has(.bv-body) .bv-gm .custom-system-panel-title { color: #e0b58a; }
+.custom-system-entity:has(.bv-body) .bv-gm label { color: #b59c70 !important; }
+.bv-gm input { background: rgba(255,255,255,.06) !important; color: #f0e4c6 !important; border-color: #4a3e2c !important; }
