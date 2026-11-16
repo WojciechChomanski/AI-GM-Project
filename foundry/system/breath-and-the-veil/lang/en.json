@@ -14,7 +14,8 @@
       "talent": "Talent",
       "flaw": "Flaw",
       "advantage": "Advantage",
-      "skill": "Skill"
+      "skill": "Skill",
+      "gear": "Gear"
     }
   },
   "BREATH": {
@@ -67,6 +68,18 @@
     "Setting": {
       "backendUrl": "Breath backend URL",
       "backendUrlHint": "Local Python backend (scripts/combat_engine.py). Used from the GM's browser only."
-    }
+    },
+    "Inventory": "Inventory",
+    "Load": "Carried load",
+    "OnBody": "On the body",
+    "Stow": "Stow",
+    "Equip": "Equip",
+    "Holds": "holds",
+    "PackEmpty": "This pack is empty. Drop gear here, or it will go here when body slots are full.",
+    "DropGear": "Drag weapons, armour or a backpack here from the compendiums.",
+    "PastHalf": "Past half of what you can carry, marching gets much harder.",
+    "ClinchLoad": "Clinch (carried as load)",
+    "MissingWeight": "These items have no weight in the rules yet, so they count as 0 kg",
+    "BlockedByLoad": "Not possible at this load"
   }
 }

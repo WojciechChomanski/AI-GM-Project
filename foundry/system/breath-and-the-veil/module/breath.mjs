@@ -1,8 +1,11 @@
 // Breath and the Veil - Foundry VTT v14 system entry point.
 import { ACTOR_MODELS, ITEM_MODELS } from "./data.mjs";
 import { BreathActorSheet, BreathItemSheet } from "./sheets.mjs";
+import { registerInventory } from "./inventory.mjs";
 
 const ID = "breath-and-the-veil";
+
+registerInventory();
 
 Hooks.once("init", () => {
   Object.assign(CONFIG.Actor.dataModels, ACTOR_MODELS);

@@ -27,7 +27,7 @@ The actor contract (including inventory fields reserved for workstream B, and ar
   - the 12 visible attributes (value and cap), HP, stamina, combat state, details and biography
   - `inventory`: equipped coverage slots, backpack container ids, `carried_weight`, `carry_capacity` (B implements behaviour)
   - `felt`: a list of `{topic, text}`
-- **Items:** weapon, armour (with saved `durability.value/max`), class, race, gender, talent, flaw, advantage and skill.
+- **Items:** weapon, armour (with saved `durability.value/max`), class, race, gender, talent, flaw, advantage, skill and gear (backpacks).
 - **Hidden stats are not in the system at all.** Faith, Virtue, Piety, Holy Fury, Corruption, the stress number and Reputation live only in the Python backend.
   - The build strips those keys from every compendium document.
   - Tests in both pytest and node fail if one appears.
@@ -45,6 +45,7 @@ The actor contract (including inventory fields reserved for workstream B, and ar
 | talents | `rules/talents/*.json` |
 | flaws, advantages | `rules/creation/*.json` |
 | skills | `rules/skills.json` |
+| gear | placeholder backpacks in `rules/inventory.json` |
 
 Document ids are derived from the source key, so a rebuild updates entries instead of duplicating them.
 
@@ -131,3 +132,8 @@ What was verified:
 - the packs: compiled and re-extracted with the official CLI
 
 Report anything odd from the first real load, and include the console (F12) output.
+
+
+## Inventory (0.3)
+
+Drag-and-drop inventory: weapons and armour go onto body slots if they are free, otherwise into a worn backpack. If there is no room, the drop is refused with a message. Carried weight and carry capacity (from `scripts/strength.py` / `rules/combat_rules.json`) are shown on the sheet, and sprint, acrobatics and unaided rope climb are greyed out when the load is over the limit. Details, placeholders and how this follows `ACTOR_MODEL.md`: `foundry/system/docs/INVENTORY.md`.

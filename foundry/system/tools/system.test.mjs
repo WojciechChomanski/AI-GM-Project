@@ -61,7 +61,7 @@ function walk(node, where, bad) {
 test("every pack extracts, matches its type, and carries no hidden-stat keys", async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "bv-packs-"));
   const types = { weapons: "weapon", armor: "armor", classes: "class", races: "race", genders: "gender",
-    talents: "talent", flaws: "flaw", advantages: "advantage", skills: "skill" };
+    talents: "talent", flaws: "flaw", advantages: "advantage", skills: "skill", gear: "gear" };
   for (const pack of manifest.packs) {
     const out = path.join(tmp, pack.name);
     await extractPack(path.join(sys, pack.path), out, { log: false });
@@ -76,9 +76,9 @@ test("every pack extracts, matches its type, and carries no hidden-stat keys", a
   }
 });
 
-test("version is 0.1.1 and every pack has a shipped parchment banner", () => {
-  assert.equal(manifest.version, "0.1.1");
-  assert.match(manifest.download, /\/releases\/download\/v0\.1\.1\/breath-and-the-veil\.zip$/);
+test("version is 0.3.0 and every pack has a shipped parchment banner", () => {
+  assert.equal(manifest.version, "0.3.0");
+  assert.match(manifest.download, /\/releases\/download\/v0\.3\.0\/breath-and-the-veil\.zip$/);
   for (const pack of manifest.packs) {
     assert.equal(pack.banner, `assets/banners/${pack.name}.webp`, pack.name);
     const file = path.join(sys, pack.banner);

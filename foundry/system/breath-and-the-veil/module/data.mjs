@@ -85,7 +85,8 @@ export class WeaponData extends BreathItemData {
       weight: new NumberField({ initial: 0 }), durability: int(0), armor_piercing: new BooleanField(),
       guard_set: new StringField(), two_hand_guard_set: new StringField(), default_guard: new StringField(),
       guards: new ArrayField(new StringField()), maneuvers: new ArrayField(new StringField()),
-      features: new ArrayField(new StringField()), equipped: new BooleanField() };
+      features: new ArrayField(new StringField()), equipped: new BooleanField(),
+      location: new StringField({ initial: "" }), container_id: new StringField({ initial: "" }) };
   }
 }
 export class ArmorData extends BreathItemData {
@@ -96,7 +97,8 @@ export class ArmorData extends BreathItemData {
       rigid: new BooleanField(), coverage: new ArrayField(new StringField()), stamina_penalty: int(0),
       weight: new NumberField({ initial: 0 }),
       durability: new SchemaField({ value: int(0), max: int(0) }),   // saved per item (Phase 2 writes engine wear)
-      equipped: new BooleanField() };
+      equipped: new BooleanField(),
+      location: new StringField({ initial: "" }), container_id: new StringField({ initial: "" }) };
   }
 }
 export class ClassData extends BreathItemData {
@@ -124,6 +126,20 @@ export class SkillData extends BreathItemData {
   static defineSchema() { return { ...super.defineSchema(), rank: int(0, { min: 0 }) }; }
 }
 
+
+export class GearData extends BreathItemData {
+  static defineSchema() {
+    return { ...super.defineSchema(),
+      weight: new NumberField({ initial: 0 }),
+      volume: new NumberField({ required: false, nullable: true, initial: null }),
+      is_container: new BooleanField({ initial: false }),
+      capacity_kg: new NumberField({ initial: 0 }),
+      capacity_volume: new NumberField({ required: false, nullable: true, initial: null }),
+      slot: new StringField({ initial: "" }),
+      equipped: new BooleanField(),
+      location: new StringField({ initial: "" }), container_id: new StringField({ initial: "" }) };
+  }
+}
 export const ACTOR_MODELS = { character: CharacterData, npc: NpcData, creature: CreatureData };
 export const ITEM_MODELS = { weapon: WeaponData, armor: ArmorData, class: ClassData, race: RaceData,
-  gender: GenderData, talent: TalentData, flaw: FlawData, advantage: AdvantageData, skill: SkillData };
+  gender: GenderData, talent: TalentData, flaw: FlawData, advantage: AdvantageData, skill: SkillData, gear: GearData };
