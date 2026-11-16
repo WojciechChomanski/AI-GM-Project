@@ -1,0 +1,67 @@
+# INSTALL: move this file to .github/workflows/foundry-release.yml (the bot token cannot push workflow files).
+# Build and publish the Breath and the Veil Foundry system when a version tag is pushed.
+#   git tag v0.1.0 && git push origin v0.1.0
+# Foundry installs/updates from:
+#   https://github.com/WojciechChomanski/AI-GM-Project/releases/latest/download/system.json
+name: Foundry system release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Python tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest fastapi python-dotenv uvicorn
+          python -m pytest -q tests
+
+      - name: Build compendium packs (repo rules JSON -> LevelDB)
+        working-directory: foundry/system
+        run: |
+          npm ci
+          npm run build
+          npm test
+
+      - name: Stamp version and download URL into system.json
+        env:
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          VERSION="${TAG#v}"
+          jq --arg v "$VERSION" \
+             --arg d "https://github.com/$REPO/releases/download/$TAG/breath-and-the-veil.zip" \
+             '.version = $v | .download = $d' \
+             foundry/system/breath-and-the-veil/system.json > system.json.tmp
+          mv system.json.tmp foundry/system/breath-and-the-veil/system.json
+          cp LICENSE foundry/system/breath-and-the-veil/LICENSE
+
+      - name: Zip the system
+        working-directory: foundry/system
+        run: |
+          zip -r ../../breath-and-the-veil.zip breath-and-the-veil -x "*/packs/*/LOCK"
+          cp breath-and-the-veil/system.json ../../system.json
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            system.json
+            breath-and-the-veil.zip
+          generate_release_notes: true
