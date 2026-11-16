@@ -67,6 +67,13 @@ test("every pack extracts, matches its type, and carries no hidden-stat keys", a
     await extractPack(path.join(sys, pack.path), out, { log: false });
     const docs = fs.readdirSync(out).map((f) => JSON.parse(fs.readFileSync(path.join(out, f), "utf8")));
     assert.ok(docs.length > 0, `${pack.name} is empty`);
+    if (pack.type === "Scene") {
+      for (const d of docs) {
+        assert.ok(d.name, `${pack.name} missing name`);
+        assert.ok(d.background?.src || d.img, `${pack.name}/${d.name} missing background`);
+      }
+      continue;
+    }
     const bad = [];
     for (const d of docs) {
       assert.equal(d.type, types[pack.name], `${pack.name}/${d.name}`);
@@ -76,7 +83,7 @@ test("every pack extracts, matches its type, and carries no hidden-stat keys", a
   }
 });
 
-test("version is 0.1.1 and every pack has a shipped parchment banner", () => {
+test("version is 0.1.1 and every pack has a shipped banner", () => {
   assert.equal(manifest.version, "0.1.1");
   assert.match(manifest.download, /\/releases\/download\/v0\.1\.1\/breath-and-the-veil\.zip$/);
   for (const pack of manifest.packs) {
@@ -104,4 +111,16 @@ test("verifyClassPack catches a stale Paladin document", () => {
   assert.equal(errs.length, 2);
   assert.ok(errs.some((e) => /Paladin/i.test(e)));
   assert.ok(errs.some((e) => /integration/i.test(e)));
+});
+
+test("portraits, class icons and the test map are shipped", () => {
+  const portraits = ["human-male", "human-female", "elf-male", "elf-female", "dwarf-male", "ogre-male"];
+  for (const name of portraits) {
+    const file = path.join(sys, "assets/portraits", `${name}.webp`);
+    assert.ok(fs.existsSync(file) && fs.statSync(file).size > 0, name);
+  }
+  assert.ok(!fs.existsSync(path.join(sys, "assets/portraits/dwarf-female.webp")));
+  assert.ok(!fs.existsSync(path.join(sys, "assets/portraits/ogre-female.webp")));
+  assert.ok(fs.existsSync(path.join(sys, "assets/maps/test-crossroads.webp")));
+  assert.ok(fs.existsSync(path.join(sys, "assets/banners/scenes.webp")));
 });

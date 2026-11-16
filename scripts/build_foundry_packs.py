@@ -21,6 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import combat_techniques as CT  # noqa: E402
 import foundry_export as FE  # noqa: E402
+import foundry_scene_test_crossroads as SCENE  # noqa: E402
 
 ROOT = CT.ROOT
 RULES = os.path.join(ROOT, "rules")
@@ -30,6 +31,8 @@ HIDDEN_KEY = re.compile(r"^(faith|virtue|piety|holy_fury\w*|corruption\w*|stress
 ICONS = {"weapon": "icons/svg/sword.svg", "armor": "icons/svg/shield.svg", "class": "icons/svg/book.svg",
          "race": "icons/svg/mystery-man.svg", "gender": "icons/svg/mystery-man.svg", "talent": "icons/svg/aura.svg",
          "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg"}
+ASSETS_DISK = os.path.join(ROOT, "foundry", "system", "breath-and-the-veil", "assets")
+ASSETS_URL = f"systems/{SYSTEM_ID}/assets"
 
 
 def load(*parts):
@@ -46,6 +49,16 @@ def strip_hidden(node):
     return node
 
 
+def shipped_img(*parts, fallback=""):
+    """Foundry document path for a file under assets/, or fallback / None if missing."""
+    disk = os.path.join(ASSETS_DISK, *parts)
+    if os.path.isfile(disk):
+        return f"{ASSETS_URL}/{'/'.join(parts)}"
+    if fallback:
+        return f"{ASSETS_URL}/{fallback}"
+    return None
+
+
 def doc_id(pack, key):
     """Stable 16-char Foundry id, so re-builds update instead of duplicating."""
     h = hashlib.sha256(f"{SYSTEM_ID}:{pack}:{key}".encode()).hexdigest()
@@ -58,11 +71,11 @@ def para(*texts):
     return "".join(f"<p>{html.escape(str(t))}</p>" for t in texts if t)
 
 
-def item(pack, key, name, itype, source_file, description="", rules=None, **fields):
+def item(pack, key, name, itype, source_file, description="", rules=None, img=None, **fields):
     _id = doc_id(pack, key)
     system = {"source_id": key, "source_file": source_file, "description": description,
               "rules": strip_hidden(rules or {}), **strip_hidden(fields)}
-    return {"_id": _id, "_key": f"!items!{_id}", "name": name, "type": itype, "img": ICONS[itype],
+    return {"_id": _id, "_key": f"!items!{_id}", "name": name, "type": itype, "img": img or ICONS[itype],
             "system": system, "effects": [], "flags": {}, "folder": None, "sort": 0, "ownership": {"default": 0}}
 
 
@@ -138,13 +151,16 @@ def classes():
                         para(c.get("description"), c.get("lore")),
                         rules={x: v for x, v in c.items() if x not in ("description", "lore")},
                         allowed_races=list(c.get("allowed_races") or r.get("races") or []),
-                        allowed_genders=list(c.get("allowed_genders") or r.get("genders") or [])))
+                        allowed_genders=list(c.get("allowed_genders") or r.get("genders") or []),
+                        img=shipped_img("icons", "classes", f"{k.lower()}.webp",
+                                        fallback="icons/classes/_fallback.webp")))
     return out
 
 
 def races():
     return [item("races", k, k, "race", "rules/races.json", para(r.get("description"), r.get("lore")),
-                 rules={x: v for x, v in r.items() if x not in ("description", "lore")})
+                 rules={x: v for x, v in r.items() if x not in ("description", "lore")},
+                 img=shipped_img("portraits", f"{k.lower()}-male.webp", fallback="portraits/_fallback.webp"))
             for k, r in load("races.json").items()]
 
 
@@ -154,7 +170,9 @@ def genders():
         race, _, gender = k.partition("_")
         out.append(item("genders", k, f"{race} {gender}", "gender", "rules/stats.json",
                         para(f"Starting stats and caps for a {gender.lower()} {race.lower()}."),
-                        rules=s, race=race, gender=gender))
+                        rules=s, race=race, gender=gender,
+                        img=shipped_img("portraits", f"{race.lower()}-{gender.lower()}.webp",
+                                        fallback="portraits/_fallback.webp")))
     return out
 
 
@@ -209,7 +227,8 @@ def build(out_dir=OUT):
     t, names = talents()
     packs = {"weapons": weapons(), "armor": armor(), "classes": classes(), "races": races(), "genders": genders(),
              "talents": t, "flaws": creation("flaws", "flaws.json", "flaw", names),
-             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills()}
+             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills(),
+             "scenes": [SCENE.scene(doc_id)]}
     shutil.rmtree(out_dir, ignore_errors=True)
     for pack, docs in packs.items():
         d = os.path.join(out_dir, pack)

@@ -48,13 +48,21 @@ def test_build_produces_every_manifest_pack(tmp_path):
 def test_documents_are_valid_foundry_items(tmp_path):
     _, docs = built(tmp_path)
     types = set(manifest()["documentTypes"]["Item"])
+    pack_type = {p["name"]: p["type"] for p in manifest()["packs"]}
     ids = set()
     for pack, items in docs.items():
         for d in items:
-            assert re.fullmatch(r"[A-Za-z0-9]{16}", d["_id"]) and d["_key"] == f"!items!{d['_id']}"
+            assert re.fullmatch(r"[A-Za-z0-9]{16}", d["_id"])
             assert d["_id"] not in ids
             ids.add(d["_id"])
-            assert d["type"] in types and d["name"]
+            assert d["name"]
+            if pack_type[pack] == "Scene":
+                assert d["_key"] == f"!scenes!{d['_id']}"
+                src = (d.get("background") or {}).get("src") or d.get("img")
+                assert src and src.startswith("systems/breath-and-the-veil/assets/maps/")
+            else:
+                assert d["_key"] == f"!items!{d['_id']}"
+                assert d["type"] in types
 
 
 def test_ids_are_stable_between_builds(tmp_path):
@@ -65,7 +73,7 @@ def test_ids_are_stable_between_builds(tmp_path):
 
 def test_no_hidden_stats_in_packs(tmp_path):
     _, docs = built(tmp_path)
-    bad = [k for items in docs.values() for d in items for k in hidden_keys(d["system"], d["name"])]
+    bad = [k for items in docs.values() for d in items for k in hidden_keys(d.get("system") or {}, d["name"])]
     assert bad == []
     # the stripping is real: the source data does contain hidden stats
     assert "faith" in json.dumps(B.load("stats.json"))
@@ -124,7 +132,7 @@ def test_no_gm_only_stat_keys_in_packs(tmp_path):
                 walk(v, w)
     for items in docs.values():
         for d in items:
-            walk(d["system"], d["name"])
+            walk(d.get("system") or {}, d["name"])
     assert bad == []
 
 def test_version_and_pack_banners_exist():
@@ -165,3 +173,46 @@ def test_actor_model_reserves_inventory_fields():
     for word in ("carried_weight", "carry_capacity", "backpack", "main_hand", "off_hand", "left_upper_arm", "back", "belt"):
         assert word in src, word
     assert os.path.isfile(os.path.join(ROOT, "foundry", "system", "docs", "ACTOR_MODEL.md"))
+
+def test_shipped_portraits_class_icons_and_scene(tmp_path):
+    """Workstream C art: portraits, class icons, map, and img fields the sheet will use."""
+    assets = os.path.join(SYS, "assets")
+    portraits = {
+        "human-male", "human-female", "elf-male", "elf-female", "dwarf-male", "ogre-male",
+    }
+    for name in portraits:
+        path = os.path.join(assets, "portraits", f"{name}.webp")
+        assert os.path.isfile(path) and os.path.getsize(path) > 0, name
+    assert not os.path.isfile(os.path.join(assets, "portraits", "dwarf-female.webp"))
+    assert not os.path.isfile(os.path.join(assets, "portraits", "ogre-female.webp"))
+
+    _, docs = built(tmp_path)
+    class_ids = {d["system"]["source_id"] for d in docs["classes"]}
+    assert "Paladin" not in class_ids and "paladin" not in {i.lower() for i in class_ids}
+    for d in docs["classes"]:
+        sid = d["system"]["source_id"].lower()
+        icon = os.path.join(assets, "icons", "classes", f"{sid}.webp")
+        assert os.path.isfile(icon) and os.path.getsize(icon) > 0, sid
+        assert d["img"].endswith(f"assets/icons/classes/{sid}.webp"), d["img"]
+
+    for d in docs["genders"]:
+        race, gender = d["system"]["race"].lower(), d["system"]["gender"].lower()
+        expected = f"systems/breath-and-the-veil/assets/portraits/{race}-{gender}.webp"
+        assert d["img"] == expected, (d["name"], d["img"])
+
+    for d in docs["races"]:
+        assert d["img"].endswith(f"assets/portraits/{d['system']['source_id'].lower()}-male.webp")
+
+    scenes = docs["scenes"]
+    assert len(scenes) == 1
+    scene = scenes[0]
+    assert scene["name"] == "Test Crossroads"
+    assert scene["grid"]["size"] == 128
+    assert scene["grid"]["distance"] == 1
+    assert scene["grid"]["units"] == "m"
+    assert scene["width"] == scene["height"] == 4096
+    assert scene["background"]["src"].endswith("assets/maps/test-crossroads.webp")
+    assert os.path.isfile(os.path.join(assets, "maps", "test-crossroads.webp"))
+    assert os.path.isfile(os.path.join(assets, "maps", "test-crossroads-thumb.webp"))
+    assert scene["walls"], "test scene should ship starting walls"
+

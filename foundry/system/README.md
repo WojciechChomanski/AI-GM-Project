@@ -33,6 +33,10 @@ The actor contract (including inventory fields reserved for workstream B, and ar
   - Tests in both pytest and node fail if one appears.
   - Later phases fill `felt` with text only, for example "Stress: uneasy", written from the GM's client.
 
+### Art and the test map
+
+Painted assets (Witcher comic style) live in `breath-and-the-veil/assets/`. Details, including the Test Crossroads grid (128 px / 1 m, 32×32 m), are in `docs/ART.md`. Import the scene from the **Scenes** compendium pack.
+
 ### Compendium sources
 
 | Pack | Source |
