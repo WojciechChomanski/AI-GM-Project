@@ -2,7 +2,7 @@
   "id": "breath-and-the-veil",
   "title": "Breath and the Veil",
   "description": "Game system for Breath and the Veil (AI-GM Project). Rules data is built from the AI-GM-Project repository; combat and hidden-stat numbers are handled by the Breath backend.",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -17,7 +17,8 @@
     "module/breath.mjs"
   ],
   "styles": [
-    "styles/breath.css"
+    "styles/breath.css",
+    "styles/inventory.css"
   ],
   "languages": [
     {
@@ -86,6 +87,11 @@
         ]
       },
       "skill": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "gear": {
         "htmlFields": [
           "description"
         ]
@@ -202,6 +208,18 @@
       "banner": "assets/banners/skills.webp"
     },
     {
+      "name": "gear",
+      "label": "Gear",
+      "type": "Item",
+      "system": "breath-and-the-veil",
+      "path": "packs/gear",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "banner": "assets/banners/gear.webp"
+    },
+    {
       "name": "scenes",
       "label": "Scenes",
       "type": "Scene",
@@ -221,6 +239,7 @@
       "packs": [
         "weapons",
         "armor",
+        "gear",
         "classes",
         "races",
         "genders",
@@ -241,6 +260,6 @@
   "secondaryTokenAttribute": "resources.stamina",
   "url": "https://github.com/WojciechChomanski/AI-GM-Project",
   "manifest": "https://github.com/WojciechChomanski/AI-GM-Project/releases/latest/download/system.json",
-  "download": "https://github.com/WojciechChomanski/AI-GM-Project/releases/download/v0.1.1/breath-and-the-veil.zip",
+  "download": "https://github.com/WojciechChomanski/AI-GM-Project/releases/download/v0.3.0/breath-and-the-veil.zip",
   "license": "LICENSE"
 }

@@ -18,10 +18,9 @@ Starting values come from the Gender item (`rules/stats.json`, e.g. `Human_Male`
 
 ## Resources
 
-- `resources.hp.value` / `resources.hp.max` — total hit points. Formula (from `scripts/zone_hp.hp_multiplier`):  
-  `round(100 * (1 + race.hp_bonus/100) * (1 + class.hp_percent/100))`.  
-  Zone HP (13 coverage zones summing to this total) is the Python source of truth for combat; the sheet in 0.2 shows the total pool. Zone breakdown is not required on this actor yet.
-- `resources.stamina.value` / `resources.stamina.max` — see open question in the 0.2 notes. Inferred (not a single documented formula in the loader): `100 + race.stats.stamina_bonus + class.stat_modifiers.stamina_max_flat`.
+- `resources.zones.<zone>.value` / `.max` — the 13 official hit zones from `scripts/zone_hp.py` (`BASE_ZONES`). Ids match armour coverage: `head`, `throat`, `chest`, `stomach`, `groin`, `left_upper_arm`, `right_upper_arm`, `left_lower_arm`, `right_lower_arm`, `left_upper_leg`, `right_upper_leg`, `left_lower_leg`, `right_lower_leg`.
+- `resources.hp.value` / `resources.hp.max` — **always the sum of the 13 zones** (derived; do not treat as a separate pool). Each zone is scaled by `scripts/zone_hp.scaled_zones` using `hp_multiplier = (1 + race.hp_bonus/100) * (1 + class.hp_percent/100)`; leftover rounding goes to the chest. 3 zones at 0 is collapse; head, throat or chest at 0 is death / dying.
+- `resources.stamina.value` / `resources.stamina.max` — `100 + race.stats.stamina_bonus + class.stat_modifiers.stamina_max_flat` (confirmed).
 
 ## Details (`character` only)
 
@@ -97,7 +96,7 @@ Dropping items onto a character actor is what fills the numbers. The software do
 2. **Gender** — must match the race (and that race's playable genders). Sets starting visible stats and caps from the item.
 3. **Class** — must pass the class locks (`race_lock` / `gender_lock` / `allowed_races` / `allowed_genders` / `restrictions`). Applies class stat bonuses once, HP/stamina as above, starting skills, and lists class traits/abilities. Paladin is not a class; it is an honour title on the Crusader Knight order path.
 
-Illegal drops are rejected with a visible notice; they do not leave a half-applied item on the actor. One race, one gender, one class at a time (a new drop replaces the previous item of that type and recalculates).
+A Class can be dropped only after both a Race item and a Gender item are already on the actor; otherwise the drop is refused with a message. Other illegal drops are also rejected with a visible notice and do not leave a half-applied item. One race, one gender, one class at a time (a new drop replaces the previous item of that type and recalculates). Cleric is hidden from the classes pack until it is redesigned.
 
 ## What this file is not
 
