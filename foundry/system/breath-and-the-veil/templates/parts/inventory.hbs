@@ -1,0 +1,88 @@
+<section class="breath-inventory" data-inventory-panel>
+  <h3 class="inv-title">{{localize "BREATH.Inventory"}}</h3>
+
+  <div class="inv-load {{tier}}">
+    <div class="inv-load-row">
+      <span class="inv-cap">{{localize "BREATH.Load"}}</span>
+      <b>{{carried_display}} / {{capacity_display}} kg</b>
+      <span class="inv-tier" data-tier="{{tier}}">{{tier_label}} · {{ratio_display}}</span>
+    </div>
+    <div class="inv-bar" title="{{carried_display}} / {{capacity_display}} kg">
+      <div class="inv-bar-fill" style="width: {{bar_pct}}%"></div>
+      <div class="inv-bar-half" title="{{localize 'BREATH.PastHalf'}}"></div>
+    </div>
+    {{#if past_half_load}}
+    <p class="inv-note">{{localize "BREATH.PastHalf"}}</p>
+    {{/if}}
+    {{#if clinch_mass_kg}}
+    <p class="inv-note">{{localize "BREATH.ClinchLoad"}}: {{clinch_mass_kg}} kg</p>
+    {{/if}}
+    {{#if missing_weight_items.length}}
+    <p class="inv-warn">{{localize "BREATH.MissingWeight"}}: {{#each missing_weight_items}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+    {{/if}}
+  </div>
+
+  <div class="inv-actions">
+    <p class="inv-cap">{{localize "BREATH.Maneuvers"}}</p>
+    <ul>
+      {{#each actions}}
+      <li class="inv-action {{#unless allowed}}blocked{{/unless}}" data-action-id="{{id}}" {{#unless allowed}}title="{{localize 'BREATH.BlockedByLoad'}}"{{/unless}}>
+        <span>{{label}}</span>
+        {{#unless allowed}}<em>{{localize "BREATH.BlockedByLoad"}}</em>{{/unless}}
+        {{#if note}}<em>{{note}}</em>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="inv-body">
+    <p class="inv-cap">{{localize "BREATH.OnBody"}}</p>
+    {{#if body.length}}
+    <ul class="inv-list">
+      {{#each body}}
+      <li data-item-id="{{id}}">
+        {{#if img}}<img src="{{img}}" width="24" height="24" alt=""/>{{/if}}
+        <a data-inv-action="open" data-item-id="{{id}}">{{name}}</a>
+        <span class="inv-meta">{{weight}} kg{{#if slots}} · {{slots}}{{/if}}{{#if is_container}} · {{localize "BREATH.Holds"}} {{capacity_kg}} kg{{/if}}</span>
+        {{#unless is_container}}<button type="button" data-inv-action="stow" data-item-id="{{id}}">{{localize "BREATH.Stow"}}</button>{{/unless}}
+        <a class="delete" data-inv-action="delete" data-item-id="{{id}}" title="{{localize 'Delete'}}">✕</a>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="hint">{{localize "BREATH.DropGear"}}</p>
+    {{/if}}
+  </div>
+
+  {{#each packs}}
+  <div class="inv-pack" data-item-id="{{id}}">
+    <p class="inv-cap">{{name}} — {{used}} / {{capacity_kg}} kg</p>
+    {{#if contents.length}}
+    <ul class="inv-list">
+      {{#each contents}}
+      <li data-item-id="{{id}}">
+        {{#if img}}<img src="{{img}}" width="24" height="24" alt=""/>{{/if}}
+        <a data-inv-action="open" data-item-id="{{id}}">{{name}}</a>
+        <span class="inv-meta">{{weight}} kg</span>
+        <button type="button" data-inv-action="equip" data-item-id="{{id}}">{{localize "BREATH.Equip"}}</button>
+        <a class="delete" data-inv-action="delete" data-item-id="{{id}}" title="{{localize 'Delete'}}">✕</a>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="hint">{{localize "BREATH.PackEmpty"}}</p>
+    {{/if}}
+  </div>
+  {{/each}}
+
+  {{#if looseBackpack.length}}
+  <ul class="inv-list">
+    {{#each looseBackpack}}
+    <li data-item-id="{{id}}">
+      <a data-inv-action="open" data-item-id="{{id}}">{{name}}</a>
+      <span class="inv-meta">{{weight}} kg</span>
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</section>

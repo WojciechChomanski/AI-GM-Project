@@ -29,7 +29,7 @@ SYSTEM_ID = "breath-and-the-veil"
 HIDDEN_KEY = re.compile(r"^(faith|virtue|piety|holy_fury\w*|corruption\w*|stress\w*|reputation\w*)$", re.I)
 ICONS = {"weapon": "icons/svg/sword.svg", "armor": "icons/svg/shield.svg", "class": "icons/svg/book.svg",
          "race": "icons/svg/mystery-man.svg", "gender": "icons/svg/mystery-man.svg", "talent": "icons/svg/aura.svg",
-         "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg"}
+         "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg", "gear": "icons/svg/chest.svg"}
 
 
 def load(*parts):
@@ -38,12 +38,63 @@ def load(*parts):
 
 
 def strip_hidden(node):
-    """Remove hidden-stat keys at any depth (and string list entries naming them)."""
+    """Remove hidden-stat keys at any depth (and string list entries naming them).
+
+    Also drops the 'hidden' / 'hidden_start' blocks used in order-path requirements
+    (virtue/piety gates), so player-facing class pages never see those numbers.
+    """
     if isinstance(node, dict):
-        return {k: strip_hidden(v) for k, v in node.items() if not HIDDEN_KEY.match(str(k))}
+        return {k: strip_hidden(v) for k, v in node.items()
+                if not HIDDEN_KEY.match(str(k)) and k not in ("hidden", "hidden_start")}
     if isinstance(node, list):
         return [strip_hidden(v) for v in node if not (isinstance(v, str) and HIDDEN_KEY.match(v))]
     return node
+
+
+PLAYER_BLOCK = re.compile(
+    r"(piety_system|corruption_system|faith_system|virtue_system|holy_fury\w*)", re.I)
+PLAYER_FIELD = re.compile(
+    r"(^|_)(faith|virtue|piety|holy_?fury|corruption|stress|reputation)(_|$)", re.I)
+
+
+def strip_player(node):
+    """strip_hidden plus player-page gates (piety_system, virtue_min, piety_cost, ...)."""
+    node = strip_hidden(node)
+    if isinstance(node, dict):
+        return {k: strip_player(v) for k, v in node.items()
+                if not PLAYER_BLOCK.search(str(k)) and not PLAYER_FIELD.search(str(k))}
+    if isinstance(node, list):
+        return [strip_player(v) for v in node]
+    return node
+
+
+def _careers():
+    try:
+        return load("careers.json")
+    except FileNotFoundError:
+        return {}
+
+
+def _order_paths():
+    try:
+        return load("orders", "paths.json")
+    except FileNotFoundError:
+        return {}
+
+
+def player_class_extras(class_key):
+    """Career paths and order ranks, hidden-stat gates already stripped, for the class item page."""
+    extras = {}
+    careers = _careers()
+    block = (careers.get("classes") or {}).get(class_key)
+    if block:
+        extras["career"] = strip_player(block)
+    paths = _order_paths().get("paths") or {}
+    for path in paths.values():
+        if isinstance(path, dict) and path.get("class") == class_key:
+            extras["order_path"] = strip_player(path)
+            break
+    return extras
 
 
 def doc_id(pack, key):
@@ -64,6 +115,14 @@ def item(pack, key, name, itype, source_file, description="", rules=None, **fiel
               "rules": strip_hidden(rules or {}), **strip_hidden(fields)}
     return {"_id": _id, "_key": f"!items!{_id}", "name": name, "type": itype, "img": ICONS[itype],
             "system": system, "effects": [], "flags": {}, "folder": None, "sort": 0, "ownership": {"default": 0}}
+
+
+def as_list(value):
+    if value is None or value == "":
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
 
 
 def split(s):
@@ -117,6 +176,10 @@ def class_entries():
             if k.lower() == "paladin" or (c.get("label") or "").lower() == "paladin":
                 print(f"warning: skipped retired class Paladin in rules/classes/{fn}", file=sys.stderr)
                 continue
+            # Cleric is on hold until redesigned; hide it from the Foundry classes pack.
+            if k.lower() == "cleric" or (c.get("label") or "").lower() == "cleric":
+                print(f"warning: skipped on-hold class Cleric in rules/classes/{fn}", file=sys.stderr)
+                continue
             yield fn, k, c
 
 
@@ -134,11 +197,13 @@ def classes():
         if owners.get(k) != fn:
             continue
         r = c.get("restrictions") or {}
+        rules = strip_player({x: v for x, v in c.items() if x not in ("description", "lore")})
+        rules.update(player_class_extras(k))
         out.append(item("classes", k, c.get("label") or k.replace("_", " "), "class", f"rules/classes/{fn}",
                         para(c.get("description"), c.get("lore")),
-                        rules={x: v for x, v in c.items() if x not in ("description", "lore")},
-                        allowed_races=list(c.get("allowed_races") or r.get("races") or []),
-                        allowed_genders=list(c.get("allowed_genders") or r.get("genders") or [])))
+                        rules=rules,
+                        allowed_races=as_list(c.get("allowed_races") or c.get("race_lock") or r.get("races") or r.get("race")),
+                        allowed_genders=as_list(c.get("allowed_genders") or c.get("gender_lock") or r.get("genders") or r.get("gender"))))
     return out
 
 
@@ -205,11 +270,26 @@ def skills():
     return out
 
 
+def gear():
+    """Placeholder backpacks and pouches from rules/inventory.json (no official pack list yet)."""
+    data = load("inventory.json")
+    out = []
+    for e in data["backpacks"]["items"]:
+        out.append(item("gear", e["id"], e["name"], "gear", "rules/inventory.json", para(e.get("description")),
+                        rules={"placeholder": True, "capacity_kg": e["capacity_kg"],
+                               "capacity_volume": e.get("capacity_volume"), "slot": e["slot"]},
+                        weight=e["weight"], volume=None,
+                        is_container=True, capacity_kg=e["capacity_kg"],
+                        capacity_volume=e.get("capacity_volume"), slot=e["slot"], equipped=False))
+    return out
+
+
+
 def build(out_dir=OUT):
     t, names = talents()
     packs = {"weapons": weapons(), "armor": armor(), "classes": classes(), "races": races(), "genders": genders(),
              "talents": t, "flaws": creation("flaws", "flaws.json", "flaw", names),
-             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills()}
+             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills(), "gear": gear()}
     shutil.rmtree(out_dir, ignore_errors=True)
     for pack, docs in packs.items():
         d = os.path.join(out_dir, pack)

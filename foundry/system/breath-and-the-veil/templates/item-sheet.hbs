@@ -1,9 +1,108 @@
-<section class="breath-sheet">
-  <header class="sheet-header">
-    <img src="{{item.img}}" data-action="editImage" data-edit="img" alt="{{item.name}}" width="64" height="64"/>
-    <input name="name" type="text" value="{{item.name}}"/>
-    <span class="type">{{typeLabel}}</span>
+<section class="breath-sheet item-sheet">
+  <div class="rivet tl"></div><div class="rivet tr"></div><div class="rivet bl"></div><div class="rivet br"></div>
+
+  <header class="head">
+    <div class="seal small" data-action="editImage" data-edit="img">
+      <img src="{{icon}}" alt="{{item.name}}"/>
+    </div>
+    <div class="who">
+      <input class="name" name="name" type="text" value="{{item.name}}"/>
+      <div class="idrow"><div><label>{{typeLabel}}</label></div></div>
+    </div>
   </header>
+
+  {{#if isClass}}
+  <div class="prose">{{{description}}}</div>
+  {{#if page.powerSource}}<p class="meta"><label>{{localize "BREATH.PowerSource"}}</label> {{page.powerSource}}</p>{{/if}}
+  <p class="meta locks">
+    {{#if page.locks.races.length}}<span><label>{{localize "BREATH.Races"}}</label> {{join page.locks.races}}</span>{{/if}}
+    {{#if page.locks.genders.length}}<span><label>{{localize "BREATH.Genders"}}</label> {{join page.locks.genders}}</span>{{/if}}
+  </p>
+  {{#if page.onHold}}<p class="notice">{{localize "BREATH.ClassOnHold"}}</p>{{/if}}
+
+  {{#if page.skills.length}}
+  <h2 class="sec">{{localize "BREATH.Skills"}}</h2>
+  <ul class="skills">{{#each page.skills}}<li>{{source_id}} <em>{{localize "BREATH.Rank"}} {{rank}}</em></li>{{/each}}</ul>
+  {{/if}}
+
+  {{#if page.trees.length}}
+  <h2 class="sec">{{localize "BREATH.SkillTrees"}}</h2>
+  <ul class="features">{{#each page.trees}}<li><b>{{name}}</b>{{#if focus}} — {{focus}}{{/if}}</li>{{/each}}</ul>
+  {{/if}}
+
+  {{#if page.progression.length}}
+  <h2 class="sec">{{localize "BREATH.Ranks"}}</h2>
+  <ol class="ranks">
+    {{#each page.progression}}
+    <li>
+      <b>{{name}}</b> <i>{{localize "BREATH.Tier"}} {{tier}}</i>
+      {{#if requirements.length}}<p class="req">{{localize "BREATH.Requires"}}: {{join requirements}}</p>{{/if}}
+      {{#if abilities.length}}<p>{{localize "BREATH.Gains"}}: {{join abilities}}</p>{{/if}}
+      {{#if skillTrees.length}}<p>{{localize "BREATH.SkillTrees"}}: {{join skillTrees}}</p>{{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{/if}}
+
+  {{#if page.stay}}
+  <h2 class="sec">{{localize "BREATH.Career"}}</h2>
+  <p>{{page.stay}}</p>
+  {{/if}}
+  {{#if page.evolutions.length}}
+  <ul class="features">
+    {{#each page.evolutions}}
+    <li>
+      <b>{{name}}</b>{{#if placeholder}} <span class="flag">{{localize "BREATH.Placeholder"}}</span>{{/if}}
+      {{#if description}} — {{description}}{{/if}}
+      {{#if requires.length}}<p class="req">{{localize "BREATH.Requires"}}: {{join requires}}</p>{{/if}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if page.pathName}}
+  <h2 class="sec">{{page.pathName}}</h2>
+  <ol class="ranks">
+    {{#each page.ranks}}
+    <li>
+      <b>{{name}}</b> <i>{{localize "BREATH.Rank"}} {{rank}}</i>
+      {{#if requires.length}}<p class="req">{{localize "BREATH.Requires"}}: {{join requires}}</p>{{/if}}
+      {{#if gives.length}}<p>{{localize "BREATH.Gives"}}: {{join gives}}</p>{{/if}}
+      {{#if costs.length}}<p>{{localize "BREATH.Costs"}}: {{join costs}}</p>{{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{/if}}
+
+  {{#if page.honours.length}}
+  <h2 class="sec">{{localize "BREATH.Honours"}}</h2>
+  <ul class="features">
+    {{#each page.honours}}
+    <li>
+      <b>{{name}}</b>{{#if kind}} — <i>{{kind}}</i>{{/if}}
+      {{#if description}}<p>{{description}}</p>{{/if}}
+      {{#if min_rank}}<p class="req">{{localize "BREATH.MinRank"}} {{min_rank}}</p>{{/if}}
+      {{#if requires.length}}<p class="req">{{localize "BREATH.Requires"}}: {{join requires}}</p>{{/if}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if page.obligations}}
+  <h2 class="sec">{{localize "BREATH.Obligations"}}</h2>
+  <ul class="features">
+    {{#each page.obligations}}
+    <li><b>{{@key}}</b> — {{this}}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if page.flaws.length}}
+  <h2 class="sec">{{localize "BREATH.Flaws"}}</h2>
+  <ul class="features">{{#each page.flaws}}<li><b>{{name}}</b>{{#if text}} — {{text}}{{/if}}</li>{{/each}}</ul>
+  {{/if}}
+
+  {{else}}
   {{#if isWeapon}}
   <div class="grid">
     <span>{{localize "BREATH.Damage"}}: {{system.base_damage}} ({{system.damage_type}})</span>
@@ -22,7 +121,7 @@
     <label>{{localize "BREATH.Durability"}} <input name="system.durability.value" type="number" value="{{system.durability.value}}"/> / {{system.durability.max}}</label>
   </div>
   {{/if}}
-  <h3>{{localize "BREATH.Description"}}</h3>
-  <div class="description">{{{description}}}</div>
-  <details><summary>{{localize "BREATH.RulesData"}}</summary><pre>{{rulesJson}}</pre></details>
+  <h2 class="sec">{{localize "BREATH.Description"}}</h2>
+  <div class="prose">{{{description}}}</div>
+  {{/if}}
 </section>
