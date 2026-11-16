@@ -20,9 +20,12 @@ ci/foundry-release.yml       tag -> tests, build, zip, GitHub release (move to .
 
 ## Data
 
+The actor contract (including inventory fields reserved for workstream B, and art paths for workstream C) is in `foundry/system/docs/ACTOR_MODEL.md`.
+
 - **Actors:**
   - character, npc and creature
   - the 12 visible attributes (value and cap), HP, stamina, combat state, details and biography
+  - `inventory`: equipped coverage slots, backpack container ids, `carried_weight`, `carry_capacity` (B implements behaviour)
   - `felt`: a list of `{topic, text}`
 - **Items:** weapon, armour (with saved `durability.value/max`), class, race, gender, talent, flaw, advantage and skill.
 - **Hidden stats are not in the system at all.** Faith, Virtue, Piety, Holy Fury, Corruption, the stress number and Reputation live only in the Python backend.
@@ -41,7 +44,7 @@ ci/foundry-release.yml       tag -> tests, build, zip, GitHub release (move to .
 | genders | `rules/stats.json` (one per race/gender, with starting stats and caps) |
 | talents | `rules/talents/*.json` |
 | flaws, advantages | `rules/creation/*.json` |
-| skills | collected from the classes' `skills` and `skill_trees` (there is no skills rules file yet) |
+| skills | `rules/skills.json` |
 
 Document ids are derived from the source key, so a rebuild updates entries instead of duplicating them.
 
@@ -93,23 +96,15 @@ The repository must be public, or the release assets must be otherwise downloada
 
 ## Release (you do this)
 
-**One-time step: activate the workflow.** The bot's GitHub token may not push workflow files, so the workflow ships as `foundry/system/ci/foundry-release.yml`. Move it into place once:
+The workflow is already at `.github/workflows/foundry-release.yml` (a tag push runs tests, a clean `npm run build`, and publishes the zip). Do not zip packs from a local `foundry/system/breath-and-the-veil/packs/` folder — that is how v0.1.0 shipped a stale Paladin class. Always let the workflow build from a clean checkout, or run `npm run build` immediately before any local zip.
 
-```
-git mv foundry/system/ci/foundry-release.yml .github/workflows/foundry-release.yml
-git commit -m "Activate Foundry release workflow"
-git push
-```
-
-You can also do this on GitHub: create `.github/workflows/foundry-release.yml` and paste in the contents.
-
-1. Bump `"version"` in `system.json`. Optional: CI stamps the version from the tag anyway.
+1. Bump `"version"` in `system.json` (and the `download` URL tag). CI also stamps version from the tag.
 2. Commit and push to `main`.
 3. Tag the commit and push the tag:
 
    ```
-   git tag v0.1.0
-   git push origin v0.1.0
+   git tag v0.1.1
+   git push origin v0.1.1
    ```
 
 4. The **Foundry system release** workflow then runs:

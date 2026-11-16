@@ -22,6 +22,34 @@ class BreathActorData extends foundry.abstract.TypeDataModel {
         shield_equipped: new BooleanField({ initial: false }),
       }),
       biography: new HTMLField({ initial: "" }),
+      // Inventory contract: see foundry/system/docs/ACTOR_MODEL.md (workstream B fills behaviour).
+      inventory: new SchemaField({
+        equipped: new SchemaField({
+        head: new StringField({ initial: "" }),
+        throat: new StringField({ initial: "" }),
+        chest: new StringField({ initial: "" }),
+        stomach: new StringField({ initial: "" }),
+        groin: new StringField({ initial: "" }),
+        left_upper_arm: new StringField({ initial: "" }),
+        left_lower_arm: new StringField({ initial: "" }),
+        right_upper_arm: new StringField({ initial: "" }),
+        right_lower_arm: new StringField({ initial: "" }),
+        left_upper_leg: new StringField({ initial: "" }),
+        left_lower_leg: new StringField({ initial: "" }),
+        right_upper_leg: new StringField({ initial: "" }),
+        right_lower_leg: new StringField({ initial: "" }),
+        main_hand: new StringField({ initial: "" }),
+        off_hand: new StringField({ initial: "" }),
+        back: new StringField({ initial: "" }),
+        belt: new StringField({ initial: "" })
+        }),
+        backpack: new SchemaField({
+          itemId: new StringField({ initial: "" }),
+          contents: new ArrayField(new StringField()),
+        }),
+        carried_weight: new NumberField({ required: true, initial: 0, min: 0 }),
+        carry_capacity: new NumberField({ required: true, initial: 0, min: 0 }),
+      }),
       // Felt descriptions: player-facing TEXT only, written by the GM client from the backend (Phase 3).
       felt: new ArrayField(new SchemaField({ topic: new StringField(), text: new StringField() })),
     };
@@ -32,7 +60,7 @@ export class CharacterData extends BreathActorData {
   static defineSchema() {
     return { ...super.defineSchema(),
       details: new SchemaField({ race: new StringField(), gender: new StringField(), class_name: new StringField(),
-        background: new StringField(), age: int(25, { min: 0 }) }) };
+        background: new StringField(), age: int(25, { min: 0 }), mass: new NumberField({ initial: 0, min: 0 }) }) };
   }
 }
 export class NpcData extends BreathActorData {}

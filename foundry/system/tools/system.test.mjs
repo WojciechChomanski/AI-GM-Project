@@ -8,6 +8,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { extractPack } from "@foundryvtt/foundryvtt-cli";
+import { verifyClassPack } from "./verify-class-pack.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const sys = path.join(here, "..", "breath-and-the-veil");
@@ -73,4 +74,34 @@ test("every pack extracts, matches its type, and carries no hidden-stat keys", a
     }
     assert.deepEqual(bad, [], "hidden-stat keys in packs");
   }
+});
+
+test("version is 0.1.1 and every pack has a shipped parchment banner", () => {
+  assert.equal(manifest.version, "0.1.1");
+  assert.match(manifest.download, /\/releases\/download\/v0\.1\.1\/breath-and-the-veil\.zip$/);
+  for (const pack of manifest.packs) {
+    assert.equal(pack.banner, `assets/banners/${pack.name}.webp`, pack.name);
+    const file = path.join(sys, pack.banner);
+    assert.ok(fs.existsSync(file), `missing banner ${file}`);
+    assert.ok(fs.statSync(file).size > 0, `empty banner ${file}`);
+  }
+  assert.ok(fs.existsSync(path.join(sys, "assets/banners/_fallback.webp")));
+});
+
+test("compiled classes pack has Knight and neither Paladin nor integration", async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "bv-classes-"));
+  await extractPack(path.join(sys, "packs/classes"), tmp, { log: false });
+  const docs = fs.readdirSync(tmp).map((f) => JSON.parse(fs.readFileSync(path.join(tmp, f), "utf8")));
+  const errs = verifyClassPack(docs);
+  assert.deepEqual(errs, [], errs.join("; "));
+});
+
+test("verifyClassPack catches a stale Paladin document", () => {
+  const base = [{ name: "Knight", source_id: "Knight" }, { name: "Warrior", source_id: "Warrior" }];
+  assert.deepEqual(verifyClassPack(base), []);
+  const stale = [...base, { name: "Paladin", source_id: "Paladin" }, { name: "integration", source_id: "integration" }];
+  const errs = verifyClassPack(stale);
+  assert.equal(errs.length, 2);
+  assert.ok(errs.some((e) => /Paladin/i.test(e)));
+  assert.ok(errs.some((e) => /integration/i.test(e)));
 });
