@@ -99,9 +99,10 @@ test("compiled classes pack has Knight and neither Paladin nor integration", asy
 test("verifyClassPack catches a stale Paladin document", () => {
   const base = [{ name: "Knight", source_id: "Knight" }, { name: "Warrior", source_id: "Warrior" }];
   assert.deepEqual(verifyClassPack(base), []);
-  const stale = [...base, { name: "Paladin", source_id: "Paladin" }, { name: "integration", source_id: "integration" }];
+  const stale = [...base, { name: "Paladin", source_id: "Paladin" }, { name: "integration", source_id: "integration" }, { name: "Cleric", source_id: "Cleric" }];
   const errs = verifyClassPack(stale);
-  assert.equal(errs.length, 2);
+  assert.equal(errs.length, 3);
   assert.ok(errs.some((e) => /Paladin/i.test(e)));
   assert.ok(errs.some((e) => /integration/i.test(e)));
+  assert.ok(errs.some((e) => /Cleric/i.test(e)));
 });

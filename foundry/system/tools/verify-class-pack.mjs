@@ -7,6 +7,7 @@ export function verifyClassPack(docs) {
   ]));
   const errors = [];
   if (labels.has("paladin")) errors.push("classes pack still contains Paladin (retired honour title, not a class)");
+  if (labels.has("cleric")) errors.push("classes pack still contains Cleric (on hold until redesigned)");
   if (labels.has("integration")) errors.push("classes pack contains the 'integration' metadata block as a class");
   if (!labels.has("knight")) errors.push("classes pack is missing the worldly Knight");
   return errors;

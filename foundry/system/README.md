@@ -134,6 +134,12 @@ What was verified:
 Report anything odd from the first real load, and include the console (F12) output.
 
 
+## Character sheet (0.2)
+
+Drop Race, Gender and Class items onto a character actor. The software fills visible stats, caps, HP (the sum of the 13 official hit zones), stamina, starting skills and traits, and rejects illegal combinations (dwarves and ogres are male-only; class race/gender locks; women-only Veil casters). A Class can be dropped only after both Race and Gender are on the actor. Hidden stats are never stored. Opening a class item shows a player-facing page (explanation, career paths, ranks, skills, honours). Paladin appears as an honour on the Crusader Knight page, not as a class. Cleric is hidden from the pack until redesigned.
+
+The sheet is styled after the approved Witcher 3 comic mockup (bundled SIL fonts: Cinzel, EB Garamond, UnifrakturMaguntia; license in `assets/fonts/OFL.txt`). Portraits and class icons use `assets/portraits/<race>-<gender>.webp` and `assets/icons/classes/<id>.webp`, falling back to the shipped parchment if the file is missing.
+
 ## Inventory (0.3)
 
 Drag-and-drop inventory: weapons and armour go onto body slots if they are free, otherwise into a worn backpack. If there is no room, the drop is refused with a message. Carried weight and carry capacity (from `scripts/strength.py` / `rules/combat_rules.json`) are shown on the sheet, and sprint, acrobatics and unaided rope climb are greyed out when the load is over the limit. Details, placeholders and how this follows `ACTOR_MODEL.md`: `foundry/system/docs/INVENTORY.md`.
