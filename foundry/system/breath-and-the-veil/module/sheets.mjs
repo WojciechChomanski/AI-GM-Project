@@ -4,6 +4,7 @@ import { ATTRIBUTES } from "./data.mjs";
 import {
   classPageView, grantedFeatures, portraitPath, classIconPath, startingSkills,
   carryCapacity, sumCarriedWeight, computeCharacter, canAssign,
+  ZONE_LAYOUT, zonesAtZero, COLLAPSE_ZONES_AT_ZERO, VITAL_ZONES, sumZones,
 } from "./character.mjs";
 
 const ITEM_GROUPS = ["weapon", "armor", "class", "race", "gender", "talent", "advantage", "flaw", "skill"];
@@ -45,6 +46,7 @@ export async function applyIdentity(actor) {
     "system.attributes": computed.attributes,
     "system.resources.hp": computed.resources.hp,
     "system.resources.stamina": computed.resources.stamina,
+    "system.resources.zones": computed.resources.zones,
     "system.inventory.carry_capacity": computed.inventory.carry_capacity,
   };
   if (isOurs) patch.img = img;
@@ -89,13 +91,16 @@ export function previewAssignment(actor, incoming) {
   if (incoming?.type === "class") parts.classItem = incoming;
   const race = parts.raceItem?.system?.source_id || parts.raceItem?.name || parts.genderItem?.system?.race || "";
   const gender = parts.genderItem?.system?.gender || "";
-  return canAssign({ race, gender, classItem: parts.classItem, raceItem: parts.raceItem });
+  return canAssign({
+    race, gender, classItem: parts.classItem, raceItem: parts.raceItem, genderItem: parts.genderItem,
+    requireIdentityItems: incoming?.type === "class",
+  });
 }
 
 export class BreathActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["breath", "sheet", "actor"],
-    position: { width: 860, height: 820 },
+    position: { width: 920, height: 920 },
     form: { submitOnChange: true },
     window: { resizable: true },
     actions: {
@@ -130,10 +135,30 @@ export class BreathActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!ctx.skills.length) ctx.skills = startingSkills(parts.classItem).map((s) => ({
       id: "", name: s.source_id.replace(/_/g, " "), rank: s.rank,
     }));
-    const hp = actor.system.resources.hp;
+    const zones = actor.system.resources.zones || computed.resources.zones || {};
+    const summed = sumZones(zones);
+    const hp = summed.max ? summed : actor.system.resources.hp;
     const sta = actor.system.resources.stamina;
     ctx.hpPct = hp.max ? Math.max(0, Math.min(100, (100 * hp.value) / hp.max)) : 0;
     ctx.staPct = sta.max ? Math.max(0, Math.min(100, (100 * sta.value) / sta.max)) : 0;
+    ctx.hpValue = hp.value;
+    ctx.hpMax = hp.max;
+    const zero = zonesAtZero(zones);
+    ctx.zonesAtZero = zero.length;
+    ctx.collapseAt = COLLAPSE_ZONES_AT_ZERO;
+    ctx.vitalDown = zero.filter((id) => VITAL_ZONES.includes(id));
+    ctx.zoneBoxes = ZONE_LAYOUT.map((box) => {
+      const z = zones[box.id] || { value: 0, max: 0 };
+      const pct = z.max ? Math.max(0, Math.min(100, (100 * z.value) / z.max)) : 0;
+      return {
+        ...box,
+        label: game.i18n.localize(`BREATH.Zone.${box.id}`),
+        value: z.value,
+        max: z.max,
+        pct,
+        dead: z.value <= 0,
+      };
+    });
     const cap = actor.system.inventory?.carry_capacity
       || carryCapacity({
         strength: actor.system.attributes.strength?.value,

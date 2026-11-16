@@ -105,6 +105,7 @@ def test_classes_pack_has_knight_and_no_paladin(tmp_path):
     names = {d["name"].lower() for d in docs["classes"]}
     ids = {d["system"]["source_id"].lower() for d in docs["classes"]}
     assert not any("paladin" in n for n in names | ids)
+    assert not any("cleric" in n for n in names | ids)
     assert any("knight" == i or i.endswith("knight") for i in ids)
     assert "integration" not in ids
 
@@ -200,3 +201,22 @@ def test_class_locks_are_normalised_onto_the_item(tmp_path):
     assert by_id["Stonewarden"]["system"]["allowed_races"] == ["Dwarf"]
     assert by_id["Veil_Sorceress"]["system"]["allowed_genders"] == ["Female"]
     assert "Paladin" not in by_id
+
+
+def test_build_skips_on_hold_cleric(tmp_path):
+    docs = B.classes()
+    ids = {d["system"]["source_id"].lower() for d in docs}
+    names = {d["name"].lower() for d in docs}
+    assert "cleric" not in ids | names
+    # The rules file is still in the repo; the pack builder is what hides it.
+    assert os.path.isfile(os.path.join(ROOT, "rules", "classes", "cleric.json"))
+
+
+def test_actor_model_has_the_thirteen_official_zones():
+    src = open(os.path.join(SYS, "module", "data.mjs"), encoding="utf-8").read()
+    char = open(os.path.join(SYS, "module", "character.mjs"), encoding="utf-8").read()
+    for zone in ("head", "throat", "chest", "stomach", "groin",
+                 "left_upper_arm", "right_upper_arm", "left_lower_arm", "right_lower_arm",
+                 "left_upper_leg", "right_upper_leg", "left_lower_leg", "right_lower_leg"):
+        assert zone in src and zone in char, zone
+    assert "scaledZones" in char and "pyRound" in char

@@ -5,6 +5,38 @@
 export const ATTRIBUTES = ["strength", "toughness", "agility", "mobility", "dexterity", "endurance",
   "intelligence", "willpower", "perception", "charisma", "weapon_skill", "ballistic_skill"];
 
+// Official 13 hit zones from scripts/zone_hp.py (BASE_ZONES). Total HP is always the sum of these.
+// Display names follow the approved mockup (forearm/thigh/shin); ids stay the rules coverage names.
+export const BASE_ZONES = {
+  chest: 20,
+  left_upper_leg: 13, right_upper_leg: 13,
+  stomach: 11,
+  head: 7,
+  left_upper_arm: 6, right_upper_arm: 6,
+  left_lower_leg: 6, right_lower_leg: 6,
+  left_lower_arm: 3, right_lower_arm: 3,
+  throat: 3,
+  groin: 3,
+};
+export const ZONE_IDS = Object.keys(BASE_ZONES);
+export const VITAL_ZONES = ["head", "throat", "chest"];
+export const COLLAPSE_ZONES_AT_ZERO = 3;
+export const ZONE_LAYOUT = [
+  { id: "head",            label: "Head",        left: 205, top: 8 },
+  { id: "throat",          label: "Throat",      left: 205, top: 80 },
+  { id: "right_upper_arm", label: "R Upper Arm", left: 40,  top: 128 },
+  { id: "chest",           label: "Chest",       left: 205, top: 160 },
+  { id: "left_upper_arm",  label: "L Upper Arm", left: 370, top: 128 },
+  { id: "right_lower_arm", label: "R Forearm",   left: 18,  top: 236 },
+  { id: "stomach",         label: "Stomach",     left: 205, top: 240 },
+  { id: "left_lower_arm",  label: "L Forearm",   left: 392, top: 236 },
+  { id: "groin",           label: "Groin",       left: 205, top: 320 },
+  { id: "right_upper_leg", label: "R Thigh",     left: 110, top: 400 },
+  { id: "left_upper_leg",  label: "L Thigh",     left: 300, top: 400 },
+  { id: "right_lower_leg", label: "R Shin",      left: 110, top: 480 },
+  { id: "left_lower_leg",  label: "L Shin",      left: 300, top: 480 },
+];
+
 export const HIDDEN_STAT = /^(faith|virtue|piety|holy_?fury\w*|corruption\w*|stress\w*|reputation\w*)$/i;
 
 const LEGACY_CLASS_SCALE = 3; // matches scripts/character_loader.py
@@ -56,8 +88,16 @@ export function classLocks(classItem) {
   };
 }
 
-export function canAssign({ race, gender, classItem, raceItem } = {}) {
+export function canAssign({ race, gender, classItem, raceItem, genderItem, requireIdentityItems = false } = {}) {
   const reasons = [];
+  if (classItem && (!race || !gender)) {
+    reasons.push("Drop a Race and a Gender onto the character before a Class.");
+    return { ok: false, reasons };
+  }
+  if (classItem && requireIdentityItems && (!raceItem || !genderItem)) {
+    reasons.push("Drop a Race and a Gender onto the character before a Class.");
+    return { ok: false, reasons };
+  }
   if (race && gender && raceItem) {
     const allowed = playableGenders(raceItem);
     if (allowed && !allowed.some((g) => eq(g, gender))) {
@@ -101,10 +141,63 @@ export function classHpPercent(rules = {}) {
   return Number(a ?? b ?? 0) || 0;
 }
 
+/** Python 3 round() — half to even — so zone leftovers match scripts/zone_hp.scaled_zones. */
+export function pyRound(x) {
+  const sign = x < 0 ? -1 : 1;
+  const n = Math.abs(Number(x) || 0);
+  const floor = Math.floor(n);
+  const frac = n - floor;
+  let r;
+  if (frac < 0.5) r = floor;
+  else if (frac > 0.5) r = floor + 1;
+  else r = floor % 2 === 0 ? floor : floor + 1;
+  return sign * r;
+}
+
+export function hpMultiplier({ raceHpBonus = 0, classHpPercent = 0 } = {}) {
+  return (1 + (raceHpBonus || 0) / 100) * (1 + (classHpPercent || 0) / 100);
+}
+
+export function scaledZones(multiplier = 1) {
+  // scripts/zone_hp.scaled_zones: scale each base zone, leftovers go to the chest.
+  const target = pyRound(100 * multiplier);
+  const zones = {};
+  let sum = 0;
+  for (const [id, hp] of Object.entries(BASE_ZONES)) {
+    const v = Math.max(1, pyRound(hp * multiplier));
+    zones[id] = v;
+    sum += v;
+  }
+  zones.chest += target - sum;
+  return zones;
+}
+
 export function computeHp({ raceHpBonus = 0, classHpPercent = 0 } = {}) {
-  // scripts/zone_hp.hp_multiplier, then a single total (zone split is combat work).
-  const multiplier = (1 + (raceHpBonus || 0) / 100) * (1 + (classHpPercent || 0) / 100);
-  return Math.round(100 * multiplier);
+  const zones = scaledZones(hpMultiplier({ raceHpBonus, classHpPercent }));
+  return Object.values(zones).reduce((a, b) => a + b, 0);
+}
+
+export function zoneResources(maxes = BASE_ZONES, currents = null) {
+  const out = {};
+  for (const id of ZONE_IDS) {
+    const max = Number(maxes[id] ?? BASE_ZONES[id] ?? 0);
+    const value = currents && currents[id] != null ? Number(currents[id]) : max;
+    out[id] = { value, max };
+  }
+  return out;
+}
+
+export function sumZones(zones = {}) {
+  let value = 0, max = 0;
+  for (const id of ZONE_IDS) {
+    value += Number(zones[id]?.value || 0);
+    max += Number(zones[id]?.max || 0);
+  }
+  return { value, max };
+}
+
+export function zonesAtZero(zones = {}) {
+  return ZONE_IDS.filter((id) => Number(zones[id]?.value || 0) <= 0);
 }
 
 export function computeStamina({ raceBonus = 0, classFlat = 0 } = {}) {
@@ -187,10 +280,12 @@ export function computeCharacter({ raceItem, genderItem, classItem, talents = []
     attributes[key] = { value: Math.min(raw, cap), max: cap };
   }
   const raceRules = itemRules(raceItem);
-  const hpMax = computeHp({
+  const zoneMax = scaledZones(hpMultiplier({
     raceHpBonus: raceRules.stats?.hp_bonus || 0,
     classHpPercent: classHpPercent(itemRules(classItem)),
-  });
+  }));
+  const zones = zoneResources(zoneMax);
+  const hpMax = sumZones(zones).max;
   const staMax = computeStamina({
     raceBonus: raceRules.stats?.stamina_bonus || 0,
     classFlat: itemRules(classItem).stat_modifiers?.stamina_max_flat || 0,
@@ -210,6 +305,7 @@ export function computeCharacter({ raceItem, genderItem, classItem, talents = []
     resources: {
       hp: { value: hpMax, max: hpMax },
       stamina: { value: staMax, max: staMax },
+      zones,
     },
     inventory: { carry_capacity: capacity },
     skills: startingSkills(classItem),
@@ -308,6 +404,7 @@ export function actorSystemPatch(computed) {
     "system.attributes": computed.attributes,
     "system.resources.hp": computed.resources.hp,
     "system.resources.stamina": computed.resources.stamina,
+    "system.resources.zones": computed.resources.zones,
     "system.inventory.carry_capacity": computed.inventory.carry_capacity,
   };
 }

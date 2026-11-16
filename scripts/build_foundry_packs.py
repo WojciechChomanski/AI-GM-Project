@@ -176,6 +176,10 @@ def class_entries():
             if k.lower() == "paladin" or (c.get("label") or "").lower() == "paladin":
                 print(f"warning: skipped retired class Paladin in rules/classes/{fn}", file=sys.stderr)
                 continue
+            # Cleric is on hold until redesigned; hide it from the Foundry classes pack.
+            if k.lower() == "cleric" or (c.get("label") or "").lower() == "cleric":
+                print(f"warning: skipped on-hold class Cleric in rules/classes/{fn}", file=sys.stderr)
+                continue
             yield fn, k, c
 
 

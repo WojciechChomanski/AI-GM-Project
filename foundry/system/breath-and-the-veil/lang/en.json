@@ -107,6 +107,26 @@
     "Races": "Races",
     "Genders": "Genders",
     "Placeholder": "Placeholder",
-    "ClassOnHold": "This class is on hold in the rules."
+    "ClassOnHold": "This class is on hold in the rules.",
+    "Body": "Body",
+    "HealthSum": "sum of the 13 zones",
+    "ZonesAtZero": "Zones at 0",
+    "CollapseHint": "3 zones at 0 is collapse.",
+    "VitalDown": "A vital zone is at 0:",
+    "Zone": {
+      "head": "Head",
+      "throat": "Throat",
+      "chest": "Chest",
+      "stomach": "Stomach",
+      "groin": "Groin",
+      "left_upper_arm": "L Upper Arm",
+      "right_upper_arm": "R Upper Arm",
+      "left_lower_arm": "L Forearm",
+      "right_lower_arm": "R Forearm",
+      "left_upper_leg": "L Thigh",
+      "right_upper_leg": "R Thigh",
+      "left_lower_leg": "L Shin",
+      "right_lower_leg": "R Shin"
+    }
   }
 }

@@ -31,28 +31,53 @@
     </div>
   </header>
 
-  <div class="cols">
-    <div class="col-stats">
-      <h2 class="sec">{{localize "BREATH.Attributes"}}</h2>
-      <div class="stats">
-        {{#each attributes}}
-        <div class="stat">
-          <span>{{label}}</span>
-          <em title="{{localize 'BREATH.Cap'}} {{max}}">{{value}}<i>/{{max}}</i></em>
-        </div>
-        {{/each}}
+  <div class="cols body-row">
+    <div class="body-map" aria-label="{{localize 'BREATH.Body'}}">
+      <svg class="silhouette" viewBox="0 0 230 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke="#1a120a" stroke-width="1.6" opacity=".8">
+          <circle cx="115" cy="45" r="36"/>
+          <path d="M58 104 H172"/>
+          <path d="M60 102 H170 L178 320 H52 Z"/>
+          <path d="M60 105 L22 200 L10 320 L30 322 L44 210 L72 140Z"/>
+          <path d="M170 105 L208 200 L220 320 L200 322 L186 210 L158 140Z"/>
+          <path d="M55 320 H113 L108 545 H78 Z"/>
+          <path d="M117 320 H175 L152 545 H122 Z"/>
+          <path d="M53 322 H177"/>
+        </g>
+      </svg>
+      {{#each zoneBoxes}}
+      <div class="zb{{#if dead}} dead{{/if}}" style="left: {{left}}px; top: {{top}}px">
+        <label>{{label}}</label>
+        <b>
+          <input name="system.resources.zones.{{id}}.value" type="number" value="{{value}}"/>
+          <small>/{{max}}</small>
+        </b>
+        <div class="zbar"><i style="width: {{pct}}%"></i></div>
       </div>
+      {{/each}}
     </div>
 
     <div class="side">
       <div class="pool hp">
         <div class="lbl">{{localize "BREATH.Health"}}</div>
         <div class="val">
-          <input name="system.resources.hp.value" type="number" value="{{system.resources.hp.value}}"/>
-          <span class="of">/ {{system.resources.hp.max}}</span>
+          <b>{{hpValue}}</b>
+          <span class="of">/ {{hpMax}}</span>
+          <small>{{localize "BREATH.HealthSum"}}</small>
           <div class="bar"><i style="width: {{hpPct}}%"></i></div>
         </div>
       </div>
+      <div class="pool zones-zero">
+        <div class="lbl">{{localize "BREATH.ZonesAtZero"}}</div>
+        <div class="val">
+          <b>{{zonesAtZero}}</b>
+          <span class="of">/ {{collapseAt}}</span>
+          <small>{{localize "BREATH.CollapseHint"}}</small>
+        </div>
+      </div>
+      {{#if vitalDown.length}}
+      <p class="notice">{{localize "BREATH.VitalDown"}} {{#each vitalDown}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+      {{/if}}
       <div class="pool sta">
         <div class="lbl">{{localize "BREATH.Stamina"}}</div>
         <div class="val">
@@ -69,6 +94,16 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <h2 class="sec">{{localize "BREATH.Attributes"}}</h2>
+  <div class="stats">
+    {{#each attributes}}
+    <div class="stat">
+      <span>{{label}}</span>
+      <em title="{{localize 'BREATH.Cap'}} {{max}}">{{value}}<i>/{{max}}</i></em>
+    </div>
+    {{/each}}
   </div>
 
   {{#if features.length}}

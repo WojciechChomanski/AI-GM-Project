@@ -1,6 +1,8 @@
 // Data models (Foundry v14 TypeDataModel). VISIBLE stats only.
 // Hidden stats (faith, virtue, piety, holy fury, corruption, the stress number, reputation) are deliberately
 // absent: they live only in the Breath backend. Players see the `felt` text the backend writes (later phases).
+import { BASE_ZONES, ZONE_IDS, sumZones } from "./character.mjs";
+
 const { SchemaField, NumberField, StringField, HTMLField, BooleanField, ArrayField, ObjectField } = foundry.data.fields;
 
 export const ATTRIBUTES = ["strength", "toughness", "agility", "mobility", "dexterity", "endurance",
@@ -11,10 +13,22 @@ const stat = (initial) => new SchemaField({ value: int(initial, { min: 0 }), max
 const resource = (initial) => new SchemaField({ value: int(initial), max: int(initial, { min: 0 }) });
 
 class BreathActorData extends foundry.abstract.TypeDataModel {
+  prepareDerivedData() {
+    const summed = sumZones(this.resources?.zones);
+    if (this.resources?.hp && summed.max) {
+      this.resources.hp.value = summed.value;
+      this.resources.hp.max = summed.max;
+    }
+  }
   static defineSchema() {
     return {
       attributes: new SchemaField(Object.fromEntries(ATTRIBUTES.map((a) => [a, stat(30)]))),
-      resources: new SchemaField({ hp: resource(100), stamina: resource(100) }),
+      resources: new SchemaField({
+        hp: resource(100),
+        stamina: resource(100),
+        // 13 official hit zones from scripts/zone_hp.py. Total HP is always the sum of these.
+        zones: new SchemaField(Object.fromEntries(ZONE_IDS.map((z) => [z, resource(BASE_ZONES[z])]))),
+      }),
       combat: new SchemaField({
         weapon_in_hand: new StringField({ initial: "" }),
         grip: new StringField({ initial: "two_hands", choices: ["two_hands", "one_hand"] }),

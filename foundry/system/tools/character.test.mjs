@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   computeCharacter, canAssign, classLocks, classPageView, carryCapacity,
   computeHp, computeStamina, omitHidden, isHiddenStat, portraitPath, classIconPath,
-  actorSystemPatch, ATTRIBUTES,
+  actorSystemPatch, ATTRIBUTES, scaledZones,
 } from "../breath-and-the-veil/module/character.mjs";
 import { verifyClassPack } from "./verify-class-pack.mjs";
 
@@ -47,8 +47,17 @@ test("human male crusader knight fills visible stats, caps, hp and stamina", () 
   // Human male STR 35 + class 12, cap 50
   assert.equal(computed.attributes.strength.value, 47);
   assert.equal(computed.attributes.strength.max, 50);
-  assert.equal(computed.resources.hp.max, 115); // 100 * 1.15
+  assert.equal(computed.resources.hp.max, 115); // sum of official scaled zones
   assert.equal(computed.resources.stamina.max, 110); // 100 + stamina_max_flat 10
+  const expectedZones = { chest: 24, left_upper_leg: 15, right_upper_leg: 15, stomach: 13, head: 8,
+    left_upper_arm: 7, right_upper_arm: 7, left_lower_leg: 7, right_lower_leg: 7,
+    left_lower_arm: 3, right_lower_arm: 3, throat: 3, groin: 3 };
+  for (const [id, max] of Object.entries(expectedZones)) {
+    assert.equal(computed.resources.zones[id].max, max, id);
+    assert.equal(computed.resources.zones[id].value, max, id);
+  }
+  const zoneSum = Object.values(computed.resources.zones).reduce((a, z) => a + z.max, 0);
+  assert.equal(zoneSum, computed.resources.hp.max);
   assert.equal(computed.inventory.carry_capacity, (20 + 47 * 1.5) * 1.15);
   for (const key of Object.keys(computed.attributes)) {
     assert.ok(ATTRIBUTES.includes(key), key);
@@ -171,4 +180,45 @@ test("art paths fall back when the race-gender or class file is missing", () => 
   assert.match(classIconPath("Crusader_Knight", { exists }), /_fallback\.webp$/);
   const raw = portraitPath("Human", "Male");
   assert.match(raw.preferred, /portraits\/human-male\.webp$/);
+});
+
+test("class drop requires race and gender first", () => {
+  const ck = bySource(classes, "Crusader_Knight");
+  const noIdentity = canAssign({ classItem: ck });
+  assert.equal(noIdentity.ok, false);
+  assert.match(noIdentity.reasons.join(" "), /Race and a Gender/i);
+  assert.equal(canAssign({ race: "Human", classItem: ck }).ok, false);
+  assert.equal(canAssign({ gender: "Male", classItem: ck }).ok, false);
+  const withItems = canAssign({
+    race: "Human", gender: "Male", classItem: ck,
+    raceItem: bySource(races, "Human"), genderItem: bySource(genders, "Human_Male"),
+    requireIdentityItems: true,
+  });
+  assert.equal(withItems.ok, true);
+  const itemsMissing = canAssign({
+    race: "Human", gender: "Male", classItem: ck, requireIdentityItems: true,
+  });
+  assert.equal(itemsMissing.ok, false);
+});
+
+test("scaledZones matches scripts/zone_hp.scaled_zones (leftovers to chest)", () => {
+  assert.deepEqual(scaledZones(1), {
+    chest: 20, left_upper_leg: 13, right_upper_leg: 13, stomach: 11, head: 7,
+    left_upper_arm: 6, right_upper_arm: 6, left_lower_leg: 6, right_lower_leg: 6,
+    left_lower_arm: 3, right_lower_arm: 3, throat: 3, groin: 3,
+  });
+  assert.deepEqual(scaledZones(1.15), {
+    chest: 24, left_upper_leg: 15, right_upper_leg: 15, stomach: 13, head: 8,
+    left_upper_arm: 7, right_upper_arm: 7, left_lower_leg: 7, right_lower_leg: 7,
+    left_lower_arm: 3, right_lower_arm: 3, throat: 3, groin: 3,
+  });
+  assert.equal(computeHp({ raceHpBonus: 20, classHpPercent: 15 }), 138);
+  assert.equal(Object.values(scaledZones(1.38)).reduce((a, b) => a + b, 0), 138);
+});
+
+test("classes pack does not contain Cleric", () => {
+  const ids = classes.flatMap((d) => [d.system?.source_id, d.name]).map((x) => String(x).toLowerCase());
+  assert.ok(!ids.includes("cleric"));
+  const errs = verifyClassPack([...classes, { name: "Cleric", source_id: "Cleric" }]);
+  assert.ok(errs.some((e) => /cleric/i.test(e)));
 });
