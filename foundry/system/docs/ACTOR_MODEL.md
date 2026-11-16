@@ -80,11 +80,11 @@ Named load bands (light / medium / heavy at ratios 0.2 / 0.5 / 1.0) live in `rul
 
 ## Art paths (workstream C)
 
-C adds files under `foundry/system/breath-and-the-veil/assets/`. Until a file exists, the system must fall back (never Foundry's default gun art).
+Files live under `foundry/system/breath-and-the-veil/assets/`. See `foundry/system/docs/ART.md` for sizes, the test map grid, and what is still outstanding. Until a specific file exists, fall back (never Foundry's default gun art).
 
 | Kind | Path | Fallback |
 |---|---|---|
-| Compendium banners | `assets/banners/<pack>.webp` | shipped dark-parchment image (same file for every pack until C replaces it) |
+| Compendium banners | `assets/banners/<pack>.webp` | `assets/banners/_fallback.webp` (the 0.1.1 parchment; packs now have painted banners) |
 | Portraits | `assets/portraits/<race>-<gender>.webp` | `assets/portraits/_fallback.webp` (lowercase ids, e.g. `human-male.webp`) |
 | Class icons | `assets/icons/classes/<id>.webp` | `assets/icons/classes/_fallback.webp` (id is the class key, e.g. `crusader_knight.webp`) |
 

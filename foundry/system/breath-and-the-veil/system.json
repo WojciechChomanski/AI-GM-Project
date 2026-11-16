@@ -218,6 +218,18 @@
         "ASSISTANT": "OWNER"
       },
       "banner": "assets/banners/gear.webp"
+    },
+    {
+      "name": "scenes",
+      "label": "Scenes",
+      "type": "Scene",
+      "system": "breath-and-the-veil",
+      "path": "packs/scenes",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "banner": "assets/banners/scenes.webp"
     }
   ],
   "packFolders": [
@@ -234,7 +246,8 @@
         "talents",
         "flaws",
         "advantages",
-        "skills"
+        "skills",
+        "scenes"
       ]
     }
   ],
