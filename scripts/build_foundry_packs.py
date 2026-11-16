@@ -110,8 +110,14 @@ def class_entries():
             continue
         d = load("classes", fn)
         for k, c in d.items():
-            if k not in ("meta", "integration") and isinstance(c, dict):
-                yield fn, k, c
+            if k in ("meta", "integration") or not isinstance(c, dict):
+                continue
+            # Paladin was retired as a class (honour title on the Crusader Knight path).
+            # Never emit it, even if a stale paladin.json is dropped back into rules/classes/.
+            if k.lower() == "paladin" or (c.get("label") or "").lower() == "paladin":
+                print(f"warning: skipped retired class Paladin in rules/classes/{fn}", file=sys.stderr)
+                continue
+            yield fn, k, c
 
 
 def classes():

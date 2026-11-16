@@ -126,3 +126,42 @@ def test_no_gm_only_stat_keys_in_packs(tmp_path):
         for d in items:
             walk(d["system"], d["name"])
     assert bad == []
+
+def test_version_and_pack_banners_exist():
+    m = manifest()
+    assert m["version"] == "0.1.1"
+    assert m["download"].endswith("/releases/download/v0.1.1/breath-and-the-veil.zip")
+    banners = os.path.join(SYS, "assets", "banners")
+    for pack in m["packs"]:
+        assert pack["banner"] == f"assets/banners/{pack['name']}.webp"
+        path = os.path.join(SYS, pack["banner"])
+        assert os.path.isfile(path) and os.path.getsize(path) > 0
+    assert os.path.isfile(os.path.join(banners, "_fallback.webp"))
+
+
+def test_build_skips_retired_paladin_even_if_a_stale_file_is_present(tmp_path, monkeypatch):
+    """Root-cause guard: a leftover paladin.json in rules/classes must not re-enter the pack."""
+    import shutil
+    rules_classes = os.path.join(ROOT, "rules", "classes")
+    stale = os.path.join(str(tmp_path), "paladin.json")
+    with open(stale, "w", encoding="utf-8") as f:
+        json.dump({"Paladin": {"label": "Paladin", "description": "retired", "lore": ""}}, f)
+    # Point the builder at a copy of rules/classes that includes the stale file.
+    dest = tmp_path / "classes"
+    shutil.copytree(rules_classes, dest)
+    shutil.copy(stale, dest / "paladin.json")
+    monkeypatch.setattr(B, "RULES", str(tmp_path))
+    # copy skills.json etc. needed? class_entries only uses RULES/classes. classes() only needs that.
+    # But B.RULES is also used by load() for other packs if we call build(). Just call classes().
+    docs = B.classes()
+    ids = {d["system"]["source_id"].lower() for d in docs}
+    names = {d["name"].lower() for d in docs}
+    assert "paladin" not in ids | names
+    assert any(i == "knight" or i.endswith("knight") for i in ids)
+
+
+def test_actor_model_reserves_inventory_fields():
+    src = open(os.path.join(SYS, "module", "data.mjs"), encoding="utf-8").read()
+    for word in ("carried_weight", "carry_capacity", "backpack", "main_hand", "off_hand", "left_upper_arm", "back", "belt"):
+        assert word in src, word
+    assert os.path.isfile(os.path.join(ROOT, "foundry", "system", "docs", "ACTOR_MODEL.md"))
