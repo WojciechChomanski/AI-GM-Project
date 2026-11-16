@@ -14,7 +14,8 @@
       "talent": "Talent",
       "flaw": "Flaw",
       "advantage": "Advantage",
-      "skill": "Skill"
+      "skill": "Skill",
+      "gear": "Gear"
     }
   },
   "BREATH": {
@@ -51,7 +52,7 @@
     "OneHand": "One hand",
     "Guard": "Guard",
     "Items": "Items",
-    "DropItems": "Drag class, race, gender, weapons and armour here from the compendiums.",
+    "DropItems": "Drag Race, Gender and Class from the compendiums onto this sheet. The software fills stats, caps, skills and traits. Weapons and armour can be dropped too.",
     "Biography": "Biography",
     "Damage": "Damage",
     "MinStr": "Min STR",
@@ -67,6 +68,45 @@
     "Setting": {
       "backendUrl": "Breath backend URL",
       "backendUrlHint": "Local Python backend (scripts/combat_engine.py). Used from the GM's browser only."
-    }
+    },
+    "Inventory": "Inventory",
+    "Load": "Carried load",
+    "OnBody": "On the body",
+    "Stow": "Stow",
+    "Equip": "Equip",
+    "Holds": "holds",
+    "PackEmpty": "This pack is empty. Drop gear here, or it will go here when body slots are full.",
+    "DropGear": "Drag weapons, armour or a backpack here from the compendiums.",
+    "PastHalf": "Past half of what you can carry, marching gets much harder.",
+    "ClinchLoad": "Clinch (carried as load)",
+    "MissingWeight": "These items have no weight in the rules yet, so they count as 0 kg",
+    "BlockedByLoad": "Not possible at this load",
+    "Health": "Health",
+    "Carry": "Carry",
+    "CarryHint": "Equipped and packed weight. Inventory behaviour is workstream B.",
+    "ChangePortrait": "Change portrait",
+    "DropRace": "drop a Race",
+    "DropGender": "drop a Gender",
+    "DropClass": "drop a Class",
+    "Traits": "Traits",
+    "Skills": "Skills",
+    "SkillTrees": "Skill trees",
+    "Rank": "Rank",
+    "Ranks": "Ranks",
+    "Tier": "Tier",
+    "Requires": "Requires",
+    "Gains": "Gains",
+    "Gives": "Gives",
+    "Costs": "Costs",
+    "Career": "Career",
+    "Honours": "Honours",
+    "MinRank": "Minimum rank",
+    "Obligations": "Obligations",
+    "Flaws": "Flaws",
+    "PowerSource": "Power",
+    "Races": "Races",
+    "Genders": "Genders",
+    "Placeholder": "Placeholder",
+    "ClassOnHold": "This class is on hold in the rules."
   }
 }

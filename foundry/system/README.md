@@ -131,3 +131,12 @@ What was verified:
 - the packs: compiled and re-extracted with the official CLI
 
 Report anything odd from the first real load, and include the console (F12) output.
+
+
+## Character sheet (0.2)
+
+Drop Race, Gender and Class items onto a character actor. The software fills visible stats, caps, HP, stamina, starting skills and traits, and rejects illegal combinations (dwarves and ogres are male-only; class race/gender locks; women-only Veil casters). Hidden stats are never stored. Opening a class item shows a player-facing page (explanation, career paths, ranks, skills, honours). Paladin appears as an honour on the Crusader Knight page, not as a class.
+
+The sheet is styled after the approved Witcher 3 comic mockup (bundled SIL fonts: Cinzel, EB Garamond, UnifrakturMaguntia; license in `assets/fonts/OFL.txt`). Portraits and class icons use `assets/portraits/<race>-<gender>.webp` and `assets/icons/classes/<id>.webp`, falling back to the shipped parchment if the file is missing.
+
+Carry weight/capacity are displayed from the actor-model formula; workstream B owns equipping, containers and live weight.

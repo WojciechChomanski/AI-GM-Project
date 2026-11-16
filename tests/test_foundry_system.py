@@ -129,8 +129,8 @@ def test_no_gm_only_stat_keys_in_packs(tmp_path):
 
 def test_version_and_pack_banners_exist():
     m = manifest()
-    assert m["version"] == "0.1.1"
-    assert m["download"].endswith("/releases/download/v0.1.1/breath-and-the-veil.zip")
+    assert m["version"] == "0.2.0"
+    assert m["download"].endswith("/releases/download/v0.2.0/breath-and-the-veil.zip")
     banners = os.path.join(SYS, "assets", "banners")
     for pack in m["packs"]:
         assert pack["banner"] == f"assets/banners/{pack['name']}.webp"
@@ -165,3 +165,38 @@ def test_actor_model_reserves_inventory_fields():
     for word in ("carried_weight", "carry_capacity", "backpack", "main_hand", "off_hand", "left_upper_arm", "back", "belt"):
         assert word in src, word
     assert os.path.isfile(os.path.join(ROOT, "foundry", "system", "docs", "ACTOR_MODEL.md"))
+
+
+def test_class_items_carry_player_visible_career_and_honours(tmp_path):
+    _, docs = built(tmp_path)
+    by_id = {d["system"]["source_id"]: d for d in docs["classes"]}
+    ck = by_id["Crusader_Knight"]
+    rules = ck["system"]["rules"]
+    assert "career" in rules and "order_path" in rules
+    assert "paladin" in (rules["order_path"].get("honours") or {})
+    blob = json.dumps(rules)
+
+    def walk(n):
+        if isinstance(n, dict):
+            for k, v in n.items():
+                assert not B.HIDDEN_KEY.match(str(k)), k
+                assert k not in ("hidden", "hidden_start"), k
+                walk(v)
+        elif isinstance(n, list):
+            for v in n:
+                walk(v)
+    walk(rules)
+
+    knight = by_id["Knight"]
+    evos = (knight["system"]["rules"].get("career") or {}).get("evolutions") or []
+    assert evos and any(e.get("placeholder") for e in evos)
+
+
+def test_class_locks_are_normalised_onto_the_item(tmp_path):
+    _, docs = built(tmp_path)
+    by_id = {d["system"]["source_id"]: d for d in docs["classes"]}
+    assert by_id["Crusader_Knight"]["system"]["allowed_races"] == ["Human"]
+    assert by_id["Crusader_Knight"]["system"]["allowed_genders"] == ["Male"]
+    assert by_id["Stonewarden"]["system"]["allowed_races"] == ["Dwarf"]
+    assert by_id["Veil_Sorceress"]["system"]["allowed_genders"] == ["Female"]
+    assert "Paladin" not in by_id
