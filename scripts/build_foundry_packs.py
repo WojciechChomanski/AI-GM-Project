@@ -29,7 +29,7 @@ SYSTEM_ID = "breath-and-the-veil"
 HIDDEN_KEY = re.compile(r"^(faith|virtue|piety|holy_fury\w*|corruption\w*|stress\w*|reputation\w*)$", re.I)
 ICONS = {"weapon": "icons/svg/sword.svg", "armor": "icons/svg/shield.svg", "class": "icons/svg/book.svg",
          "race": "icons/svg/mystery-man.svg", "gender": "icons/svg/mystery-man.svg", "talent": "icons/svg/aura.svg",
-         "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg"}
+         "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg", "gear": "icons/svg/chest.svg"}
 
 
 def load(*parts):
@@ -270,12 +270,26 @@ def skills():
     return out
 
 
+def gear():
+    """Placeholder backpacks and pouches from rules/inventory.json (no official pack list yet)."""
+    data = load("inventory.json")
+    out = []
+    for e in data["backpacks"]["items"]:
+        out.append(item("gear", e["id"], e["name"], "gear", "rules/inventory.json", para(e.get("description")),
+                        rules={"placeholder": True, "capacity_kg": e["capacity_kg"],
+                               "capacity_volume": e.get("capacity_volume"), "slot": e["slot"]},
+                        weight=e["weight"], volume=None,
+                        is_container=True, capacity_kg=e["capacity_kg"],
+                        capacity_volume=e.get("capacity_volume"), slot=e["slot"], equipped=False))
+    return out
+
+
 
 def build(out_dir=OUT):
     t, names = talents()
     packs = {"weapons": weapons(), "armor": armor(), "classes": classes(), "races": races(), "genders": genders(),
              "talents": t, "flaws": creation("flaws", "flaws.json", "flaw", names),
-             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills()}
+             "advantages": creation("advantages", "advantages.json", "advantage", names), "skills": skills(), "gear": gear()}
     shutil.rmtree(out_dir, ignore_errors=True)
     for pack, docs in packs.items():
         d = os.path.join(out_dir, pack)

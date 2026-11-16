@@ -83,7 +83,7 @@
     "BlockedByLoad": "Not possible at this load",
     "Health": "Health",
     "Carry": "Carry",
-    "CarryHint": "Equipped and packed weight. Inventory behaviour is workstream B.",
+    "CarryHint": "Equipped and packed weight.",
     "ChangePortrait": "Change portrait",
     "DropRace": "drop a Race",
     "DropGender": "drop a Gender",

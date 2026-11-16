@@ -130,8 +130,8 @@ def test_no_gm_only_stat_keys_in_packs(tmp_path):
 
 def test_version_and_pack_banners_exist():
     m = manifest()
-    assert m["version"] == "0.2.0"
-    assert m["download"].endswith("/releases/download/v0.2.0/breath-and-the-veil.zip")
+    assert m["version"] == "0.3.0"
+    assert m["download"].endswith("/releases/download/v0.3.0/breath-and-the-veil.zip")
     banners = os.path.join(SYS, "assets", "banners")
     for pack in m["packs"]:
         assert pack["banner"] == f"assets/banners/{pack['name']}.webp"
