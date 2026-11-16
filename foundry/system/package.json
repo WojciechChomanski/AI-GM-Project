@@ -6,7 +6,7 @@
     "build:sources": "node tools/build-sources.mjs",
     "build:packs": "node tools/compile-packs.mjs",
     "build": "npm run build:sources && npm run build:packs",
-    "test": "node --test tools/"
+    "test": "node --test tools/*.test.mjs"
   },
   "author": "",
   "license": "SEE LICENSE IN ../../LICENSE",
