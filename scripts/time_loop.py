@@ -21,6 +21,10 @@ def round_tick(manager=None, creature=None):
     rep = {}
     if manager is not None and getattr(manager.character, "alive", True):
         rep["bled"] = manager.apply_bleeding()
+        import magic_backlash
+        br = magic_backlash.round_tick(manager.character)
+        if br.get("hp_lost") or br.get("died") or br.get("death_window") or br.get("collapsed"):
+            rep["backlash"] = br
         rep["alive"] = manager.character.alive
     if creature is not None and not creature.dead:
         rep["regenerated"] = WR.regen_round(creature)
@@ -48,6 +52,16 @@ def day_tick(manager, mode=None, fed=True, rng=None, companions=()):
     vrep = blood_vessels.day_tick(manager.character)
     if vrep.get("vessels"):
         rep["vessel_corruption"] = vrep
+    import magic_backlash
+    brep = magic_backlash.day_tick(manager.character, mode=mode)
+    if brep.get("dawn", {}).get("debts") or brep.get("dawn", {}).get("fever_night"):
+        rep["backlash"] = brep
+    elif getattr(manager.character, "backlash", None) or (
+        isinstance(manager.character, dict) and manager.character.get("backlash")
+    ):
+        # still apply rest/dawn; include the report only when something happened
+        if brep.get("dawn", {}).get("debts") or brep.get("rest", {}).get("moved"):
+            rep["backlash"] = brep
     return rep
 
 

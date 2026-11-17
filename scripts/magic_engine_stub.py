@@ -1,6 +1,7 @@
 import json, os, random
 from dataclasses import dataclass
 import magic_costs
+import magic_backlash
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 
@@ -19,6 +20,7 @@ def _load(path):
         return json.load(f)
 
 SPELLS = _load(os.path.join(ROOT, "rules", "spells.json"))
+SPELLS.update(magic_backlash.frost_fire_spells())
 MAGIC = _load(os.path.join(ROOT, "rules", "magic_rules.json"))
 
 def d100():
@@ -31,6 +33,9 @@ def cast_spell(caster: Caster, spell_id: str, context=None):
     max_hp_pay = int(caster.max_hp * (MAGIC["overdraw"]["hard_cap_pct_per_encounter"]/100))
     if hp_cost > max_hp_pay:
         hp_cost = max_hp_pay
+    gate = magic_backlash.can_cast(caster, sp)
+    if not gate["ok"]:
+        return {"ok": False, "reason": gate["reason"]}
     if caster.hp <= hp_cost or caster.stamina < stam_cost:
         return {"ok": False, "reason": "insufficient resources"}
     caster.hp -= hp_cost
@@ -60,6 +65,10 @@ def cast_spell(caster: Caster, spell_id: str, context=None):
         _apply_backlash(caster, sp, band, result)
     added = magic_costs.apply_cast_corruption(caster, sp, failed=failed)
     result["corruption_gain"] = added
+    if not failed and hp_cost:
+        result["stigmata"] = magic_backlash.note_blood_spent(caster, hp_cost)
+    if not failed:
+        result["strain"] = magic_backlash.resolve_spell(caster, sp, failed=False)
     result["ok"] = True
     return result
 

@@ -34,7 +34,12 @@
     "tags": [
       "corrupting",
       "damage"
-    ]
+    ],
+    "strain": {
+      "track": "blood",
+      "school": "bloodweaver",
+      "band": "standard"
+    }
   },
   "fate_whisper": {
     "id": "fate_whisper",
@@ -147,7 +152,12 @@
     "tags": [
       "corrupting",
       "damage"
-    ]
+    ],
+    "strain": {
+      "track": "grave_chill",
+      "school": "necromancy",
+      "band": "heavy"
+    }
   },
   "veil_echo": {
     "id": "veil_echo",
@@ -224,6 +234,11 @@
       "corrupting",
       "damage",
       "lifesteal"
-    ]
+    ],
+    "strain": {
+      "track": "grave_chill",
+      "school": "necromancy",
+      "band": "heavy"
+    }
   }
 }

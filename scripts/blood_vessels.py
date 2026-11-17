@@ -11,6 +11,7 @@ import os
 import random
 
 import magic_costs
+import magic_backlash
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 VITAL_ZONES = ("head", "throat", "chest")
@@ -245,6 +246,8 @@ def pay_blood(caster, amount, vessel=None, distance_metres=None):
     if use_vessel is False and vessel is not None and not in_range(distance_metres):
         out["reason"] = "vessel out of range"
         out["ok"] = taken > 0
+    if taken > 0:
+        out["stigmata"] = magic_backlash.note_blood_spent(caster, taken)
     return out
 
 
