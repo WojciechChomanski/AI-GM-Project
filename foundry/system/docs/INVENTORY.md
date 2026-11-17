@@ -74,9 +74,12 @@ There is no official pack list in the rules. These four `gear` items are placeho
 | Traveller's Backpack | back | 1.5 kg | 20 kg |
 | Large Pack | back | 2.5 kg | 30 kg |
 
+## Shields
+
+Catalogue: `rules/shields.json`. Shipped as gear items in the Foundry **gear** pack (`slot` is `off_hand`, `rules.item_kind` is `shield`). Keys: `buckler`, `targe`, `round_shield`, `heater`, `kite`, `pavise`. Weights count toward carried load. Equipping one occupies the off hand, so it cannot be used with a two-handed weapon (`combat_rules.two_handed_and_shields.allow` is false). When a catalogue shield is in the off hand, inventory sets `system.combat.shield_equipped` so the existing x1.10 block bonus applies. Per-shield coverage and block multipliers are placeholders for a later combat pass.
+
 ## Known gaps (not invented)
 
 - `warhammer`, `longsword` and `shortsword` have no `weight` in `rules/weapons.json`. They count as 0 kg and are flagged on the sheet.
-- No shield catalogue with weights, so shields cannot be dragged as items yet.
 - Coin weight (`rules/system/currency_v0_6d.json`, 50 coins per kg) is not wired in yet.
 - Sprint / acrobatics / climb / unaided rope-climb restrictions are placeholders (requested for 0.3, not present in the rules files).

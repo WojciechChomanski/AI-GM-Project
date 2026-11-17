@@ -290,7 +290,7 @@ def skills():
 
 
 def gear():
-    """Placeholder backpacks and pouches from rules/inventory.json (no official pack list yet)."""
+    """Backpacks from rules/inventory.json, plus the shield catalogue in rules/shields.json."""
     data = load("inventory.json")
     out = []
     for e in data["backpacks"]["items"]:
@@ -300,6 +300,20 @@ def gear():
                         weight=e["weight"], volume=None,
                         is_container=True, capacity_kg=e["capacity_kg"],
                         capacity_volume=e.get("capacity_volume"), slot=e["slot"], equipped=False))
+    shields = load("shields.json")
+    for key, e in shields["shields"].items():
+        rules = {
+            "item_kind": "shield",
+            "placeholder": True,
+            "coverage_cone_deg": e["coverage_cone_deg"],
+            "zone_coverage": e["zone_coverage"],
+            "block_multiplier": e["block_multiplier"],
+            "durability": e.get("durability"),
+        }
+        img = shipped_img("icons", "shields", f"{key}.webp") or ICONS["armor"]
+        out.append(item("gear", key, e["name"], "gear", "rules/shields.json", para(e.get("description")),
+                        rules=rules, weight=e["weight"], volume=None,
+                        is_container=False, slot="off_hand", equipped=False, img=img))
     return out
 
 

@@ -105,6 +105,20 @@ export function carryCapacity(strength, gender, race = "Human", talents = []) {
   return base * raceMultiplier(race) * talentMultiplier(talents);
 }
 
+const SHIELD_IDS = new Set(["buckler", "targe", "round_shield", "heater", "kite", "pavise"]);
+
+export function isShield(item) {
+  if (itemFlag(item, "item_kind") === "shield") return true;
+  return SHIELD_IDS.has(sourceId(item));
+}
+
+export function shieldEquipped(items, grip = "two_hands") {
+  const taken = occupiedBodySlots(items, null, grip);
+  const off = taken.off_hand;
+  if (!off) return false;
+  return items.some((it) => itemId(it) === off && isShield(it) && locationOf(it) === "body");
+}
+
 export function isTwoHanded(item, grip = "two_hands") {
   if (itemType(item) !== "weapon") return false;
   const sid = sourceId(item);
@@ -336,6 +350,7 @@ export function evaluate(strength, gender, race, items, talents = [], clinchMass
     past_half_load: ratio > MARCH_CLIFF_START, penalties, action_economy, actions,
     missing_weight_items: items.filter(missingWeight).map(itemName),
     grip,
+    shield_equipped: shieldEquipped(items, grip),
   };
 }
 
@@ -484,13 +499,18 @@ export function actorInventoryState(actor) {
     backpack: { itemId: pack ? itemId(pack) : "", contents },
     carried_weight: Math.round(ev.carried_kg * 1000) / 1000,
     carry_capacity: Math.round(ev.capacity_kg * 1000) / 1000,
+    shield_equipped: !!ev.shield_equipped,
   };
 }
 
 async function syncActorInventory(actor) {
   if (!actor || typeof actor.update !== "function") return;
   const state = actorInventoryState(actor);
-  await actor.update({ "system.inventory": state });
+  const shield = !!state.shield_equipped;
+  const current = !!actor.system?.combat?.shield_equipped;
+  const patch = { "system.inventory": state };
+  if (current !== shield) patch["system.combat.shield_equipped"] = shield;
+  await actor.update(patch);
 }
 
 function hookPreCreate(item, _data, _options, _userId) {
@@ -577,7 +597,11 @@ export function registerInventory() {
   Hooks.on("updateActor", (actor, changed) => {
     // Recalculate weight and capacity if strength, race, gender or talents changed,
     // but skip when the only change is the inventory numbers we just wrote.
-    const invOnly = changed?.system && Object.keys(changed.system).length === 1 && changed.system.inventory;
+    const sys = changed?.system || {};
+    const keys = Object.keys(sys);
+    const combatKeys = sys.combat ? Object.keys(sys.combat) : [];
+    const invOnly = keys.length > 0 && keys.every((k) => k === "inventory" || k === "combat")
+      && combatKeys.every((k) => k === "shield_equipped");
     if (!invOnly) syncActorInventory(actor);
   });
   Hooks.on("renderBreathActorSheet", (app, el) => { injectPanel(app, el); });
