@@ -210,25 +210,27 @@
                 "abilities_gain_by_vocation": {
                     "Templar": ["Holy_Fury", "Crusader_Charge"],
                     "Holy_Judge": ["Discern_Sin", "Final_Verdict"],
-                    "Cleric": ["Cleansing_Ritual", "Breath_Blessing", "Purge_Corruption"]
+                    "Cleric": ["Cleansing_Ritual", "Church_Blessing", "Purge_Corruption"]
                 }
             }
         ],
         "piety_system": {
             "start": 30,
             "max": 100,
+            "note": "Hidden. Discern_Sin is now mundane Interrogate (no piety or stamina cost). Final_Verdict is legal authority to sentence, not an instant-kill power. See docs/WITCH_HUNTERS.md.",
             "discern_sin": {
-                "cost_stamina": 8,
-                "cost_piety": 5,
-                "roll": "Piety + d100 vs Target Willpower + d100",
-                "success": "Detects major sin only (demon pacts, dark magic, betrayal, murder of innocents)",
-                "failure": "Nothing detected"
+                "name": "Interrogate",
+                "cost_stamina": 0,
+                "cost_piety": 0,
+                "roll": "Perception + Willpower + d100 vs the higher of Willpower or Deceive + d100 (tie to the defender)",
+                "success": "Reads guilt, not magic. Cannot by itself prove a woman is a sorceress.",
+                "failure": "The target stays composed"
             },
             "final_verdict": {
                 "uses_per_day": 1,
-                "requires": "confirmed major sin",
-                "effect": "Instant kill on confirmed guilty low-HP target; massive holy damage + fear on high-HP",
-                "risk": "Wrong execution on innocent = heavy piety loss + Order punishment"
+                "requires": "a legal finding (evidence, confession or a completed exam)",
+                "effect": "Legal authority to pass a sentence and have it carried out by ordinary means. Not an instant-kill power.",
+                "risk": "Wrongful sentence on an innocent, or a killing with the unbonded blade, is a heavy piety/Virtue loss and Order punishment"
             }
         },
         "abilities": {
@@ -316,20 +318,48 @@
                 "uses_per_day": 1,
                 "effect": "Legal authority to sentence and to carry the sentence out by ordinary means. Not an instant-kill power."
             },
-            "Cleansing_Ritual": { 
-                "type": "utility", 
-                "stamina": 15, 
-                "effect": "Remove corruption/curse from target or area" 
+            "Cleansing_Ritual": {
+                "name": "Cleansing Ritual",
+                "type": "rite",
+                "source": "mundane_church",
+                "breath": false,
+                "stamina": 0,
+                "piety_cost": 0,
+                "time": "1 hour",
+                "materials": ["holy water", "salt", "incense"],
+                "skill": "lore_theology",
+                "roll": "lore_theology + Willpower + d100 vs 100 (placeholder DC)",
+                "effect": "A church washing of a person, object or small place. On a success, lingering curse signs, fear, or a minor felt taint may be eased. It does not lower hidden Corruption, does not use Breath, and cannot drive out a real possessing spirit on its own.",
+                "placeholder": true
             },
-            "Breath_Blessing": { 
-                "type": "buff", 
-                "stamina": 12, 
-                "effect": "Allies gain +15% damage vs Veilspawn for 3 rounds" 
+            "Church_Blessing": {
+                "name": "Church Blessing",
+                "replaces": "Breath_Blessing",
+                "type": "rite",
+                "source": "mundane_church",
+                "breath": false,
+                "stamina": 0,
+                "piety_cost": 0,
+                "time": "10 minutes",
+                "materials": ["optional consecrated oil"],
+                "skill": "lore_theology",
+                "roll": "lore_theology + d100 vs 80 (placeholder DC)",
+                "effect": "A spoken blessing over companions before a journey or fight. On a success, allies gain +10 to Fear tests for one scene (placeholder). This is church encouragement, not a Breath gift, and grants no damage against Veilspawn.",
+                "placeholder": true
             },
-            "Purge_Corruption": { 
-                "type": "attack_holy", 
-                "stamina": 18, 
-                "effect": "Heavy damage to corrupted targets + cleanse" 
+            "Purge_Corruption": {
+                "name": "Rite of Purgation",
+                "type": "rite",
+                "source": "mundane_church",
+                "breath": false,
+                "stamina": 0,
+                "piety_cost": 0,
+                "time": "3 hours",
+                "materials": ["salt", "iron nails", "holy water", "a written psalm or writ"],
+                "skill": "lore_theology",
+                "roll": "lore_theology + Willpower + d100 vs 120 (placeholder DC)",
+                "effect": "A long church rite over a place, corpse, or bound subject. On a success, a weak lingering presence or residual taint may be driven from a room or corpse (GM call). It is not a combat attack, deals no holy damage, does not use Breath, and cannot substitute for a true exorcism of a possessed human (that remains a Breath matter, and only if Breath answers on its own).",
+                "placeholder": true
             }
         },
         "flaws": {

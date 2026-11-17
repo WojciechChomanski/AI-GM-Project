@@ -130,5 +130,8 @@ The **Judgment** passive no longer lists a "confirmed major sinner" as a valid t
 These already live on `main` and sit outside this order's toolkit:
 
 - **`witch_sight`** in `rules/creation/advantages.json` is still a female-only caster advantage ("sense corruption bands"). It is not a hunter tool and male hunters must not take it.
-- Crusader Knight still lists **Cleansing Ritual**, **Breath Blessing** and **Purge Corruption** as activated abilities with stamina costs. Those clash with "Breath is strictly passive". They are not Judge/hunter tools and were left alone; they need a later design pass.
-- Holy Judge still has a class file and is packed for Foundry, marked `vocation_of: Crusader_Knight`. This PR does not hide it from the classes pack (that would be a separate Foundry decision, like Cleric).
+- Holy Judge still has a class file and is packed for Foundry, marked `vocation_of: Crusader_Knight`. It stays selectable. This PR does not hide it from the classes pack.
+
+## Church rites (Crusader Knight / Cleric vocation)
+
+Cleansing Ritual, Church Blessing (formerly Breath Blessing) and the Rite of Purgation (`Purge_Corruption`) are now **mundane church rites**. They use no Breath, cost no stamina or piety, and have no holy-damage or Veilspawn-damage effects. Each has a time, materials and a `lore_theology` skill roll (placeholder DCs). They can ease felt taint, bless companions against Fear, or cleanse a room or corpse; they cannot lower hidden Corruption or replace a Breath-answered exorcism of a possessed human.

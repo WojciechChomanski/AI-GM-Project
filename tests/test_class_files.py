@@ -67,3 +67,22 @@ def test_invented_parts_are_marked():
     for fn in ("holy_judge.json", "ogre_ravager.json"):
         meta = json.load(open(os.path.join(CLASSES, fn), encoding="utf-8"))["meta"]
         assert meta["sources"] and meta["invented"] and meta["version"] == "1.0"
+
+
+def test_crusader_church_rites_are_mundane():
+    """Cleansing Ritual, Church Blessing and Rite of Purgation use no Breath and no stamina."""
+    ck = find_class("Crusader_Knight")
+    vocations = next(t for t in ck["progression"] if t.get("vocation_choice"))
+    assert "Church_Blessing" in vocations["abilities_gain_by_vocation"]["Cleric"]
+    assert "Breath_Blessing" not in vocations["abilities_gain_by_vocation"]["Cleric"]
+    assert "Breath_Blessing" not in ck["abilities"]
+    for key in ("Cleansing_Ritual", "Church_Blessing", "Purge_Corruption"):
+        a = ck["abilities"][key]
+        assert a["type"] == "rite" and a.get("breath") is False
+        assert a.get("stamina", 0) == 0 and a.get("piety_cost", 0) == 0
+        assert a.get("skill") == "lore_theology" and a.get("time") and a.get("materials")
+        blob = json.dumps(a).lower()
+        assert "stamina" in a and a["stamina"] == 0
+        assert "attack_holy" not in blob and "+15% damage" not in blob
+    bless = ck["abilities"]["Church_Blessing"]["effect"].lower()
+    assert "fear" in bless and "not a breath" in bless
