@@ -37,8 +37,8 @@ Two class files each contained a second class:
 | **Judgment Call**: active, 9 stamina, 12 holy damage, +15 vs corrupted | **Judgment** (passive Breath trigger) |
 | **Purge Verdict**: active, 12 stamina, removes status effects | **Purge Verdict** (passive) |
 
-- **Judgment** works only at Virtue ≥ 70, with high Piety, against Veilspawn, an abomination or a confirmed major sinner. Effect: +4 damage, and the target's Fear tests against him are at −10.
-- **Purge Verdict** triggers after a just Final Verdict at Virtue ≥ 70. Allies within 6 m lose Fear and the Veil effects salt_kiss, taint_mark and brine_marks.
+- **Judgment** works only at Virtue ≥ 70, with high Piety, against a corrupted beast, demon, ghost, spirit, Veilspawn, abomination or possessed human — never an ordinary sinner. Effect: +4 damage, and the target's Fear tests against him are at −10.
+- **Purge Verdict** triggers after a just Final Verdict at Virtue ≥ 70, and only if the condemned is a valid Breath target (possessed or supernatural, never an ordinary sinner). Allies within 6 m lose Fear and the Veil effects salt_kiss, taint_mark and brine_marks.
 
 **INVENTED (marked in `meta.invented` in the file):**
 - PER +6
@@ -48,7 +48,7 @@ Two class files each contained a second class:
 - the flaw Feared_By_The_Flock (−10 CHA with common folk)
 - `healing_bonus 2` was dropped, because its meaning is unknown
 
-`scripts/healing_system.breath_purge` (Cleric/Holy Judge, 10 stamina) is old code that makes it active. It's unchanged here; see the questions in the PR.
+`scripts/healing_system.breath_purge` is passive (no stamina). It fires after a just Final Verdict against a valid Breath target only (possessed or supernatural), never after sentencing an ordinary sinner. See `docs/WITCH_HUNTERS.md`.
 
 ## Ogre Ravager (Ogre Male)
 

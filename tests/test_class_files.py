@@ -46,6 +46,11 @@ def test_holy_judge_v1():
         assert "holy_damage" not in a and "spell" not in json.dumps(a).lower().replace("not a spell", "")
         if "breath_trigger" in a:
             assert a["type"] == "passive" and a["breath_trigger"]["virtue_min"] >= 70
+            blob = json.dumps(a["breath_trigger"]).lower()
+            assert "ordinary sinner" not in blob or "never" in blob
+            assert "confirmed major sinner" not in blob
+    assert hj["abilities"]["Discern_Sin"]["stamina"] == 0 and hj["abilities"]["Discern_Sin"]["piety_cost"] == 0
+    assert "instant kill" not in hj["abilities"]["Final_Verdict"]["effect"].lower()
     knight = find_class("Crusader_Knight")
     vocations = next(t for t in knight["progression"] if t.get("vocation_choice"))
     assert set(vocations["abilities_gain_by_vocation"]["Holy_Judge"]) <= set(hj["abilities"])

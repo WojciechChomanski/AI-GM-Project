@@ -18,27 +18,47 @@
       "healing_bonus 2 (unknown old meaning) dropped; Breath Purge already exists in scripts/healing_system.py",
       "Judgment Call (active 12 holy damage) rewritten as the passive Breath trigger 'Judgment' to obey core_rules.txt; numbers new",
       "Purge Verdict (active, 12 stamina) rewritten as a passive trigger after a just Final Verdict",
-      "proficiencies, progression tiers, requirements and flaw are new, modelled on the Crusader Knight"
+      "proficiencies, progression tiers, requirements and flaw are new, modelled on the Crusader Knight",
+      "2026-11-17: Discern_Sin is now mundane Interrogate (no cost); Final_Verdict is legal sentence not instant kill; Judgment and Purge_Verdict no longer treat ordinary sinners as Breath targets"
     ],
     "doc": "docs/CLASSES_HOLY_JUDGE_OGRE_RAVAGER.md"
   },
   "Holy_Judge": {
     "description": "Male human Order vocation: the Maker's arbiter. Reads sin, hears confessions, carries out verdicts. Breath answers him only passively.",
     "lore": "Holy Judges stand as the Maker's voice, purging corruption with radiant authority, feared even by the Church.",
-    "race_lock": ["Human"],
-    "gender_lock": ["Male"],
+    "race_lock": [
+      "Human"
+    ],
+    "gender_lock": [
+      "Male"
+    ],
     "power_source": "Breath",
     "vocation_of": "Crusader_Knight",
-    "role_tags": ["control", "judge", "investigator"],
+    "role_tags": [
+      "control",
+      "judge",
+      "investigator"
+    ],
     "stat_modifiers": {
       "willpower": 9,
       "intelligence": 6,
       "perception": 6
     },
     "proficiencies": {
-      "weapons": ["sword_1h", "mace", "1H_blunt"],
-      "shields": ["heater"],
-      "armor_tiers": ["medium-light", "medium-medium", "medium-heavy", "heavy-light"]
+      "weapons": [
+        "sword_1h",
+        "mace",
+        "1H_blunt"
+      ],
+      "shields": [
+        "heater"
+      ],
+      "armor_tiers": [
+        "medium-light",
+        "medium-medium",
+        "medium-heavy",
+        "heavy-light"
+      ]
     },
     "skills": {
       "intimidation": 1,
@@ -48,35 +68,57 @@
       {
         "tier": 1,
         "name": "Inquisitor_Novice",
-        "requirements": {"crusader_knight_vocation": "Holy_Judge"},
-        "abilities_gain": ["Discern_Sin", "Judgment"]
+        "requirements": {
+          "crusader_knight_vocation": "Holy_Judge"
+        },
+        "abilities_gain": [
+          "Discern_Sin",
+          "Judgment"
+        ]
       },
       {
         "tier": 2,
         "name": "Judge",
-        "requirements": {"confirmed_verdicts": 3},
-        "abilities_gain": ["Divine_Clarity"],
-        "flaws_gain": ["Feared_By_The_Flock"]
+        "requirements": {
+          "confirmed_verdicts": 3
+        },
+        "abilities_gain": [
+          "Divine_Clarity"
+        ],
+        "flaws_gain": [
+          "Feared_By_The_Flock"
+        ]
       },
       {
         "tier": 3,
         "name": "High_Judge",
-        "requirements": {"confirmed_verdicts": 7, "order_rank": "Judge"},
-        "abilities_gain": ["Final_Verdict", "Purge_Verdict"]
+        "requirements": {
+          "confirmed_verdicts": 7,
+          "order_rank": "Judge"
+        },
+        "abilities_gain": [
+          "Final_Verdict",
+          "Purge_Verdict"
+        ]
       }
     ],
     "abilities": {
       "Discern_Sin": {
+        "name": "Interrogate",
         "type": "utility",
-        "stamina": 8,
-        "piety_cost": 5,
-        "roll": "Piety + d100 vs Target Willpower + d100",
-        "effect": "Detects major sin only (demon pacts, dark magic, betrayal, murder of innocents). A trained judgement, not a spell.",
-        "source": "crusader_knight.json"
+        "stamina": 0,
+        "piety_cost": 0,
+        "roll": "Perception + Willpower + d100 vs the higher of Willpower or Deceive + d100 (tie to the defender)",
+        "effect": "Mundane interrogation. Reads guilt, not magic, and cannot by itself prove a woman is a sorceress. Divine Clarity still gives +10 against lies. No stamina or piety cost. Replaces the old activated Discern Sin.",
+        "source": "docs/WITCH_HUNTERS.md"
       },
       "Judgment": {
         "type": "passive",
-        "breath_trigger": {"virtue_min": 70, "high_piety": true, "target": "Veilspawn, abomination or confirmed major sinner"},
+        "breath_trigger": {
+          "virtue_min": 70,
+          "high_piety": true,
+          "target": "corrupted beast, demon, ghost, spirit, Veilspawn, abomination or possessed human; never an ordinary sinner or an un-possessed sorceress"
+        },
         "effect": "Attacks against the target deal +4 damage and its Fear tests against you are at -10.",
         "replaces": "Judgment Call (old active: 12 holy damage, +15 vs corrupted)",
         "invented_numbers": true
@@ -89,15 +131,18 @@
       "Final_Verdict": {
         "type": "execution",
         "uses_per_day": 1,
-        "requires": "confirmed major sin (Discern_Sin success)",
-        "effect": "Instant kill on confirmed guilty low-HP target; massive damage + fear on high-HP",
-        "risk": "Wrong execution on innocent = heavy piety loss + Order punishment",
-        "source": "crusader_knight.json"
+        "requires": "a legal finding (evidence, confession or a completed exam), not a magical reading of sin",
+        "effect": "Legal authority to pass a sentence from the Mercy of Ash / tribunal menu and have it carried out by ordinary means. Not an instant-kill power and not a Breath miracle.",
+        "risk": "Wrongful sentence on an innocent, or a killing with the unbonded blade, is a heavy piety/Virtue loss and Order punishment",
+        "source": "docs/WITCH_HUNTERS.md"
       },
       "Purge_Verdict": {
         "type": "passive",
-        "breath_trigger": {"after": "just Final_Verdict", "virtue_min": 70},
-        "effect": "Allies within 6 m lose Fear and Veil status effects (salt_kiss, taint_mark, brine_marks).",
+        "breath_trigger": {
+          "after": "just Final_Verdict against a valid Breath target (possessed human, demon, ghost, spirit, corrupted beast, Veilspawn or abomination)",
+          "virtue_min": 70
+        },
+        "effect": "Allies within 6 m lose Fear and Veil status effects (salt_kiss, taint_mark, brine_marks). Fires only after a just Final Verdict on a valid Breath target, never after sentencing an ordinary sinner.",
         "replaces": "Purge Verdict (old active: remove status effects, 12 stamina)",
         "invented_numbers": true
       }

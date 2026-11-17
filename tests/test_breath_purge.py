@@ -13,8 +13,11 @@ def _ally():
 def test_passive_purge_needs_full_breath_and_verdict():
     hs, ally = HealingSystem(), _ally()
     judge = NS(name="J", class_name="Holy_Judge", virtue=80, piety=90, corruption_level=0, stamina=0)
-    assert hs.breath_purge(judge, [ally], trigger="manual") == []
-    assert hs.breath_purge(judge, [ally]) == ["Ally"] and ally.status_effects == [{"name": "bleeding"}]
+    possessed = {"kind": "possessed_human"}
+    assert hs.breath_purge(judge, [ally], trigger="manual", against=possessed) == []
+    assert hs.breath_purge(judge, [ally]) == []  # no condemned Breath target
+    assert hs.breath_purge(judge, [ally], against={"kind": "ordinary_sinner"}) == []
+    assert hs.breath_purge(judge, [ally], against=possessed) == ["Ally"] and ally.status_effects == [{"name": "bleeding"}]
     assert judge.stamina == 0  # no stamina: passive
 
 

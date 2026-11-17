@@ -25,7 +25,7 @@ Faith, Virtue, Piety, Holy Fury stacks and Corruption are GM-only. `creation.pla
 gets fiction bands (stat_visibility.json) only.
 
 ## Corruption visibility (follows the existing veil_sorceress.json table)
-10/25 hidden, 50 subtle (under clothing; Witch-Sight / Discern Sin / exam), 75 visible ("friends notice something is
+10/25 hidden, 50 subtle (under clothing; mundane exam / Mercy of Ash inspection; Witch-Sight is a female caster advantage, not a hunter tool), 75 visible ("friends notice something is
 wrong"), 90 unmistakable, 100 lost. Marks are permanent: tracked by the PEAK value; purging lowers current only.
 
 ## Corrupted creatures

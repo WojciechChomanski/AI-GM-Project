@@ -3,24 +3,46 @@
     "race": "Elf",
     "belief": "Corruption can be transferred through ritual sacrifice.",
     "goal": "Maintain magical purity and power through human vessels.",
-    "enemy": ["Iron Wards", "Breathbound Orders"]
+    "enemy": [
+      "Iron Wards",
+      "Breathbound Orders"
+    ]
   },
   "Iron Wards": {
     "race": "Dwarf",
     "belief": "Power must be sealed and purified through discipline.",
     "goal": "Harness remnants of the Veil to forge relics without breaking containment.",
-    "enemy": ["Echelon of Thorns"]
+    "enemy": [
+      "Echelon of Thorns"
+    ]
   },
   "Breathbound Orders": {
     "race": "Human",
     "belief": "Only through divine Breath can the world be restored.",
-    "goal": "Protect the last divine-bloodlines and reclaim Eden’s legacy.",
-    "enemy": ["Echelon of Thorns", "Veilborn Cults"]
+    "goal": "Protect the last divine-bloodlines and reclaim Eden\u2019s legacy.",
+    "enemy": [
+      "Echelon of Thorns",
+      "Veilborn Cults"
+    ]
   },
   "Veilborn Cults": {
     "race": "Various",
     "belief": "The Veil is truth. Corruption is evolution.",
     "goal": "Reopen the Spire beneath the ruins of Eden.",
-    "enemy": ["All others"]
+    "enemy": [
+      "All others"
+    ]
+  },
+  "The Mercy of Ash": {
+    "race": "Human",
+    "belief": "Burning a Veil sorceress is a mercy. The order answers only to the Witchfinder General.",
+    "goal": "Find and judge Veil sorceresses; keep the Church's mundane hunt independent of the Holy Judges.",
+    "enemy": [
+      "Veilborn Cults",
+      "Echelon of Thorns"
+    ],
+    "rivals": [
+      "Holy Judges"
+    ]
   }
 }

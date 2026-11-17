@@ -83,10 +83,8 @@ Existing necromancy spells Decay Touch and Soul Leech gain Grave-Chill (heavy). 
 
 Do not store Thermal, Grave-Chill, sigil points, ritual debt or Corruption on a Foundry actor. If the backend later writes `felt` entries, use `symptoms()` so the player sees only prose.
 
-## Existing rules flagged (not changed in this PR)
+## Witch hunters
 
-These already live on `main`. They are recorded here so they are not mistaken for witch-hunter magic, and so a later pass can tidy the wording if needed.
+The hunter order, mundane detection, Suspicion and related GM tools now live in `docs/WITCH_HUNTERS.md`. Hunters still use no magic and no Witch-Sight. Glamour hiding a sigil fails against close physical inspection, including a Mercy of Ash stripping exam.
 
-- **`witch_sight` in `rules/creation/advantages.json`** is a **female-only** creation advantage: "Sense corruption bands (the GM tells the fiction, not the number)." It is a caster's gift, not a hunter's tool. Male witch hunters must not take it, and it is not a hunter ability. Left as it is, because changing advantages is outside this backlash PR.
-- **`rules/corruption_marks.json`** still lists "Witch-Sight", "Discern Sin", and "undressing/medical exam" as ways a *subtle* (threshold 50) corruption mark can be found. The medical-exam part already matches close mundane inspection. The "Witch-Sight" entry points at the female advantage above, not at hunters. Not edited here.
-- **Discern Sin** (`rules/classes/holy_judge.json`, also on the Crusader Knight Holy Judge vocation in `rules/classes/crusader_knight.json`, with career hooks in `docs/CAREER_PATHS.md` and `rules/orders/paths.json`) is a **Holy Judge** ability of the Breath-bound male Order, used to confirm sin, not a Veil power and not a witch-hunter skill. Not edited here.
+`witch_sight` in `rules/creation/advantages.json` remains a female-only caster advantage, not a hunter tool.

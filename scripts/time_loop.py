@@ -62,6 +62,10 @@ def day_tick(manager, mode=None, fed=True, rng=None, companions=()):
         # still apply rest/dawn; include the report only when something happened
         if brep.get("dawn", {}).get("debts") or brep.get("rest", {}).get("moved"):
             rep["backlash"] = brep
+    import witch_hunters
+    hrep = witch_hunters.day_tick(manager.character)
+    if hrep:
+        rep["witch_hunters"] = hrep
     return rep
 
 

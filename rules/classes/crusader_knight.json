@@ -304,16 +304,17 @@
                 "bonus_damage": 15, 
                 "knockdown": true 
             },
-            "Discern_Sin": { 
-                "type": "utility", 
-                "stamina": 8, 
-                "piety_cost": 5, 
-                "effect": "Piety vs Willpower – detects major sin only" 
+            "Discern_Sin": {
+                "name": "Interrogate",
+                "type": "utility",
+                "stamina": 0,
+                "piety_cost": 0,
+                "effect": "Mundane interrogation (Perception + Willpower vs Willpower or Deceive). Reads guilt, not magic. No cost."
             },
-            "Final_Verdict": { 
-                "type": "execution", 
-                "uses_per_day": 1, 
-                "effect": "Instant kill on confirmed guilty low-HP target; massive damage + fear on high-HP" 
+            "Final_Verdict": {
+                "type": "execution",
+                "uses_per_day": 1,
+                "effect": "Legal authority to sentence and to carry the sentence out by ordinary means. Not an instant-kill power."
             },
             "Cleansing_Ritual": { 
                 "type": "utility", 

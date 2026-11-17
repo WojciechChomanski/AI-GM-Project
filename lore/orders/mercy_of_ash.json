@@ -1,0 +1,22 @@
+{
+  "id": "mercy_of_ash",
+  "name": "The Mercy of Ash",
+  "kind": "independent_church_order",
+  "answers_to": "Witchfinder General",
+  "relation_to_church": "Part of the Church, highly independent, with its own courts, prisons and bounty chests. Rivals of the Holy Judges, not their contractors, and not under kings.",
+  "specialism": "Hunting Veil sorceresses. Not every female mage is hunted: kings keep court sorceresses, and going after one causes political turmoil unless a king pays for a Sealed Writ (legal assassination). A neutral city may extort a Tolerance Tithe instead of a pyre.",
+  "methods": "No magic and no Witch-Sight. Mundane inspection, informants, pricking, salt, cold water, heat, and stripping exams. They call burning a mercy, which echoes the Ashen Coast mercy sacrifices.",
+  "membership": "Ordinary trained men. A magic-using female witch hunter is not part of the order as written; she may appear later as a special NPC only.",
+  "ranks": [
+    "Informer",
+    "Tracker",
+    "Sworn Hunter",
+    "Hunt-Sergeant",
+    "Witchfinder-Captain",
+    "Witchfinder General"
+  ],
+  "sources": [
+    "lore/era_1670.json (Ashen Coast witch_scares and mercy sacrifices)",
+    "docs/WITCH_HUNTERS.md"
+  ]
+}
