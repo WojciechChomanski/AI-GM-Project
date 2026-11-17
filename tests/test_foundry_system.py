@@ -186,6 +186,9 @@ def test_shipped_portraits_class_icons_and_scene(tmp_path):
         assert os.path.isfile(path) and os.path.getsize(path) > 0, name
     assert not os.path.isfile(os.path.join(assets, "portraits", "dwarf-female.webp"))
     assert not os.path.isfile(os.path.join(assets, "portraits", "ogre-female.webp"))
+    for name in ("human-female-sorceress", "elf-female-sorceress"):
+        path = os.path.join(assets, "portraits", f"{name}.webp")
+        assert os.path.isfile(path) and os.path.getsize(path) > 0, name
 
     _, docs = built(tmp_path)
     class_ids = {d["system"]["source_id"] for d in docs["classes"]}
