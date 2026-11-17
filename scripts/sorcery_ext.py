@@ -17,7 +17,7 @@ MISCAST_BASE = 5                 # % base miscast chance
 MELEE_VULN_MULT = 1.50           # +50% damage taken from MELEE
 FADE_STEP_EXHAUST_STAMINA_TAX = 3
 SHROUD_ONCE_PER_ENCOUNTER_FLAG = "_shroud_used"
-MAX_CORRUPTION = 150
+MAX_CORRUPTION = 100
 
 # Default spellbook (overridable via rules or per-character)
 DEFAULT_SPELLS = {
@@ -33,7 +33,7 @@ DEFAULT_SPELLS = {
         "label": "Blood Pact",
         "stamina": 15,
         "hp_pct_cost": 10,
-        "corruption": 10,
+        "corruption": 8,
         "damage": 30,             # armor bypass (we pass zone=None to apply_damage)
         "self_dazed": 1,
     },
@@ -51,14 +51,14 @@ DEFAULT_SPELLS = {
     "fade_step": {
         "label": "Fade Step",
         "stamina": 10,
-        "corruption": 3,
+        "corruption": 2,
         "evade_next_melee": True,  # auto-negate next melee hit
         "exhaust_after": True,     # next ability +3 stamina
     },
     "shrouds_embrace": {
         "label": "Shroud's Embrace",
         "stamina": 30,
-        "corruption": 20,          # +20
+        "corruption": 15,          # PLACEHOLDER greater band
         "damage": 40,              # 20+20 veil damage (no resistances in this build)
         "radius": 5,
         "root_rounds": 1,          # all trapped (incl. caster)

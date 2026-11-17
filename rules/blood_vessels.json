@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "doc": "docs/MAGIC_COST.md",
+    "hidden": true,
+    "note": "Blood-vessel bonds and their corruption live only in the Python backend. They are never stored or shown on a Foundry actor."
+  },
+  "cap": 3,
+  "daily_corruption_per_vessel": 2,
+  "range_metres": 30,
+  "bind": {
+    "stamina": 20,
+    "hp": 8,
+    "corruption_willing": 8,
+    "corruption_unwilling": 15
+  },
+  "unwilling_opposed_stat": "willpower",
+  "on_vessel_death": {
+    "stamina": 10,
+    "corruption": 5
+  },
+  "cannot_pay_vital_zone_to_zero": true
+}

@@ -20,7 +20,7 @@ Starting values come from the Gender item (`rules/stats.json`, e.g. `Human_Male`
 
 - `resources.zones.<zone>.value` / `.max` — the 13 official hit zones from `scripts/zone_hp.py` (`BASE_ZONES`). Ids match armour coverage: `head`, `throat`, `chest`, `stomach`, `groin`, `left_upper_arm`, `right_upper_arm`, `left_lower_arm`, `right_lower_arm`, `left_upper_leg`, `right_upper_leg`, `left_lower_leg`, `right_lower_leg`.
 - `resources.hp.value` / `resources.hp.max` — **always the sum of the 13 zones** (derived; do not treat as a separate pool). Each zone is scaled by `scripts/zone_hp.scaled_zones` using `hp_multiplier = (1 + race.hp_bonus/100) * (1 + class.hp_percent/100)`; leftover rounding goes to the chest. 3 zones at 0 is collapse; head, throat or chest at 0 is death / dying.
-- `resources.stamina.value` / `resources.stamina.max` — `100 + race.stats.stamina_bonus + class.stat_modifiers.stamina_max_flat` (confirmed).
+- `resources.stamina.value` / `resources.stamina.max` — `100 + race.stats.stamina_bonus + class.stat_modifiers.stamina_max_flat` (confirmed). Veil Sorceress has a PLACEHOLDER class bonus of `-40` (Human 60, Elf 70), so she stays in the old ~55–70 range. Mage has no class stamina bonus (Human 100, Elf 110). Blood-vessel bonds and Corruption stay in the Python backend and are never stored here. Thermal, Grave-Chill, sigil points and ritual debt stay there too; the sheet may later show felt symptom text only.
 
 ## Details (`character` only)
 

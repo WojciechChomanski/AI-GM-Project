@@ -3,6 +3,7 @@ from zone_hp import scaled_zones, hp_multiplier, total_hp as zones_total
 import os
 from character import Character
 from armors import Armor
+import magic_costs
 
 STAT_NAMES = ['strength', 'toughness', 'agility', 'mobility', 'dexterity', 'endurance', 'intelligence', 'willpower', 'perception', 'charisma', 'corruption_level', 'stress_level', 'weapon_skill', 'ballistic_skill', 'faith', 'reputation']
 LEGACY_CLASS_SCALE = 3  # old D&D-size "*_modifier" values x3 (same conversion as backgrounds.json)
@@ -46,6 +47,11 @@ def find_class(name, classes_dir=None):
             if isinstance(v, dict) and k.lower() == want:
                 return v
     return {}
+
+
+def stamina_max(race_data=None, class_data=None):
+    """100 + race stamina_bonus + class stamina_max_flat (confirmed)."""
+    return magic_costs.stamina_max(race_data, class_data)
 
 
 def _find_hp_percent(class_data):

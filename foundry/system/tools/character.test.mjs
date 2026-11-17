@@ -119,8 +119,8 @@ test("elf female veil sorceress applies intelligence bonus and female-only magic
   const cap = bySource(genders, "Elf_Female").system.rules.max_stats.intelligence;
   assert.equal(computed.attributes.intelligence.value, Math.min(start + 14, cap));
   assert.equal(computed.attributes.intelligence.max, cap);
-  // Elf stamina_bonus 10
-  assert.equal(computed.resources.stamina.max, 110);
+  // Elf stamina_bonus 10 + Veil Sorceress PLACEHOLDER stamina_max_flat -40
+  assert.equal(computed.resources.stamina.max, 70);
 });
 
 test("carry capacity uses sex, dwarf and ogre multipliers", () => {
@@ -136,6 +136,8 @@ test("hp formula matches zone_hp.hp_multiplier", () => {
   assert.equal(computeHp({ raceHpBonus: 20, classHpPercent: 15 }), Math.round(100 * 1.2 * 1.15));
   assert.equal(computeHp({ raceHpBonus: 100, classHpPercent: 0 }), 200);
   assert.equal(computeStamina({ raceBonus: 15, classFlat: 8 }), 123);
+  assert.equal(computeStamina({ raceBonus: 0, classFlat: -40 }), 60);
+  assert.equal(computeStamina({ raceBonus: 10, classFlat: -40 }), 70);
 });
 
 test("class page shows career, ranks, skills and Paladin as an honour, never hidden gates", () => {
