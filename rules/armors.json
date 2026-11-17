@@ -13,7 +13,8 @@
       "weight": 0,
       "mobility_bonus": 12,
       "lore": "Tattered silk and leather wraps; no real protection, but unburdened.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Light_Light": {
@@ -31,7 +32,8 @@
       "max_durability": 40,
       "weight": 5,
       "mobility_bonus": 5,
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "elven": {
       "name": "Veil-Woven Silk",
@@ -48,7 +50,8 @@
       "weight": 3,
       "mobility_bonus": 10,
       "lore": "Woven from Veil-touched fibers, light as air, resilient as Kevlar.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Forged Leather",
@@ -65,7 +68,8 @@
       "weight": 7,
       "mobility_bonus": 0,
       "lore": "Thick leather forged in high-gravity holds, built to last.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Light_Medium": {
@@ -85,7 +89,8 @@
       "max_durability": 50,
       "weight": 7,
       "mobility_bonus": 4,
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "elven": {
       "name": "Veilwood Lamellar",
@@ -104,7 +109,8 @@
       "weight": 5,
       "mobility_bonus": 8,
       "lore": "Grown from Veil-touched wood, flexible yet tough.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Iron-Bound Leather",
@@ -123,7 +129,8 @@
       "weight": 9,
       "mobility_bonus": 0,
       "lore": "Leather reinforced with iron, forged for durability.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Light_Heavy": {
@@ -144,7 +151,8 @@
       "max_durability": 60,
       "weight": 10,
       "mobility_bonus": 3,
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "elven": {
       "name": "Veilfiber Chain",
@@ -164,7 +172,8 @@
       "weight": 8,
       "mobility_bonus": 7,
       "lore": "Chains woven from Veil-grown fibers, light yet resilient.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Heavy Chainmail",
@@ -184,7 +193,8 @@
       "weight": 12,
       "mobility_bonus": 0,
       "lore": "Dense chain forged in deep holds, built to endure.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Medium_Light": {
@@ -205,7 +215,8 @@
       "max_durability": 70,
       "weight": 12,
       "mobility_bonus": 2,
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "elven": {
       "name": "Veilscale Brigandine",
@@ -225,7 +236,8 @@
       "weight": 10,
       "mobility_bonus": 6,
       "lore": "Scales grown from Veil magic, balancing protection and agility.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Steel Brigandine",
@@ -245,7 +257,8 @@
       "weight": 14,
       "mobility_bonus": 0,
       "lore": "Steel plates riveted for maximum durability.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Medium_Medium": {
@@ -268,7 +281,8 @@
       "max_durability": 80,
       "weight": 15,
       "mobility_bonus": 1,
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "elven": {
       "name": "Veilscale Mail",
@@ -290,7 +304,8 @@
       "weight": 12,
       "mobility_bonus": 5,
       "lore": "Scales woven with Veil magic, light and flexible.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Forged Scale Mail",
@@ -312,7 +327,8 @@
       "weight": 18,
       "mobility_bonus": 0,
       "lore": "Heavy scales forged for unyielding protection.",
-      "rigid": false
+      "rigid": false,
+      "size_class": "medium"
     }
   },
   "Medium_Heavy": {
@@ -333,7 +349,8 @@
       "max_durability": 48,
       "weight": 12.6,
       "mobility_bonus": -4,
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Forged Breastplate",
@@ -353,7 +370,8 @@
       "weight": 14.9,
       "mobility_bonus": -6,
       "lore": "Massive steel breastplate, built to withstand sieges.",
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     }
   },
   "Heavy_Light": {
@@ -376,7 +394,8 @@
       "max_durability": 54,
       "weight": 15.9,
       "mobility_bonus": -2,
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Forged Half Plate",
@@ -398,7 +417,8 @@
       "weight": 19.0,
       "mobility_bonus": -4,
       "lore": "Thick steel plates, forged for dwarven resilience.",
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     }
   },
   "Heavy_Medium": {
@@ -428,7 +448,8 @@
       "max_durability": 143,
       "weight": 32.2,
       "mobility_bonus": -6,
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Forged Full Plate",
@@ -457,7 +478,8 @@
       "weight": 36.8,
       "mobility_bonus": -8,
       "lore": "A fortress of steel, forged in high-gravity forges.",
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     }
   },
   "Heavy_Heavy": {
@@ -487,7 +509,8 @@
       "max_durability": 156,
       "weight": 40.2,
       "mobility_bonus": -10,
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
     },
     "dwarven": {
       "name": "Rune-Forged Siege Plate",
@@ -516,7 +539,34 @@
       "weight": 46.0,
       "mobility_bonus": -12,
       "lore": "Imbued with female-carved runes, a dwarven masterpiece.",
-      "rigid": true
+      "rigid": true,
+      "size_class": "medium"
+    }
+  },
+  "Ogre_Scrap": {
+    "standard": {
+      "name": "Ogre Scrap Harness",
+      "coverage": [
+        "chest",
+        "stomach",
+        "groin",
+        "left_upper_arm",
+        "right_upper_arm",
+        "left_upper_leg",
+        "right_upper_leg"
+      ],
+      "armor_rating": {
+        "slashing": 5,
+        "piercing": 3,
+        "blunt": 2
+      },
+      "stamina_penalty": 2,
+      "max_durability": 50,
+      "weight": 28,
+      "mobility_bonus": 0,
+      "rigid": false,
+      "size_class": "large",
+      "notes": "Patchwork hides, chains, straps and broken plates sized for an ogre. PLACEHOLDER ratings."
     }
   }
 }

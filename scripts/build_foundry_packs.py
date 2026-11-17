@@ -164,6 +164,9 @@ def weapons():
                         armor_piercing=bool(p["armor_piercing"]), guard_set=p["guard_set"],
                         two_hand_guard_set=p["two_hand_guard_set"], default_guard=p["default_guard"],
                         guards=split(p["guards"]), maneuvers=split(p["maneuvers"]), features=split(p["features"]),
+                        size_class=w.get("size_class") or "medium",
+                        reload_rounds=int(w.get("reload_rounds") or 0),
+                        misfire_chance=int(w.get("misfire_chance") or 0),
                         equipped=False))
     return out
 
@@ -179,7 +182,8 @@ def armor():
                             rating={"slashing": r["slashing"], "piercing": r["piercing"], "blunt": r["blunt"]},
                             rigid=bool(s.get("rigid")), coverage=list(s.get("coverage", [])),
                             stamina_penalty=int(s.get("stamina_penalty", 0) or 0), weight=s.get("weight", 0) or 0,
-                            durability={"value": md, "max": md}, equipped=False))
+                            durability={"value": md, "max": md},
+                            size_class=s.get("size_class") or "medium", equipped=False))
     return out
 
 

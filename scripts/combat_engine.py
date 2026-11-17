@@ -58,6 +58,7 @@ class Combatant:
     def __init__(self, data: dict):
         self.name = data["name"]
         self.race = data["race"]
+        self.mass = data.get("mass") or (600 if data.get("race") == "Ogre" else 80)
         self.total_hp = data["total_hp"]
         self.hp = data["total_hp"]
         self.max_stamina = data["max_stamina"]
@@ -178,6 +179,29 @@ class CombatEngine:
         perks = progression.perk_effects(attacker, weapon_ref)
         weapon_damage = weapon_damage + mastery["damage"]
 
+        import racial_gear
+        weapon_ref = dict(weapon_ref or {})
+        weapon_ref.setdefault("key", attacker.weapon)
+        ok, reason = racial_gear.can_wield(attacker, weapon_ref)
+        if not ok:
+            return {"hit": False, "refused": True, "message": reason, "damage": 0,
+                    "absorbed": 0, "defender_hp": defender.hp}
+        impr = racial_gear.improvised_modifiers(attacker, weapon_ref)
+        if impr["active"]:
+            skill = skill + impr["skill_penalty"]
+            if impr["no_mastery"]:
+                weapon_damage = weapon_damage - mastery["damage"]
+                mastery = {k: 0 for k in mastery}
+            if impr["no_stances"] or impr["no_maneuvers"]:
+                attacker_data = dict(attacker_data)
+                if impr["no_stances"]:
+                    attacker_data["stance"] = None
+                if impr["no_maneuvers"]:
+                    attacker_data["maneuver"] = None
+            notes_impr = "The weapon is too small in his hands; he uses it as an improvised club."
+        else:
+            notes_impr = None
+
         # A Veil-thing attacking a full-Breath knight tests morale; fail = turns to another target if one exists
         if (attacker.corrupted or set(attacker.creature_tags) & {"veilspawn", "abomination", "demon"}) \
                 and defender.class_name == "Crusader_Knight" \
@@ -192,6 +216,8 @@ class CombatEngine:
         a_conds = [dict(c) for c in attacker_data.get("conditions", [])]
         d_conds = [dict(c) for c in defender_data.get("conditions", [])]
         notes = []
+        if notes_impr:
+            notes.append(notes_impr)
 
         # --- Trick (one per fight) -------------------------------------------
         trick = None
@@ -361,6 +387,8 @@ class CombatEngine:
             "def_type": def_type,
             "attack_skill": skill,
             "mastery": mastery,
+            "improvised": impr if impr.get("active") else None,
+            "weapon_durability_loss_mult": (impr or {}).get("durability_loss_mult", 1),
             "stance": a_guard["id"],
             "defender_stance": d_guard["id"],
             "guard_change_cost": change_cost,

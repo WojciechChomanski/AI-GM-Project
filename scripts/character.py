@@ -263,23 +263,21 @@ class Character:
         print(f"📈 {self.name}'s {stat} increases by {amount} to {new_value}!")
 
     def can_wield_weapon(self, weapon):
-        min_str = weapon.get("min_STR", 10)
-        size_class = weapon.get("size_class", "medium")
-        grip_size = weapon.get("grip_size", "standard")
-        # Grip Demand (docs/STRENGTH.md): below min_STR you can still wield it, with penalties.
-        # More than 15 points short = too heavy to fight with at all.
-        self.grip = grip_check(self.strength, self.gender, weapon.get("min_STR", 0))
-        if self.strength < min_str - 15:
-            print(f"⚠️ {self.name} lacks strength to wield {weapon['name']} (needs {min_str} STR)!")
+        """Cultural hard blocks, ogre size, then the existing min_STR grip rule.
+
+        A medium weapon is allowed in ogre hands (it counts as improvised).
+        A large weapon is refused to anyone of mass 150 or less.
+        More than 15 points short of min_STR = too heavy to fight with at all.
+        """
+        import racial_gear
+        ok, reason = racial_gear.can_wield(self, weapon)
+        if not ok:
+            print(f"⚠️ {self.name}: {reason}")
             return False
+        min_str = weapon.get("min_STR", weapon.get("min_str", 10)) or 10
+        self.grip = grip_check(self.strength, self.gender, weapon.get("min_STR", weapon.get("min_str", 0)) or 0)
         if not self.grip["ok"]:
-            print(f"⚠️ {self.name} struggles with {weapon['name']} (needs {min_str} STR): parry {self.grip['parry_penalty']}, stamina x{self.grip['stamina_mult']:.1f}, can be disarmed on a failed parry.")
-        if self.mass > 150 and size_class == "small":  # Ogres can't use small weapons
-            print(f"⚠️ {self.name}'s grip too large for {weapon['name']}!")
-            return False
-        elif self.mass < 50 and size_class == "large":  # Small races can't use large
-            print(f"⚠️ {weapon['name']} too heavy for {self.name}'s size!")
-            return False
+            print(f"⚠️ {self.name} struggles with {weapon.get('name', 'this weapon')} (needs {min_str} STR): parry {self.grip['parry_penalty']}, stamina x{self.grip['stamina_mult']:.1f}, can be disarmed on a failed parry.")
         return True
 
     def consume_food(self, calories):

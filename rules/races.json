@@ -26,7 +26,10 @@
       }
     ],
     "magic": {
-      "type": ["breath", "veil"],
+      "type": [
+        "breath",
+        "veil"
+      ],
       "restrictions": {
         "breath": {
           "gender": "Male",
@@ -37,13 +40,21 @@
         "veil": {
           "gender": "Female",
           "corruption_risk": 0.1,
-          "taint_mark": { "hunt_check_bonus": 5 }
+          "taint_mark": {
+            "hunt_check_bonus": 5
+          }
         }
       }
     },
     "equipment": {
-      "allowed_weapons": ["sword", "dagger", "spear", "bow", "crossbow", "flintlock", "hammer", "axe"],
-      "allowed_armor": ["light", "medium", "heavy"]
+      "allowed_weapons": [],
+      "forbidden_weapons": [],
+      "allowed_armor": [
+        "light",
+        "medium",
+        "heavy"
+      ],
+      "note": "Humans have no weapon restrictions."
     },
     "mount_restrictions": {
       "allowed": true,
@@ -74,13 +85,35 @@
     ],
     "magic": {
       "type": "veil",
-      "restrictions": { "gender": "Female", "corruption_risk": 0.15, "taint_mark": { "hunt_check_bonus": 5 } }
+      "restrictions": {
+        "gender": "Female",
+        "corruption_risk": 0.15,
+        "taint_mark": {
+          "hunt_check_bonus": 5
+        }
+      }
     },
     "equipment": {
-      "allowed_weapons": ["composite_bow", "throwing_knife", "spear", "sword", "dagger"],
-      "forbidden_weapons": ["hammer", "axe", "crossbow", "flintlock"],
-      "allowed_armor": ["light", "medium"],
-      "armor_preference": "mystical"
+      "allowed_weapons": [],
+      "forbidden_weapons": [
+        "hammer",
+        "axe",
+        "crossbow",
+        "gunpowder",
+        "shield"
+      ],
+      "forbidden_groups": [
+        "hammer",
+        "axe",
+        "crossbow",
+        "gunpowder",
+        "shield"
+      ],
+      "allowed_armor": [
+        "light",
+        "medium"
+      ],
+      "armor_preference": "elven"
     },
     "mount_restrictions": {
       "allowed": true,
@@ -115,15 +148,36 @@
     ],
     "magic": {
       "type": "rune",
-      "restrictions": { "gender": "Female", "passive_only": true }
+      "restrictions": {
+        "gender": "Female",
+        "passive_only": true
+      }
     },
     "equipment": {
-      "allowed_weapons": ["axe", "hammer", "crossbow", "flintlock", "throwing_axe"],
-      "forbidden_weapons": ["sword", "dagger", "spear", "bow"],
-      "allowed_armor": ["medium", "heavy"],
-      "armor_preference": "forged"
+      "allowed_weapons": [],
+      "forbidden_weapons": [
+        "sword",
+        "shortsword",
+        "dagger",
+        "spear",
+        "bow"
+      ],
+      "forbidden_groups": [
+        "sword",
+        "shortsword",
+        "dagger",
+        "spear",
+        "bow"
+      ],
+      "allowed_armor": [
+        "medium",
+        "heavy"
+      ],
+      "armor_preference": "dwarven"
     },
-    "playable_genders": ["Male"],
+    "playable_genders": [
+      "Male"
+    ],
     "notes": {
       "origin": "Kha'inic line (Qayin) - earth-bound, marked, barred from Breath.",
       "aging": "Ageless (do not senesce). Deepcall draws elders into the strata over centuries.",
@@ -131,7 +185,7 @@
     },
     "mount_restrictions": {
       "allowed": false,
-      "reason": "Dwarves refuse mounts due to cultural taboo against riding animals."
+      "reason": "Dwarves will not ride, as the elves do."
     },
     "deepcall": {
       "description": "Sacred final rite for elder Stonewardens and runesmiths. When age or wounds grow too heavy, the dwarf descends into the living strata, carves his name into the stone, and lets the mountain claim him. The body becomes part of the hold’s foundation; the soul fuels the next generation of rune-forged relics.",
@@ -190,16 +244,22 @@
     ],
     "magic": {
       "type": "none",
-      "restrictions": { "all": false }
+      "restrictions": {
+        "all": false
+      }
     },
     "equipment": {
-      "restrictions": { "improvised_only": true }
+      "allowed_weapons": [],
+      "forbidden_weapons": [],
+      "restrictions": {},
+      "note": "No cultural bans. Gear must be size-appropriate (size_class large is native; medium counts as improvised)."
     },
-    "playable_genders": ["Male"],
+    "playable_genders": [
+      "Male"
+    ],
     "mount_restrictions": {
       "allowed": false,
       "reason": "600 kg mass crushes any standard mount. Ogres cannot ride horses, wolves, or war-beasts. They are the mount."
     }
   }
 }
-

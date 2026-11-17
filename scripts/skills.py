@@ -48,6 +48,11 @@ def lock_error(sid, race, gender, cross_race_master=False, advantages=()):
     r = s.get("restrictions", {})
     if r.get("gender") and gender not in r["gender"]:
         return f"{s['name']} is {'/'.join(r['gender'])} only"
+    if sid == "riding":
+        import racial_gear
+        err = racial_gear.ride_error(race)
+        if err:
+            return err
     if race in s.get("forbidden_races", []):
         return f"{race} cannot learn {s['name']}"
     if r.get("race") and race not in r["race"] and not cross_race_master:

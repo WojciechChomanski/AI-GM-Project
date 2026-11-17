@@ -76,6 +76,10 @@ class CharacterLoader:
             raise Exception(f"Failed to load {path}: {e}")
 
     def load_weapon(self, name):
+        import racial_gear
+        row = racial_gear.load_weapon(name)
+        if row:
+            return row
         path = os.path.join(os.path.dirname(__file__), "../rules/weapons.json")
         weapons_data = self.load_json_file(path)
         return weapons_data.get(name, {"name": "none", "type": "none", "base_damage": 0, "damage_type": "blunt", "stance_tree": ["neutral"], "durability": 50})
@@ -105,7 +109,15 @@ class CharacterLoader:
         armor_data = self.load_json_file(path)
         
         tier = name
-        variant = race.lower() if race in ["Elven", "Dwarven"] else "standard"
+        # K6: races.json uses armor_preference "elven" / "dwarven", matching
+        # the lowercase variant keys in rules/armors.json.
+        pref = (race or "standard").strip().lower()
+        if pref in ("elven", "elf", "mystical"):
+            variant = "elven"
+        elif pref in ("dwarven", "dwarf", "forged"):
+            variant = "dwarven"
+        else:
+            variant = "standard"
         
         armor_stats = armor_data.get(tier, {}).get(variant, armor_data.get(tier, {}).get("standard"))
         if not armor_stats:
@@ -133,6 +145,7 @@ class CharacterLoader:
             stamina_penalty=armor_stats.get("stamina_penalty", 0),
             mobility_bonus=armor_stats.get("mobility_bonus", 0)
         )
+        armor.size_class = armor_stats.get("size_class", "medium")
         return armor
 
     def load_character(self, character_name):
@@ -219,27 +232,24 @@ class CharacterLoader:
             character.forbidden_weapons = race_stats.get("equipment", {}).get("forbidden_weapons", [])
             character.armor_preference = race_stats.get("equipment", {}).get("armor_preference", "standard")
 
+        import racial_gear
         weapon_name = data.get("weapon")
         if weapon_name:
             character.weapon = self.load_weapon(weapon_name)
             valid_stances = character.weapon.get("stance_tree", ["neutral"])
             character.stance = valid_stances[0] if valid_stances else "neutral"
-
-        if character.race == "Ogre":
-            character.weapon = {
-                "name": "Improvised Club",
-                "type": "improvised",
-                "damage_type": "blunt",
-                "base_damage": 15,
-                "stance_tree": ["neutral"],
-                "durability": 60
-            }
-            character.armor = [self.load_armor_piece("Light_Heavy", "standard")]
-        else:
-            for armor_name in data.get("armor", []):
-                armor_piece = self.load_armor_piece(armor_name, character.armor_preference)
-                character.armor.append(armor_piece)
-                character.armor_weight += armor_piece.weight
+            reason = racial_gear.refuse_reason(character.race, character.weapon or weapon_name, character)
+            if reason:
+                raise ValueError(f"{character.name}: {reason}")
+        for armor_name in data.get("armor", []):
+            armor_piece = self.load_armor_piece(armor_name, character.armor_preference or "standard")
+            if getattr(character, "race", None) == "Ogre":
+                armor_piece.coverage = racial_gear.filter_armor_coverage(character, {
+                    "coverage": list(armor_piece.coverage),
+                    "size_class": getattr(armor_piece, "size_class", "medium"),
+                })
+            character.armor.append(armor_piece)
+            character.armor_weight += armor_piece.weight
 
         # Zone HP: base 100 scaled by race hp_bonus and class hp_percent (see docs/ZONE_DAMAGE.md).
         # Priority: explicit body_parts > legacy file total_hp (spread over zones) > race/class.

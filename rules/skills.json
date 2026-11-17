@@ -165,9 +165,10 @@
       "tools": null,
       "restrictions": {},
       "description": "Mounted travel and combat.",
-      "notes": "Dwarves refuse mounts.",
+      "notes": "Dwarves will not ride, as the elves do. An ogre crushes any standard mount.",
       "forbidden_races": [
-        "Dwarf"
+        "Dwarf",
+        "Ogre"
       ]
     },
     "stealth": {
