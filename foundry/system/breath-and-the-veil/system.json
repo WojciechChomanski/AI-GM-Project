@@ -2,7 +2,7 @@
   "id": "breath-and-the-veil",
   "title": "Breath and the Veil",
   "description": "Game system for Breath and the Veil (AI-GM Project). Rules data is built from the AI-GM-Project repository; combat and hidden-stat numbers are handled by the Breath backend.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -260,6 +260,6 @@
   "secondaryTokenAttribute": "resources.stamina",
   "url": "https://github.com/WojciechChomanski/AI-GM-Project",
   "manifest": "https://github.com/WojciechChomanski/AI-GM-Project/releases/latest/download/system.json",
-  "download": "https://github.com/WojciechChomanski/AI-GM-Project/releases/download/v0.4.0/breath-and-the-veil.zip",
+  "download": "https://github.com/WojciechChomanski/AI-GM-Project/releases/download/v0.4.1/breath-and-the-veil.zip",
   "license": "LICENSE"
 }
