@@ -5,12 +5,16 @@ import logging
 from character import Character
 from combat_health import CombatHealthManager
 import magic_costs
+import magic_backlash
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MagicSystem:
     def __init__(self, spells_file="rules/spells.json"):
         self.spells = self.load_spells(spells_file)
+        # Starter Frost/Fire lists live in a sibling file; merge unless a test fixture was passed.
+        if spells_file.endswith('spells.json'):
+            self.spells = {**self.spells, **magic_backlash.frost_fire_spells()}
         self.db_path = "database/characters.db"
 
     def load_spells(self, file_path):
@@ -75,6 +79,11 @@ class MagicSystem:
         spell = self.spells.get(spell_name)
         if not spell:
             print(f"❌ Unknown spell: {spell_name}")
+            return False
+
+        gate = magic_backlash.can_cast(caster, spell)
+        if not gate["ok"]:
+            print(f"❌ {caster.name} cannot cast {spell_name}: {gate['reason']}")
             return False
 
         # Check restrictions (rules/core_rules.txt: no active Breath spells; Veil is female Human/Elf only)

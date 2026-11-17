@@ -70,3 +70,7 @@ Bonds are a Python list on the character (`blood_vessels`). They must not be add
 - No new beauty / glamour rules for hiding age.
 - Overdraw (HP spent on spells that already cost HP) is unchanged.
 - Bleeding, zones, and stamina rest/collapse rules are unchanged.
+
+## Related
+
+Elemental backlash, Frost and Fire schools, sigils and ritual debt are in [MAGIC_BACKLASH.md](MAGIC_BACKLASH.md).
