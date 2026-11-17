@@ -5,9 +5,11 @@ All player-facing pictures live under `foundry/system/breath-and-the-veil/assets
 | Kind | Path | Notes |
 |---|---|---|
 | Compendium banners | `assets/banners/<pack>.webp` | 1160×280 (4× Foundry's 290×70 slot). Manifest path is `assets/banners/<pack>.webp`. |
-| Portraits | `assets/portraits/<race>-<gender>.webp` | 1024×1024. Playable only: `human-male`, `human-female`, `elf-male`, `elf-female`, `dwarf-male`, `ogre-male`. No female dwarf or female ogre. |
+| Portraits | `assets/portraits/<race>-<gender>.webp` | 1024×1024. Default playable faces: `human-male`, `human-female`, `elf-male`, `elf-female`, `dwarf-male`, `ogre-male`. No female dwarf or female ogre. Optional sorceress alternates: `human-female-sorceress.webp` and `elf-female-sorceress.webp` (not used as the default race/gender path yet). |
 | Class icons | `assets/icons/classes/<id>.webp` | 768×768. `id` is the class key in lower case (`crusader_knight.webp`). Paladin is not a class, so there is no paladin icon. |
 | Test map | `assets/maps/test-crossroads.webp` | 4096×4096. See below. |
+
+The Mage class icon is the candlelit study sorceress (`mage.webp`). Two further sorceress paintings ship as extra portrait options: the red-haired woman at the window (`human-female-sorceress.webp`) and the red-hooded woman in the winter birch wood (`elf-female-sorceress.webp`). The sheet still looks up the default `<race>-<gender>.webp` unless a later change lets a player pick an alternate.
 
 Item `img` fields in the packs use the Foundry path `systems/breath-and-the-veil/assets/...`. Race items use the male portrait of that race as a stand-in face. Weapons and armour still use Foundry's default SVG icons until the item-icon batch.
 

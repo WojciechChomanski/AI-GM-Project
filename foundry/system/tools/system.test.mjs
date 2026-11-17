@@ -122,6 +122,10 @@ test("portraits, class icons and the test map are shipped", () => {
   }
   assert.ok(!fs.existsSync(path.join(sys, "assets/portraits/dwarf-female.webp")));
   assert.ok(!fs.existsSync(path.join(sys, "assets/portraits/ogre-female.webp")));
+  for (const name of ["human-female-sorceress", "elf-female-sorceress"]) {
+    const file = path.join(sys, "assets/portraits", `${name}.webp`);
+    assert.ok(fs.existsSync(file) && fs.statSync(file).size > 0, name);
+  }
   assert.ok(fs.existsSync(path.join(sys, "assets/maps/test-crossroads.webp")));
   assert.ok(fs.existsSync(path.join(sys, "assets/banners/scenes.webp")));
 });
