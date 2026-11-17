@@ -6,7 +6,9 @@ live only in the Python backend. Foundry may show symptom text from symptoms(),
 never the numbers.
 
 Opposite-element cancelling is banned as a provisional default.
-TODO: hunter Witch-Sight rules are not implemented. Glamour never fools Witch-Sight.
+Witch hunters are ordinary trained men who spot signs (scars, sigils, frost/scorch evidence,
+behaviour) by mundane inspection. They use no magic. A magic-using female witch hunter may
+come later as a special NPC only.
 """
 from __future__ import annotations
 
@@ -448,20 +450,22 @@ def symptoms(caster):
     if s["collapsed"]:
         felt.append({"topic": "collapse", "text": "Your legs have gone. You cannot act until you are warmed, cooled, or carried."})
     # Visible sigils as felt only if actually showing
-    showing = visible_sigils(caster, witch_sight=False)
+    showing = visible_sigils(caster)
     if showing:
         names = ", ".join(x["name"] + " (" + x["school"] + ")" for x in showing)
         felt.append({"topic": "sigil", "text": f"Marks of the work show on your skin unless you cover them: {names}."})
     return felt
 
 
-def visible_sigils(caster, witch_sight=False, cover=None):
-    """Sigils an ordinary observer can see. Glamour hides them for a scene, never against Witch-Sight.
+def visible_sigils(caster, close_inspection=False, cover=None):
+    """Sigils an ordinary observer can see. Glamour hides them for a scene from casual sight.
 
-    TODO: hunter Witch-Sight rules (how a hunter spots or contests a sigil) are not implemented.
+    It fails against close physical inspection (undressing, or a trained hunter's mundane exam).
+    Witch hunters use no magic; they only look carefully at scars, sigils, frost or scorch
+    evidence, and behaviour. A magic-using female witch hunter may come later as a special NPC.
     """
     s = state(caster)
-    glamoured = bool(s["glamour_sigils_scene"]) and not witch_sight
+    glamoured = bool(s["glamour_sigils_scene"]) and not close_inspection
     if glamoured:
         return []
     cover = cover or []
@@ -473,20 +477,21 @@ def visible_sigils(caster, witch_sight=False, cover=None):
         concealable = tier.get("concealable")
         if concealable and isinstance(concealable, list) and any(c in concealable for c in cover):
             continue
-        # Branded (concealable false) always shows to ordinary sight unless glamoured/Witch-Sight handled above
-        out.append({"school": school, "name": tier["name"], "tier": tier["tier"], "points": pts if witch_sight else None})
-    if not witch_sight:
-        for row in out:
-            row.pop("points", None)
+        # Branded (concealable false) always shows to ordinary sight unless glamoured (and not closely inspected)
+        out.append({"school": school, "name": tier["name"], "tier": tier["tier"]})
     return out
 
 
 def glamour_hide_sigils(caster):
-    """Hide visible sigils for one scene at +5 Corruption. Never fools Witch-Sight."""
+    """Hide visible sigils for one scene at +5 Corruption.
+
+    Fails against close physical inspection (undressing or a trained hunter's mundane exam).
+    """
     cost = int(data()["sigils"]["glamour"]["corruption"])
     added = magic_costs.add_corruption(caster, cost)
     state(caster)["glamour_sigils_scene"] = True
-    return {"ok": True, "corruption_added": added, "hides_from": "ordinary_sight", "never_against": "Witch-Sight"}
+    return {"ok": True, "corruption_added": added, "hides_from": "casual_sight",
+            "fails_against": "close_physical_inspection"}
 
 
 def _apply_steps_toward_zero_thermal(caster, steps):

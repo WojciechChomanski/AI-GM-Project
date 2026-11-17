@@ -160,14 +160,15 @@ def test_sigil_tiers_and_sigil_ii_heavy_discount():
     assert MB.visible_sigils(c, cover=["glove"])[0]["name"] == "Branded"
 
 
-def test_glamour_hides_sigils_for_a_scene_but_not_from_witch_sight():
+def test_glamour_hides_sigils_from_a_glance_but_not_close_inspection():
     c = _c()
     MB.state(c)["sigil_points"]["fire"] = 15
     assert MB.visible_sigils(c)
     r = MB.glamour_hide_sigils(c)
     assert r["ok"] and r["corruption_added"] == 5 and c["corruption_level"] == 5
-    assert MB.visible_sigils(c) == []
-    assert MB.visible_sigils(c, witch_sight=True)  # never against Witch-Sight
+    assert r["fails_against"] == "close_physical_inspection"
+    assert MB.visible_sigils(c) == []  # casual sight
+    assert MB.visible_sigils(c, close_inspection=True)  # undressing or a hunter's mundane exam
     MB.scene_end(c)
     assert MB.visible_sigils(c)  # glamour ended with the scene
 

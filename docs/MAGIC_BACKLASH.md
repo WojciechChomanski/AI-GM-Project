@@ -65,9 +65,9 @@ A ritual has **no track cost while it is being cast**. At the **next dawn** the 
 | 15 | Sigil III | Visible, like Corruption 75; a glove or collar can hide it |
 | 25 | Branded | Visible, not hidden by a glove or collar |
 
-**Glamour** can hide visible sigils for **one scene** at **+5 Corruption**. It never fools **Witch-Sight**.
+**Glamour** can hide visible sigils for **one scene** at **+5 Corruption**. It fools a casual glance, but **fails against close physical inspection** — undressing, a medical exam, or a trained hunter looking carefully at the skin.
 
-TODO: hunter Witch-Sight rules (how a hunter spots or contests a sigil) are **not** implemented in this PR. The glamour flag simply does not apply when `witch_sight=True`.
+Witch hunters are **ordinary trained men**. They use **no magic at all**. They spot a witch the same way a careful soldier or physician would: scars and sigils, frost or scorch left in the air, odd behaviour. A magic-using **female** witch hunter (someone in the same organisation who also casts) is not in the rules now; she may come later as a special NPC only.
 
 ## Frost and Fire starter spells
 
@@ -82,3 +82,11 @@ Existing necromancy spells Decay Touch and Soul Leech gain Grave-Chill (heavy). 
 ## Foundry
 
 Do not store Thermal, Grave-Chill, sigil points, ritual debt or Corruption on a Foundry actor. If the backend later writes `felt` entries, use `symptoms()` so the player sees only prose.
+
+## Existing rules flagged (not changed in this PR)
+
+These already live on `main`. They are recorded here so they are not mistaken for witch-hunter magic, and so a later pass can tidy the wording if needed.
+
+- **`witch_sight` in `rules/creation/advantages.json`** is a **female-only** creation advantage: "Sense corruption bands (the GM tells the fiction, not the number)." It is a caster's gift, not a hunter's tool. Male witch hunters must not take it, and it is not a hunter ability. Left as it is, because changing advantages is outside this backlash PR.
+- **`rules/corruption_marks.json`** still lists "Witch-Sight", "Discern Sin", and "undressing/medical exam" as ways a *subtle* (threshold 50) corruption mark can be found. The medical-exam part already matches close mundane inspection. The "Witch-Sight" entry points at the female advantage above, not at hunters. Not edited here.
+- **Discern Sin** (`rules/classes/holy_judge.json`, also on the Crusader Knight Holy Judge vocation in `rules/classes/crusader_knight.json`, with career hooks in `docs/CAREER_PATHS.md` and `rules/orders/paths.json`) is a **Holy Judge** ability of the Breath-bound male Order, used to confirm sin, not a Veil power and not a witch-hunter skill. Not edited here.

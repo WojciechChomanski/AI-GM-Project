@@ -4,7 +4,7 @@
     "status": "PLACEHOLDER",
     "doc": "docs/MAGIC_BACKLASH.md",
     "hidden": true,
-    "note": "Backlash tracks, sigil points and ritual debt live only in the Python backend. Foundry may show symptom text, never the numbers. Opposite-element cancelling is banned as a provisional default. Hunter Witch-Sight rules are not implemented (TODO)."
+    "note": "Backlash tracks, sigil points and ritual debt live only in the Python backend. Foundry may show symptom text, never the numbers. Opposite-element cancelling is banned as a provisional default. Witch hunters are ordinary trained men who spot signs by mundane inspection; they use no magic. A magic-using female witch hunter may come later as a special NPC only."
   },
   "opposite_element_cancelling": {
     "allowed": false,
@@ -16,33 +16,85 @@
     "max": 10,
     "frost_direction": -1,
     "fire_direction": 1,
-    "gains": { "light": 1, "standard": 2, "heavy": 3, "greater": 5 },
+    "gains": {
+      "light": 1,
+      "standard": 2,
+      "heavy": 3,
+      "greater": 5
+    },
     "thresholds": {
-      "3": { "fine_tasks": -5, "spellcraft": -5 },
-      "5": { "all": -10, "stamina_regen_mult": 0.5, "hp_per_round": 1, "area_evidence_metres": 3 },
-      "7": { "stamina_regen_mult": 0.0, "hp_per_round": 3, "toughness_test": true, "toughness_dc": 50 },
-      "10": { "death_rounds": 1 }
+      "3": {
+        "fine_tasks": -5,
+        "spellcraft": -5
+      },
+      "5": {
+        "all": -10,
+        "stamina_regen_mult": 0.5,
+        "hp_per_round": 1,
+        "area_evidence_metres": 3
+      },
+      "7": {
+        "stamina_regen_mult": 0.0,
+        "hp_per_round": 3,
+        "toughness_test": true,
+        "toughness_dc": 50
+      },
+      "10": {
+        "death_rounds": 1
+      }
     },
     "recovery_step_per_minutes_rest": 10,
     "counters": {
-      "hot_iron": { "steps_toward_zero": 3, "hp_cost": 4, "fire_scar": 1 },
-      "ice_bath": { "steps_toward_zero": 3, "stamina_cost": 10, "rounds": 1 },
-      "brazier_or_snow": { "steps_toward_zero_per_round": 1 }
+      "hot_iron": {
+        "steps_toward_zero": 3,
+        "hp_cost": 4,
+        "fire_scar": 1
+      },
+      "ice_bath": {
+        "steps_toward_zero": 3,
+        "stamina_cost": 10,
+        "rounds": 1
+      },
+      "brazier_or_snow": {
+        "steps_toward_zero_per_round": 1
+      }
     }
   },
   "grave_chill": {
     "min": 0,
     "max": 10,
-    "gains": { "light": 1, "standard": 2, "heavy": 3, "greater": 5 },
+    "gains": {
+      "light": 1,
+      "standard": 2,
+      "heavy": 3,
+      "greater": 5
+    },
     "thresholds": {
-      "4": { "agility": -10, "numb_hand": true },
-      "7": { "max_hp_pct_until_long_rest": -10 },
-      "10": { "lose": ["finger", "ear"], "permanent_penalty": -5 }
+      "4": {
+        "agility": -10,
+        "numb_hand": true
+      },
+      "7": {
+        "max_hp_pct_until_long_rest": -10
+      },
+      "10": {
+        "lose": [
+          "finger",
+          "ear"
+        ],
+        "permanent_penalty": -5
+      }
     },
     "recovery_step_per_minutes_rest": 60,
     "counters": {
-      "warm_blood": { "steps_toward_zero": 3, "corruption": 2 },
-      "salt_and_ash": { "steps_toward_zero": 2, "hp_cost": 3 }
+      "warm_blood": {
+        "steps_toward_zero": 3,
+        "corruption": 2
+      },
+      "salt_and_ash": {
+        "steps_toward_zero": 2,
+        "hp_cost": 3
+      }
     }
   },
   "blood": {
@@ -50,8 +102,15 @@
     "stigmata_bleed_rate": 1,
     "stigmata_rounds": 3,
     "counters": {
-      "cautery": { "hp_cost": 3, "fire_scar": 1, "stops_stigmata": true },
-      "tourniquet": { "rounds_rest": 1, "stops_stigmata": true }
+      "cautery": {
+        "hp_cost": 3,
+        "fire_scar": 1,
+        "stops_stigmata": true
+      },
+      "tourniquet": {
+        "rounds_rest": 1,
+        "stops_stigmata": true
+      }
     }
   },
   "ritual": {
@@ -63,23 +122,52 @@
   },
   "sigils": {
     "points_per_heavy_or_greater_cast": 1,
-    "points_on_track_cross": [5, 7],
+    "points_on_track_cross": [
+      5,
+      7
+    ],
     "sigil_ii_heavy_discount": 1,
     "sigil_ii_applies_to": "heavy",
     "tiers": {
-      "1": { "at": 3, "name": "Sigil I", "visible": false },
-      "2": { "at": 8, "name": "Sigil II", "visible": false, "heavy_discount": 1 },
-      "3": { "at": 15, "name": "Sigil III", "visible": true, "concealable": ["glove", "collar"] },
-      "4": { "at": 25, "name": "Branded", "visible": true, "concealable": false }
+      "1": {
+        "at": 3,
+        "name": "Sigil I",
+        "visible": false
+      },
+      "2": {
+        "at": 8,
+        "name": "Sigil II",
+        "visible": false,
+        "heavy_discount": 1
+      },
+      "3": {
+        "at": 15,
+        "name": "Sigil III",
+        "visible": true,
+        "concealable": [
+          "glove",
+          "collar"
+        ]
+      },
+      "4": {
+        "at": 25,
+        "name": "Branded",
+        "visible": true,
+        "concealable": false
+      }
     },
     "glamour": {
       "corruption": 5,
       "duration": "one_scene",
-      "hides_from": "ordinary_sight",
-      "never_against": "Witch-Sight"
+      "hides_from": "casual_sight",
+      "fails_against": "close_physical_inspection",
+      "fails_against_examples": [
+        "undressing",
+        "trained_hunter_mundane_exam"
+      ]
     }
   },
   "todo": [
-    "Hunter Witch-Sight rules are not implemented. Glamour never fools Witch-Sight; how a hunter actually spots or contests a sigil is left for a later PR."
+    "Witch hunters are ordinary trained men who spot signs (scars, sigils, frost/scorch evidence, behaviour) by mundane inspection. They use no magic at all. A magic-using female witch hunter may come later as a special NPC only."
   ]
 }
