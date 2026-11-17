@@ -16,6 +16,14 @@ import wound_recovery as recovery
 import combat_techniques as CT
 from zone_hp import aimed_penalty
 
+def _rule_caps(character):
+    try:
+        import rule_of_life
+        return rule_of_life.caps_breath_at_dim(character)
+    except Exception:
+        return False
+
+
 dotenv.load_dotenv()
 app = FastAPI()
 
@@ -173,7 +181,7 @@ class CombatEngine:
         # A Veil-thing attacking a full-Breath knight tests morale; fail = turns to another target if one exists
         if (attacker.corrupted or set(attacker.creature_tags) & {"veilspawn", "abomination", "demon"}) \
                 and defender.class_name == "Crusader_Knight" \
-                and knight.breath_state(defender.virtue, defender.piety, defender.corruption_level) == "full" \
+                and knight.breath_state_for(defender) == "full" \
                 and attacker_data.get("other_targets_available") \
                 and not recovery.morale_vs_knight(attacker_data.get("willpower", 30)):
             return {"hit": False, "shied_away": True, "damage": 0, "absorbed": 0, "defender_hp": defender.hp,
@@ -285,7 +293,8 @@ class CombatEngine:
             breath = {"state": "none"}
             if attacker.class_name == "Crusader_Knight":
                 breath = knight.breath_effects(attacker.virtue, attacker.piety, attacker.corruption_level,
-                                               defender.creature_tags + (["corrupted"] if defender.corrupted else []))
+                                               defender.creature_tags + (["corrupted"] if defender.corrupted else []),
+                                               cap_at_dim=_rule_caps(attacker))
             if defender.corrupted:
                 # total_hp = natural HP; pool x M; Breath damage counts x M; penalties vs natural HP
                 cc = corruption.CorruptedCreature(defender.total_hp, defender_data.get("hp_multiplier"),

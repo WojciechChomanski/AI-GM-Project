@@ -61,6 +61,15 @@
         ]
       },
       {
+        "threshold": 90,
+        "label": "speaking_veil",
+        "effects": [
+          "unmistakable_marks",
+          "the Veil speaks with your voice",
+          "acts_without_deciding"
+        ]
+      },
+      {
         "threshold": 100,
         "label": "lost",
         "effects": [
@@ -70,11 +79,6 @@
       }
     ],
     "purge_methods": {
-      "breath_ritual": {
-        "willpower_check": 40,
-        "hp_cost": 10,
-        "reduce_corruption": 10
-      },
       "saint_relic": {
         "charges": 1,
         "reduce_corruption": 25

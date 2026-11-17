@@ -13,7 +13,7 @@ import { verifyClassPack } from "./verify-class-pack.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const sys = path.join(here, "..", "breath-and-the-veil");
 const manifest = JSON.parse(fs.readFileSync(path.join(sys, "system.json"), "utf8"));
-const HIDDEN = /^(faith|virtue|piety|holy_?fury\w*|corruption\w*|stress\w*|reputation\w*|suspicion\w*|church_favour|hunter_zeal|hunter_greed|political_cost)$/i;
+const HIDDEN = /^(faith|virtue|piety|holy_?fury\w*|corruption\w*|stress\w*|reputation\w*|suspicion\w*|church_favour|hunter_zeal|hunter_greed|political_cost|rule_ward|stain_ledger|virtue_ceiling|venial_stain\w*|grave_stain\w*|rule_kept\w*|stain_weight|open_grave\w*|rule_of_life)$/i;
 
 // Minimal stand-ins for foundry.data.fields so the real data.mjs can be imported outside Foundry.
 class Field { constructor(a, b) { this.options = (a && !(a instanceof Field) ? a : b) || {}; this.inner = a instanceof Field ? a : null; } }

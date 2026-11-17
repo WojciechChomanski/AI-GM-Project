@@ -27,7 +27,7 @@
       "breach": "Order reputation -10, possible expulsion"
     },
     "purity": {
-      "rule": "Keep Virtue high; no Veil contact; corruption purged at once.",
+      "rule": "Keep from the Veil and from grave stain. Confession to a priest, restitution and penance lift a stain; a saint's relic may rarely cleanse corruption. There is no instant purge.",
       "breach": "see breath ladder"
     },
     "no_profession": {
@@ -62,7 +62,7 @@
   ],
   "breath": {
     "visibility": "gm_only",
-    "rule": "Passive only (core_rules.txt). No visible light. The knight knows something is happening, not why.",
+    "rule": "Passive only (core_rules.txt). No visible light. The knight knows something is happening, not why. An open grave stain or a broken vow caps Breath at dim. Targets match the witch-hunter list (beasts, demons, ghosts, spirits, possessed humans).",
     "full": {
       "virtue_min": 70,
       "piety_min": 70,
@@ -70,8 +70,11 @@
       "vs": [
         "veilspawn",
         "abomination",
+        "corrupted_beast",
         "demon",
-        "corrupted"
+        "ghost",
+        "spirit",
+        "possessed_human"
       ],
       "effects": {
         "bypass_undying": true,
@@ -94,11 +97,14 @@
     "none": {
       "effects": {
         "holy_fury_max_stacks": 0,
-        "demons_sense_him": -10,
-        "discern_sin": "fails"
-      }
+        "demons_sense_him": -10
+      },
+      "interrogate": "unreliable while Breath is none"
     },
     "corruption_25_or_more": "counts as dim at best",
-    "steel_rule": "Low Virtue never lowers his normal weapon damage, only removes the Breath."
+    "steel_rule": "Low Virtue never lowers his normal weapon damage, only removes the Breath.",
+    "kind_aliases": {
+      "corrupted": "corrupted_beast"
+    }
   }
 }

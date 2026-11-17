@@ -66,6 +66,10 @@ def day_tick(manager, mode=None, fed=True, rng=None, companions=()):
     hrep = witch_hunters.day_tick(manager.character)
     if hrep:
         rep["witch_hunters"] = hrep
+    import rule_of_life
+    rrep = rule_of_life.day_tick(manager.character)
+    if rrep:
+        rep["rule_of_life"] = rrep
     return rep
 
 

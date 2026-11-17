@@ -163,10 +163,6 @@
                                     "label": "Heal 1d8"
                                 },
                                 {
-                                    "id": "miracle_breath_burst",
-                                    "label": "Breath Burst (AOE 1.5m, 2d6)"
-                                },
-                                {
                                     "id": "miracle_veil_ward",
                                     "label": "Veil Ward (immune to curses 1 round)"
                                 }
