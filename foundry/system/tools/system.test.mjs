@@ -83,9 +83,9 @@ test("every pack extracts, matches its type, and carries no hidden-stat keys", a
   }
 });
 
-test("version is 0.3.2 and every pack has a shipped banner", () => {
-  assert.equal(manifest.version, "0.3.2");
-  assert.match(manifest.download, /\/releases\/download\/v0\.3\.2\/breath-and-the-veil\.zip$/);
+test("version is 0.3.3 and every pack has a shipped banner", () => {
+  assert.equal(manifest.version, "0.3.3");
+  assert.match(manifest.download, /\/releases\/download\/v0\.3\.3\/breath-and-the-veil\.zip$/);
   for (const pack of manifest.packs) {
     assert.equal(pack.banner, `assets/banners/${pack.name}.webp`, pack.name);
     const file = path.join(sys, pack.banner);
