@@ -2,7 +2,7 @@
 
 Short contract for the Breath and the Veil system, so the sheet (this workstream), inventory/encumbrance (workstream B), and art (workstream C) can land on the same actor without fighting each other.
 
-Hidden stats are **never** stored on a Foundry actor or item and **never** shown: Faith, Virtue, Piety, Holy Fury, Corruption, Stress, Reputation, the witch-hunter toolkit (Suspicion, Protection, Political Cost / Church favour, Zeal, Greed, writs, sentences), and the Rule of Life ledger (stains, Rule Ward, Virtue ceiling, penance). Those live only in the Python backend. Players see `felt` text only.
+Hidden stats are **never** stored on a Foundry actor or item and **never** shown: Faith, Virtue, Piety, Holy Fury, Corruption, Stress, Reputation, the witch-hunter toolkit (Suspicion, Protection, Political Cost / Church favour, Zeal, Greed, writs, sentences), and the Rule of Life ledger (stains, Rule Ward, Virtue ceiling, penance). Those live only in the Python backend. Players see `felt` text only. Racial equipment bans and `size_class` (medium or large) are visible rules, not hidden stats; the sheet refuses a forbidden drop with a felt line (see docs/RACIAL_GEAR.md).
 
 ## Actor types
 

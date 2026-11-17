@@ -598,5 +598,30 @@
         "max_durability": 169
       }
     }
+  },
+  {
+    "name": "Ogre Scrap Harness",
+    "type": "equippableItem",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "unique": false,
+      "template": "",
+      "props": {
+        "item_kind": "Armor",
+        "contract_version": "1.0",
+        "armor_tier": "Ogre_Scrap",
+        "armor_variant": "standard",
+        "armor_label": "Ogre Scrap Harness",
+        "source_file": "rules/armors.json",
+        "armor_slashing": 5,
+        "armor_piercing": 3,
+        "armor_blunt": 2,
+        "rigid": 0,
+        "coverage": "chest,stomach,groin,left_upper_arm,right_upper_arm,left_upper_leg,right_upper_leg",
+        "stamina_penalty": 2,
+        "weight": 28,
+        "max_durability": 50
+      }
+    }
   }
 ]

@@ -30,7 +30,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "flamberge": {
     "name": "Flamberge",
@@ -64,7 +65,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "claymore": {
     "name": "Claymore",
@@ -98,7 +100,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "zweihander": {
     "name": "Zweihänder",
@@ -132,7 +135,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "montante": {
     "name": "Montante",
@@ -166,7 +170,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "spadone": {
     "name": "Spadone",
@@ -200,7 +205,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "warhammer": {
     "name": "Warhammer",
@@ -225,7 +231,8 @@
       "beak"
     ],
     "stamina_cost": 6,
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "lucerno_hammer": {
     "name": "Lucerno Hammer",
@@ -255,7 +262,8 @@
       "point",
       "hook"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "longsword": {
     "name": "Longsword",
@@ -283,7 +291,8 @@
     ],
     "stamina_cost": 4,
     "armor_piercing": false,
-    "two_hand_guard_set": "2H_sword"
+    "two_hand_guard_set": "2H_sword",
+    "size_class": "medium"
   },
   "arming_sword": {
     "name": "Arming Sword",
@@ -312,7 +321,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "ulfberht_sword": {
     "name": "Ulfberht Sword",
@@ -341,7 +351,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "falchion": {
     "name": "Falchion",
@@ -370,7 +381,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "messer": {
     "name": "Messer",
@@ -399,7 +411,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "estoc": {
     "name": "Estoc",
@@ -427,7 +440,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "szabla": {
     "name": "Szabla",
@@ -456,7 +470,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "karabela": {
     "name": "Karabela",
@@ -485,7 +500,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "koncerz": {
     "name": "Koncerz",
@@ -513,7 +529,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "shashka": {
     "name": "Shashka",
@@ -542,7 +559,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "kilij": {
     "name": "Kilij",
@@ -571,7 +589,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "hussar_szabla": {
     "name": "Hussar Szabla",
@@ -600,7 +619,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "hungarian_hussar_sabre": {
     "name": "Hungarian Hussar Sabre",
@@ -629,7 +649,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "british_1796_sabre": {
     "name": "1796 Light Cavalry Sabre",
@@ -658,7 +679,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "french_an_xi_sabre": {
     "name": "An XI Cavalry Sabre",
@@ -687,7 +709,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "pallasch": {
     "name": "Pallasch",
@@ -716,7 +739,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "mortuary_sword": {
     "name": "Mortuary Sword",
@@ -745,7 +769,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "walloon_sword": {
     "name": "Walloon Sword",
@@ -774,7 +799,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "magyar_sabre": {
     "name": "Magyar Sabre",
@@ -803,7 +829,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "avar_sabre": {
     "name": "Avar Sabre",
@@ -832,7 +859,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "shortsword": {
     "name": "Shortsword",
@@ -859,7 +887,8 @@
       "point"
     ],
     "stamina_cost": 3,
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "gladius": {
     "name": "Gladius",
@@ -888,7 +917,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "dagger": {
     "name": "Dagger",
@@ -913,7 +943,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "rondel_dagger": {
     "name": "Rondel Dagger",
@@ -938,7 +969,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "stiletto": {
     "name": "Stiletto",
@@ -963,7 +995,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "baselard": {
     "name": "Baselard",
@@ -989,7 +1022,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "bollock_dagger": {
     "name": "Bollock Dagger",
@@ -1014,7 +1048,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "misericorde": {
     "name": "Misericorde",
@@ -1039,7 +1074,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "seax": {
     "name": "Seax",
@@ -1065,7 +1101,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "cinquedea": {
     "name": "Cinquedea",
@@ -1091,7 +1128,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "yatagan": {
     "name": "Yatagan",
@@ -1117,7 +1155,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "qama": {
     "name": "Qama",
@@ -1142,7 +1181,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "improvised_club": {
     "name": "Improvised Club",
@@ -1161,7 +1201,8 @@
     "weight": 8,
     "min_STR": 38,
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "mace": {
     "name": "Mace",
@@ -1184,7 +1225,8 @@
     "weight": 6,
     "notes": "Flanged head for armor crushing; +5 vs plate.",
     "features": [],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "morning_star": {
     "name": "Morning Star",
@@ -1207,7 +1249,8 @@
     "weight": 7,
     "notes": "Spiked ball head; causes additional bleeding on hit.",
     "features": [],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "flail": {
     "name": "Flail",
@@ -1233,7 +1276,8 @@
     "features": [
       "chain"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "chekan": {
     "name": "Chekan",
@@ -1259,7 +1303,8 @@
     "features": [
       "beak"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "battle_axe": {
     "name": "Battle Axe",
@@ -1284,7 +1329,8 @@
     "features": [
       "hook"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "horsemans_axe": {
     "name": "Horseman's Axe",
@@ -1310,7 +1356,8 @@
     "features": [
       "beak"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "tabar": {
     "name": "Tabar",
@@ -1333,7 +1380,8 @@
     "weight": 7,
     "notes": "Turkish/Persian battle axe, medieval; ornate, +5 vs shields.",
     "features": [],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "dane_axe": {
     "name": "Dane Axe",
@@ -1359,7 +1407,8 @@
     "features": [
       "hook"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "bardiche": {
     "name": "Bardiche",
@@ -1386,7 +1435,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "lochaber_axe": {
     "name": "Lochaber Axe",
@@ -1414,7 +1464,8 @@
       "hook",
       "point"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "poleaxe": {
     "name": "Poleaxe",
@@ -1445,7 +1496,8 @@
       "hook",
       "beak"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "halberd": {
     "name": "Halberd",
@@ -1474,7 +1526,8 @@
       "point",
       "hook"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "bill": {
     "name": "Bill",
@@ -1503,7 +1556,8 @@
       "point",
       "hook"
     ],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "glaive": {
     "name": "Glaive",
@@ -1531,7 +1585,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "spear": {
     "name": "Spear",
@@ -1557,7 +1612,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "lance": {
     "name": "Lance",
@@ -1584,7 +1640,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "boar_spear": {
     "name": "Boar Spear",
@@ -1610,7 +1667,8 @@
     "features": [
       "point"
     ],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "longbow": {
     "name": "Longbow",
@@ -1629,7 +1687,8 @@
     "weight": 3,
     "notes": "English longbow; high draw weight, +5 pierce vs mail at range.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "recurve_bow": {
     "name": "Recurve Bow",
@@ -1648,7 +1707,8 @@
     "weight": 3,
     "notes": "Middle Eastern/Mongol bow; curved for power, +5 from horseback.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "crossbow": {
     "name": "Crossbow",
@@ -1667,7 +1727,8 @@
     "weight": 8,
     "notes": "High penetration; +10 vs plate, slow reload.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "arbalest": {
     "name": "Arbalest",
@@ -1686,7 +1747,8 @@
     "weight": 10,
     "notes": "Heavy crossbow; cranked for power, +15 vs heavy armor, very slow reload.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "javelin": {
     "name": "Javelin",
@@ -1705,7 +1767,8 @@
     "weight": 4,
     "notes": "Thrown spear; +5 at short range, can pin shields.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "pilum": {
     "name": "Pilum",
@@ -1724,7 +1787,8 @@
     "weight": 4,
     "notes": "Roman javelin; bends on impact, disables shields (+10 vs shielded).",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "throwing_axe": {
     "name": "Throwing Axe",
@@ -1743,7 +1807,8 @@
     "weight": 5,
     "notes": "Francisca-style; spins for impact, +5 vs shields.",
     "features": [],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "francisca": {
     "name": "Francisca",
@@ -1762,7 +1827,8 @@
     "weight": 5,
     "notes": "Frankish throwing axe; curved for hooking, +5 disarm on hit.",
     "features": [],
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
   },
   "quarterstaff": {
     "name": "Quarterstaff",
@@ -1786,7 +1852,8 @@
     "weight": 4,
     "notes": "Simple wooden staff; versatile defense, +5 parry.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "bo_staff": {
     "name": "Bo Staff",
@@ -1810,7 +1877,8 @@
     "weight": 4,
     "notes": "Long staff; extended reach, +5 vs multiple foes.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "sling": {
     "name": "Sling",
@@ -1829,7 +1897,8 @@
     "weight": 1,
     "notes": "Simple projectile; cheap ammo, +5 vs unarmored heads.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "atlatl": {
     "name": "Atlatl",
@@ -1848,7 +1917,8 @@
     "weight": 3,
     "notes": "Dart thrower; increased range/force, +5 pierce.",
     "features": [],
-    "armor_piercing": false
+    "armor_piercing": false,
+    "size_class": "medium"
   },
   "war_pick": {
     "name": "War Pick",
@@ -1875,6 +1945,467 @@
       "beak"
     ],
     "description": "A short hammer with a long, narrow beak behind the head; the horseman's answer to plate.",
-    "armor_piercing": true
+    "armor_piercing": true,
+    "size_class": "medium"
+  },
+  "matchlock_musket": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 6,
+    "features": [
+      "gunpowder"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. Common human matchlock; lit match, slow to charge, misfires in rain.",
+    "name": "Matchlock Musket",
+    "base_damage": 16,
+    "durability": 40,
+    "stamina_cost": 6,
+    "weight": 9,
+    "min_STR": 32,
+    "reload_rounds": 3,
+    "misfire_chance": 15
+  },
+  "arquebus": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 6,
+    "features": [
+      "gunpowder"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. Shorter than a musket, still a slow-loading match or early flint arm.",
+    "name": "Arquebus",
+    "base_damage": 15,
+    "durability": 42,
+    "stamina_cost": 5,
+    "weight": 8,
+    "min_STR": 30,
+    "reload_rounds": 3,
+    "misfire_chance": 12
+  },
+  "wheellock_pistol": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 4,
+    "features": [
+      "gunpowder"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. One-handed clockwork lock; costly, fussy, and still slow to reload.",
+    "name": "Wheellock Pistol",
+    "base_damage": 10,
+    "durability": 35,
+    "stamina_cost": 4,
+    "weight": 2,
+    "min_STR": 20,
+    "reload_rounds": 2,
+    "misfire_chance": 20
+  },
+  "flintlock_musket": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 6,
+    "features": [
+      "gunpowder"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. Early flintlock, just coming into use around 1670; still slow to charge.",
+    "name": "Flintlock Musket",
+    "base_damage": 16,
+    "durability": 45,
+    "stamina_cost": 6,
+    "weight": 9,
+    "min_STR": 32,
+    "reload_rounds": 3,
+    "misfire_chance": 10
+  },
+  "rifled_gun": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "features": [
+      "gunpowder"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. Dwarven rifling; slower than a smoothbore to load, truer in flight, fewer misfires.",
+    "name": "Dwarven Rifled Gun",
+    "base_damage": 18,
+    "durability": 55,
+    "stamina_cost": 6,
+    "weight": 10,
+    "min_STR": 35,
+    "reload_rounds": 3,
+    "misfire_chance": 8
+  },
+  "repeater_arbalest": {
+    "name": "Dwarven Repeater Arbalest",
+    "type": "ranged",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 14,
+    "durability": 60,
+    "fear_trigger": false,
+    "fear_intensity": 0,
+    "stamina_cost": 6,
+    "weight": 12,
+    "min_STR": 36,
+    "features": [
+      "repeater",
+      "windlass"
+    ],
+    "armor_piercing": true,
+    "size_class": "medium",
+    "magazine": 4,
+    "reload_rounds": 1,
+    "crank_rounds_when_empty": 4,
+    "misfire_chance": 5,
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. Dwarven repeating arbalest; a short cycle between shots, then a long crank when the magazine is empty."
+  },
+  "hand_cannon": {
+    "type": "gunpowder",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "fear_trigger": true,
+    "fear_intensity": 10,
+    "features": [
+      "gunpowder",
+      "improvised",
+      "stolen_cannon"
+    ],
+    "armor_piercing": true,
+    "size_class": "large",
+    "status": "PLACEHOLDER",
+    "notes": "PLACEHOLDER. A stolen field gun cut down and bound for an ogre's hands; huge, slow, and as likely to burst as to fire. Improvised.",
+    "name": "Ogre Hand Cannon",
+    "base_damage": 28,
+    "durability": 35,
+    "stamina_cost": 10,
+    "weight": 40,
+    "min_STR": 62,
+    "reload_rounds": 4,
+    "misfire_chance": 25
+  },
+  "ogre_branch": {
+    "name": "Ogre Branch",
+    "type": "improvised",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 16,
+    "durability": 40,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 5,
+    "weight": 25,
+    "min_STR": 55,
+    "features": [
+      "improvised",
+      "ogre"
+    ],
+    "armor_piercing": false,
+    "size_class": "large",
+    "notes": "A torn-up tree limb, used as a club. Native ogre gear (large, improvised)."
+  },
+  "ogre_rock_maul": {
+    "name": "Ogre Rock Maul",
+    "type": "improvised",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 20,
+    "durability": 30,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 6,
+    "weight": 45,
+    "min_STR": 60,
+    "features": [
+      "improvised",
+      "ogre",
+      "loose_head"
+    ],
+    "armor_piercing": false,
+    "size_class": "large",
+    "notes": "A boulder bound to a branch. The head can come loose. Native ogre gear (large, improvised)."
+  },
+  "ogre_iron_shod_club": {
+    "name": "Ogre Iron-Shod Club",
+    "type": "improvised",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 18,
+    "durability": 70,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 6,
+    "weight": 35,
+    "min_STR": 58,
+    "features": [
+      "improvised",
+      "ogre",
+      "iron_shod"
+    ],
+    "armor_piercing": false,
+    "size_class": "large",
+    "notes": "A club wrapped and shod with scavenged iron. Native ogre gear (large, improvised)."
+  },
+  "ogre_mace": {
+    "name": "Ogre Mace",
+    "type": "1H_blunt",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 22,
+    "durability": 90,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 7,
+    "weight": 50,
+    "min_STR": 62,
+    "features": [
+      "ogre"
+    ],
+    "armor_piercing": true,
+    "size_class": "large",
+    "notes": "An ogre-scale mace, often a wagon axle and a lump of iron. Native ogre gear (large)."
+  },
+  "ogre_anchor_flail": {
+    "name": "Ogre Anchor Flail",
+    "type": "1H_blunt",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 20,
+    "durability": 60,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 6,
+    "weight": 40,
+    "min_STR": 60,
+    "features": [
+      "ogre",
+      "chain"
+    ],
+    "armor_piercing": true,
+    "size_class": "large",
+    "notes": "A flail made with an anchor or a wheel hub on a chain. Native ogre gear (large)."
+  },
+  "ogre_forge_hammer": {
+    "name": "Ogre Forge Hammer",
+    "type": "2H_hammer",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 24,
+    "durability": 90,
+    "fear_trigger": true,
+    "fear_intensity": 7,
+    "stamina_cost": 8,
+    "weight": 60,
+    "min_STR": 65,
+    "features": [
+      "ogre"
+    ],
+    "armor_piercing": true,
+    "size_class": "large",
+    "notes": "A hammer taken from a forge or an anvil-head on a haft. Native ogre gear (large)."
+  },
+  "ogre_claymore": {
+    "name": "Ogre Claymore",
+    "type": "2H_sword",
+    "damage_type": "slashing",
+    "damage_types": [
+      "slashing",
+      "piercing"
+    ],
+    "guard_set": "2H_sword",
+    "stance_tree": [
+      "vom_tag",
+      "half_sword",
+      "wrath_guard",
+      "ochs",
+      "pflug",
+      "alber",
+      "porta_di_ferro",
+      "posta_di_donna",
+      "posta_di_fenestra",
+      "dente_di_zenghiaro"
+    ],
+    "base_damage": 30,
+    "durability": 120,
+    "fear_trigger": true,
+    "fear_intensity": 12,
+    "stamina_cost": 9,
+    "weight": 55,
+    "min_STR": 68,
+    "features": [
+      "point",
+      "legendary",
+      "master_smith",
+      "dwarven_machine_mark"
+    ],
+    "armor_piercing": false,
+    "size_class": "large",
+    "quality": "legendary",
+    "rarity": "rare",
+    "requires": "master_smith",
+    "gold_cost_multiplier": 10,
+    "notes": "Rare ogre-scale greatsword. Master smith only; gold x10. Some blades still bear a dwarven machine-mark from the forges that once armed vat-made ogres."
+  },
+  "throwing_knife": {
+    "name": "Throwing Knife",
+    "type": "thrown",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 5,
+    "durability": 40,
+    "fear_trigger": false,
+    "fear_intensity": 0,
+    "stamina_cost": 2,
+    "weight": 0.4,
+    "min_STR": 10,
+    "features": [],
+    "armor_piercing": false,
+    "size_class": "medium",
+    "notes": "A light knife meant to be thrown. PLACEHOLDER stats."
+  },
+  "light_crossbow": {
+    "name": "Light Crossbow",
+    "type": "ranged",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 9,
+    "durability": 50,
+    "fear_trigger": false,
+    "fear_intensity": 0,
+    "stamina_cost": 4,
+    "weight": 5,
+    "min_STR": 20,
+    "features": [],
+    "armor_piercing": false,
+    "size_class": "medium",
+    "reload_rounds": 1,
+    "notes": "A lighter crossbow, quicker to span than a war bow or arbalest. Counts as a crossbow for elven bans."
+  },
+  "composite_bow": {
+    "name": "Composite Bow",
+    "type": "ranged",
+    "damage_type": "piercing",
+    "damage_types": [
+      "piercing"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 11,
+    "durability": 45,
+    "fear_trigger": false,
+    "fear_intensity": 0,
+    "stamina_cost": 4,
+    "weight": 2,
+    "min_STR": 24,
+    "features": [],
+    "armor_piercing": false,
+    "size_class": "medium",
+    "notes": "A horn-and-sinew composite bow, favoured by elves. PLACEHOLDER stats."
+  },
+  "wand": {
+    "name": "Wand",
+    "type": "staff",
+    "damage_type": "blunt",
+    "damage_types": [
+      "blunt"
+    ],
+    "guard_set": null,
+    "stance_tree": [],
+    "base_damage": 2,
+    "durability": 20,
+    "fear_trigger": false,
+    "fear_intensity": 0,
+    "stamina_cost": 1,
+    "weight": 0.3,
+    "min_STR": 5,
+    "features": [
+      "implement"
+    ],
+    "armor_piercing": false,
+    "size_class": "medium",
+    "notes": "A short implement, of little use as a weapon. PLACEHOLDER stats."
   }
 }

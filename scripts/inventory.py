@@ -367,7 +367,7 @@ def _slots_free(needed, taken):
     return all(slot not in taken for slot in needed)
 
 
-def place_item(items, new_item, grip="two_hands"):
+def place_item(items, new_item, grip="two_hands", race=None, character=None):
     """Decide where a dropped physical item goes.
 
     Body first (if it has a slot and those slots are free), otherwise into a worn
@@ -375,8 +375,15 @@ def place_item(items, new_item, grip="two_hands"):
     Class, race, gender and other non-physical items are accepted and ignored here.
 
     Going over *character* carry capacity is allowed (penalties apply). Refusal is
-    only for no free body slot and no room in a pack.
+    only for no free body slot and no room in a pack, or a racial hard block
+    (a forbidden item is refused entirely, including a pack).
     """
+    if race:
+        import racial_gear
+        reason = racial_gear.refuse_reason(race, new_item, character)
+        if reason:
+            return {"ok": False, "location": None, "slot": None, "container_id": None,
+                    "equipped": False, "message": reason, "physical": True}
     if not is_physical(new_item):
         typ = item_type(new_item)
         if typ in NON_PHYSICAL_TYPES or typ == "":

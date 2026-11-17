@@ -2,6 +2,7 @@
 // Pure functions here are safe to unit-test in Node. Foundry hooks live at the bottom
 // and only run when Hooks exists. Hidden stats are not used.
 import RULES from "./inventory-rules.mjs";
+import { refuseReason, actorRace, actorMass } from "./racial-gear.mjs";
 
 const ID = "breath-and-the-veil";
 const PHYSICAL = new Set(RULES.physical_item_types);
@@ -256,7 +257,14 @@ export function chooseContainer(items, weightKg, volume = null) {
 
 const slotsFree = (needed, taken) => needed.every((s) => !(s in taken));
 
-export function placeItem(items, newItem, grip = "two_hands") {
+export function placeItem(items, newItem, grip = "two_hands", race = null, character = null) {
+  if (race) {
+    const reason = refuseReason(race, newItem, { mass: character && character.mass });
+    if (reason) {
+      return { ok: false, location: null, slot: null, container_id: null, equipped: false,
+        message: reason, physical: true };
+    }
+  }
   if (!isPhysical(newItem)) {
     const typ = itemType(newItem);
     if (NON_PHYSICAL.has(typ) || typ === "") {
@@ -498,7 +506,7 @@ function hookPreCreate(item, _data, _options, _userId) {
   if (!actor || actor.documentName !== "Actor") return;
   const items = actorItems(actor);
   const grip = actor.system?.combat?.grip || "two_hands";
-  const result = placeItem(items, item, grip);
+  const result = placeItem(items, item, grip, actorRace(actor), { mass: actorMass(actor) });
   if (!result.physical && result.ok) return;
   if (!result.ok) {
     notify(result.message, "warn");
@@ -518,7 +526,7 @@ async function stowOrEquip(actor, itemIdToMove, dest) {
   if (dest === "backpack") {
     const pack = chooseContainer(others, itemWeight(item), itemFlag(item, "volume"));
     if (!pack) {
-      notify(placeItem(others, ghost, grip).message || "No room in a pack.", "warn");
+      notify(placeItem(others, ghost, grip, actorRace(actor), { mass: actorMass(actor) }).message || "No room in a pack.", "warn");
       return;
     }
     await item.update({ "system.equipped": false, "system.location": "backpack",
@@ -526,7 +534,7 @@ async function stowOrEquip(actor, itemIdToMove, dest) {
     return;
   }
   if (dest === "body") {
-    const result = placeItem(others, ghost, grip);
+    const result = placeItem(others, ghost, grip, actorRace(actor), { mass: actorMass(actor) });
     if (!result.ok || result.location !== "body") {
       notify(result.message || "Those slots are taken.", "warn");
       return;

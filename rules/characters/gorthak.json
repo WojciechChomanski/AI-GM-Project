@@ -7,9 +7,9 @@
   "inventory_weight": 20,
   "shield_equipped": false,
   "weapon_equipped": true,
-  "weapon": "improvised_club",
+  "weapon": "ogre_branch",
   "armor": [
-    "Light_Light"
+    "Ogre_Scrap"
   ],
   "strength": 45,
   "toughness": 45,

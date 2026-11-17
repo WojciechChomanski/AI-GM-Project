@@ -15,9 +15,9 @@
                                             "background":  "Bounty Hunter"
                                         },
                        "starting_equipment":  {
-                                                  "weapon":  "improvised_club",
+                                                  "weapon":  "ogre_iron_shod_club",
                                                   "shield":  false,
-                                                  "armor":  "Light_Heavy"
+                                                  "armor":  "Ogre_Scrap"
                                               },
                        "stances":  {
                                        "default":  "neutral",

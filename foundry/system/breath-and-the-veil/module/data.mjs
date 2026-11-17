@@ -100,6 +100,8 @@ export class WeaponData extends BreathItemData {
       guard_set: new StringField(), two_hand_guard_set: new StringField(), default_guard: new StringField(),
       guards: new ArrayField(new StringField()), maneuvers: new ArrayField(new StringField()),
       features: new ArrayField(new StringField()), equipped: new BooleanField(),
+      size_class: new StringField({ initial: "medium" }),
+      reload_rounds: int(0), misfire_chance: int(0),
       location: new StringField({ initial: "" }), container_id: new StringField({ initial: "" }) };
   }
 }
@@ -107,6 +109,7 @@ export class ArmorData extends BreathItemData {
   static defineSchema() {
     return { ...super.defineSchema(),
       tier: new StringField(), variant: new StringField(),
+      size_class: new StringField({ initial: "medium" }),
       rating: new SchemaField({ slashing: int(0), piercing: int(0), blunt: int(0) }),
       rigid: new BooleanField(), coverage: new ArrayField(new StringField()), stamina_penalty: int(0),
       weight: new NumberField({ initial: 0 }),
