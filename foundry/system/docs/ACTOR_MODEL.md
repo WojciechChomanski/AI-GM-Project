@@ -30,7 +30,7 @@ Starting values come from the Gender item (`rules/stats.json`, e.g. `Human_Male`
 
 ## Combat (already in the model)
 
-`combat.weapon_in_hand`, `combat.grip` (`two_hands` | `one_hand`), `combat.current_guard`, `combat.shield_equipped`.
+`combat.weapon_in_hand`, `combat.grip` (`two_hands` | `one_hand`), `combat.current_guard`, `combat.shield_equipped` (set automatically when a `rules/shields.json` shield is equipped in the off hand).
 
 ## Felt
 

@@ -302,3 +302,52 @@ def test_actor_inventory_state_mirrors_model():
     assert abs(state["carried_weight"] - (1.5 + 5 + 3)) < 1e-9
     assert abs(state["carry_capacity"] - I.carry_capacity(35, "M", "Human")) < 1e-9
     assert "chest" in state["equipped"] and state["equipped"]["chest"] == ""
+
+
+def _shield(key, location="body"):
+    data = json.load(open(os.path.join(ROOT, "rules", "shields.json"), encoding="utf-8"))
+    src = data["shields"][key]
+    return _item(
+        id=key, name=src["name"], type="gear", weight=src["weight"],
+        location=location, equipped=location == "body", slot="off_hand",
+        source_id=key, item_kind="shield",
+        system={"source_id": key, "slot": "off_hand", "weight": src["weight"],
+                "rules": {"item_kind": "shield"}},
+    )
+
+
+def test_shield_catalogue_has_the_six_keys_and_weights():
+    data = json.load(open(os.path.join(ROOT, "rules", "shields.json"), encoding="utf-8"))
+    assert list(data["shields"]) == ["buckler", "targe", "round_shield", "heater", "kite", "pavise"]
+    for key, e in data["shields"].items():
+        assert e["weight"] > 0 and e["coverage_cone_deg"] > 0
+        assert 1.0 <= e["block_multiplier"] <= 1.25
+        assert set(e["zone_coverage"]) >= {"head", "chest", "stomach", "arm", "leg"}
+
+
+def test_heater_occupies_off_hand_and_counts_weight():
+    shield = _shield("heater")
+    ev = I.evaluate(35, "M", "Human", [shield])
+    assert ev["shield_equipped"] is True
+    assert ev["carried_kg"] == 3.2
+    state = I.actor_inventory_state([shield], 35, "M")
+    assert state["equipped"]["off_hand"] == "heater"
+    assert state["shield_equipped"] is True
+
+
+def test_shield_conflicts_with_two_handed_weapon_but_not_a_one_hander():
+    pack_item = pack("travellers_backpack")
+    two = _item(id="greatsword", name="Greatsword", type="weapon", weight=12,
+                location="body", weapon_type="2H_sword",
+                system={"source_id": "greatsword", "weapon_type": "2H_sword", "weight": 12})
+    shield = _shield("buckler", location="")
+    # off_hand already taken by the greatsword
+    result = I.place_item([pack_item, two], shield)
+    assert result["ok"] and result["location"] == "backpack"
+    one = _item(id="arming_sword", name="Arming Sword", type="weapon", weight=5,
+                location="body", weapon_type="1H_sword",
+                system={"source_id": "arming_sword", "weapon_type": "1H_sword", "weight": 5})
+    result = I.place_item([pack_item, one], _shield("heater", location=""))
+    assert result["ok"] and result["location"] == "body" and "off_hand" in result["slots"]
+    ev = I.evaluate(35, "M", "Human", [pack_item, one, _shield("heater")])
+    assert ev["shield_equipped"] is True

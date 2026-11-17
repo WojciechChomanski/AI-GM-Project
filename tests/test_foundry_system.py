@@ -273,3 +273,15 @@ def test_actor_model_has_the_thirteen_official_zones():
         assert zone in src and zone in char, zone
     assert "scaledZones" in char and "pyRound" in char
 
+
+def test_gear_pack_includes_shield_catalogue(tmp_path):
+    _, docs = built(tmp_path)
+    by_id = {d["system"]["source_id"]: d for d in docs["gear"]}
+    keys = ["buckler", "targe", "round_shield", "heater", "kite", "pavise"]
+    for key in keys:
+        d = by_id[key]
+        assert d["type"] == "gear"
+        assert d["system"]["slot"] == "off_hand"
+        assert d["system"]["rules"]["item_kind"] == "shield"
+        assert d["system"]["weight"] > 0
+        assert d["system"]["source_file"] == "rules/shields.json"

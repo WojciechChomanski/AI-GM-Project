@@ -17,8 +17,10 @@ export default {
       "action_economy_encumbrance": "rules/combat/action_economy_v0_1.json encumbrance (AP and speed; different thresholds than load_bands \u2014 see conflict note)",
       "march_cliff": "scripts/strength.py march_cost_per_km: steep extra cost past half capacity",
       "clinch": "docs/STRENGTH.md section 4: being clinched means carrying them. Stamina uses Power ratio; inventory adds the opponent's mass in kg when set.",
-      "item_weights": "rules/weapons.json weight and rules/armors.json weight"
-    }
+      "item_weights": "rules/weapons.json weight and rules/armors.json weight",
+      "shields": "rules/shields.json (weights, off-hand slot, placeholder coverage and block values)"
+    },
+    "notes_shields": "Shields are real off-hand items in rules/shields.json and the Foundry gear pack. They occupy off_hand and count toward carried weight."
   },
   "carry_capacity": {
     "formula": "base_kg = 20 + strength * 1.5",
@@ -252,7 +254,6 @@ export default {
   "gaps": [
     "No official backpack or container list (placeholder packs above).",
     "No item volumes, so volume checks are not enforced.",
-    "No shield catalogue with weights; shields cannot be dragged as items yet.",
     "warhammer, longsword and shortsword have no weight in rules/weapons.json.",
     "Ogre Brute heavy_lift (500 kg extra, 5 stamina, active ability) is not applied automatically; it is an activated class ability, not a permanent bonus.",
     "Coin weight from rules/system/currency_v0_6d.json (50 coins per kg, pouch relief) is not wired into Foundry yet.",

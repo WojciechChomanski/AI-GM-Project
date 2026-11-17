@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import {
   carryCapacity, loadRatio, loadTier, tierPenalties, actionAllowed, actionPenalty,
   actionEconomyPenalties, placeItem, carriedWeight, evaluate, RULES, itemWeight,
-  missingWeight, actorInventoryState,
+  missingWeight, actorInventoryState, isShield,
 } from "../breath-and-the-veil/module/inventory.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -152,4 +152,39 @@ test("actorInventoryState fills equipped slots and backpack contents", () => {
   assert.equal(state.carried_weight, 1.5 + 5 + 3);
   assert.equal(state.carry_capacity, carryCapacity(35, "M", "Human"));
   assert.equal(state.equipped.chest, "");
+});
+
+const shield = (id, location = "body") => {
+  const src = JSON.parse(fs.readFileSync(path.join(here, "..", "..", "..", "rules", "shields.json"), "utf8")).shields[id];
+  return item({
+    id, name: src.name, type: "gear", weight: src.weight, location, equipped: location === "body",
+    slot: "off_hand", source_id: id, item_kind: "shield",
+    system: { source_id: id, slot: "off_hand", weight: src.weight, rules: { item_kind: "shield" } },
+  });
+};
+
+test("shield catalogue occupies the off hand and counts weight", () => {
+  const heater = shield("heater");
+  assert.ok(isShield(heater));
+  const ev = evaluate(35, "M", "Human", [heater]);
+  assert.equal(ev.carried_kg, 3.2);
+  assert.equal(ev.shield_equipped, true);
+  const state = actorInventoryState({
+    items: [heater],
+    system: { attributes: { strength: { value: 35 } }, details: { gender: "Male", race: "Human" }, combat: { grip: "two_hands" } },
+  });
+  assert.equal(state.equipped.off_hand, "heater");
+  assert.equal(state.shield_equipped, true);
+});
+
+test("a shield cannot share the off hand with a two-handed weapon", () => {
+  const packItem = pack();
+  const two = weapon("greatsword", 12, "2H_sword");
+  const result = placeItem([packItem, two], shield("buckler", ""));
+  assert.ok(result.ok);
+  assert.equal(result.location, "backpack");
+  const one = weapon("arming_sword", 5, "1H_sword");
+  const ok = placeItem([packItem, one], shield("heater", ""));
+  assert.ok(ok.ok && ok.location === "body");
+  assert.ok(ok.slots.includes("off_hand"));
 });

@@ -178,6 +178,36 @@ def weapon_type_of(item):
     return str(getattr(item, "weapon_type", "") or "")
 
 
+def _shield_ids():
+    path = os.path.join(ROOT, "rules", "shields.json")
+    if not os.path.isfile(path):
+        return set()
+    with open(path, encoding="utf-8") as f:
+        return set(json.load(f).get("shields", {}))
+
+
+SHIELD_IDS = _shield_ids()
+
+
+def is_shield(item):
+    """True for catalogue shields (rules/shields.json), worn in the off hand."""
+    if item_flag(item, "item_kind") == "shield":
+        return True
+    return source_id(item) in SHIELD_IDS
+
+
+def shield_equipped(items, grip="two_hands"):
+    """A catalogue shield is on the body in the off hand."""
+    taken = occupied_body_slots(items, grip=grip)
+    off = taken.get("off_hand")
+    if not off:
+        return False
+    for it in items:
+        if item_id(it) == off and is_shield(it) and location_of(it) == "body":
+            return True
+    return False
+
+
 def is_two_handed(item, grip="two_hands"):
     """See rules/inventory.json two_handed. Some entries are placeholders."""
     if item_type(item) != "weapon":
@@ -470,6 +500,7 @@ def evaluate(strength, gender, race, items, talents=(), clinch_mass_kg=0, grip="
         "action_economy": economy,
         "actions": actions,
         "missing_weight_items": [item_name(it) for it in items if missing_weight(it)],
+        "shield_equipped": shield_equipped(items, grip),
     }
 
 
@@ -521,4 +552,5 @@ def actor_inventory_state(items, strength, gender, race="Human", talents=(), cli
         "backpack": {"itemId": item_id(pack) if pack else "", "contents": contents},
         "carried_weight": ev["carried_kg"],
         "carry_capacity": ev["capacity_kg"],
+        "shield_equipped": ev["shield_equipped"],
     }

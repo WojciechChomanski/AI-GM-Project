@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "id": "shields_v1",
+    "version": "0.1",
+    "updated": "2026-11-17",
+    "placeholder_numbers": true,
+    "note": "Weights are in kg. Coverage and block values are placeholders that fit the existing generic shield_system in rules/combat_rules.json (60\u00b0 cone, zone coverage, durability loss on block) and the \u00d71.10 block bonus in scripts/combat_engine.py when combat.shield_equipped is true. Combat still uses that flat bonus until a later pass reads the per-shield numbers. Inventory counts the weight and occupies the off hand.",
+    "foundry": "Shipped as gear items (slot off_hand, item_kind shield) in the gear pack so they can be dragged onto an actor.",
+    "slot": "off_hand"
+  },
+  "shields": {
+    "buckler": {
+      "name": "Buckler",
+      "weight": 1.2,
+      "coverage_cone_deg": 40,
+      "zone_coverage": {
+        "head": 0.1,
+        "chest": 0.25,
+        "stomach": 0.1,
+        "arm": 0.55,
+        "leg": 0.0
+      },
+      "block_multiplier": 1.05,
+      "durability": 15,
+      "description": "A small fist-shield, about a hand-span across, used to catch a blade at close range. Little body coverage, light enough to wear all day."
+    },
+    "targe": {
+      "name": "Targe",
+      "weight": 2.5,
+      "coverage_cone_deg": 55,
+      "zone_coverage": {
+        "head": 0.25,
+        "chest": 0.5,
+        "stomach": 0.35,
+        "arm": 0.5,
+        "leg": 0.1
+      },
+      "block_multiplier": 1.08,
+      "durability": 22,
+      "description": "A round highland-style shield of wood and leather, often with a boss and a strap. Larger than a buckler, still handy in the press."
+    },
+    "round_shield": {
+      "name": "Round Shield",
+      "weight": 4.0,
+      "coverage_cone_deg": 70,
+      "zone_coverage": {
+        "head": 0.35,
+        "chest": 0.7,
+        "stomach": 0.55,
+        "arm": 0.5,
+        "leg": 0.25
+      },
+      "block_multiplier": 1.1,
+      "durability": 25,
+      "description": "A flat or slightly bossed round shield of the early medieval kind, large enough to cover the torso. The middle of the catalogue; its coverage sits close to the generic shield_system values."
+    },
+    "heater": {
+      "name": "Heater Shield",
+      "weight": 3.2,
+      "coverage_cone_deg": 60,
+      "zone_coverage": {
+        "head": 0.4,
+        "chest": 0.7,
+        "stomach": 0.6,
+        "arm": 0.5,
+        "leg": 0.15
+      },
+      "block_multiplier": 1.1,
+      "durability": 25,
+      "description": "The familiar knightly heater: pointed below, good for the horse and the melee, strong on the chest and stomach, poor at the legs. Crusader Knights are already proficient with it. Its cone matches the generic 60\u00b0 shield_system."
+    },
+    "kite": {
+      "name": "Kite Shield",
+      "weight": 5.0,
+      "coverage_cone_deg": 70,
+      "zone_coverage": {
+        "head": 0.4,
+        "chest": 0.75,
+        "stomach": 0.65,
+        "arm": 0.5,
+        "leg": 0.45
+      },
+      "block_multiplier": 1.12,
+      "durability": 30,
+      "description": "A tall teardrop or kite, as used by Norman cavalry. Heavier than a heater, but it covers the thigh as well as the torso."
+    },
+    "pavise": {
+      "name": "Pavise",
+      "weight": 9.0,
+      "coverage_cone_deg": 90,
+      "zone_coverage": {
+        "head": 0.6,
+        "chest": 0.9,
+        "stomach": 0.85,
+        "arm": 0.6,
+        "leg": 0.55
+      },
+      "block_multiplier": 1.2,
+      "durability": 40,
+      "description": "A large oblong pavise, often planted by a crossbowman rather than carried in a running fight. Excellent cover, awkward in a mobile melee. PLACEHOLDER: no extra agility penalty is applied yet."
+    }
+  }
+}
