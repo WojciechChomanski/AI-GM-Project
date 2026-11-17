@@ -4,6 +4,7 @@ import sqlite3
 import logging
 from character import Character
 from combat_health import CombatHealthManager
+import magic_costs
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -18,39 +19,30 @@ class MagicSystem:
                 return json.load(f)
         except FileNotFoundError:
             return {
-                "divine_verdict": {
-                    "type": "breath",
-                    "damage": 15,
-                    "damage_type": "holy",
-                    "bonus_vs_corrupted": 10,
-                    "stamina_cost": 8,
-                    "overload_chance": 0.01,
-                    "description": "Deals 15 holy damage, +10 vs corrupted, 1% Breath Overload risk."
-                },
                 "veil_whisper": {
                     "type": "veil",
                     "effect": {"defense_bonus": 5},
                     "stamina_cost": 6,
-                    "corruption_risk": 0.1,
+                    "corruption": 2,
                     "taint_mark": {"hunt_check_bonus": 5},
                     "description": "Grants ally +5 defense, leaves taint_mark (+5 enemy hunt_check)."
                 },
                 "sacrificial_pact": {
                     "type": "veil",
                     "stamina_cost": 10,
-                    "corruption_risk": 0.15,
+                    "corruption": 8,
                     "effects": {
                         "power_bonus": 20,
                         "aging_rate": 0.5,
                         "sterility": True
                     },
-                    "description": "Ritual sacrifices fertility for +20 power, halved aging rate, +0.15 corruption risk."
+                    "description": "Ritual sacrifices fertility for +20 power, halved aging rate, sterility, fixed corruption cost."
                 },
                 "tide_wail": {
                     "type": "veil",
                     "effect": {"fear_intensity": 15},
                     "stamina_cost": 15,
-                    "corruption_risk": 0.15,
+                    "corruption": 8,
                     "brine_marks": 1,
                     "description": "AOE fear, +15 intensity, adds Brine Marks."
                 },
@@ -58,7 +50,7 @@ class MagicSystem:
                     "type": "veil",
                     "effect": {"charm_count": 2},
                     "stamina_cost": 15,
-                    "corruption_risk": 0.15,
+                    "corruption": 5,
                     "taint_mark": {"hunt_check_bonus": 5},
                     "description": "Charms up to 2 targets, leaves taint_mark."
                 },
@@ -73,7 +65,7 @@ class MagicSystem:
                     "type": "veil",
                     "effect": {"max_hp_drain": 2},
                     "stamina_cost": 8,
-                    "corruption_risk": 0.1,
+                    "corruption": 5,
                     "brine_marks": 1,
                     "description": "Drains 2 HP/round unless Breath-purified, adds Brine Marks."
                 }
@@ -85,14 +77,14 @@ class MagicSystem:
             print(f"❌ Unknown spell: {spell_name}")
             return False
 
-        # Check restrictions
-        if spell["type"] == "breath" and (caster.race != "Human" or caster.gender != "Male"):
-            print(f"❌ {caster.name} cannot cast Breath spell {spell_name} (male Human only).")
+        # Check restrictions (rules/core_rules.txt: no active Breath spells; Veil is female Human/Elf only)
+        if spell.get("type") == "breath" or spell.get("power_source") == "Breath":
+            print(f"❌ {caster.name} cannot cast {spell_name}: active Breath spells are not allowed.")
             return False
-        if spell["type"] == "veil" and (caster.gender != "Female" or caster.race not in ["Human", "Elf"]):
+        if spell.get("type") == "veil" and (caster.gender != "Female" or caster.race not in ["Human", "Elf"]):
             print(f"❌ {caster.name} cannot cast Veil spell {spell_name} (female Human/Elf only).")
             return False
-        if spell["type"] == "rune" and caster.race != "Dwarf":
+        if spell.get("type") == "rune" and caster.race != "Dwarf":
             print(f"❌ {caster.name} cannot use rune ability {spell_name} (Dwarf only).")
             return False
 
@@ -113,31 +105,19 @@ class MagicSystem:
             caster.consume_stamina(spell["stamina_cost"])
             print(f"✅ {caster.name} successfully casts {spell_name}!")
 
-            if spell_name == "divine_verdict":
-                damage = spell["damage"]
-                if target.corruption_level > 0:
-                    damage += spell["bonus_vs_corrupted"]
-                target_health.take_damage_to_zone("chest", damage, spell["damage_type"])
-                if random.random() < spell["overload_chance"]:
-                    caster.status_effects.append({"name": "breath_overload", "duration": 3, "stamina_penalty": -5})
-                    print(f"⚠️ {caster.name} suffers Breath Overload (-5 stamina, 3 rounds).")
-            elif spell_name == "veil_whisper":
+            if spell_name == "veil_whisper":
                 target.defense_bonus = spell["effect"]["defense_bonus"]
                 target.status_effects.append({"name": "taint_mark", "hunt_check_bonus": 5})
-                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
-                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%")
             elif spell_name == "sacrificial_pact":
                 caster.power_bonus = spell["effects"]["power_bonus"]
                 caster.aging_rate = spell["effects"]["aging_rate"]
                 caster.status_effects.append({"name": "sterility", "charisma_penalty": -10})
-                caster.corruption_level = min(100, caster.corruption_level + (15 if random.random() < spell["corruption_risk"] else 0))
-                print(f"😈 {caster.name} completes Sacrificial Pact, gains power but sterility. Corruption: {caster.corruption_level}%")
+                print(f"😈 {caster.name} completes Sacrificial Pact, gains power but sterility.")
             elif spell_name == "tide_wail":
                 for ally in caster.allies + [caster]:
                     ally.status_effects.append({"name": "fear", "intensity": spell["effect"]["fear_intensity"], "duration": 1})
-                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
                 caster.status_effects.append({"name": "brine_marks", "count": spell["brine_marks"]})
-                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%, Brine Marks added.")
+                print(f"😈 {caster.name} gains Brine Marks.")
             elif spell_name == "veil_caress":
                 charmed = min(spell["effect"]["charm_count"], len(caster.allies))
                 for _ in range(charmed):
@@ -145,8 +125,6 @@ class MagicSystem:
                         ally = random.choice(caster.allies)
                         ally.status_effects.append({"name": "charmed", "duration": 1})
                         ally.status_effects.append({"name": "taint_mark", "hunt_check_bonus": 5})
-                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
-                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%")
             elif spell_name == "rune_trap":
                 target_health.take_damage_to_zone("legs", spell["damage"], "blunt")
                 if random.random() < spell["effect"]["immobilize_chance"]:
@@ -154,14 +132,17 @@ class MagicSystem:
                     print(f"🪤 {target.name} is immobilized by {caster.name}'s rune trap!")
             elif spell_name == "salt_kiss":
                 target.status_effects.append({"name": "salt_kiss", "max_hp_drain": 2, "duration": 3})
-                caster.corruption_level = min(100, caster.corruption_level + (5 if random.random() < spell["corruption_risk"] else 0))
                 caster.status_effects.append({"name": "brine_marks", "count": spell["brine_marks"]})
-                print(f"😈 {caster.name}'s corruption: {caster.corruption_level}%, Brine Marks added.")
+                print(f"😈 {caster.name} gains Brine Marks.")
+            if magic_costs.spell_corruption(spell):
+                magic_costs.apply_cast_corruption(caster, spell)
             self.update_proficiency(caster.name, spell_name)
             return True
         else:
             print(f"❌ {caster.name} fails to cast {spell_name}!")
             caster.consume_stamina(spell["stamina_cost"] // 2)
+            if magic_costs.spell_corruption(spell):
+                magic_costs.apply_cast_corruption(caster, spell, failed=True)
             return False
 
     def use_magic_item(self, user: Character, item_name: str, target: Character):

@@ -44,6 +44,10 @@ def day_tick(manager, mode=None, fed=True, rng=None, companions=()):
     rep = {"healed": healed, "infection": inf, "mode": mode, "regrown": regrown}
     if hunger is not None:
         rep["hunger"] = hunger
+    import blood_vessels
+    vrep = blood_vessels.day_tick(manager.character)
+    if vrep.get("vessels"):
+        rep["vessel_corruption"] = vrep
     return rep
 
 
