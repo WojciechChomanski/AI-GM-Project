@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import build_foundry_packs as B  # noqa: E402
 
 SYS = os.path.join(ROOT, "foundry", "system", "breath-and-the-veil")
-HIDDEN = re.compile(r"^(faith|virtue|piety|holy_?fury\w*|corruption\w*|stress\w*|reputation\w*)$", re.I)
+HIDDEN = re.compile(r"^(faith|virtue|piety|holy_?fury\w*|corruption\w*|stress\w*|reputation\w*|suspicion\w*|church_favour|hunter_zeal|hunter_greed|political_cost)$", re.I)
 
 
 def manifest():

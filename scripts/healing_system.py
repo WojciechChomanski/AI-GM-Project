@@ -26,14 +26,18 @@ class HealingSystem:
 
     VEIL_EFFECTS = ("salt_kiss", "taint_mark", "brine_marks")
 
-    def breath_purge(self, healer: Character, targets, trigger="just_verdict"):
+    def breath_purge(self, healer: Character, targets, trigger="just_verdict", against=None):
         """PASSIVE Breath (core_rules: no active magic for men). There is no action, no stamina cost.
         It fires on its own for a Holy Judge at full Breath (knight.breath_state: Virtue >= 70, high Piety,
-        low Corruption) right after a just Final_Verdict (holy_judge.json Purge_Verdict), clearing Veil
-        effects from the given allies. Cleric: on hold (redesign pending), so nothing happens.
+        low Corruption) right after a just Final_Verdict against a valid Breath target (possessed human,
+        demon, ghost, spirit, corrupted beast, Veilspawn or abomination — never an ordinary sinner).
+        Cleric: on hold (redesign pending), so nothing happens.
         Returns the names of allies cleared."""
         import knight
+        import witch_hunters
         if getattr(healer, "class_name", None) != "Holy_Judge" or trigger != "just_verdict":
+            return []
+        if not witch_hunters.breath_may_trigger(against):
             return []
         if knight.breath_state(getattr(healer, "virtue", 0), getattr(healer, "piety", 0),
                                getattr(healer, "corruption_level", 0)) != "full":

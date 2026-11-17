@@ -42,9 +42,9 @@
       ],
       "player_hint": "Something under your sleeve itches and will not heal.",
       "discoverable_by": [
-        "Witch-Sight",
-        "Discern Sin",
-        "undressing/medical exam"
+        "undressing/medical exam",
+        "Mercy of Ash mundane exam (Inspect, stripping, pricking)",
+        "Witch-Sight (female caster advantage, not a hunter tool)"
       ]
     },
     {

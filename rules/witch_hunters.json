@@ -1,0 +1,337 @@
+{
+  "meta": {
+    "id": "witch_hunters_mercy_of_ash_v1",
+    "version": "0.1",
+    "updated": "2026-11-17",
+    "placeholder_numbers": true,
+    "note": "Hidden backend toolkit only. Never store Suspicion, Protection, Political Cost, Church favour, Zeal, Greed, writs or sentence records on a Foundry actor. Witch hunters use no magic and no Witch-Sight."
+  },
+  "order": {
+    "id": "mercy_of_ash",
+    "name": "The Mercy of Ash",
+    "name_reason": "They call burning a mercy, which echoes the Ashen Coast mercy sacrifices in lore/era_1670.json.",
+    "kind": "independent_church_order",
+    "answers_to": "Witchfinder General",
+    "not_under": [
+      "Holy Judges",
+      "kings"
+    ],
+    "has": [
+      "own courts for Veil crimes",
+      "own prisons",
+      "own bounty chests"
+    ],
+    "rivals": "Holy Judges (who handle heresy, knights and nobles)",
+    "specialism": "Veil sorceresses",
+    "uses_magic": false,
+    "uses_witch_sight": false,
+    "membership": "ordinary trained men",
+    "later_npc": "A magic-using female witch hunter may come later as a special NPC only."
+  },
+  "ranks": [
+    {
+      "id": "informer",
+      "name": "Informer",
+      "authority": 0,
+      "skills": {
+        "inspect": 30,
+        "interrogate": 25,
+        "awareness": 40,
+        "survival_tracking": 25,
+        "deception": 35,
+        "lore_witchcraft": 20
+      }
+    },
+    {
+      "id": "tracker",
+      "name": "Tracker",
+      "authority": 0,
+      "skills": {
+        "inspect": 40,
+        "interrogate": 30,
+        "awareness": 40,
+        "survival_tracking": 45,
+        "lore_witchcraft": 30
+      }
+    },
+    {
+      "id": "sworn_hunter",
+      "name": "Sworn Hunter",
+      "authority": 1,
+      "skills": {
+        "inspect": 50,
+        "interrogate": 45,
+        "awareness": 45,
+        "survival_tracking": 45,
+        "intimidation": 40,
+        "lore_witchcraft": 40,
+        "letters_law": 30
+      }
+    },
+    {
+      "id": "hunt_sergeant",
+      "name": "Hunt-Sergeant",
+      "authority": 1,
+      "skills": {
+        "inspect": 55,
+        "interrogate": 55,
+        "awareness": 50,
+        "survival_tracking": 50,
+        "intimidation": 50,
+        "lore_witchcraft": 45,
+        "letters_law": 40,
+        "leadership": 45
+      }
+    },
+    {
+      "id": "witchfinder_captain",
+      "name": "Witchfinder-Captain",
+      "authority": 2,
+      "skills": {
+        "inspect": 60,
+        "interrogate": 65,
+        "awareness": 55,
+        "intimidation": 60,
+        "lore_witchcraft": 55,
+        "letters_law": 55,
+        "leadership": 60
+      }
+    },
+    {
+      "id": "witchfinder_general",
+      "name": "Witchfinder General",
+      "authority": 3,
+      "skills": {
+        "inspect": 70,
+        "interrogate": 70,
+        "awareness": 60,
+        "intimidation": 65,
+        "lore_witchcraft": 70,
+        "letters_law": 70,
+        "leadership": 70
+      }
+    }
+  ],
+  "methods": {
+    "mundane_only": true,
+    "tools": [
+      "Inspect",
+      "pricking",
+      "salt",
+      "cold water",
+      "heat",
+      "stripping exam",
+      "scene evidence",
+      "behaviour",
+      "informants"
+    ],
+    "false_positives": "Pricking, cold-water and heat tests can look damning on an innocent woman. They never prove magic. The GM treats a suggestive result as a prompt, not a verdict.",
+    "salt_note": "Salt is already a Veil bane (Daughters of the Drowned Moon). A placeholder: it may sting or fizz on Veil-touched flesh, but that is still not proof on its own."
+  },
+  "detection": {
+    "roll": "Inspect skill + d100 + modifier; success on 100 or more. Ties and automatic cases skip the contest. Concealment and composure are opposed by the target's Willpower or Deceive (tie goes to the defender).",
+    "corruption": {
+      "10": "undetectable by hunters",
+      "25": "undetectable by hunters",
+      "50": "found only by a stripping exam (automatic if they undress her)",
+      "75": "Inspect +0 at a glance; -20 if concealed with gloves, collar or paint, but concealment fails on close contact",
+      "90": "automatic"
+    },
+    "sigils": {
+      "I": "Inspect -30 at a glance; automatic on stripping or pricking",
+      "II": "Inspect -15 at a glance; automatic on stripping",
+      "III": "Inspect +0, or -20 if concealed",
+      "Branded": "automatic, and Lore: Witchcraft names her school"
+    }
+  },
+  "suspicion": {
+    "min": 0,
+    "max": 100,
+    "scope": "per region",
+    "thresholds_are": "GM prompts, not automatic results",
+    "thresholds": [
+      {
+        "score": 20,
+        "id": "watched",
+        "prompt": "An informer tails her and prices rise."
+      },
+      {
+        "score": 40,
+        "id": "questioned",
+        "prompt": "She is summoned and her lodgings searched. A hunter may Interrogate her."
+      },
+      {
+        "score": 60,
+        "id": "hunted",
+        "prompt": "A bounty is posted and a hunting party is sent."
+      },
+      {
+        "score": 80,
+        "id": "taken",
+        "prompt": "An arrest attempt and a full exam are in play. A sentence, if any, is the GM's to choose from the menu."
+      }
+    ],
+    "modifiers": {
+      "open_magic_witnessed": 25,
+      "reliable_informant": 10,
+      "rumour": 5,
+      "scene_evidence": 10,
+      "sigil_iii_seen": 15,
+      "branded_sigil_seen": 25,
+      "odd_behaviour": 5,
+      "failed_interrogate": 15,
+      "fled_summons_or_hunt": 20,
+      "refused_or_failed_exam": 20,
+      "failed_bribe": 15,
+      "framing_another_woman": -25,
+      "clean_exam": -10,
+      "won_interrogate": -5,
+      "accepted_bribe": -15,
+      "quiet_month": -5
+    },
+    "new_region": "A new region starts at 0. If she already has a bounty (Suspicion 60 or more in another region), the new region starts at 10 (placeholder spillover). Fleeing still helps."
+  },
+  "protection": {
+    "min": 0,
+    "max": 3,
+    "levels": {
+      "0": "nobody",
+      "1": "a guild, merchant house or abbot",
+      "2": "a lord or city council",
+      "3": "a king or prince (court sorceress)"
+    },
+    "rule": "Hunters can act freely only when their Authority is at least her Protection. Authority is 1 for a Sworn Hunter or Hunt-Sergeant, 2 for a Witchfinder-Captain, 3 for the Witchfinder General. Informers and Trackers have Authority 0."
+  },
+  "political_cost": {
+    "church_favour_per_protection_level": -10,
+    "applies_when": "The hunters act against a protected woman without Authority >= Protection, or without a Sealed Writ that covers her.",
+    "also": [
+      "patron enmity",
+      "scapegoating"
+    ],
+    "scapegoat_if_church_favour_at_or_below": 20,
+    "sealed_writ_waives_church_favour": true,
+    "church_favour_scale": "0-100, hidden, default 50"
+  },
+  "writs": {
+    "church_writ": {
+      "name": "Church Writ",
+      "effect": "Ordinary license to investigate and arrest Veil crimes. It does not override Protection."
+    },
+    "sealed_writ": {
+      "name": "Sealed Writ",
+      "from": "a king",
+      "effect": "Legal assassination of a named target. Authority is treated as enough to act on that target. Church-favour cost for the act is waived; the patron may still become an enemy if the king was not the patron."
+    },
+    "tolerance_tithe": {
+      "name": "Tolerance Tithe",
+      "income_share": {
+        "min": 20,
+        "max": 50,
+        "unit": "percent"
+      },
+      "caps_suspicion_at": 39,
+      "unpaid_sets_suspicion_to": 60,
+      "grace_days": 30,
+      "note": "A neutral city in wartime may tolerate a mage and extort her resources rather than kill her."
+    }
+  },
+  "hunter_nature": {
+    "zeal": {
+      "min": 0,
+      "max": 100
+    },
+    "greed": {
+      "min": 0,
+      "max": 100
+    },
+    "corrupt_at_greed": 60,
+    "fanatic_at_zeal": 80,
+    "bribe": {
+      "formula": "accept if (Greed + min(40, offer_gold // 5)) >= Zeal, after a corrupt hunter treats Zeal as 20 lower for this check",
+      "fanatic": "Zeal >= 80: always refuses, and the offer raises Suspicion by failed_bribe (15) if it was made",
+      "failed_non_fanatic": "A refused bribe still raises Suspicion by failed_bribe (15) unless the hunter is corrupt and is only holding out for more gold"
+    }
+  },
+  "sentences": {
+    "chooser": "The GM picks from the menu. default_lean is only a helper.",
+    "menu": [
+      {
+        "id": "fine_ransom",
+        "name": "Fine or ransom",
+        "gold": "placeholder: 50 x (Protection + 1), or a named ransom"
+      },
+      {
+        "id": "service",
+        "name": "Forced service",
+        "days": 30
+      },
+      {
+        "id": "confinement",
+        "name": "Confinement, branding or mutilation",
+        "variants": [
+          "confinement",
+          "branding",
+          "mutilation"
+        ],
+        "mutilation_note": "Tongue or hands may be taken to end casting. Severe; GM's call."
+      },
+      {
+        "id": "torture",
+        "name": "Torture for information",
+        "hp": "1d10",
+        "stress": 5,
+        "willpower_penalty": -10,
+        "willpower_penalty_per": "session"
+      },
+      {
+        "id": "sale",
+        "name": "Sale",
+        "note": "Sold to the galleys or a noble house. The character leaves play pending the GM."
+      },
+      {
+        "id": "execution",
+        "name": "Execution",
+        "note": "Carried out by ordinary means after the sentence. Not an instant-kill power and not a Breath miracle."
+      }
+    ]
+  },
+  "holy_judge": {
+    "status": "A vocation inside the Crusader Knight order, not a separate starting class.",
+    "interrogate": {
+      "replaces": "Discern_Sin",
+      "ability_id": "Discern_Sin",
+      "name": "Interrogate",
+      "roll": "Perception + Willpower + d100 vs the higher of Willpower or Deceive + d100",
+      "costs": "none (no stamina, no piety)",
+      "reads": "guilt, not magic",
+      "cannot_prove_sorcery_alone": true,
+      "divine_clarity": "+10 against lies if the Judge has Divine Clarity",
+      "tie": "defender",
+      "passive_flavour": "If Breath has already triggered randomly near a possessed person or demon, the Judge may sense the thing inside them. That remains passive."
+    },
+    "final_verdict": {
+      "ability_id": "Final_Verdict",
+      "becomes": "Legal authority to sentence and to have a sentence carried out by ordinary means. No instant-kill power.",
+      "requires": "A legal finding (evidence, confession, or a completed exam), not a magical reading of sin."
+    }
+  },
+  "breath": {
+    "rule": "Passive and random only. It may answer a pure Crusader or Judge against corrupted beasts, demons, ghosts, spirits and possessed humans only. Never against ordinary sinners, and never against an un-possessed sorceress.",
+    "valid_kinds": [
+      "veilspawn",
+      "abomination",
+      "corrupted_beast",
+      "demon",
+      "ghost",
+      "spirit",
+      "possessed_human"
+    ],
+    "never": [
+      "ordinary_sinner",
+      "sorceress",
+      "witch",
+      "human"
+    ]
+  }
+}

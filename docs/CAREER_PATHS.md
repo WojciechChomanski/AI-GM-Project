@@ -34,12 +34,12 @@ Source: breath-audit/ORDER_PATHS_DRAFT.md v0.1, approved (t104u). All numbers ar
   - **Code:** `order_paths.grant_paladin` / `paladin_passives`.
 - **Crusader Knight:** Brother-Knight → Knight-Sergeant → Preceptor → Marshal → Grand Commander. It gives hospitality, armourers, sergeants, a commandery, a lance and a council seat. It costs vows, alms, summons, being bound to a region and politics.
 - **Holy Judge** (the Tribunal, outside the hierarchy): Inquisitor-Novice → Judge → High Judge (1 Witness) → Lord Inquisitor. The Writ grows from commoners up to Order officers.
-  - **Starting as a Judge:** counts as a former Squire-Sergeant (class tier 2, tier 1–2 abilities plus Discern_Sin and Final_Verdict), with hidden Virtue/Piety 60/60.
-  - **Converting:** needs knight tier 3+, 3 just Discern_Sin results and hidden 60/60.
+  - **Starting as a Judge:** counts as a former Squire-Sergeant (class tier 2, tier 1–2 abilities plus Interrogate (the `Discern_Sin` id) and Final_Verdict), with hidden Virtue/Piety 60/60.
+  - **Converting:** needs knight tier 3+, 3 just Interrogate (Discern_Sin) results and hidden 60/60.
   - **Unjust verdicts:** each costs hidden Piety −20 and Virtue −15 and reputation −25. At Lord Inquisitor, one unjust verdict means expulsion.
 - **Executioner's Bond** (authority only):
   - With the bonded blade carried openly: the Writ applies, +10 Intimidation/Etiquette to compel, and lesser authorities make a hidden WIL test to defy him.
-  - Final_Verdict is lawful only with the bond blade; otherwise it is a `needless_killing` Virtue event.
+  - Final_Verdict is legal authority to sentence and to carry a sentence out by ordinary means, not an instant-kill power. A personal killing is lawful only with the bond blade; otherwise it is a `needless_killing` Virtue event.
   - Losing the blade means −10 reputation and the Writ is suspended until the blade is reconsecrated.
   - Damage bonus is always 0. It uses normal greatsword/axe mastery.
 - **Warden of the Marches:** Watchman → Marcher Knight → Warden-Captain → Lord Warden. Veil hunters at the swamp watch-forts. They get Lore: Veil and Survival and a felt Veil dread. Costs are no court life, answering breaches, and hidden Stress.

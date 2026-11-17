@@ -78,8 +78,8 @@ A biblical-grimdark world where **The Breath** (divine Word/Light) contends with
 ## Races
 ### Humans — Heirs of the Breath
 - **Lore:** frail, hunted, but uniquely able to echo the Breath. Demons fear them; Elves covet them; Dwarves grind them for soul-metal.  
-- **Breath Gate (current rule):** **male**, **breath-bound class tag**, **Virtue ≥ 70**, **effects awaken vs. abominations** (undead, demons, veil-hosts).  
-- **Culture:** versatile, early-modern urban/rural mix; Breathbound Orders train Crusaders/Confessors/Judges.
+- **Breath Gate (current rule):** **male**, **breath-bound class tag**, **Virtue ≥ 70**, **effects awaken vs. abominations** (undead, demons, veil-hosts, ghosts, spirits, corrupted beasts, **possessed humans**). Never against ordinary sinners.  
+- **Culture:** versatile, early-modern urban/rural mix; Breathbound Orders train Crusaders/Confessors/Judges. The Mercy of Ash is a separate Church order under a Witchfinder General, rivals of the Holy Judges, and hunts Veil sorceresses by mundane means only.
 
 ### Elves — Mystics of the Thorn
 - **Lore:** immortal yet decaying; ritual sacrifice transfers corruption into human victims (a high-echelon secret).  
@@ -101,6 +101,7 @@ A biblical-grimdark world where **The Breath** (divine Word/Light) contends with
 
 ## Factions
 - **Breathbound Orders** (human sacred orders) — relics, confession, knightly formation; pursue **Abel’s Echo**.  
+- **The Mercy of Ash** (independent Church witch-hunter order) — answers to a Witchfinder General; own courts, prisons and bounty chests; rivals of the Holy Judges; no magic, no Witch-Sight.  
 - **Iron Wards** (dwarven sealers) — rune pylons, soul-forges; aim to **bind the Veil forever** (moral costs).  
 - **Echelon of Thorns** (elven regime) — ritual sacrifice doctrine; guard Veil rifts; hunt human conduits.  
 - **Daughters of the Drowned Moon** (water witches) — brine rites, drownings; thin boundaries at river mouths; **salt** as bane.  

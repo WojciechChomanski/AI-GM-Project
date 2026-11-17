@@ -540,8 +540,8 @@
       1,
       3
     ],
-    "hook": "every Order encounter",
-    "description": "Templars and Holy Judges suspect you.",
+    "hook": "every Mercy of Ash encounter",
+    "description": "The Mercy of Ash has your name; hunters and their informers watch you.",
     "set": "female",
     "restrictions": {
       "gender": [
