@@ -46,15 +46,15 @@ HOUSES = [
         "loop": [(20.5, 3.5), (30, 3.5), (30, 10), (25.5, 10), (23.8, 10), (20.5, 10)],
         "door": ((25.5, 10), (23.8, 10)),
     },
-    {  # SW cottage, door on the north wall facing the road
+    {  # SW cottage, door on the south wall of the west wing (matches the painted door)
         "name": "sw-cottage",
-        "loop": [(2, 21), (3.5, 21), (5, 21), (11, 21), (11, 29), (2, 29)],
-        "door": ((3.5, 21), (5, 21)),
+        "loop": [(2, 21), (11, 21), (11, 27), (4.4, 27), (3.0, 27), (2, 27)],
+        "door": ((4.4, 27), (3.0, 27)),
     },
-    {  # SE house by the stream, door on the north wall (the steps)
+    {  # SE house by the stream, door on the south wall (matches the painted door and steps)
         "name": "se-house",
-        "loop": [(20.5, 21), (23.5, 21), (25.2, 21), (29, 21), (29, 29), (20.5, 29)],
-        "door": ((23.5, 21), (25.2, 21)),
+        "loop": [(20.5, 21), (29, 21), (29, 27.5), (25.2, 27.5), (23.5, 27.5), (20.5, 27.5)],
+        "door": ((25.2, 27.5), (23.5, 27.5)),
     },
 ]
 

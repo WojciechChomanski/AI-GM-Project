@@ -1,6 +1,6 @@
 # Art assets (Witcher comic style)
 
-All player-facing pictures live under `foundry/system/breath-and-the-veil/assets/`. They follow the approved Witcher 3 comic look (ink linework, watercolor on stained parchment, sepia / rust / charcoal). Placeholder parchment banners from 0.1.1 are replaced here; `_fallback.webp` files stay as a last resort.
+All player-facing pictures live under `foundry/system/breath-and-the-veil/assets/`. They follow the approved v5 Witcher 3 Wild Hunt loading-screen look: dark heavy-inked comic panels, painted storybook texture, cinematic lighting, muted earthy colours with one strong colour mood (icy blue, warm brown, or blood red). Midtones stay open and readable — a dark mood is not the same as an underexposed picture. Figures sit in an environment, not on blank parchment. `_fallback.webp` files stay as a last resort. Weapon and armour item icons are a later batch.
 
 | Kind | Path | Notes |
 |---|---|---|
