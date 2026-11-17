@@ -39,8 +39,7 @@ class HealingSystem:
             return []
         if not witch_hunters.breath_may_trigger(against):
             return []
-        if knight.breath_state(getattr(healer, "virtue", 0), getattr(healer, "piety", 0),
-                               getattr(healer, "corruption_level", 0)) != "full":
+        if knight.breath_state_for(healer) != "full":
             return []
         if not isinstance(targets, (list, tuple)):
             targets = [targets]

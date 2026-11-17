@@ -322,6 +322,6 @@ def paladin_passives(c):
     import knight
     if not is_paladin(c) or state(c)["path"] != "crusader_knight":
         return {}
-    if knight.breath_state(_get(c, "virtue", 0) or 0, _get(c, "piety", 0) or 0, _get(c, "corruption_level", 0) or 0) != "full":
+    if knight.breath_state_for(c) != "full":
         return {}
     return {k: v for k, v in PALADIN["passives"].items() if k != "note"}

@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "PLACEHOLDER",
+    "note": "Crusader Knight Rule of Life. Hidden numbers stay in the Python backend and never go on a Foundry actor. Several numeric values are flagged PLACEHOLDER where the Breath Keeper draft was truncated and had to be reconstructed from the user's summary, decisions, and the Aimery worked example.",
+    "sources": [
+      "Templar Primitive Rule (Fordham, Latin Rule of 1129): https://sourcebooks.fordham.edu/source/templar-rle.asp",
+      "Templar Retrais (hierarchical statutes)",
+      "Hospitaller rule of Raymond du Puy",
+      "rules/orders/crusader_vows.json",
+      "rules/virtue_rules.json",
+      "rules/orders/paths.json",
+      "docs/RULE_OF_LIFE.md"
+    ]
+  },
+  "applies_to_classes": ["Crusader_Knight", "Holy_Judge"],
+  "applies_to_paths": ["crusader_knight", "paladin", "penitent_brother"],
+  "historical_rule": {
+    "hours": {
+      "count": 7,
+      "note": "The seven canonical Hours with the chaplain. Silence after Compline.",
+      "field_paternosters": {
+        "matins": 13,
+        "vespers": 9,
+        "other_hour": 7,
+        "source": "Primitive Rule §10"
+      }
+    },
+    "table": {
+      "meals_in_silence": true,
+      "reading_during_meals": true,
+      "meat_days_max_per_week": 3,
+      "friday_fare": "lenten",
+      "winter_fast": "All Saints to Easter"
+    },
+    "vows": ["poverty", "chastity", "obedience"],
+    "sleep": "lamp lit at night",
+    "poverty_notes": "No lockable purse. Owns only arms, armour, horse and habit.",
+    "campaign": {
+      "fleeing_the_banner": "loss_of_the_house",
+      "note": "Leaving the banner in the field is treated like murder of a Christian: expulsion, or becoming a Penitent Brother."
+    }
+  },
+  "piety": {
+    "note": "C6. The Rule check replaces the generic engine decay of -4/day for anyone under the Rule. character.py still initialises piety at 0 until a value is loaded; ai_gm_engine defaults to 50. A trained brother is usually in the 50-70 band; Aimery starts at 72 as an established knight.",
+    "start_default": 50,
+    "gain_table": {
+      "rule_kept": 2,
+      "rule_broken": -4
+    },
+    "rule_alone_cap": 80,
+    "absolute_min": 0,
+    "absolute_max": 100
+  },
+  "virtue": {
+    "base_ceiling": 75,
+    "ceiling_formula": "75 minus open grave stain weight",
+    "recover_per_kept_day": 2,
+    "repeat_gains_halve": true,
+    "devotion": {
+      "status": "PLACEHOLDER",
+      "note": "C5 anti-abuse. Confession and fasting cannot be stacked to pray a murder away. Gains never exceed the Virtue ceiling.",
+      "confession_virtue": 8,
+      "confession_cooldown_days": 7,
+      "fasting_day_virtue": 5,
+      "fasting_cooldown_days": 7,
+      "weekly_devotion_cap": 8
+    }
+  },
+  "rule_ward": {
+    "min": 0,
+    "max": 5,
+    "gain_per_kept_day": 1,
+    "on_broken_day": 0,
+    "note": "PLACEHOLDER reduction: incoming Veil corruption is reduced by 1 per Ward point (floor 0). Ward is hidden."
+  },
+  "daily_cleansing": {
+    "note": "Decision 3. Venial stains only. Prayer never lifts a grave stain.",
+    "points_first_days": 2,
+    "first_days": 3,
+    "points_after": 1,
+    "weekly_max": 8,
+    "only_when_rule_kept": true
+  },
+  "stain": {
+    "venial_max_weight": 5,
+    "grave_min_weight": 6,
+    "weekly_unconfessed_corruption": 1,
+    "weekly_unconfessed_note": "PLACEHOLDER inferred from Aimery: +1 Corruption per open grave stain every 7 unconfessed days (three grave stains take him from 17 to 20).",
+    "grave_corruption_low": 2,
+    "grave_corruption_high": 5,
+    "penance": {
+      "status": "PLACEHOLDER",
+      "note": "A grave stain lifts only after confession to a priest, restitution, then penance lasting `weight` days. Sins marked loss_of_the_house also require expulsion or the Penitent Brother path.",
+      "days_equal_weight": true
+    }
+  },
+  "sins": {
+    "vice_cursing": {"weight": 1, "deadly_sin": "wrath", "grade": "venial", "corruption": 0},
+    "missed_hour": {"weight": 2, "deadly_sin": "sloth", "grade": "venial", "corruption": 0, "status": "PLACEHOLDER"},
+    "vice_brawling": {"weight": 3, "deadly_sin": "wrath", "grade": "venial", "corruption": 0},
+    "broken_fast": {"weight": 3, "deadly_sin": "gluttony", "grade": "venial", "corruption": 0, "status": "PLACEHOLDER"},
+    "vice_drunkenness": {"weight": 4, "deadly_sin": "gluttony", "grade": "venial", "corruption": 0},
+    "vice_gambling": {"weight": 4, "deadly_sin": "greed", "grade": "venial", "corruption": 0},
+    "vice_drugs": {"weight": 5, "deadly_sin": "gluttony", "grade": "venial", "corruption": 0},
+    "vice_debauchery": {"weight": 6, "deadly_sin": "lust", "grade": "grave", "corruption": 2, "breaks_vow": "chastity"},
+    "vice_brothel": {"weight": 6, "deadly_sin": "lust", "grade": "grave", "corruption": 2, "breaks_vow": "chastity"},
+    "theft": {"weight": 7, "deadly_sin": "greed", "grade": "grave", "corruption": 2, "breaks_vow": "poverty", "status": "PLACEHOLDER", "note": "Weight 7 is set so Aimery's three grave sins total 31 and cap Virtue at 44."},
+    "needless_killing": {"weight": 8, "deadly_sin": "wrath", "grade": "grave", "corruption": 2},
+    "cruelty": {"weight": 10, "deadly_sin": "wrath", "grade": "grave", "corruption": 5},
+    "broken_oath": {"weight": 10, "deadly_sin": "pride", "grade": "grave", "corruption": 5, "breaks_vow": "obedience"},
+    "desecration": {"weight": 12, "deadly_sin": "pride", "grade": "grave", "corruption": 5},
+    "murder_christian": {"weight": 18, "deadly_sin": "wrath", "grade": "grave", "corruption": 5, "loss_of_the_house": true, "status": "PLACEHOLDER", "note": "Weight 18 is needless_killing 8 plus cruelty 10, applied once so the events are not double-counted."},
+    "fleeing_the_banner": {"weight": 18, "deadly_sin": "pride", "grade": "grave", "corruption": 5, "loss_of_the_house": true, "breaks_vow": "obedience", "status": "PLACEHOLDER"}
+  },
+  "breath": {
+    "passive_only": true,
+    "broken_vow_or_open_grave": "cap_at_dim",
+    "valid_kinds": [
+      "veilspawn",
+      "abomination",
+      "corrupted_beast",
+      "demon",
+      "ghost",
+      "spirit",
+      "possessed_human"
+    ],
+    "kind_aliases": {"corrupted": "corrupted_beast"},
+    "never_kinds": ["ordinary_sinner", "sorceress", "witch", "human"]
+  },
+  "felt": {
+    "ward_up": "The lamp burns steady; the dark keeps its distance.",
+    "venial_stain": "The Paternosters snag on your tongue.",
+    "grave_stain": "You say the words. Nothing answers.",
+    "vow_broken": "Something that stood at your back has stepped away.",
+    "confessed_unfinished": "The weight has a name now. It is not gone.",
+    "stain_lifted": "You sleep without dreams for the first time in weeks.",
+    "house_lost": "The house is closed to you."
+  },
+  "worked_examples": {
+    "aimery": {
+      "start": {"virtue": 75, "piety": 72, "corruption": 8, "breath": "full"},
+      "day_1_sins": ["theft", "murder_christian", "vice_brothel"],
+      "after_day_1": {"virtue": 44, "corruption": 17, "rule_ward": 0},
+      "days_2_to_8": "perfect Rule, confesses only to God",
+      "after_day_8": {"piety": 80, "virtue": 44, "corruption": 20, "breath": "dim"},
+      "recovery": "priest, restitution, penance, and loss of the house"
+    },
+    "honest_drunk": {
+      "start_virtue": 75,
+      "sin": "vice_drunkenness",
+      "after_sin": 71,
+      "recovered_in_days": 2,
+      "recovered_virtue": 75
+    }
+  }
+}

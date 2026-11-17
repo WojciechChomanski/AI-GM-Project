@@ -2,7 +2,7 @@
   "meta": {
     "version": "0.1",
     "status": "PLACEHOLDER",
-    "source": "Stages from rules/magic_rules.json (10/25/50/75/100). Visibility follows rules/classes/veil_sorceress.json corruption_system: never on the sheet; at 75 'friends begin to notice something is wrong'; at 90 'the Veil speaks with your voice'; 100 hollowed. Clearly visible only when the character is already 1-2 steps from lost.",
+    "source": "Stages from rules/magic_rules.json (10/25/50/75/90/100). Visibility follows rules/classes/veil_sorceress.json corruption_system: never on the sheet; at 75 'friends begin to notice something is wrong'; at 90 'the Veil speaks with your voice'; 100 hollowed. Clearly visible only when the character is already 1-2 steps from lost.",
     "doc": "docs/ADVANTAGES_DISADVANTAGES.md"
   },
   "visible_from": 75,

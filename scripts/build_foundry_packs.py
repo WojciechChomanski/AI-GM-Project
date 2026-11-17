@@ -6,7 +6,7 @@ Then `node foundry/system/tools/compile-packs.mjs` turns them into LevelDB packs
 foundry/system/breath-and-the-veil/packs/<pack> using the official @foundryvtt/foundryvtt-cli.
 Or run both: `cd foundry/system && npm run build`.
 
-Hidden stats (faith, virtue, piety, holy fury, corruption, stress, reputation) are stripped from every
+Hidden stats (faith, virtue, piety, holy fury, corruption, stress, reputation, hunter toolkit, Rule of Life ledger) are stripped from every
 document: they belong to the Breath backend only.
 Weapon data reuses scripts/foundry_export.weapon_item (on main since PR 12)."""
 import hashlib
@@ -27,7 +27,13 @@ ROOT = CT.ROOT
 RULES = os.path.join(ROOT, "rules")
 OUT = os.path.join(ROOT, "foundry", "system", "build", "packs-src")
 SYSTEM_ID = "breath-and-the-veil"
-HIDDEN_KEY = re.compile(r"^(faith|virtue|piety|holy_fury\w*|corruption\w*|stress\w*|reputation\w*)$", re.I)
+HIDDEN_KEY = re.compile(
+    r"^(faith|virtue|piety|holy_fury\w*|corruption\w*|stress\w*|reputation\w*"
+    r"|suspicion\w*|church_favour|hunter_zeal|hunter_greed|political_cost"
+    r"|rule_ward|stain_ledger|virtue_ceiling|venial_stain\w*|grave_stain\w*"
+    r"|rule_kept\w*|stain_weight|open_grave\w*|rule_of_life)$",
+    re.I,
+)
 ICONS = {"weapon": "icons/svg/sword.svg", "armor": "icons/svg/shield.svg", "class": "icons/svg/book.svg",
          "race": "icons/svg/mystery-man.svg", "gender": "icons/svg/mystery-man.svg", "talent": "icons/svg/aura.svg",
          "flaw": "icons/svg/hazard.svg", "advantage": "icons/svg/upgrade.svg", "skill": "icons/svg/book.svg",
@@ -68,7 +74,7 @@ def shipped_img(*parts, fallback=""):
 PLAYER_BLOCK = re.compile(
     r"(piety_system|corruption_system|faith_system|virtue_system|holy_fury\w*)", re.I)
 PLAYER_FIELD = re.compile(
-    r"(^|_)(faith|virtue|piety|holy_?fury|corruption|stress|reputation)(_|$)", re.I)
+    r"(^|_)(faith|virtue|piety|holy_?fury|corruption|stress|reputation|rule_ward|stain_ledger|virtue_ceiling|rule_of_life)(_|$)", re.I)
 
 
 def strip_player(node):

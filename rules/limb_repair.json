@@ -3,7 +3,7 @@
     "version": "0.1",
     "status": "PLACEHOLDER",
     "doc": "docs/RECOVERY.md",
-    "lore_check": "rules/core_rules.txt: active magic is female-only (Veil Sorceress line, human/elf women); men never activate magic; passive magic via items, potions, runes and relics is allowed for everyone. rules/magic_rules.json: corruption stages, purge methods (breath_ritual, saint_relic). No surgery/medicine skill exists in the repo."
+    "lore_check": "rules/core_rules.txt: active magic is female-only (Veil Sorceress line, human/elf women); men never activate magic; passive magic via items, potions, runes and relics is allowed for everyone. rules/magic_rules.json: corruption stages, purge methods (saint_relic only; breath_ritual removed). No surgery/medicine skill exists in the repo."
   },
   "limb_states": [
     "crippled",

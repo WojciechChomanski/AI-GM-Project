@@ -38,7 +38,7 @@ Every cast adds a **small guaranteed** amount. There is no random “maybe +1”
 | Greater | +15 | Shroud’s Embrace, Rift Tear, Echo of Eve |
 | Capstone | +30 | Veil Apotheosis (once per campaign; left high on purpose) |
 
-A failed or miscast spell still pays the base amount plus **+2**. Casting several times in the same fight adds a small snowball: **+1 per earlier spell**, or **+2** per earlier spell once Corruption is already 75+. Cap is **100** (Hollowed). A Willpower check may still try to halve one gain per long rest (existing Veil Sorceress rule, not newly wired). Purge methods are unchanged (Breath ritual −10 at a price; saint relic −25). Marks still follow the peak, not the purged value.
+A failed or miscast spell still pays the base amount plus **+2**. Casting several times in the same fight adds a small snowball: **+1 per earlier spell**, or **+2** per earlier spell once Corruption is already 75+. Cap is **100** (Hollowed). A Willpower check may still try to halve one gain per long rest (existing Veil Sorceress rule, not newly wired). The only remaining purge method is a saint relic (−25). The old Breath ritual purge (−10) has been removed; Breath is passive only (see docs/RULE_OF_LIFE.md). Marks still follow the peak, not the purged value.
 
 Sources unified: `rules/magic_rules.json`, `rules/spells.json`, `rules/abilities_magic.json`, `rules/classes/veil_sorceress.json`, `scripts/magic_costs.py`, `scripts/magic_system.py`, `scripts/magic_engine_stub.py`, `scripts/sorcery_ext.py`.
 
